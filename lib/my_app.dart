@@ -3,6 +3,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'config/router/app_router.dart';
 import 'config/theme/theme_logic.dart';
 import 'config/theme/theme_ui_model.dart';
@@ -25,36 +26,60 @@ class MyApp extends ConsumerWidget {
       // use a lower package version, some properties may not be supported.
       // In that case remove them after copying this theme to your app.
       theme: FlexThemeData.light(
-        scheme: FlexScheme.deepBlue,
-        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-        blendLevel: 13,
-        subThemesData: const FlexSubThemesData(
-          blendOnLevel: 10,
-          blendOnColors: false,
-          useTextTheme: true,
-          useM2StyleDividerInM3: true,
-        ),
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: true,
-        swapLegacyOnMaterial3: true,
-        // To use the Playground font, add GoogleFonts package and uncomment
-        // fontFamily: GoogleFonts.notoSans().fontFamily,
-      ),
+          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+          blendLevel: 13,
+          subThemesData: const FlexSubThemesData(
+            blendOnLevel: 10,
+            blendOnColors: false,
+            useTextTheme: true,
+            useM2StyleDividerInM3: true,
+          ),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          useMaterial3: true,
+          swapLegacyOnMaterial3: true,
+          textTheme: TextTheme(
+            labelLarge: GoogleFonts.poppins(
+              fontWeight: FontWeight.w700,
+              fontSize: 40,
+            ),
+          ),
+          colorScheme: const ColorScheme.light(primary: Color(0xFFEF7E06))
+
+          // To use the Playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
+          ),
       darkTheme: FlexThemeData.dark(
-        scheme: FlexScheme.deepBlue,
-        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-        blendLevel: 13,
-        subThemesData: const FlexSubThemesData(
-          blendOnLevel: 20,
-          useTextTheme: true,
-          useM2StyleDividerInM3: true,
-        ),
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: true,
-        swapLegacyOnMaterial3: true,
-        // To use the Playground font, add GoogleFonts package and uncomment
-        // fontFamily: GoogleFonts.notoSans().fontFamily,
-      ),
+          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+          blendLevel: 13,
+          subThemesData: const FlexSubThemesData(
+            blendOnLevel: 20,
+            useTextTheme: true,
+            useM2StyleDividerInM3: true,
+          ),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          useMaterial3: true,
+          swapLegacyOnMaterial3: true,
+          textTheme: TextTheme(
+            labelLarge: GoogleFonts.poppins(
+              fontWeight: FontWeight.w700,
+              fontSize: 40,
+            ),
+            labelMedium: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
+            labelSmall: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+            ),
+          ),
+          colorScheme: const ColorScheme.dark(
+              primary: Color(0xFFEF7E06),
+              onPrimary: Colors.white,
+              background: Colors.transparent)
+          // To use the Playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
+          ),
       themeMode: currentTheme.themeMode,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,
