@@ -2,10 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../../../utils/context_extensions.dart';
 
+import '../../config/router/app_router.dart';
 import '../widgets/app_bar_gone.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'widgets/header.dart';
@@ -29,6 +31,11 @@ class HomeScreen extends ConsumerWidget {
           const Divider(),
           const ThemeWidget(),
           const LanguageTile(),
+          ElevatedButton(
+              onPressed: () {
+                context.go(SGRoute.login.route);
+              },
+              child: const Text('Login')),
           ListView.separated(
             itemCount: 4,
             shrinkWrap: true,

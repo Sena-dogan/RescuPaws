@@ -2,10 +2,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 
 const String tokenKey = 'token';
-const String emailKey = 'email';
-const String password = 'password';
+const String introKey = 'intro';
 
 @injectable
+
 /// Example: GetStoreHelper is used to save and get token, email and password.
 class GetStoreHelper {
   GetStoreHelper(this.getStorage);
@@ -16,23 +16,17 @@ class GetStoreHelper {
     await getStorage.write(tokenKey, token);
   }
 
+  Future<void> saveIntro(bool value) async {
+    await getStorage.write(introKey, value);
+  }
+
+  bool? getIntro() {
+    return getStorage.read(introKey);
+  }
+
   // get auth token
   String? getToken() {
     return getStorage.read(tokenKey);
-  }
-
-  // email and password
-  Future<void> saveEmailAndPassword(String email, String password) async {
-    getStorage.write(emailKey, email);
-    getStorage.write(password, password);
-  }
-
-  String? getEmail() {
-    return getStorage.read(emailKey);
-  }
-
-  String? getPassword() {
-    return getStorage.read(password);
   }
 
   void clear() {

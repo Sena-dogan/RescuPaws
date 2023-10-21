@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/info/info_screen.dart';
+import '../../ui/features/login/login_screen.dart';
 import '../../ui/home/home.dart';
 import 'fade_extension.dart';
 
@@ -35,17 +36,33 @@ class SGGoRouter {
       GoRoute(
         path: SGRoute.firstScreen.route,
         builder: (BuildContext context, GoRouterState state) =>
-            const HomeScreen(),
+            const FirstSc(),
       ).fade(),
       GoRoute(
         path: SGRoute.secondScreen.route,
         builder: (BuildContext context, GoRouterState state) =>
             const SecondScreen(),
       ).fade(),
+      GoRoute(
+        path: SGRoute.login.route,
+        redirect: (BuildContext context, GoRouterState state) =>
+            _introGuard(context, state),
+        builder: (BuildContext context, GoRouterState state) =>
+            const LoginScreen(),
+      ).fade(),
     ],
   );
   GoRouter get getGoRouter => goRoute;
 }
+
+final String? Function(BuildContext context, GoRouterState state) _introGuard =
+    (BuildContext context, GoRouterState state) {
+  if (!(getStoreHelper.getIntro() != null &&
+      getStoreHelper.getIntro()! == true)) {
+    return SGRoute.firstScreen.route;
+  }
+  return null;
+};
 
 /// Example: Auth guard for Route Protection. GetStoreHelper is used to get token.
 // ignore: unused_element
