@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
-import '../../ui/features/info/info_screen.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/login/login_screen.dart';
 import '../../ui/home/home.dart';
@@ -33,7 +32,7 @@ enum SGRoute {
 @Singleton()
 class SGGoRouter {
   final GoRouter goRoute = GoRouter(
-    initialLocation: SGRoute.firstScreen.route,
+    initialLocation: SGRoute.intro.route,
     routes: <GoRoute>[
       GoRoute(
         path: SGRoute.firstScreen.route,
@@ -41,19 +40,12 @@ class SGGoRouter {
             const HomeScreen(),
       ).fade(),
       GoRoute(
-        path: SGRoute.secondScreen.route,
-        builder: (BuildContext context, GoRouterState state) =>
-            const SecondScreen(),
-      ).fade(),
-      GoRoute(
         path: SGRoute.intro.route,
         builder: (BuildContext context, GoRouterState state) =>
             const IntroScreen(),
-      ),
+      ).fade(),
       GoRoute(
         path: SGRoute.login.route,
-        redirect: (BuildContext context, GoRouterState state) =>
-            _introGuard(context, state),
         builder: (BuildContext context, GoRouterState state) =>
             const LoginScreen(),
       ).fade(),

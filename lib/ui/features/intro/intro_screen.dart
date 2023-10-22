@@ -1,12 +1,15 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
+import '../../../data/getstore/get_store_helper.dart';
+import '../../../di/components/service_locator.dart';
 import '../../../utils/context_extensions.dart';
 import '../../widgets/app_bar_gone.dart';
+import 'widgets/next_button.dart';
 
 class IntroScreen extends ConsumerStatefulWidget {
   const IntroScreen({super.key});
@@ -68,7 +71,17 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
               ),
               const Gap(25),
               NextButton(
-                onPressed: () {},
+                onPressed: () {
+                  /// Uncomment this to save intro state
+                  /// For now, we are not saving intro state
+                  /// because we want to show intro screen every time
+                  /// user opens the app
+                  ///
+                  // final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+                  // getStoreHelper.saveIntro(true);
+                  debugPrint('Intro button pressed');
+                  context.go(SGRoute.login.route);
+                },
               ),
               const Spacer(),
               Image.asset(
@@ -80,69 +93,3 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
   }
 }
 
-class NextButton extends StatelessWidget {
-  const NextButton({super.key, required this.onPressed});
-  final Function() onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 79.44,
-      height: 80,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            left: 0,
-            bottom: 0,
-            child: Container(
-              width: 68,
-              height: 68,
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(colors: <Color>[
-                    // #EF7E06, #F7B327
-                    Color(0xFFEF7E06),
-                    Color(0xFFF7B327),
-                  ])),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 25,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const Positioned(
-              right: -1,
-              top: -1,
-              child: SizedBox(
-                child: ArcWidget(),
-              )),
-        ],
-      ),
-    );
-  }
-}
-
-class ArcWidget extends StatelessWidget {
-  const ArcWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      Assets.Arc,
-      width: 50,
-      height: 50,
-    );
-  }
-}

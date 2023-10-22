@@ -71,7 +71,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: SocialLoginButton(
                   buttonType: SocialLoginButtonType.appleBlack,
                   onPressed: () {
-                    context.go(SGRoute.intro.route);
                   },
                   borderRadius: 30),
             ),
