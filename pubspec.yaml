@@ -71,6 +71,7 @@ dependencies:
   water_drop_nav_bar: ^2.2.0+5
   google_fonts: ^6.1.0
   social_login_buttons: ^1.0.7
+  flutter_native_splash: ^2.3.4
 
 
 
