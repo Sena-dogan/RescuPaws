@@ -12,6 +12,7 @@ import 'di/components/service_locator.dart';
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeUiModel currentTheme = ref.watch(themeLogicProvider);
@@ -37,12 +38,7 @@ class MyApp extends ConsumerWidget {
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
           swapLegacyOnMaterial3: true,
-          textTheme: TextTheme(
-            labelLarge: GoogleFonts.poppins(
-              fontWeight: FontWeight.w700,
-              fontSize: 40,
-            ),
-          ),
+          textTheme: textTheme,
           colorScheme: const ColorScheme.light(primary: Color(0xFFEF7E06))
 
           // To use the Playground font, add GoogleFonts package and uncomment
@@ -59,20 +55,7 @@ class MyApp extends ConsumerWidget {
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
           swapLegacyOnMaterial3: true,
-          textTheme: TextTheme(
-            labelLarge: GoogleFonts.poppins(
-              fontWeight: FontWeight.w700,
-              fontSize: 40,
-            ),
-            labelMedium: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              fontSize: 20,
-            ),
-            labelSmall: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-            ),
-          ),
+          textTheme: textTheme,
           colorScheme: const ColorScheme.dark(
               primary: Color(0xFFEF7E06),
               onPrimary: Colors.white,
@@ -88,6 +71,22 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
+
+final TextTheme textTheme = TextTheme(
+            labelLarge: GoogleFonts.poppins(
+              fontWeight: FontWeight.w700,
+              fontSize: 40,
+            ),
+            labelMedium: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: 30,
+            ),
+            bodyMedium: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              fontSize: 13,
+            ),
+          );
 
 Future<void> setPreferredOrientations() {
   return SystemChrome.setPreferredOrientations(<DeviceOrientation>[

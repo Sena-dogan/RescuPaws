@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/info/info_screen.dart';
+import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/login/login_screen.dart';
 import '../../ui/home/home.dart';
 import 'fade_extension.dart';
@@ -15,6 +16,7 @@ GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
 enum SGRoute {
   home,
+  intro,
   firstScreen,
   secondScreen,
   login,
@@ -36,13 +38,18 @@ class SGGoRouter {
       GoRoute(
         path: SGRoute.firstScreen.route,
         builder: (BuildContext context, GoRouterState state) =>
-            const FirstSc(),
+            const HomeScreen(),
       ).fade(),
       GoRoute(
         path: SGRoute.secondScreen.route,
         builder: (BuildContext context, GoRouterState state) =>
             const SecondScreen(),
       ).fade(),
+      GoRoute(
+        path: SGRoute.intro.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const IntroScreen(),
+      ),
       GoRoute(
         path: SGRoute.login.route,
         redirect: (BuildContext context, GoRouterState state) =>
@@ -57,9 +64,9 @@ class SGGoRouter {
 
 final String? Function(BuildContext context, GoRouterState state) _introGuard =
     (BuildContext context, GoRouterState state) {
-  if (!(getStoreHelper.getIntro() != null &&
+  if (!(getStoreHelper.getIntro() == null ||
       getStoreHelper.getIntro()! == true)) {
-    return SGRoute.firstScreen.route;
+    return SGRoute.intro.route;
   }
   return null;
 };
@@ -68,7 +75,7 @@ final String? Function(BuildContext context, GoRouterState state) _introGuard =
 // ignore: unused_element
 final String? Function(BuildContext context, GoRouterState state) _authGuard =
     (BuildContext context, GoRouterState state) {
-  if (!(getStoreHelper.getToken() != null)) {
+  if (!(getStoreHelper.getToken() == null)) {
     return SGRoute.login.route;
   }
   return null;

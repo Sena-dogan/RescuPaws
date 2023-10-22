@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
+import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
 import '../../widgets/app_bar_gone.dart';
@@ -36,11 +38,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Spacer(),
-              Image.asset(Assets.PawPaw, filterQuality: FilterQuality.none, fit: BoxFit.none,),
+              Image.asset(
+                Assets.PawPaw,
+                filterQuality: FilterQuality.none,
+                fit: BoxFit.none,
+              ),
               Text(
                 'Sign in',
-                style:
-                    context.textTheme.labelLarge,
+                style: context.textTheme.labelLarge,
               ),
               const Spacer(),
               _buildFooterButton(Size(size.width, size.height * 0.12)),
@@ -65,7 +70,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: SocialLoginButton(
                   buttonType: SocialLoginButtonType.appleBlack,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go(SGRoute.intro.route);
+                  },
                   borderRadius: 30),
             ),
             Container(
