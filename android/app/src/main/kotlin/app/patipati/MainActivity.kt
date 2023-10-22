@@ -1,4 +1,4 @@
-package boilerplate.template.riveprod
+package app.patipati
 
 import io.flutter.embedding.android.FlutterActivity
 

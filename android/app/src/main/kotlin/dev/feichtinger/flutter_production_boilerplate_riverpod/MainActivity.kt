@@ -1,4 +1,4 @@
-package boilerplate.template.riverpod
+package app.patipati
 
 import io.flutter.embedding.android.FlutterActivity
 
