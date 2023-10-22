@@ -21,12 +21,13 @@ class NextButton extends StatelessWidget {
               height: 68,
               clipBehavior: Clip.antiAlias,
               decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(colors: <Color>[
-                    // #EF7E06, #F7B327
-                    Color(0xFFEF7E06),
-                    Color(0xFFF7B327),
-                  ])),
+                shape: BoxShape.circle,
+                gradient: LinearGradient(colors: <Color>[
+                  // #EF7E06, #F7B327
+                  Color(0xFFEF7E06),
+                  Color(0xFFF7B327),
+                ]),
+              ),
               child: ElevatedButton(
                 onPressed: onPressed,
                 style: ElevatedButton.styleFrom(
