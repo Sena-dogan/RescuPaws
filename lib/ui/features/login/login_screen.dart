@@ -70,8 +70,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: SocialLoginButton(
                   buttonType: SocialLoginButtonType.appleBlack,
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                   borderRadius: 30),
             ),
             Container(
@@ -118,31 +117,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  Padding _buildTermsOfService() {
-    return Padding(
-      padding: const EdgeInsets.all(3.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'By sign in, you accept our ',
-            style:
-                GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.w400),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Text(
-              'Terms of Service',
-              style: GoogleFonts.outfit(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  decoration: TextDecoration.underline),
+  Widget _buildTermsOfService() {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width * 0.9,
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'By sign in, you accept our ',
+              style:
+                  GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.w400),
             ),
-          ),
-          Text(' and ',
-              style: GoogleFonts.outfit(
-                  fontSize: 14, fontWeight: FontWeight.w400)),
-        ],
+            GestureDetector(
+              onTap: () {},
+              child: Text(
+                'Terms of Service',
+                style: GoogleFonts.outfit(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    decoration: TextDecoration.underline),
+              ),
+            ),
+            Text(' and ',
+                style: GoogleFonts.outfit(
+                    fontSize: 14, fontWeight: FontWeight.w400)),
+          ],
+        ),
       ),
     );
   }
