@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '247383540944',
     projectId: 'pati-app-d08c6',
     storageBucket: 'pati-app-d08c6.appspot.com',
+    androidClientId: '247383540944-voucnbm4ok77pm47hdk6q6ql170sh5po.apps.googleusercontent.com',
+    iosClientId: '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com',
     iosBundleId: 'app.patipati',
   );
 }

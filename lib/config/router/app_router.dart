@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_function_declarations_over_variables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
+import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/intro/intro_screen.dart';
-import '../../ui/features/login/login_screen.dart';
 import '../../ui/home/home.dart';
 import 'fade_extension.dart';
 
@@ -67,7 +68,7 @@ final String? Function(BuildContext context, GoRouterState state) _introGuard =
 // ignore: unused_element
 final String? Function(BuildContext context, GoRouterState state) _authGuard =
     (BuildContext context, GoRouterState state) {
-  if (!(getStoreHelper.getToken() == null)) {
+  if (getStoreHelper.getToken() == null) {
     return SGRoute.login.route;
   }
   return null;

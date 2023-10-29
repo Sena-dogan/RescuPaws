@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -9,6 +11,7 @@ import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
 import '../../widgets/app_bar_gone.dart';
+import 'login_logic.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -66,25 +69,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: SocialLoginButton(
-                  buttonType: SocialLoginButtonType.appleBlack,
-                  onPressed: () {},
-                  borderRadius: 30),
+            Visibility(
+              visible: Platform.isIOS,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: SocialLoginButton(
+                    buttonType: SocialLoginButtonType.appleBlack,
+                    onPressed: () {
+                      ref
+                          .read(loginLogicProvider.notifier)
+                          .signInWithApple()
+                          .then((bool value) => value
+                              ? context.go(SGRoute.firstScreen.route)
+                              : debugPrint('Error'));
+                    },
+                    borderRadius: 30),
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: SocialLoginButton(
                   buttonType: SocialLoginButtonType.google,
-                  onPressed: () {},
-                  borderRadius: 30),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: SocialLoginButton(
-                  buttonType: SocialLoginButtonType.facebook,
-                  onPressed: () {},
+                  onPressed: () async {
+                    await ref
+                        .read(loginLogicProvider.notifier)
+                        .signInWithGoogle()
+                        .then((bool value) => value
+                            ? context.go(SGRoute.firstScreen.route)
+                            : debugPrint('Error'));
+                  },
                   borderRadius: 30),
             ),
             _buildTermsOfService(),
