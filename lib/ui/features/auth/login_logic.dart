@@ -89,6 +89,12 @@ class LoginLogic extends _$LoginLogic {
   Future<bool> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
+      // Check google sign in
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.disconnect();
+        await googleSignIn.signOut();
+      }
       return true;
     } catch (e) {
       debugPrint('Error: $e');
@@ -100,6 +106,10 @@ class LoginLogic extends _$LoginLogic {
   Future<bool> removeUser() async {
     try {
       await FirebaseAuth.instance.currentUser?.delete();
+      if (await GoogleSignIn().isSignedIn()) {
+        await GoogleSignIn().disconnect();
+        await GoogleSignIn().signOut();
+      }
       return true;
     } catch (e) {
       debugPrint('Error: $e');
