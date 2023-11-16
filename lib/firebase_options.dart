@@ -54,6 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:247383540944:android:66b522d5b1af1ba2e54ad5',
     messagingSenderId: '247383540944',
     projectId: 'pati-app-d08c6',
+    databaseURL: 'https://pati-app-d08c6-default-rtdb.firebaseio.com',
     storageBucket: 'pati-app-d08c6.appspot.com',
   );
 
@@ -62,6 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:247383540944:ios:65ac0aa6f40bc50be54ad5',
     messagingSenderId: '247383540944',
     projectId: 'pati-app-d08c6',
+    databaseURL: 'https://pati-app-d08c6-default-rtdb.firebaseio.com',
     storageBucket: 'pati-app-d08c6.appspot.com',
     androidClientId: '247383540944-voucnbm4ok77pm47hdk6q6ql170sh5po.apps.googleusercontent.com',
     iosClientId: '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com',
