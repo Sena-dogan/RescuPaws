@@ -28,9 +28,12 @@ void main() async {
   await initHive();
   await configureDependencies();
   await setPreferredOrientations();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      name: 'PatiPatiApp',
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
   getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
     if (Platform.isAndroid) {
