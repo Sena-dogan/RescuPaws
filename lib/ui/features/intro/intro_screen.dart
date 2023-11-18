@@ -5,8 +5,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
-import '../../../data/getstore/get_store_helper.dart';
-import '../../../di/components/service_locator.dart';
 import '../../../utils/context_extensions.dart';
 import '../../widgets/app_bar_gone.dart';
 import 'widgets/next_button.dart';
@@ -92,4 +90,3 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
         ));
   }
 }
-

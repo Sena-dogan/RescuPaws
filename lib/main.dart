@@ -3,19 +3,19 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
 import 'constants/strings.dart';
 import 'data/hive/hive.dart';
 import 'data/hive/hive_helper.dart';
 import 'di/components/service_locator.dart';
+import 'firebase_options.dart';
 import 'my_app.dart';
 
 /// Try using const constructors as much as possible!
@@ -28,12 +28,11 @@ void main() async {
   await initHive();
   await configureDependencies();
   await setPreferredOrientations();
-  if (Firebase.apps.isEmpty) {
-    await Firebase.initializeApp(
-      name: 'PatiPatiApp',
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
+
+  await Firebase.initializeApp(
+    name: 'PatiPatiApp',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
     if (Platform.isAndroid) {
