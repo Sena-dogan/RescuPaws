@@ -76,8 +76,7 @@ dependencies:
   firebase_auth: ^4.12.0
   sign_in_with_apple: ^5.0.0
   google_sign_in: ^6.1.5
-  the_apple_sign_in: ^1.1.1
-
+  flutter_card_swiper: ^6.0.0
 
 
 dev_dependencies:
