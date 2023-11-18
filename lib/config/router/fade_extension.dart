@@ -21,6 +21,10 @@ extension GoRouteExtension on GoRoute {
   GoRoute fade() {
     return GoRoute(
         path: path,
+        redirect: redirect,
+        routes: routes,
+        name: name,
+        onExit: onExit,
         pageBuilder: (BuildContext context, GoRouterState state) {
           return FadeTransitionPage(
             key: ValueKey<String>(path),

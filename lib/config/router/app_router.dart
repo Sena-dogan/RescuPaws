@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/getstore/get_store_helper.dart';
@@ -39,6 +40,7 @@ class SGGoRouter {
         path: SGRoute.firstScreen.route,
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),
+        redirect: _authGuard,
       ).fade(),
       GoRoute(
         path: SGRoute.intro.route,
@@ -68,7 +70,7 @@ final String? Function(BuildContext context, GoRouterState state) _introGuard =
 // ignore: unused_element
 final String? Function(BuildContext context, GoRouterState state) _authGuard =
     (BuildContext context, GoRouterState state) {
-  if (getStoreHelper.getToken() == null) {
+  if (FirebaseAuth.instance.currentUser == null) {
     return SGRoute.login.route;
   }
   return null;

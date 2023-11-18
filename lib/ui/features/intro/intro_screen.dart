@@ -80,7 +80,7 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
                   // final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
                   // getStoreHelper.saveIntro(true);
                   debugPrint('Intro button pressed');
-                  context.go(SGRoute.login.route);
+                  context.go(SGRoute.firstScreen.route);
                 },
               ),
               const Spacer(),
