@@ -64,7 +64,6 @@ class MyApp extends ConsumerWidget {
           // fontFamily: GoogleFonts.notoSans().fontFamily,
           ),
       themeMode: currentTheme.themeMode,
-      debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
