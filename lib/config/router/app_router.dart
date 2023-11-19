@@ -34,6 +34,8 @@ enum SGRoute {
 class SGGoRouter {
   final GoRouter goRoute = GoRouter(
     initialLocation: SGRoute.intro.route,
+    errorBuilder: (BuildContext context, GoRouterState state) =>
+        const Scaffold(body: Center(child: Text('Page not found'))),
     routes: <GoRoute>[
       GoRoute(
         path: SGRoute.firstScreen.route,
