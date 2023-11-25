@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
@@ -118,7 +119,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               style: GoogleFonts.outfit(
                   fontSize: 14, fontWeight: FontWeight.w400)),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              const String url = 'https://patipati.app/privacy-policy.php';
+              final Uri uri = Uri.parse(url);
+              launchUrl(uri).catchError((Object? err) =>
+                  // ignore: invalid_return_type_for_catch_error
+                  debugPrint(err.toString()));
+            },
             child: Text('Privacy Policy',
                 style: GoogleFonts.outfit(
                     fontSize: 14,
@@ -143,8 +150,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               style:
                   GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.w400),
             ),
-            GestureDetector(
-              onTap: () {},
+            InkWell(
+              onTap: () async{
+                const String url = 'https://patipati.app/user-terms.php';
+                final Uri uri = Uri.parse(url);
+                await launchUrl(uri).catchError((Object? err) =>
+                    // ignore: invalid_return_type_for_catch_error
+                    debugPrint(err.toString()));
+
+              },
               child: Text(
                 'Terms of Service',
                 style: GoogleFonts.outfit(
@@ -162,3 +176,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
+
+
+/*
+
+Reverse:247383540944-a70ss9uqlb5un512lnqmhuamjv4n36ep.apps.googleusercontent.com
+com.googleusercontent.apps.247383540944-a70ss9uqlb5un512lnqmhuamjv4n36ep
+*/

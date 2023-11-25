@@ -26,6 +26,8 @@ class BottomNavBar extends ConsumerWidget {
       activeIndex: nav.navIndex,
       onTap: (int index) {
         ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(index);
+        debugPrint('Current Index is $index');
+        debugPrint('Current Route is ${SGRoute.values[index].route}');
         context.go(SGRoute.values[index].route);
       },
       gapLocation: GapLocation.center,

@@ -9,6 +9,7 @@ import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/intro/intro_screen.dart';
+import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
 import 'fade_extension.dart';
 
@@ -18,11 +19,10 @@ enum SGRoute {
   home,
   intro,
   firstScreen,
-  secondScreen,
+  profile,
   login,
   register,
   forgotPassword,
-  profile,
   editProfile,
   changePassword;
 
@@ -35,7 +35,15 @@ class SGGoRouter {
   final GoRouter goRoute = GoRouter(
     initialLocation: SGRoute.intro.route,
     errorBuilder: (BuildContext context, GoRouterState state) =>
-        const Scaffold(body: Center(child: Text('Page not found'))),
+        Scaffold(body: Column(
+          children: [
+            Center(child: Text('Page not found: ${state.path}')),
+            ElevatedButton(
+              onPressed: () => context.go(SGRoute.firstScreen.route),
+              child: const Text('Go Back'),
+            ),
+          ],
+        )),
     routes: <GoRoute>[
       GoRoute(
         path: SGRoute.firstScreen.route,
@@ -52,6 +60,11 @@ class SGGoRouter {
         path: SGRoute.login.route,
         builder: (BuildContext context, GoRouterState state) =>
             const LoginScreen(),
+      ).fade(),
+      GoRoute(
+        path: SGRoute.profile.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const ProfileScreen(),
       ).fade(),
     ],
   );
