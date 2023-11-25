@@ -13,6 +13,11 @@ import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../auth/login_logic.dart';
 
+/*
+  This is the profile screen that is shown when the user is logged in.
+  It contains the user's profile picture, name, email and some buttons
+  to invite friends, help and support, security and privacy, etc.
+*/
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
