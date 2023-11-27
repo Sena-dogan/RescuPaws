@@ -67,15 +67,19 @@ class ProfileScreen extends ConsumerWidget {
                         'Kullanici',
                     style: context.textTheme.labelMedium,
                   ),
-                  subtitle: Text(
-                      FirebaseAuth.instance.currentUser?.email ?? '',
+                  subtitle: Text(FirebaseAuth.instance.currentUser?.email ?? '',
                       style: context.textTheme.labelSmall),
                 ),
                 // Invite friends button outlined with a border transtiion and with a leading icon
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.showErrorSnackBar(
+                          title: 'Hata',
+                          message: 'Bir hata oluştu. Bildirildi.');
+                      throw Exception('Share Not implemented');
+                    },
                     icon: const Icon(Icons.share),
                     label: Text(
                       'Davet Et',
@@ -161,9 +165,8 @@ class ProfileScreen extends ConsumerWidget {
                         await ref
                             .read(loginLogicProvider.notifier)
                             .removeUser()
-                            .then((bool value) => value
-                                ? context.go(SGRoute.login.route)
-                                : null)
+                            .then((bool value) =>
+                                value ? context.go(SGRoute.login.route) : null)
                             .catchError((Object? err) =>
                                 // ignore: invalid_return_type_for_catch_error
                                 debugPrint(err.toString()));
@@ -177,9 +180,8 @@ class ProfileScreen extends ConsumerWidget {
                         await ref
                             .read(loginLogicProvider.notifier)
                             .signOut()
-                            .then((bool value) => value
-                                ? context.go(SGRoute.login.route)
-                                : null)
+                            .then((bool value) =>
+                                value ? context.go(SGRoute.login.route) : null)
                             .catchError((Object? err) =>
                                 // ignore: invalid_return_type_for_catch_error
                                 debugPrint(err.toString()));
