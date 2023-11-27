@@ -81,8 +81,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           .read(loginLogicProvider.notifier)
                           .signInWithApple()
                           .then((bool value) => value
-                              ? context.go(SGRoute.firstScreen.route)
-                              : debugPrint('Error'));
+                              ? context.go(SGRoute.home.route)
+                              : context.showErrorSnackBar(
+                                  title: 'Hata',
+                                  message:
+                                      'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
                     },
                     borderRadius: 30),
               ),
@@ -96,8 +99,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         .read(loginLogicProvider.notifier)
                         .signInWithGoogle()
                         .then((bool value) => value
-                            ? context.go(SGRoute.firstScreen.route)
-                            : debugPrint('Error'));
+                            ? context.go(SGRoute.home.route)
+                            : context.showErrorSnackBar(
+                                title: 'Hata',
+                                message:
+                                    'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
                   },
                   borderRadius: 30),
             ),
@@ -151,13 +157,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             InkWell(
-              onTap: () async{
+              onTap: () async {
                 const String url = 'https://patipati.app/user-terms.php';
                 final Uri uri = Uri.parse(url);
                 await launchUrl(uri).catchError((Object? err) =>
                     // ignore: invalid_return_type_for_catch_error
                     debugPrint(err.toString()));
-
               },
               child: Text(
                 'Terms of Service',
@@ -176,10 +181,3 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
-
-
-/*
-
-Reverse:247383540944-a70ss9uqlb5un512lnqmhuamjv4n36ep.apps.googleusercontent.com
-com.googleusercontent.apps.247383540944-a70ss9uqlb5un512lnqmhuamjv4n36ep
-*/

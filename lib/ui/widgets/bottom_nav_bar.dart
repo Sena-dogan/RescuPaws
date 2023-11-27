@@ -19,8 +19,6 @@ class BottomNavBar extends ConsumerWidget {
     return AnimatedBottomNavigationBar(
       icons: const <IoniconsData>[
         Ionicons.home_outline,
-        Ionicons.search_outline,
-        Ionicons.heart_outline,
         Ionicons.person_outline,
       ],
       activeIndex: nav.navIndex,
