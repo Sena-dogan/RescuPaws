@@ -17,9 +17,9 @@ GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
 enum SGRoute {
   home,
+  profile,
   intro,
   firstScreen,
-  profile,
   login,
   register,
   forgotPassword,
@@ -39,14 +39,14 @@ class SGGoRouter {
           children: [
             Center(child: Text('Page not found: ${state.path}')),
             ElevatedButton(
-              onPressed: () => context.go(SGRoute.firstScreen.route),
+              onPressed: () => context.go(SGRoute.home.route),
               child: const Text('Go Back'),
             ),
           ],
         )),
     routes: <GoRoute>[
       GoRoute(
-        path: SGRoute.firstScreen.route,
+        path: SGRoute.home.route,
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),
         redirect: _authGuard,
