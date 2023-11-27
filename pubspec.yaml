@@ -1,6 +1,5 @@
-name: flutter_riverpod_template
-description: A flutter boilerplate project with riverpod 2.0 containing riverpod annotations, freezed, lints, hive, easy_translations and more
-
+name: pati_pati
+description: Very cool project for our tailed friends
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
