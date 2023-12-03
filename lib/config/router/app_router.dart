@@ -36,7 +36,7 @@ class SGGoRouter {
     initialLocation: SGRoute.intro.route,
     errorBuilder: (BuildContext context, GoRouterState state) =>
         Scaffold(body: Column(
-          children: [
+          children: <Widget>[
             Center(child: Text('Page not found: ${state.path}')),
             ElevatedButton(
               onPressed: () => context.go(SGRoute.home.route),

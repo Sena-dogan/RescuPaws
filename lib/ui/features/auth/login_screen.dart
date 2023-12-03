@@ -49,7 +49,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               Text(
                 'Sign in',
-                style: context.textTheme.labelLarge,
+                style: context.textTheme.labelLarge?.copyWith(
+                  color: context.colorScheme.scrim,
+                ),
               ),
               const Spacer(),
               _buildFooterButton(Size(size.width, size.height * 0.12)),
@@ -121,9 +123,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('acknowledge receipt of our ',
-              style: GoogleFonts.outfit(
-                  fontSize: 14, fontWeight: FontWeight.w400)),
+          Text(
+            'acknowledge receipt of our ',
+            style: GoogleFonts.outfit(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: context.colorScheme.scrim,
+            ),
+          ),
           GestureDetector(
             onTap: () {
               const String url = 'https://patipati.app/privacy-policy.php';
@@ -132,11 +139,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   // ignore: invalid_return_type_for_catch_error
                   debugPrint(err.toString()));
             },
-            child: Text('Privacy Policy',
-                style: GoogleFonts.outfit(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    decoration: TextDecoration.underline)),
+            child: Text(
+              'Privacy Policy',
+              style: GoogleFonts.outfit(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                decoration: TextDecoration.underline,
+                color: context.colorScheme.scrim,
+              ),
+            ),
           ),
         ],
       ),
@@ -153,8 +164,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           children: <Widget>[
             Text(
               'By sign in, you accept our ',
-              style:
-                  GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.w400),
+              style: GoogleFonts.outfit(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: context.colorScheme.scrim,
+              ),
             ),
             InkWell(
               onTap: () async {
@@ -167,9 +181,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: Text(
                 'Terms of Service',
                 style: GoogleFonts.outfit(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    decoration: TextDecoration.underline),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  decoration: TextDecoration.underline,
+                  color: context.colorScheme.scrim,
+                ),
               ),
             ),
             Text(' and ',
