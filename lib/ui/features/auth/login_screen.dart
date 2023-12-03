@@ -72,6 +72,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: SocialLoginButton(
+                  buttonType: SocialLoginButtonType.google,
+                  onPressed: () async {
+                    await ref
+                        .read(loginLogicProvider.notifier)
+                        .signInWithGoogle()
+                        .then((bool value) => value
+                            ? context.go(SGRoute.home.route)
+                            : context.showErrorSnackBar(
+                                title: 'Hata',
+                                message:
+                                    'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
+                  },
+                  borderRadius: 30),
+            ),
             Visibility(
               visible: Platform.isIOS,
               child: Container(
@@ -91,23 +108,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     },
                     borderRadius: 30),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: SocialLoginButton(
-                  buttonType: SocialLoginButtonType.google,
-                  onPressed: () async {
-                    await ref
-                        .read(loginLogicProvider.notifier)
-                        .signInWithGoogle()
-                        .then((bool value) => value
-                            ? context.go(SGRoute.home.route)
-                            : context.showErrorSnackBar(
-                                title: 'Hata',
-                                message:
-                                    'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
-                  },
-                  borderRadius: 30),
             ),
             _buildTermsOfService(),
             _buildPrivacyPolicy(),
