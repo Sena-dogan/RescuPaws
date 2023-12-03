@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
+import '../../home/home.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../auth/login_logic.dart';
@@ -36,9 +37,10 @@ class ProfileScreen extends ConsumerWidget {
       ),
       child: Scaffold(
         appBar: const EmptyAppBar(),
+        floatingActionButton: const AddNavButton(),
         backgroundColor: Colors.transparent,
         bottomNavigationBar: const BottomNavBar(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
