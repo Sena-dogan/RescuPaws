@@ -154,7 +154,6 @@ class RightButton extends StatelessWidget {
       width: 75,
       height: 100,
       decoration: ShapeDecoration(
-        color: context.colorScheme.primary,
         gradient: LinearGradient(
           colors: <Color>[
             context.colorScheme.secondaryContainer,
@@ -170,7 +169,7 @@ class RightButton extends StatelessWidget {
         ],
         shape: StarBorder.polygon(
           side: BorderSide(
-            color: Colors.black.withOpacity(0.17000000178813934),
+            color: context.colorScheme.outline,
           ),
           pointRounding: 0.3,
           sides: 3,
@@ -228,7 +227,7 @@ class LeftButton extends StatelessWidget {
         color: Colors.white,
         shape: StarBorder.polygon(
           side: BorderSide(
-            color: Colors.black.withOpacity(0.17000000178813934),
+            color: context.colorScheme.outlineVariant,
           ),
           pointRounding: 0.3,
           sides: 3,
