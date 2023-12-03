@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../constants/assets.dart';
+import '../../../../utils/context_extensions.dart';
 
 class NextButton extends StatelessWidget {
   const NextButton({super.key, required this.onPressed});
@@ -22,29 +23,41 @@ class NextButton extends StatelessWidget {
                 width: 68,
                 height: 68,
                 clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(colors: <Color>[
-                    // #EF7E06, #F7B327
-                    Color(0xFFEF7E06),
-                    Color(0xFFF7B327),
-                  ]),
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: <Color>[
+                      context.colorScheme.secondary,
+                      context.colorScheme.primary,
+                    ],
+                  ),
                 ),
-                child: const Center(
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 25,
+                child: ElevatedButton(
+                  onPressed: onPressed,
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    elevation: 0,
+                    backgroundColor: const Color.fromARGB(0, 17, 11, 11),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                      size: 25,
+                    ),
                   ),
                 ),
               ),
             ),
             const Positioned(
-                right: -1,
-                top: -1,
-                child: SizedBox(
-                  child: ArcWidget(),
-                )),
+              right: -1,
+              top: -1,
+              child: SizedBox(
+                child: ArcWidget(),
+              ),
+            ),
           ],
         ),
       ),

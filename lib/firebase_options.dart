@@ -65,7 +65,7 @@ class DefaultFirebaseOptions {
     projectId: 'pati-app-d08c6',
     databaseURL: 'https://pati-app-d08c6-default-rtdb.firebaseio.com',
     storageBucket: 'pati-app-d08c6.appspot.com',
-    androidClientId: '247383540944-voucnbm4ok77pm47hdk6q6ql170sh5po.apps.googleusercontent.com',
+    androidClientId: '247383540944-ollagv0r9e98uqku1hiaev9vu4je2f73.apps.googleusercontent.com',
     iosClientId: '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com',
     iosBundleId: 'app.patipati',
   );

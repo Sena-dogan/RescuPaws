@@ -49,7 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         appBar: _buildAppBar(),
         floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        backgroundColor: Colors.white.withOpacity(0.0),
+        backgroundColor: Colors.transparent,
         bottomNavigationBar: const BottomNavBar(),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -181,7 +181,12 @@ class RightButton extends StatelessWidget {
       width: 75,
       height: 100,
       decoration: ShapeDecoration(
-        color: context.colorScheme.primary,
+        gradient: LinearGradient(
+          colors: <Color>[
+            context.colorScheme.secondaryContainer,
+            context.colorScheme.primaryContainer,
+          ],
+        ),
         shadows: const <BoxShadow>[
           BoxShadow(
             color: Colors.black54,
@@ -191,7 +196,7 @@ class RightButton extends StatelessWidget {
         ],
         shape: StarBorder.polygon(
           side: BorderSide(
-            color: Colors.black.withOpacity(0.17000000178813934),
+            color: context.colorScheme.outline,
           ),
           pointRounding: 0.3,
           sides: 3,
@@ -249,7 +254,7 @@ class LeftButton extends StatelessWidget {
         color: Colors.white,
         shape: StarBorder.polygon(
           side: BorderSide(
-            color: Colors.black.withOpacity(0.17000000178813934),
+            color: context.colorScheme.outlineVariant,
           ),
           pointRounding: 0.3,
           sides: 3,
@@ -348,23 +353,34 @@ class SwipeCard extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Name',
-                    style: context.textTheme.labelMedium,
+                    style: context.textTheme.labelMedium?.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
-                  Text(
-                    'Breed',
-                    style: context.textTheme.bodyMedium,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 3),
+                    child: Text(
+                      'Breed',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
+                  const Gap(5),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       const Icon(
                         Icons.location_on_rounded,
                         size: 20,
+                        color: Colors.white,
                       ),
                       const Gap(5),
                       Text(
                         'Location',
-                        style: context.textTheme.bodyMedium,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
