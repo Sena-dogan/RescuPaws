@@ -48,7 +48,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 fit: BoxFit.none,
               ),
               Text(
-                'Sign in',
+                'Giriş Yap',
                 style: context.textTheme.labelLarge?.copyWith(
                   color: context.colorScheme.scrim,
                 ),
