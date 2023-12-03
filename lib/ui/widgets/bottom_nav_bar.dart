@@ -29,17 +29,20 @@ class BottomNavBar extends ConsumerWidget {
         context.go(SGRoute.values[index].route);
       },
       gapLocation: GapLocation.center,
-      borderColor: Colors.grey.withOpacity(0.5),
+      //borderColor: Colors.grey.withOpacity(0.5),
       notchSmoothness: NotchSmoothness.softEdge,
       leftCornerRadius: 20,
       rightCornerRadius: 20,
       splashColor: context.colorScheme.primary,
-      inactiveColor: Colors.grey,
+      inactiveColor: context.colorScheme.tertiary,
       activeColor: context.colorScheme.primary,
-      elevation: 0,
       iconSize: 24,
       height: 70,
-      backgroundColor: Colors.white,
+      backgroundColor: context.colorScheme.tertiaryContainer,
+      shadow: Shadow(
+        color: Colors.grey.withOpacity(0.2),
+        blurRadius: 10,
+      )
     );
   }
 }
