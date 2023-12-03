@@ -7,6 +7,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/router/app_router.dart';
+import '../../../config/theme/theme_logic.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
 import '../../home/home.dart';
@@ -102,6 +103,76 @@ class ProfileScreen extends ConsumerWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Cihaz',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      indent: 8,
+                    ),
+                    const Gap(10),
+                    ListTile(
+                      leading: const Icon(Icons.lightbulb_outline),
+                      title: const Text('Tema'),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      onTap: () async {
+                        await showAdaptiveDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: context.colorScheme.surface,
+                                title: const Text(
+                                  'Tema',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                      leading: const Icon(Icons.light_mode),
+                                      title: const Text('Açık Tema'),
+                                      onTap: () {
+                                        ref
+                                            .read(themeLogicProvider.notifier)
+                                            .setThemeMode(ThemeMode.light);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.dark_mode),
+                                      title: const Text('Koyu Tema'),
+                                      onTap: () {
+                                        ref
+                                            .read(themeLogicProvider.notifier)
+                                            .setThemeMode(ThemeMode.dark);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.lightbulb),
+                                      title: const Text('Sistem Teması'),
+                                      onTap: () {
+                                        ref
+                                            .read(themeLogicProvider.notifier)
+                                            .setThemeMode(ThemeMode.system);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                    ),
+                    const Gap(10),
                     const Padding(
                       padding: EdgeInsets.only(left: 8.0),
                       child: Text(
