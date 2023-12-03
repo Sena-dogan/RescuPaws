@@ -162,14 +162,35 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('Hesabımı Sil'),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
-                        await ref
-                            .read(loginLogicProvider.notifier)
-                            .removeUser()
-                            .then((bool value) =>
-                                value ? context.go(SGRoute.login.route) : null)
-                            .catchError((Object? err) =>
-                                // ignore: invalid_return_type_for_catch_error
-                                debugPrint(err.toString()));
+                        await showAdaptiveDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                    'Hesabınızı silmek istediğinize emin misiniz?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text('İptal'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await ref
+                                          .read(loginLogicProvider.notifier)
+                                          .removeUser()
+                                          .then((bool value) => value
+                                              ? context.go(SGRoute.login.route)
+                                              : null)
+                                          .catchError((Object? err) =>
+                                              // ignore: invalid_return_type_for_catch_error
+                                              debugPrint(err.toString()));
+                                    },
+                                    child: const Text('Sil'),
+                                  ),
+                                ],
+                              );
+                            });
                       },
                     ),
                     ListTile(
