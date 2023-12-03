@@ -44,31 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       child: Scaffold(
         appBar: _buildAppBar(),
-        floatingActionButton: SizedBox(
-          width: 75,
-          height: 75,
-          child: FittedBox(
-            child: FloatingActionButton(
-              onPressed: () {},
-              clipBehavior: Clip.antiAlias,
-              // Shape of 4 edged circle rotated 45 degrees
-              shape: const StarBorder.polygon(
-                  sides: 4, rotation: 90, pointRounding: 0.7 ,),
-              child: const Icon(
-                Ionicons.paw_sharp,
-                size: 30,
-                color: Color(0xFFFFCC67),
-                shadows: [
-                  BoxShadow(
-                    color: Colors.black54,
-                    offset: Offset(0, 1),
-                    blurRadius: 0.1,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
+        floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         backgroundColor: Colors.white.withOpacity(0.0),
         bottomNavigationBar: const BottomNavBar(),
@@ -77,8 +53,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: <Widget>[
             Center(
               child: SizedBox(
-                width: 308,
-                height: 426.76,
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: CardSwiper(
                     cardsCount: images.length,
                     duration: const Duration(milliseconds: 300),
@@ -130,8 +106,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             height: 42,
             decoration: ShapeDecoration(
               image: DecorationImage(
-                image:
-                    NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!),
+                image: NetworkImage(
+                    FirebaseAuth.instance.currentUser?.photoURL ??
+                        'https://placekeanu.com/300/300'),
                 fit: BoxFit.fill,
               ),
               shape: const OvalBorder(),
@@ -139,6 +116,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         )
       ],
+    );
+  }
+}
+
+class AddNavButton extends StatelessWidget {
+  const AddNavButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 75,
+      height: 75,
+      child: FittedBox(
+        child: FloatingActionButton(
+          onPressed: () {},
+          clipBehavior: Clip.antiAlias,
+          // Shape of 4 edged circle rotated 45 degrees
+          shape: const StarBorder.polygon(
+            sides: 4,
+            rotation: 90,
+            pointRounding: 0.7,
+          ),
+          child: const Icon(
+            Ionicons.add_outline,
+            size: 30,
+            color: Color(0xFFFFCC67),
+            shadows: <Shadow>[
+              BoxShadow(
+                color: Colors.black54,
+                offset: Offset(0, 1),
+                blurRadius: 0.1,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -273,7 +288,6 @@ class SwipeCard extends StatelessWidget {
     return Stack(
       children: <Widget>[
         // Add black overlay at the bottom
-
         Container(
           width: 308,
           height: 426.76,
