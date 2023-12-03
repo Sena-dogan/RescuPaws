@@ -155,6 +155,12 @@ class RightButton extends StatelessWidget {
       height: 100,
       decoration: ShapeDecoration(
         color: context.colorScheme.primary,
+        gradient: LinearGradient(
+          colors: <Color>[
+            context.colorScheme.secondaryContainer,
+            context.colorScheme.primaryContainer,
+          ],
+        ),
         shadows: const <BoxShadow>[
           BoxShadow(
             color: Colors.black54,
