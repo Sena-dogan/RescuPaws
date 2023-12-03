@@ -261,7 +261,6 @@ class LeftButton extends StatelessWidget {
         onTap: () {
           debugPrint('Tapped left');
           controller.swipeLeft();
-          controller.swipeLeft();
         },
         customBorder: StarBorder.polygon(
           side: BorderSide(
