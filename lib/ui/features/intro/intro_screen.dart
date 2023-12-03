@@ -20,7 +20,6 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
           color: context.colorScheme.background,
           image: const DecorationImage(
