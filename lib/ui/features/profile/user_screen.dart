@@ -7,8 +7,10 @@ import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/router/app_router.dart';
+import '../../../config/theme/theme_logic.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
+import '../../home/home.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../auth/login_logic.dart';
@@ -36,9 +38,10 @@ class ProfileScreen extends ConsumerWidget {
       ),
       child: Scaffold(
         appBar: const EmptyAppBar(),
+        floatingActionButton: const AddNavButton(),
         backgroundColor: Colors.transparent,
         bottomNavigationBar: const BottomNavBar(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
@@ -103,6 +106,76 @@ class ProfileScreen extends ConsumerWidget {
                     const Padding(
                       padding: EdgeInsets.only(left: 8.0),
                       child: Text(
+                        'Cihaz',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      indent: 8,
+                    ),
+                    const Gap(10),
+                    ListTile(
+                      leading: const Icon(Icons.lightbulb_outline),
+                      title: const Text('Tema'),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      onTap: () async {
+                        await showAdaptiveDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: context.colorScheme.surface,
+                                title: const Text(
+                                  'Tema',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                      leading: const Icon(Icons.light_mode),
+                                      title: const Text('Açık Tema'),
+                                      onTap: () {
+                                        ref
+                                            .read(themeLogicProvider.notifier)
+                                            .setThemeMode(ThemeMode.light);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.dark_mode),
+                                      title: const Text('Koyu Tema'),
+                                      onTap: () {
+                                        ref
+                                            .read(themeLogicProvider.notifier)
+                                            .setThemeMode(ThemeMode.dark);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.lightbulb),
+                                      title: const Text('Sistem Teması'),
+                                      onTap: () {
+                                        ref
+                                            .read(themeLogicProvider.notifier)
+                                            .setThemeMode(ThemeMode.system);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                    ),
+                    const Gap(10),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Text(
                         'Yardım ve Destek',
                         style: TextStyle(
                           fontSize: 16,
@@ -162,14 +235,46 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('Hesabımı Sil'),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
-                        await ref
-                            .read(loginLogicProvider.notifier)
-                            .removeUser()
-                            .then((bool value) =>
-                                value ? context.go(SGRoute.login.route) : null)
-                            .catchError((Object? err) =>
-                                // ignore: invalid_return_type_for_catch_error
-                                debugPrint(err.toString()));
+                        await showAdaptiveDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: context.colorScheme.surface,
+                                title: const Text(
+                                  'Hesabınızı silmek istediğinize emin misiniz?',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: Text('İptal',
+                                        style: context.textTheme.bodyMedium),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await ref
+                                          .read(loginLogicProvider.notifier)
+                                          .removeUser()
+                                          .then((bool value) => value
+                                              ? context.go(SGRoute.login.route)
+                                              : null)
+                                          .catchError((Object? err) =>
+                                              // ignore: invalid_return_type_for_catch_error
+                                              debugPrint(err.toString()));
+                                    },
+                                    child: Text(
+                                      'Sil',
+                                      style: context.textTheme.bodyMedium!
+                                          .copyWith(
+                                              color: context.colorScheme.error),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
                       },
                     ),
                     ListTile(

@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../../../utils/context_extensions.dart';
 
+import '../../config/router/app_router.dart';
 import '../../constants/assets.dart';
+import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -44,28 +47,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       child: Scaffold(
         appBar: _buildAppBar(),
-        floatingActionButton: SizedBox(
-          width: 75,
-          height: 75,
-          child: FittedBox(
-            child: FloatingActionButton(
-              onPressed: () {},
-              clipBehavior: Clip.antiAlias,
-              // Shape of 4 edged circle rotated 45 degrees
-              shape: const StarBorder.polygon(
-                sides: 4,
-                rotation: 90,
-                pointRounding: 0.7,
-              ),
-              child: Image.asset(
-                height: 32,
-                width: 32,
-                Assets.paw,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ),
+        floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         backgroundColor: Colors.transparent,
         bottomNavigationBar: const BottomNavBar(),
@@ -74,8 +56,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: <Widget>[
             Center(
               child: SizedBox(
-                width: 308,
-                height: 426.76,
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: CardSwiper(
                     cardsCount: images.length,
                     duration: const Duration(milliseconds: 300),
@@ -120,22 +102,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       leadingWidth: 128 + 20 * 2,
       backgroundColor: Colors.transparent,
       actions: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Container(
-            width: 42,
-            height: 42,
-            decoration: ShapeDecoration(
-              image: DecorationImage(
-                image:
-                    NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!),
-                fit: BoxFit.fill,
+        InkWell(
+          onTap: () {
+            context.go(SGRoute.profile.route);
+            ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(1);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Container(
+              width: 42,
+              height: 42,
+              decoration: ShapeDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                      FirebaseAuth.instance.currentUser?.photoURL ??
+                          'https://placekeanu.com/300/300'),
+                  fit: BoxFit.fill,
+                ),
+                shape: const OvalBorder(),
               ),
-              shape: const OvalBorder(),
             ),
           ),
         )
       ],
+    );
+  }
+}
+
+class AddNavButton extends StatelessWidget {
+  const AddNavButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 75,
+      height: 75,
+      child: FittedBox(
+        child: FloatingActionButton(
+          onPressed: () {},
+          clipBehavior: Clip.antiAlias,
+          // Shape of 4 edged circle rotated 45 degrees
+          shape: const StarBorder.polygon(
+            sides: 4,
+            rotation: 90,
+            pointRounding: 0.7,
+          ),
+          child: const Icon(
+            Ionicons.add_outline,
+            size: 30,
+            color: Color(0xFFFFCC67),
+            shadows: <Shadow>[
+              BoxShadow(
+                color: Colors.black54,
+                offset: Offset(0, 1),
+                blurRadius: 0.1,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -239,7 +266,6 @@ class LeftButton extends StatelessWidget {
         onTap: () {
           debugPrint('Tapped left');
           controller.swipeLeft();
-          controller.swipeLeft();
         },
         customBorder: StarBorder.polygon(
           side: BorderSide(
@@ -275,7 +301,6 @@ class SwipeCard extends StatelessWidget {
     return Stack(
       children: <Widget>[
         // Add black overlay at the bottom
-
         Container(
           width: 308,
           height: 426.76,

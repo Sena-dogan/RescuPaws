@@ -9,53 +9,57 @@ class NextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 79.44,
-      height: 80,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            left: 0,
-            bottom: 0,
-            child: Container(
-              width: 68,
-              height: 68,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: <Color>[
-                    context.colorScheme.secondary,
-                    context.colorScheme.primary,
-                  ],
+    return InkWell(
+      onTap: onPressed,
+      child: SizedBox(
+        width: 79.44,
+        height: 80,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              left: 0,
+              bottom: 0,
+              child: Container(
+                width: 68,
+                height: 68,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: <Color>[
+                      context.colorScheme.secondary,
+                      context.colorScheme.primary,
+                    ],
+                  ),
                 ),
-              ),
-              child: ElevatedButton(
-                onPressed: onPressed,
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  elevation: 0,
-                  backgroundColor: const Color.fromARGB(0, 17, 11, 11),
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 25,
+                child: ElevatedButton(
+                  onPressed: onPressed,
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    elevation: 0,
+                    backgroundColor: const Color.fromARGB(0, 17, 11, 11),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                      size: 25,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          const Positioned(
+            const Positioned(
               right: -1,
               top: -1,
               child: SizedBox(
                 child: ArcWidget(),
-              )),
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
