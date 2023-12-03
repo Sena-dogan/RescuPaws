@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../../../utils/context_extensions.dart';
 
+import '../../config/router/app_router.dart';
 import '../../constants/assets.dart';
+import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -99,19 +102,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       leadingWidth: 128 + 20 * 2,
       backgroundColor: Colors.transparent,
       actions: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Container(
-            width: 42,
-            height: 42,
-            decoration: ShapeDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                    FirebaseAuth.instance.currentUser?.photoURL ??
-                        'https://placekeanu.com/300/300'),
-                fit: BoxFit.fill,
+        InkWell(
+          onTap: () {
+            context.go(SGRoute.profile.route);
+            ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(1);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Container(
+              width: 42,
+              height: 42,
+              decoration: ShapeDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                      FirebaseAuth.instance.currentUser?.photoURL ??
+                          'https://placekeanu.com/300/300'),
+                  fit: BoxFit.fill,
+                ),
+                shape: const OvalBorder(),
               ),
-              shape: const OvalBorder(),
             ),
           ),
         )

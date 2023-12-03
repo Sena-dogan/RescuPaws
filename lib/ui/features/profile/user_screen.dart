@@ -166,13 +166,19 @@ class ProfileScreen extends ConsumerWidget {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
+                                backgroundColor: context.colorScheme.surface,
                                 title: const Text(
-                                    'Hesabınızı silmek istediğinize emin misiniz?'),
+                                  'Hesabınızı silmek istediğinize emin misiniz?',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.of(context).pop(),
-                                    child: const Text('İptal'),
+                                    child: Text('İptal',
+                                        style: context.textTheme.bodyMedium),
                                   ),
                                   TextButton(
                                     onPressed: () async {
@@ -186,7 +192,12 @@ class ProfileScreen extends ConsumerWidget {
                                               // ignore: invalid_return_type_for_catch_error
                                               debugPrint(err.toString()));
                                     },
-                                    child: const Text('Sil'),
+                                    child: Text(
+                                      'Sil',
+                                      style: context.textTheme.bodyMedium!
+                                          .copyWith(
+                                              color: context.colorScheme.error),
+                                    ),
                                   ),
                                 ],
                               );
