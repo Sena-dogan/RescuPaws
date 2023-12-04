@@ -13,7 +13,6 @@ class NewPawScreen extends ConsumerStatefulWidget {
 }
 
 class _NewPawScreenState extends ConsumerState<NewPawScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,14 +24,10 @@ class _NewPawScreenState extends ConsumerState<NewPawScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Scaffold(
-          appBar: const EmptyAppBar(),
+        child: const Scaffold(
+          appBar: EmptyAppBar(),
           backgroundColor: Colors.transparent,
-          body: Column(
-            children: <Widget>[
-            
-            ],
-          ),
+          body: Column(),
         ));
   }
 }
