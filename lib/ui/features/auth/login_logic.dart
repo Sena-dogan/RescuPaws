@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,11 @@ class LoginLogic extends _$LoginLogic {
   Future<bool> signInWithGoogle() async {
     try {
       setLogin(isLoading: true);
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn(
+              clientId: Platform.isIOS
+                  ? '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com'
+                  : null)
+          .signIn();
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
