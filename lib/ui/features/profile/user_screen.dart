@@ -10,7 +10,7 @@ import '../../../config/router/app_router.dart';
 import '../../../config/theme/theme_logic.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
-import '../../home/home.dart';
+import '../../widgets/add_nav_button.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../auth/login_logic.dart';
