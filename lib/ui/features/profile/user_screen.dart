@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -77,15 +78,16 @@ class ProfileScreen extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      context.showErrorSnackBar(
-                          title: 'Hata',
-                          message: 'Bir hata oluştu. Bildirildi.');
-                      throw Exception('Share Not implemented');
+                    onPressed: () async {
+                      final InAppReview inAppReview = InAppReview.instance;
+
+                      if (await inAppReview.isAvailable()) {
+                        inAppReview.openStoreListing();
+                      }
                     },
-                    icon: const Icon(Icons.share),
+                    icon: const Icon(Icons.star_outlined),
                     label: Text(
-                      'Davet Et',
+                      'Değerlendir',
                       style: context.textTheme.bodyMedium,
                     ),
                     style: OutlinedButton.styleFrom(
