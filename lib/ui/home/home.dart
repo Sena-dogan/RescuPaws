@@ -5,14 +5,16 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ionicons/ionicons.dart';
 
 import '../../../utils/context_extensions.dart';
 
 import '../../config/router/app_router.dart';
 import '../../constants/assets.dart';
 import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
+import '../widgets/add_nav_button.dart';
 import '../widgets/bottom_nav_bar.dart';
+import 'widgets/left_button.dart';
+import 'widgets/right_button.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -125,165 +127,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         )
       ],
-    );
-  }
-}
-
-class AddNavButton extends StatelessWidget {
-  const AddNavButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 75,
-      height: 75,
-      child: FittedBox(
-        child: FloatingActionButton(
-          onPressed: () {},
-          clipBehavior: Clip.antiAlias,
-          // Shape of 4 edged circle rotated 45 degrees
-          shape: const StarBorder.polygon(
-            sides: 4,
-            rotation: 90,
-            pointRounding: 0.7,
-          ),
-          child: const Icon(
-            Ionicons.add_outline,
-            size: 30,
-            color: Color(0xFFFFCC67),
-            shadows: <Shadow>[
-              BoxShadow(
-                color: Colors.black54,
-                offset: Offset(0, 1),
-                blurRadius: 0.1,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class RightButton extends StatelessWidget {
-  const RightButton({
-    super.key,
-    required this.controller,
-  });
-
-  final CardSwiperController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 75,
-      height: 100,
-      decoration: ShapeDecoration(
-        gradient: LinearGradient(
-          colors: <Color>[
-            context.colorScheme.secondaryContainer,
-            context.colorScheme.primaryContainer,
-          ],
-        ),
-        shadows: const <BoxShadow>[
-          BoxShadow(
-            color: Colors.black54,
-            offset: Offset(0, 3),
-            blurRadius: 6,
-          )
-        ],
-        shape: StarBorder.polygon(
-          side: BorderSide(
-            color: context.colorScheme.outline,
-          ),
-          pointRounding: 0.3,
-          sides: 3,
-          // left rotation
-          rotation: 90,
-        ),
-      ),
-      child: InkWell(
-        onTap: () {
-          debugPrint('Tapped right');
-          controller.swipeRight();
-        },
-        customBorder: StarBorder.polygon(
-          side: BorderSide(
-            color: Colors.black.withOpacity(0.17000000178813934),
-          ),
-          pointRounding: 0.3,
-          sides: 3,
-          // left rotation
-          rotation: 90,
-        ),
-        splashFactory: NoSplash.splashFactory,
-        child: const Icon(
-          // Paw icon
-          Ionicons.heart_outline,
-          size: 25,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-}
-
-class LeftButton extends StatelessWidget {
-  const LeftButton({
-    super.key,
-    required this.controller,
-  });
-
-  final CardSwiperController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 75,
-      height: 100,
-      decoration: ShapeDecoration(
-        shadows: const <BoxShadow>[
-          BoxShadow(
-            color: Colors.black54,
-            offset: Offset(0, 3),
-            blurRadius: 6,
-          )
-        ],
-        color: Colors.white,
-        shape: StarBorder.polygon(
-          side: BorderSide(
-            color: context.colorScheme.outlineVariant,
-          ),
-          pointRounding: 0.3,
-          sides: 3,
-          // left rotation
-          rotation: 270,
-        ),
-      ),
-      child: InkWell(
-        onTap: () {
-          debugPrint('Tapped left');
-          controller.swipeLeft();
-        },
-        customBorder: StarBorder.polygon(
-          side: BorderSide(
-            color: Colors.black.withOpacity(0.17000000178813934),
-          ),
-          pointRounding: 0.3,
-          sides: 3,
-          // left rotation
-          rotation: 270,
-        ),
-        splashFactory: NoSplash.splashFactory,
-        child: Icon(
-          // X icon
-          Icons.close,
-          size: 25,
-          color: context.colorScheme.primary,
-        ),
-      ),
     );
   }
 }
