@@ -133,7 +133,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
           GestureDetector(
             onTap: () {
-              const String url = 'https://patipati.app/privacy-policy.php';
+              const String url = 'https://patipati.app/privacy-policy';
               final Uri uri = Uri.parse(url);
               launchUrl(uri).catchError((Object? err) =>
                   // ignore: invalid_return_type_for_catch_error
