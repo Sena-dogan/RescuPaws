@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,9 +11,12 @@ import '../../../utils/context_extensions.dart';
 
 import '../../config/router/app_router.dart';
 import '../../constants/assets.dart';
+import '../../models/paw_entry.dart';
 import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../widgets/add_nav_button.dart';
 import '../widgets/bottom_nav_bar.dart';
+import 'logic/home_screen_logic.dart';
+import 'logic/home_screen_ui_model.dart';
 import 'widgets/left_button.dart';
 import 'widgets/right_button.dart';
 
@@ -34,10 +38,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     controller = CardSwiperController();
+    ref
+        .read(fetchPawEntriesProvider.future)
+        .then((Either<String, GetPawEntryResponse> value) => <void>{
+              value.fold(
+                (String errorMessage) => ref
+                    .read(homeScreenLogicProvider.notifier)
+                    .setError(errorMessage),
+                (GetPawEntryResponse pawEntryResponse) {
+                  ref
+                      .read(homeScreenLogicProvider.notifier)
+                      .setPawEntries(pawEntryResponse.data);
+                },
+              )
+            });
   }
 
   @override
   Widget build(BuildContext context) {
+    final HomeScreenLogic homeScreenLogic =
+        ref.watch(homeScreenLogicProvider.notifier);
+    final HomeScreenUiModel homeScreenUiModel =
+        ref.watch(homeScreenLogicProvider);
+    debugPrint('We have ${homeScreenUiModel.pawEntries.length} paw entries\n');
+    final List<PawEntry> pawEntries = homeScreenUiModel.pawEntries;
+    if (homeScreenUiModel.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    images = pawEntries
+        .map((PawEntry pawEntry) =>
+            pawEntry.images_uploads?.firstOrNull?.image_url ?? '')
+        .toList();
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -72,7 +103,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         AllowedSwipeDirection.only(right: true, left: true),
                     cardBuilder: (BuildContext context, int index,
                         int percentThresholdX, int percentThresholdY) {
-                      return SwipeCard(image: images[index]);
+                      return SwipeCard(pawEntry: pawEntries[index]);
                     }),
               ),
             ),
@@ -134,10 +165,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 class SwipeCard extends StatelessWidget {
   const SwipeCard({
     super.key,
-    required this.image,
+    required this.pawEntry,
   });
 
-  final String image;
+  final PawEntry pawEntry;
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +199,7 @@ class SwipeCard extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(27),
             child: Image.network(
-              image,
+              pawEntry.images_uploads?.firstOrNull?.image_url ?? '',
               fit: BoxFit.cover,
             ),
           ),
@@ -195,7 +226,7 @@ class SwipeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Name',
+                    pawEntry.name ?? '',
                     style: context.textTheme.labelMedium?.copyWith(
                       color: Colors.white,
                     ),
@@ -203,7 +234,7 @@ class SwipeCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 3),
                     child: Text(
-                      'Breed',
+                      pawEntry.description ?? '',
                       style: context.textTheme.bodyMedium?.copyWith(
                         color: Colors.white,
                       ),
@@ -220,7 +251,7 @@ class SwipeCard extends StatelessWidget {
                       ),
                       const Gap(5),
                       Text(
-                        'Location',
+                        pawEntry.address ?? '',
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                         ),
