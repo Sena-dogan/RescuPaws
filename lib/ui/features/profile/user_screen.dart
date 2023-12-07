@@ -1,11 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:developer';
 
 import '../../../config/router/app_router.dart';
 import '../../../config/theme/theme_logic.dart';
@@ -51,20 +58,53 @@ class ProfileScreen extends ConsumerWidget {
               children: <Widget>[
                 const Gap(20),
                 ListTile(
-                  trailing: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: ShapeDecoration(
-                      image: DecorationImage(
-                        image: FirebaseAuth.instance.currentUser?.photoURL !=
-                                null
-                            ? NetworkImage(
-                                FirebaseAuth.instance.currentUser!.photoURL!)
-                            : Image.asset(Assets.PawPaw).image,
-                        fit: BoxFit.fill,
+                  trailing: Stack(
+                    children: <Widget>[
+                      // Edit icon
+                      InkWell(
+                        onTap: () async => await ImagePicker()
+                            .pickImage(source: ImageSource.gallery)
+                            .then((XFile? value) async {
+                          // debugPrint base64 encoded image
+                          final File file = File(value!.path);
+                          final String base64Image =
+                              base64Encode(file.readAsBytesSync());
+                          context.showAwesomeMaterialBanner(
+                              title: 'Tebrikler',
+                              message:
+                                  'Çok gizli bir şey buldunuz.\nŞaka şaka, şu an çalışmıyor.');
+                          //Clipboard.setData(ClipboardData(text: base64Image));
+                        }).catchError(
+                                (Object? err) => debugPrint(err.toString())),
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          decoration: ShapeDecoration(
+                            image: DecorationImage(
+                              image: FirebaseAuth
+                                          .instance.currentUser?.photoURL !=
+                                      null
+                                  ? Image.network(
+                                      FirebaseAuth
+                                          .instance.currentUser!.photoURL!,
+                                      errorBuilder: (BuildContext context,
+                                          Object error,
+                                          StackTrace? stackTrace) {
+                                        debugPrint("AAAAAAAAAAAAAAAAAAAAA");
+                                        return Image.network(
+                                            'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
+                                      },
+                                    ).image
+                                  : Image.network(
+                                          'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg')
+                                      .image,
+                              fit: BoxFit.fill,
+                            ),
+                            shape: const OvalBorder(),
+                          ),
+                        ),
                       ),
-                      shape: const OvalBorder(),
-                    ),
+                    ],
                   ),
                   title: Text(
                     FirebaseAuth.instance.currentUser?.displayName ??
@@ -257,6 +297,7 @@ class ProfileScreen extends ConsumerWidget {
                                   ),
                                   TextButton(
                                     onPressed: () async {
+                                      
                                       await ref
                                           .read(loginLogicProvider.notifier)
                                           .removeUser()
