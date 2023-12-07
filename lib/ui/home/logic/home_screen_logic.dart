@@ -12,7 +12,7 @@ part 'home_screen_logic.g.dart';
 Future<Either<String, GetPawEntryResponse>> fetchPawEntries(
     FetchPawEntriesRef ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
-  ref.cacheFor(const Duration(minutes: 10));
+  ref.cacheFor(const Duration(minutes: 1));
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
   final Either<String, GetPawEntryResponse> pawEntries =
