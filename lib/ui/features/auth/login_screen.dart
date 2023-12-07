@@ -172,7 +172,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             InkWell(
               onTap: () async {
-                const String url = 'https://patipati.app/user-terms.php';
+                const String url = 'https://patipati.app/user-terms';
                 final Uri uri = Uri.parse(url);
                 await launchUrl(uri).catchError((Object? err) =>
                     // ignore: invalid_return_type_for_catch_error
