@@ -11,7 +11,7 @@ part 'paw_entry.g.dart';
 @freezed
 class GetPawEntryResponse with _$GetPawEntryResponse {
   factory GetPawEntryResponse({
-    required GetPawEntryResponse data,
+    required List<PawEntry> data,
   }) = _GetPawEntryResponse;
 
   factory GetPawEntryResponse.fromJson(Map<String, dynamic> json) =>
