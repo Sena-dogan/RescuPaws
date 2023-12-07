@@ -43,7 +43,7 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-  getIt<HiveHelper>().initHive();
+  //getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
     if (Platform.isAndroid) {
       await FlutterDisplayMode.setHighRefreshRate();
