@@ -3,16 +3,13 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:developer';
 
 import '../../../config/router/app_router.dart';
 import '../../../config/theme/theme_logic.dart';
@@ -62,7 +59,7 @@ class ProfileScreen extends ConsumerWidget {
                     children: <Widget>[
                       // Edit icon
                       InkWell(
-                        onTap: () async => await ImagePicker()
+                        onTap: () async => ImagePicker()
                             .pickImage(source: ImageSource.gallery)
                             .then((XFile? value) async {
                           // debugPrint base64 encoded image
@@ -90,7 +87,7 @@ class ProfileScreen extends ConsumerWidget {
                                       errorBuilder: (BuildContext context,
                                           Object error,
                                           StackTrace? stackTrace) {
-                                        debugPrint("AAAAAAAAAAAAAAAAAAAAA");
+                                        debugPrint('AAAAAAAAAAAAAAAAAAAAA');
                                         return Image.network(
                                             'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
                                       },
@@ -297,7 +294,6 @@ class ProfileScreen extends ConsumerWidget {
                                   ),
                                   TextButton(
                                     onPressed: () async {
-                                      
                                       await ref
                                           .read(loginLogicProvider.notifier)
                                           .removeUser()
