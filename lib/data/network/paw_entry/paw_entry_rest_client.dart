@@ -11,5 +11,5 @@ abstract class PawEntryRestClient {
   factory PawEntryRestClient(Dio dio, {String baseUrl}) = _PawEntryRestClient;
 
   @GET('/classfields')
-  Future<PawEntry> getPawEntry();
+  Future<GetPawEntryResponse> getPawEntry();
 }

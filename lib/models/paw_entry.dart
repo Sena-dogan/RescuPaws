@@ -8,6 +8,16 @@ import 'user.dart';
 part 'paw_entry.freezed.dart';
 part 'paw_entry.g.dart';
 
+@freezed
+class GetPawEntryResponse with _$GetPawEntryResponse {
+  factory GetPawEntryResponse({
+    required GetPawEntryResponse data,
+  }) = _GetPawEntryResponse;
+
+  factory GetPawEntryResponse.fromJson(Map<String, dynamic> json) =>
+      _$GetPawEntryResponseFromJson(json);
+}
+
 //! TODO: Check nullable fields from the API docs
 @freezed
 class PawEntry with _$PawEntry {
