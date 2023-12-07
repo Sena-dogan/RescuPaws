@@ -14,36 +14,60 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) {
-  return _LoginResponse.fromJson(json);
+User _$UserFromJson(Map<String, dynamic> json) {
+  return _User.fromJson(json);
 }
 
 /// @nodoc
-mixin _$LoginResponse {
-  String get token => throw _privateConstructorUsedError;
-  UserModel get user => throw _privateConstructorUsedError;
+mixin _$User {
+  String get uid => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  bool get emailVerified => throw _privateConstructorUsedError;
+  String? get displayName => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
+  String? get photoUrl => throw _privateConstructorUsedError;
+  bool get disabled => throw _privateConstructorUsedError;
+  Metadata? get metadata => throw _privateConstructorUsedError;
+  List<ProviderData>? get providerData => throw _privateConstructorUsedError;
+  dynamic get mfaInfo => throw _privateConstructorUsedError;
+  dynamic get passwordHash => throw _privateConstructorUsedError;
+  dynamic get passwordSalt => throw _privateConstructorUsedError;
+  List<dynamic>? get customClaims => throw _privateConstructorUsedError;
+  dynamic get tenantId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $LoginResponseCopyWith<LoginResponse> get copyWith =>
-      throw _privateConstructorUsedError;
+  $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $LoginResponseCopyWith<$Res> {
-  factory $LoginResponseCopyWith(
-          LoginResponse value, $Res Function(LoginResponse) then) =
-      _$LoginResponseCopyWithImpl<$Res, LoginResponse>;
+abstract class $UserCopyWith<$Res> {
+  factory $UserCopyWith(User value, $Res Function(User) then) =
+      _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String token, UserModel user});
+  $Res call(
+      {String uid,
+      String? email,
+      bool emailVerified,
+      String? displayName,
+      String? phoneNumber,
+      String? photoUrl,
+      bool disabled,
+      Metadata? metadata,
+      List<ProviderData>? providerData,
+      dynamic mfaInfo,
+      dynamic passwordHash,
+      dynamic passwordSalt,
+      List<dynamic>? customClaims,
+      dynamic tenantId});
 
-  $UserModelCopyWith<$Res> get user;
+  $MetadataCopyWith<$Res>? get metadata;
 }
 
 /// @nodoc
-class _$LoginResponseCopyWithImpl<$Res, $Val extends LoginResponse>
-    implements $LoginResponseCopyWith<$Res> {
-  _$LoginResponseCopyWithImpl(this._value, this._then);
+class _$UserCopyWithImpl<$Res, $Val extends User>
+    implements $UserCopyWith<$Res> {
+  _$UserCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -53,371 +77,396 @@ class _$LoginResponseCopyWithImpl<$Res, $Val extends LoginResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? token = null,
-    Object? user = null,
+    Object? uid = null,
+    Object? email = freezed,
+    Object? emailVerified = null,
+    Object? displayName = freezed,
+    Object? phoneNumber = freezed,
+    Object? photoUrl = freezed,
+    Object? disabled = null,
+    Object? metadata = freezed,
+    Object? providerData = freezed,
+    Object? mfaInfo = freezed,
+    Object? passwordHash = freezed,
+    Object? passwordSalt = freezed,
+    Object? customClaims = freezed,
+    Object? tenantId = freezed,
   }) {
     return _then(_value.copyWith(
-      token: null == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as UserModel,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      emailVerified: null == emailVerified
+          ? _value.emailVerified
+          : emailVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photoUrl: freezed == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      disabled: null == disabled
+          ? _value.disabled
+          : disabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      metadata: freezed == metadata
+          ? _value.metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Metadata?,
+      providerData: freezed == providerData
+          ? _value.providerData
+          : providerData // ignore: cast_nullable_to_non_nullable
+              as List<ProviderData>?,
+      mfaInfo: freezed == mfaInfo
+          ? _value.mfaInfo
+          : mfaInfo // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      passwordHash: freezed == passwordHash
+          ? _value.passwordHash
+          : passwordHash // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      passwordSalt: freezed == passwordSalt
+          ? _value.passwordSalt
+          : passwordSalt // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      customClaims: freezed == customClaims
+          ? _value.customClaims
+          : customClaims // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UserModelCopyWith<$Res> get user {
-    return $UserModelCopyWith<$Res>(_value.user, (value) {
-      return _then(_value.copyWith(user: value) as $Val);
+  $MetadataCopyWith<$Res>? get metadata {
+    if (_value.metadata == null) {
+      return null;
+    }
+
+    return $MetadataCopyWith<$Res>(_value.metadata!, (value) {
+      return _then(_value.copyWith(metadata: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$LoginResponseImplCopyWith<$Res>
-    implements $LoginResponseCopyWith<$Res> {
-  factory _$$LoginResponseImplCopyWith(
-          _$LoginResponseImpl value, $Res Function(_$LoginResponseImpl) then) =
-      __$$LoginResponseImplCopyWithImpl<$Res>;
+abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
+  factory _$$UserImplCopyWith(
+          _$UserImpl value, $Res Function(_$UserImpl) then) =
+      __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String token, UserModel user});
+  $Res call(
+      {String uid,
+      String? email,
+      bool emailVerified,
+      String? displayName,
+      String? phoneNumber,
+      String? photoUrl,
+      bool disabled,
+      Metadata? metadata,
+      List<ProviderData>? providerData,
+      dynamic mfaInfo,
+      dynamic passwordHash,
+      dynamic passwordSalt,
+      List<dynamic>? customClaims,
+      dynamic tenantId});
 
   @override
-  $UserModelCopyWith<$Res> get user;
+  $MetadataCopyWith<$Res>? get metadata;
 }
 
 /// @nodoc
-class __$$LoginResponseImplCopyWithImpl<$Res>
-    extends _$LoginResponseCopyWithImpl<$Res, _$LoginResponseImpl>
-    implements _$$LoginResponseImplCopyWith<$Res> {
-  __$$LoginResponseImplCopyWithImpl(
-      _$LoginResponseImpl _value, $Res Function(_$LoginResponseImpl) _then)
+class __$$UserImplCopyWithImpl<$Res>
+    extends _$UserCopyWithImpl<$Res, _$UserImpl>
+    implements _$$UserImplCopyWith<$Res> {
+  __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? token = null,
-    Object? user = null,
+    Object? uid = null,
+    Object? email = freezed,
+    Object? emailVerified = null,
+    Object? displayName = freezed,
+    Object? phoneNumber = freezed,
+    Object? photoUrl = freezed,
+    Object? disabled = null,
+    Object? metadata = freezed,
+    Object? providerData = freezed,
+    Object? mfaInfo = freezed,
+    Object? passwordHash = freezed,
+    Object? passwordSalt = freezed,
+    Object? customClaims = freezed,
+    Object? tenantId = freezed,
   }) {
-    return _then(_$LoginResponseImpl(
-      token: null == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
+    return _then(_$UserImpl(
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as UserModel,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      emailVerified: null == emailVerified
+          ? _value.emailVerified
+          : emailVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photoUrl: freezed == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      disabled: null == disabled
+          ? _value.disabled
+          : disabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      metadata: freezed == metadata
+          ? _value.metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Metadata?,
+      providerData: freezed == providerData
+          ? _value._providerData
+          : providerData // ignore: cast_nullable_to_non_nullable
+              as List<ProviderData>?,
+      mfaInfo: freezed == mfaInfo
+          ? _value.mfaInfo
+          : mfaInfo // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      passwordHash: freezed == passwordHash
+          ? _value.passwordHash
+          : passwordHash // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      passwordSalt: freezed == passwordSalt
+          ? _value.passwordSalt
+          : passwordSalt // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      customClaims: freezed == customClaims
+          ? _value._customClaims
+          : customClaims // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$LoginResponseImpl implements _LoginResponse {
-  const _$LoginResponseImpl({required this.token, required this.user});
+class _$UserImpl implements _User {
+  _$UserImpl(
+      {required this.uid,
+      this.email,
+      this.emailVerified = false,
+      this.displayName,
+      this.phoneNumber,
+      this.photoUrl,
+      this.disabled = false,
+      this.metadata,
+      final List<ProviderData>? providerData,
+      this.mfaInfo,
+      this.passwordHash,
+      this.passwordSalt,
+      final List<dynamic>? customClaims,
+      this.tenantId})
+      : _providerData = providerData,
+        _customClaims = customClaims;
 
-  factory _$LoginResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$LoginResponseImplFromJson(json);
+  factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserImplFromJson(json);
 
   @override
-  final String token;
+  final String uid;
   @override
-  final UserModel user;
+  final String? email;
+  @override
+  @JsonKey()
+  final bool emailVerified;
+  @override
+  final String? displayName;
+  @override
+  final String? phoneNumber;
+  @override
+  final String? photoUrl;
+  @override
+  @JsonKey()
+  final bool disabled;
+  @override
+  final Metadata? metadata;
+  final List<ProviderData>? _providerData;
+  @override
+  List<ProviderData>? get providerData {
+    final value = _providerData;
+    if (value == null) return null;
+    if (_providerData is EqualUnmodifiableListView) return _providerData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final dynamic mfaInfo;
+  @override
+  final dynamic passwordHash;
+  @override
+  final dynamic passwordSalt;
+  final List<dynamic>? _customClaims;
+  @override
+  List<dynamic>? get customClaims {
+    final value = _customClaims;
+    if (value == null) return null;
+    if (_customClaims is EqualUnmodifiableListView) return _customClaims;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final dynamic tenantId;
 
   @override
   String toString() {
-    return 'LoginResponse(token: $token, user: $user)';
+    return 'User(uid: $uid, email: $email, emailVerified: $emailVerified, displayName: $displayName, phoneNumber: $phoneNumber, photoUrl: $photoUrl, disabled: $disabled, metadata: $metadata, providerData: $providerData, mfaInfo: $mfaInfo, passwordHash: $passwordHash, passwordSalt: $passwordSalt, customClaims: $customClaims, tenantId: $tenantId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoginResponseImpl &&
-            (identical(other.token, token) || other.token == token) &&
-            (identical(other.user, user) || other.user == user));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, token, user);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LoginResponseImplCopyWith<_$LoginResponseImpl> get copyWith =>
-      __$$LoginResponseImplCopyWithImpl<_$LoginResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$LoginResponseImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _LoginResponse implements LoginResponse {
-  const factory _LoginResponse(
-      {required final String token,
-      required final UserModel user}) = _$LoginResponseImpl;
-
-  factory _LoginResponse.fromJson(Map<String, dynamic> json) =
-      _$LoginResponseImpl.fromJson;
-
-  @override
-  String get token;
-  @override
-  UserModel get user;
-  @override
-  @JsonKey(ignore: true)
-  _$$LoginResponseImplCopyWith<_$LoginResponseImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-UserModel _$UserModelFromJson(Map<String, dynamic> json) {
-  return _UserModel.fromJson(json);
-}
-
-/// @nodoc
-mixin _$UserModel {
-  @JsonKey(name: '_id')
-  @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
-  @HiveField(1)
-  String get name => throw _privateConstructorUsedError;
-  @HiveField(2)
-  String get email => throw _privateConstructorUsedError;
-  @HiveField(3)
-  String get role => throw _privateConstructorUsedError;
-  @HiveField(4)
-  bool get verified => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $UserModelCopyWith<UserModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $UserModelCopyWith<$Res> {
-  factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
-      _$UserModelCopyWithImpl<$Res, UserModel>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: '_id') @HiveField(0) String id,
-      @HiveField(1) String name,
-      @HiveField(2) String email,
-      @HiveField(3) String role,
-      @HiveField(4) bool verified});
-}
-
-/// @nodoc
-class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
-    implements $UserModelCopyWith<$Res> {
-  _$UserModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? email = null,
-    Object? role = null,
-    Object? verified = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String,
-      verified: null == verified
-          ? _value.verified
-          : verified // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$UserModelImplCopyWith<$Res>
-    implements $UserModelCopyWith<$Res> {
-  factory _$$UserModelImplCopyWith(
-          _$UserModelImpl value, $Res Function(_$UserModelImpl) then) =
-      __$$UserModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: '_id') @HiveField(0) String id,
-      @HiveField(1) String name,
-      @HiveField(2) String email,
-      @HiveField(3) String role,
-      @HiveField(4) bool verified});
-}
-
-/// @nodoc
-class __$$UserModelImplCopyWithImpl<$Res>
-    extends _$UserModelCopyWithImpl<$Res, _$UserModelImpl>
-    implements _$$UserModelImplCopyWith<$Res> {
-  __$$UserModelImplCopyWithImpl(
-      _$UserModelImpl _value, $Res Function(_$UserModelImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? email = null,
-    Object? role = null,
-    Object? verified = null,
-  }) {
-    return _then(_$UserModelImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String,
-      verified: null == verified
-          ? _value.verified
-          : verified // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-@HiveType(typeId: 0, adapterName: 'UserModelAdapter')
-class _$UserModelImpl extends _UserModel {
-  _$UserModelImpl(
-      {@JsonKey(name: '_id') @HiveField(0) required this.id,
-      @HiveField(1) required this.name,
-      @HiveField(2) required this.email,
-      @HiveField(3) required this.role,
-      @HiveField(4) required this.verified})
-      : super._();
-
-  factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UserModelImplFromJson(json);
-
-  @override
-  @JsonKey(name: '_id')
-  @HiveField(0)
-  final String id;
-  @override
-  @HiveField(1)
-  final String name;
-  @override
-  @HiveField(2)
-  final String email;
-  @override
-  @HiveField(3)
-  final String role;
-  @override
-  @HiveField(4)
-  final bool verified;
-
-  @override
-  String toString() {
-    return 'UserModel(id: $id, name: $name, email: $email, role: $role, verified: $verified)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UserModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
+            other is _$UserImpl &&
+            (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.role, role) || other.role == role) &&
-            (identical(other.verified, verified) ||
-                other.verified == verified));
+            (identical(other.emailVerified, emailVerified) ||
+                other.emailVerified == emailVerified) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl) &&
+            (identical(other.disabled, disabled) ||
+                other.disabled == disabled) &&
+            (identical(other.metadata, metadata) ||
+                other.metadata == metadata) &&
+            const DeepCollectionEquality()
+                .equals(other._providerData, _providerData) &&
+            const DeepCollectionEquality().equals(other.mfaInfo, mfaInfo) &&
+            const DeepCollectionEquality()
+                .equals(other.passwordHash, passwordHash) &&
+            const DeepCollectionEquality()
+                .equals(other.passwordSalt, passwordSalt) &&
+            const DeepCollectionEquality()
+                .equals(other._customClaims, _customClaims) &&
+            const DeepCollectionEquality().equals(other.tenantId, tenantId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, email, role, verified);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uid,
+      email,
+      emailVerified,
+      displayName,
+      phoneNumber,
+      photoUrl,
+      disabled,
+      metadata,
+      const DeepCollectionEquality().hash(_providerData),
+      const DeepCollectionEquality().hash(mfaInfo),
+      const DeepCollectionEquality().hash(passwordHash),
+      const DeepCollectionEquality().hash(passwordSalt),
+      const DeepCollectionEquality().hash(_customClaims),
+      const DeepCollectionEquality().hash(tenantId));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
-      __$$UserModelImplCopyWithImpl<_$UserModelImpl>(this, _$identity);
+  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      __$$UserImplCopyWithImpl<_$UserImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserModelImplToJson(
+    return _$$UserImplToJson(
       this,
     );
   }
 }
 
-abstract class _UserModel extends UserModel {
-  factory _UserModel(
-      {@JsonKey(name: '_id') @HiveField(0) required final String id,
-      @HiveField(1) required final String name,
-      @HiveField(2) required final String email,
-      @HiveField(3) required final String role,
-      @HiveField(4) required final bool verified}) = _$UserModelImpl;
-  _UserModel._() : super._();
+abstract class _User implements User {
+  factory _User(
+      {required final String uid,
+      final String? email,
+      final bool emailVerified,
+      final String? displayName,
+      final String? phoneNumber,
+      final String? photoUrl,
+      final bool disabled,
+      final Metadata? metadata,
+      final List<ProviderData>? providerData,
+      final dynamic mfaInfo,
+      final dynamic passwordHash,
+      final dynamic passwordSalt,
+      final List<dynamic>? customClaims,
+      final dynamic tenantId}) = _$UserImpl;
 
-  factory _UserModel.fromJson(Map<String, dynamic> json) =
-      _$UserModelImpl.fromJson;
+  factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
-  @HiveField(0)
-  String get id;
+  String get uid;
   @override
-  @HiveField(1)
-  String get name;
+  String? get email;
   @override
-  @HiveField(2)
-  String get email;
+  bool get emailVerified;
   @override
-  @HiveField(3)
-  String get role;
+  String? get displayName;
   @override
-  @HiveField(4)
-  bool get verified;
+  String? get phoneNumber;
+  @override
+  String? get photoUrl;
+  @override
+  bool get disabled;
+  @override
+  Metadata? get metadata;
+  @override
+  List<ProviderData>? get providerData;
+  @override
+  dynamic get mfaInfo;
+  @override
+  dynamic get passwordHash;
+  @override
+  dynamic get passwordSalt;
+  @override
+  List<dynamic>? get customClaims;
+  @override
+  dynamic get tenantId;
   @override
   @JsonKey(ignore: true)
-  _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
+  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,34 +1,31 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
+import 'meta_data.dart';
+import 'provider_data.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
 
 @freezed
-class LoginResponse with _$LoginResponse {
-  const factory LoginResponse({
-    required String token,
-    required UserModel user,
-  }) = _LoginResponse;
+class User with _$User {
+  factory User({
+    required String uid,
+    String? email,
+    @Default(false) bool emailVerified,
+    String? displayName,
+    String? phoneNumber,
+    String? photoUrl,
+    @Default(false) bool disabled,
+    Metadata? metadata,
+    List<ProviderData>? providerData,
+    dynamic mfaInfo,
+    dynamic passwordHash,
+    dynamic passwordSalt,
+    List<dynamic>? customClaims,
+    dynamic tenantId,
+  }) = _User;
 
-  factory LoginResponse.fromJson(Map<String, Object?> json) =>
-      _$LoginResponseFromJson(json);
-}
-
-@freezed
-class UserModel extends HiveObject with _$UserModel {
-  @HiveType(typeId: 0, adapterName: 'UserModelAdapter')
-  factory UserModel({
-    @JsonKey(name: '_id') @HiveField(0) required String id,
-    @HiveField(1) required String name,
-    @HiveField(2) required String email,
-    @HiveField(3) required String role,
-    @HiveField(4) required bool verified,
-  }) = _UserModel;
-  UserModel._();
-
-  factory UserModel.fromJson(Map<String, Object?> json) =>
-      _$UserModelFromJson(json);
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
