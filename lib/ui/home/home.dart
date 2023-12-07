@@ -29,10 +29,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late CardSwiperController controller;
-  List<String> images = <String>[
-    'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg',
-    'https://i.pinimg.com/originals/4b/51/6b/4b516bde0096f8d125fc9f43df04d791.jpg'
-  ];
 
   @override
   void initState() {
@@ -56,69 +52,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final HomeScreenLogic homeScreenLogic =
-        ref.watch(homeScreenLogicProvider.notifier);
     final HomeScreenUiModel homeScreenUiModel =
         ref.watch(homeScreenLogicProvider);
-    debugPrint('We have ${homeScreenUiModel.pawEntries.length} paw entries\n');
     final List<PawEntry> pawEntries = homeScreenUiModel.pawEntries;
     if (homeScreenUiModel.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-    images = pawEntries
-        .map((PawEntry pawEntry) =>
-            pawEntry.images_uploads?.firstOrNull?.image_url ?? '')
-        .toList();
-    return Container(
-      constraints: const BoxConstraints.expand(),
-      decoration: BoxDecoration(
-        color: context.colorScheme.background,
-        image: const DecorationImage(
-          image: AssetImage(Assets.HomeBg),
-          fit: BoxFit.cover,
+    if (pawEntries.isNotEmpty)
+      return Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          color: context.colorScheme.background,
+          image: const DecorationImage(
+            image: AssetImage(Assets.HomeBg),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: Scaffold(
-        appBar: _buildAppBar(),
-        floatingActionButton: const AddNavButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        backgroundColor: Colors.transparent,
-        bottomNavigationBar: const BottomNavBar(),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: CardSwiper(
-                    cardsCount: images.length,
-                    duration: const Duration(milliseconds: 300),
-                    controller: controller,
-                    onSwipe: (int oldIndex, int? newIndex,
-                        CardSwiperDirection direction) {
-                      return true;
-                    },
-                    allowedSwipeDirection:
-                        AllowedSwipeDirection.only(right: true, left: true),
-                    cardBuilder: (BuildContext context, int index,
-                        int percentThresholdX, int percentThresholdY) {
-                      return SwipeCard(pawEntry: pawEntries[index]);
-                    }),
+        child: Scaffold(
+          appBar: _buildAppBar(),
+          floatingActionButton: const AddNavButton(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          backgroundColor: Colors.transparent,
+          bottomNavigationBar: const BottomNavBar(),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  height: MediaQuery.of(context).size.height * 0.55,
+                  child: CardSwiper(
+                      cardsCount: pawEntries.length,
+                      duration: const Duration(milliseconds: 300),
+                      controller: controller,
+                      onSwipe: (int oldIndex, int? newIndex,
+                          CardSwiperDirection direction) {
+                        return true;
+                      },
+                      allowedSwipeDirection:
+                          AllowedSwipeDirection.only(right: true, left: true),
+                      cardBuilder: (BuildContext context, int index,
+                          int percentThresholdX, int percentThresholdY) {
+                        return SwipeCard(pawEntry: pawEntries[index], size: Size(MediaQuery.of(context).size.width * 0.85, MediaQuery.of(context).size.height * 0.55));
+                      }),
+                ),
               ),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                LeftButton(controller: controller),
-                RightButton(controller: controller)
-              ],
-            )
-          ],
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  LeftButton(controller: controller),
+                  RightButton(controller: controller)
+                ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    else {
+      return const SizedBox();
+    }
   }
 
   AppBar _buildAppBar() {
@@ -147,9 +141,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               height: 42,
               decoration: ShapeDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                      FirebaseAuth.instance.currentUser?.photoURL ??
-                          'https://placekeanu.com/300/300'),
+                  image: Image.network(
+                    FirebaseAuth.instance.currentUser?.photoURL ??
+                        'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg',
+                    errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) =>
+                        Image.network(
+                            'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'),
+                  ).image,
                   fit: BoxFit.fill,
                 ),
                 shape: const OvalBorder(),
@@ -166,9 +165,11 @@ class SwipeCard extends StatelessWidget {
   const SwipeCard({
     super.key,
     required this.pawEntry,
+    this.size = const Size(308, 426.76),
   });
 
   final PawEntry pawEntry;
+  final Size size;
 
   @override
   Widget build(BuildContext context) {
@@ -176,14 +177,14 @@ class SwipeCard extends StatelessWidget {
       children: <Widget>[
         // Add black overlay at the bottom
         Container(
-          width: 308,
-          height: 426.76,
+          width: size.width,
+          height: size.height,
           decoration: ShapeDecoration(
             shadows: const <BoxShadow>[
               BoxShadow(
-                color: Colors.black54,
-                offset: Offset(0, 3),
-                blurRadius: 6,
+                color: Color.fromARGB(168, 0, 0, 0),
+                offset: Offset(0, 10),
+                blurRadius: 10,
               )
             ],
             gradient: const LinearGradient(
@@ -200,6 +201,21 @@ class SwipeCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(27),
             child: Image.network(
               pawEntry.images_uploads?.firstOrNull?.image_url ?? '',
+              errorBuilder:
+                  (BuildContext context, Object error, StackTrace? stackTrace) {
+                debugPrint(
+                    'Error occured while loading image: ${pawEntry.images_uploads?.firstOrNull?.image_url} \n');
+                debugPrint('Id of the paw entry: ${pawEntry.id}');
+                // FirebaseCrashlytics.instance.recordError(
+                //   error,
+                //   stackTrace,
+                //   reason:
+                //       '[API] Error occured while loading image. Id of the paw entry: ${pawEntry.id}',
+                //   printDetails: true,
+                // );
+                return Image.network(
+                    'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+              },
               fit: BoxFit.cover,
             ),
           ),
@@ -214,7 +230,7 @@ class SwipeCard extends StatelessWidget {
                 begin: Alignment.center,
                 end: Alignment.bottomCenter,
                 colors: <Color>[
-                  Color(0x00000000),
+                  Color.fromARGB(26, 0, 0, 0),
                   Color.fromARGB(205, 68, 49, 28)
                 ],
               ),
