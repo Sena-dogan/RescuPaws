@@ -15,8 +15,8 @@ class RightButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 75,
-      height: 100,
+      width: 90,
+      height: 110,
       decoration: ShapeDecoration(
         gradient: LinearGradient(
           colors: <Color>[

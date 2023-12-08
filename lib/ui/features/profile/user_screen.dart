@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -50,20 +55,53 @@ class ProfileScreen extends ConsumerWidget {
               children: <Widget>[
                 const Gap(20),
                 ListTile(
-                  trailing: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: ShapeDecoration(
-                      image: DecorationImage(
-                        image: FirebaseAuth.instance.currentUser?.photoURL !=
-                                null
-                            ? NetworkImage(
-                                FirebaseAuth.instance.currentUser!.photoURL!)
-                            : Image.asset(Assets.PawPaw).image,
-                        fit: BoxFit.fill,
+                  trailing: Stack(
+                    children: <Widget>[
+                      // Edit icon
+                      InkWell(
+                        onTap: () async => ImagePicker()
+                            .pickImage(source: ImageSource.gallery)
+                            .then((XFile? value) async {
+                          // debugPrint base64 encoded image
+                          final File file = File(value!.path);
+                          final String base64Image =
+                              base64Encode(file.readAsBytesSync());
+                          context.showAwesomeMaterialBanner(
+                              title: 'Tebrikler',
+                              message:
+                                  'Çok gizli bir şey buldunuz.\nŞaka şaka, şu an çalışmıyor.');
+                          //Clipboard.setData(ClipboardData(text: base64Image));
+                        }).catchError(
+                                (Object? err) => debugPrint(err.toString())),
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          decoration: ShapeDecoration(
+                            image: DecorationImage(
+                              image: FirebaseAuth
+                                          .instance.currentUser?.photoURL !=
+                                      null
+                                  ? Image.network(
+                                      FirebaseAuth
+                                          .instance.currentUser!.photoURL!,
+                                      errorBuilder: (BuildContext context,
+                                          Object error,
+                                          StackTrace? stackTrace) {
+                                        debugPrint('AAAAAAAAAAAAAAAAAAAAA');
+                                        return Image.network(
+                                            'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
+                                      },
+                                    ).image
+                                  : Image.network(
+                                          'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg')
+                                      .image,
+                              fit: BoxFit.fill,
+                            ),
+                            shape: const OvalBorder(),
+                          ),
+                        ),
                       ),
-                      shape: const OvalBorder(),
-                    ),
+                    ],
                   ),
                   title: Text(
                     FirebaseAuth.instance.currentUser?.displayName ??
@@ -77,15 +115,16 @@ class ProfileScreen extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      context.showErrorSnackBar(
-                          title: 'Hata',
-                          message: 'Bir hata oluştu. Bildirildi.');
-                      throw Exception('Share Not implemented');
+                    onPressed: () async {
+                      final InAppReview inAppReview = InAppReview.instance;
+
+                      if (await inAppReview.isAvailable()) {
+                        inAppReview.openStoreListing();
+                      }
                     },
-                    icon: const Icon(Icons.share),
+                    icon: const Icon(Icons.star_outlined),
                     label: Text(
-                      'Davet Et',
+                      'Değerlendir',
                       style: context.textTheme.bodyMedium,
                     ),
                     style: OutlinedButton.styleFrom(
@@ -210,7 +249,7 @@ class ProfileScreen extends ConsumerWidget {
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
                         const String url =
-                            'https://patipati.app/privacy-policy.php';
+                            'https://patipati.app/privacy-policy';
                         final Uri uri = Uri.parse(url);
                         await launchUrl(uri).catchError((Object? err) =>
                             // ignore: invalid_return_type_for_catch_error
@@ -223,7 +262,7 @@ class ProfileScreen extends ConsumerWidget {
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
                         const String url =
-                            'https://patipati.app/user-terms.php';
+                            'https://patipati.app/user-terms';
                         final Uri uri = Uri.parse(url);
                         await launchUrl(uri).catchError((Object? err) =>
                             // ignore: invalid_return_type_for_catch_error

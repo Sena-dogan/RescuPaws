@@ -113,17 +113,62 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> removeUser() async {
     try {
-      await FirebaseAuth.instance.currentUser?.delete();
-      if (await GoogleSignIn().isSignedIn()) {
-        await GoogleSignIn().disconnect();
-        await GoogleSignIn().signOut();
-      }
+      await FirebaseAuth.instance.currentUser
+          ?.reauthenticateWithCredential(await platformAuthCredential)
+          .then((UserCredential value) async {
+        await FirebaseAuth.instance.currentUser?.delete();
+        if (await GoogleSignIn().isSignedIn()) {
+          await GoogleSignIn().disconnect();
+          await GoogleSignIn().signOut();
+        }
+        return true;
+      });
       return true;
     } catch (e) {
       debugPrint('Error: $e');
       setError(e.toString());
       return false;
     }
+  }
+
+  Future<AuthCredential> get appleAuthCredential async {
+    // Construct an `OAuthCredential` from the credential returned by the
+    // request.
+    final AuthorizationCredentialAppleID appleCredential =
+        await SignInWithApple.getAppleIDCredential(
+      scopes: <AppleIDAuthorizationScopes>[
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
+    return oAuthProvider.credential(
+      idToken: appleCredential.identityToken,
+      accessToken: appleCredential.authorizationCode,
+    );
+  }
+
+  Future<AuthCredential> get googleAuthCredential async {
+    // Obtain the auth details from the request
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+            clientId: Platform.isIOS
+                ? '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com'
+                : null)
+        .signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    // Create a new credential
+    return GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+  }
+
+  Future<AuthCredential> get platformAuthCredential async {
+    // Look at the platform and decide which credentials to use
+    final AuthCredential credential =
+        Platform.isIOS ? await appleAuthCredential : await googleAuthCredential;
+    return credential;
   }
 
   void setError(String error) {

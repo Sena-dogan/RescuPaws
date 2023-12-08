@@ -14,7 +14,6 @@ import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
 import 'constants/strings.dart';
 import 'data/hive/hive.dart';
-import 'data/hive/hive_helper.dart';
 import 'di/components/service_locator.dart';
 import 'firebase_options.dart';
 import 'my_app.dart';
@@ -43,7 +42,7 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-  getIt<HiveHelper>().initHive();
+  //getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
     if (Platform.isAndroid) {
       await FlutterDisplayMode.setHighRefreshRate();

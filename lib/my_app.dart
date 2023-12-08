@@ -18,7 +18,6 @@ class MyApp extends ConsumerWidget {
     final ThemeUiModel currentTheme = ref.watch(themeLogicProvider);
     return MaterialApp.router(
       routerConfig: getIt<SGGoRouter>().getGoRouter,
-
       /// Localization is not available for the title.
       title: 'Pati Pati App',
 
