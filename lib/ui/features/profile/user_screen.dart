@@ -249,7 +249,7 @@ class ProfileScreen extends ConsumerWidget {
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
                         const String url =
-                            'https://patipati.app/privacy-policy.php';
+                            'https://patipati.app/privacy-policy';
                         final Uri uri = Uri.parse(url);
                         await launchUrl(uri).catchError((Object? err) =>
                             // ignore: invalid_return_type_for_catch_error
@@ -262,7 +262,7 @@ class ProfileScreen extends ConsumerWidget {
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
                         const String url =
-                            'https://patipati.app/user-terms.php';
+                            'https://patipati.app/user-terms';
                         final Uri uri = Uri.parse(url);
                         await launchUrl(uri).catchError((Object? err) =>
                             // ignore: invalid_return_type_for_catch_error
