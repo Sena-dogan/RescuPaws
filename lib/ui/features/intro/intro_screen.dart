@@ -90,8 +90,11 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
                   },
                 ),
                 const Spacer(),
-                Image.asset(
-                  Assets.Dog,
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Image.asset(
+                    Assets.Dog,
+                  ),
                 ),
               ],
             ),
