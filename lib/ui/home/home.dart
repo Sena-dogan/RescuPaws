@@ -58,66 +58,68 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (homeScreenUiModel.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-    if (pawEntries.isNotEmpty)
-      return Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          color: context.colorScheme.background,
-          image: const DecorationImage(
-            image: AssetImage(Assets.HomeBg),
-            fit: BoxFit.cover,
-          ),
+
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      decoration: BoxDecoration(
+        color: context.colorScheme.background,
+        image: const DecorationImage(
+          image: AssetImage(Assets.HomeBg),
+          fit: BoxFit.cover,
         ),
-        child: Scaffold(
-          appBar: _buildAppBar(),
-          floatingActionButton: const AddNavButton(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          backgroundColor: Colors.transparent,
-          bottomNavigationBar: const BottomNavBar(),
-          body: Column(
-            children: <Widget>[
+      ),
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        floatingActionButton: const AddNavButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        backgroundColor: Colors.transparent,
+        bottomNavigationBar: const BottomNavBar(),
+        body: pawEntries.isEmpty
+            ? const ErrorWidget()
+            : Column(
+                    children: <Widget>[
                Divider(
                 color: context.colorScheme.tertiary.withOpacity(0.15),
               ),
-              Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  height: MediaQuery.of(context).size.height * 0.55,
-                  child: CardSwiper(
-                      cardsCount: pawEntries.length,
-                      duration: const Duration(milliseconds: 300),
-                      controller: controller,
-                      onSwipe: (int oldIndex, int? newIndex,
-                          CardSwiperDirection direction) {
-                        return true;
-                      },
-                      allowedSwipeDirection:
-                          AllowedSwipeDirection.only(right: true, left: true),
-                      cardBuilder: (BuildContext context, int index,
-                          int percentThresholdX, int percentThresholdY) {
-                        return SwipeCard(
-                            pawEntry: pawEntries[index],
-                            size: Size(MediaQuery.of(context).size.width * 0.85,
-                                MediaQuery.of(context).size.height * 0.55));
-                      }),
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  LeftButton(controller: controller),
-                  RightButton(controller: controller)
+                  Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      height: MediaQuery.of(context).size.height * 0.55,
+                      child: CardSwiper(
+                          cardsCount: pawEntries.length,
+                          duration: const Duration(milliseconds: 300),
+                          controller: controller,
+                          onSwipe: (int oldIndex, int? newIndex,
+                              CardSwiperDirection direction) {
+                            return true;
+                          },
+                          allowedSwipeDirection: AllowedSwipeDirection.only(
+                              right: true, left: true),
+                          cardBuilder: (BuildContext context, int index,
+                              int percentThresholdX, int percentThresholdY) {
+                            return SwipeCard(
+                            
+                                pawEntry: pawEntries[index],
+                           
+                                size: Size(
+                                    MediaQuery.of(context).size.width * 0.85,
+                               
+                                    MediaQuery.of(context).size.height * 0.55));
+                          }),
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      LeftButton(controller: controller),
+                      RightButton(controller: controller)
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-        ),
-      );
-    else {
-      return const SizedBox();
-    }
+              ),
+      ),
+    );
   }
 
   AppBar _buildAppBar() {
@@ -163,6 +165,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         )
       ],
     );
+  }
+}
+
+class ErrorWidget extends StatelessWidget {
+  const ErrorWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Image.asset(
+              Assets.PawPaw,
+              filterQuality: FilterQuality.none,
+              fit: BoxFit.none,
+            ),
+          ),
+          const Gap(10),
+          Text(
+            'Bir sorun oluştu.\n',
+            style: context.textTheme.bodyLarge,
+          ),
+        ]);
   }
 }
 
