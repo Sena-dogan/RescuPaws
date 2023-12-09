@@ -1,9 +1,10 @@
+// ignore_for_file: always_specify_types, unused_local_variable
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +17,6 @@ import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../widgets/add_nav_button.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'logic/home_screen_logic.dart';
-import 'logic/home_screen_ui_model.dart';
 import 'widgets/left_button.dart';
 import 'widgets/right_button.dart';
 
@@ -34,30 +34,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     controller = CardSwiperController();
-    ref
-        .read(fetchPawEntriesProvider.future)
-        .then((Either<String, GetPawEntryResponse> value) => <void>{
-              value.fold(
-                (String errorMessage) => ref
-                    .read(homeScreenLogicProvider.notifier)
-                    .setError(errorMessage),
-                (GetPawEntryResponse pawEntryResponse) {
-                  ref
-                      .read(homeScreenLogicProvider.notifier)
-                      .setPawEntries(pawEntryResponse.data);
-                },
-              )
-            });
   }
 
   @override
   Widget build(BuildContext context) {
-    final HomeScreenUiModel homeScreenUiModel =
-        ref.watch(homeScreenLogicProvider);
-    final List<PawEntry> pawEntries = homeScreenUiModel.pawEntries;
-    if (homeScreenUiModel.isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    final AsyncValue<GetPawEntryResponse> pawEntryLogic =
+        ref.watch(fetchPawEntriesProvider);
 
     return Container(
       constraints: const BoxConstraints.expand(),
@@ -74,51 +56,60 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         backgroundColor: Colors.transparent,
         bottomNavigationBar: const BottomNavBar(),
-        body: pawEntries.isEmpty
-            ? const ErrorWidget()
-            : Column(
-                    children: <Widget>[
-               Divider(
-                color: context.colorScheme.tertiary.withOpacity(0.15),
-              ),
-                  Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.85,
-                      height: MediaQuery.of(context).size.height * 0.55,
-                      child: CardSwiper(
-                          cardsCount: pawEntries.length,
-                          duration: const Duration(milliseconds: 300),
-                          controller: controller,
-                          onSwipe: (int oldIndex, int? newIndex,
-                              CardSwiperDirection direction) {
-                            return true;
-                          },
-                          allowedSwipeDirection: AllowedSwipeDirection.only(
-                              right: true, left: true),
-                          cardBuilder: (BuildContext context, int index,
-                              int percentThresholdX, int percentThresholdY) {
-                            return SwipeCard(
-                            
-                                pawEntry: pawEntries[index],
-                           
-                                size: Size(
-                                    MediaQuery.of(context).size.width * 0.85,
-                               
-                                    MediaQuery.of(context).size.height * 0.55));
-                          }),
-                    ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      LeftButton(controller: controller),
-                      RightButton(controller: controller)
-                    ],
-                  )
-                ],
-              ),
+        body: RefreshIndicator(
+            onRefresh: () async => ref.refresh(fetchPawEntriesProvider.future),
+            child: switch (pawEntryLogic) {
+              AsyncValue<GetPawEntryResponse>(
+                :final GetPawEntryResponse valueOrNull?
+              ) =>
+                SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: _buildBody(context, valueOrNull.data)),
+              // An error is available, so we render it.
+              AsyncValue(:final Object error?) => const ErrorWidget(),
+              // No data/error, so we're in loading state.
+              _ => const Center(child: CircularProgressIndicator()),
+            }),
       ),
+    );
+  }
+
+  Column _buildBody(BuildContext context, List<PawEntry> pawEntries) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.85,
+            height: MediaQuery.of(context).size.height * 0.55,
+            child: CardSwiper(
+                cardsCount: pawEntries.length,
+                duration: const Duration(milliseconds: 300),
+                controller: controller,
+                onSwipe: (int oldIndex, int? newIndex,
+                    CardSwiperDirection direction) {
+                  return true;
+                },
+                allowedSwipeDirection:
+                    AllowedSwipeDirection.only(right: true, left: true),
+                cardBuilder: (BuildContext context, int index,
+                    int percentThresholdX, int percentThresholdY) {
+                  return SwipeCard(
+                      pawEntry: pawEntries[index],
+                      size: Size(MediaQuery.of(context).size.width * 0.85,
+                          MediaQuery.of(context).size.height * 0.55));
+                }),
+          ),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            LeftButton(controller: controller),
+            RightButton(controller: controller)
+          ],
+        )
+      ],
     );
   }
 

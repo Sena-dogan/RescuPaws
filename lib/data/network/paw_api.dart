@@ -11,14 +11,9 @@ class PawApi {
   PawApi(this._pawEntryRestClient);
   final PawEntryRestClient _pawEntryRestClient;
 
-  Future<Either<String, GetPawEntryResponse>> getPawEntry() async {
-    try {
-      final GetPawEntryResponse pawEntry =
-          await _pawEntryRestClient.getPawEntry();
-      return right(pawEntry);
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      return left(e.toString());
-    }
+  Future<GetPawEntryResponse> getPawEntry() async {
+    final GetPawEntryResponse pawEntry =
+        await _pawEntryRestClient.getPawEntry();
+    return pawEntry;
   }
 }
