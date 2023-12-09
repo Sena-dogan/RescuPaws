@@ -76,8 +76,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Column _buildBody(BuildContext context, List<PawEntry> pawEntries) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        Divider(
+          color: context.colorScheme.tertiary.withOpacity(0.15),
+        ),
         Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,
