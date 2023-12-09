@@ -2,4 +2,3 @@
 cd android
 fastlane upload_APK_Playground
 cd ..
-```
