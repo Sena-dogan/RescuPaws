@@ -1,0 +1,62 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+ desc "Runs all the tests"
+ lane :test do
+   cocoapods(
+     podfile: "../ios/Podfile"
+   )
+   scan(
+     workspace: "../ios/Runner.xcworkspace",
+     scheme: "Runner"
+   )
+ end
+
+ desc "upload to TestFlight track"
+ lane :upload_ios do   
+   build_number = number_of_commits()
+   Dir.chdir "../.." do 
+     sh("flutter", "build", "ios", "--release", "--build-number=#{build_number}") 
+   end 
+   pilot(
+     skip_waiting_for_build_processing: true,
+     skip_submission: false,
+     ipa: '../build/ios/ipa/patipati.app.ipa',
+     changelog: 'New version available!'
+   )
+   
+ end
+
+ desc "Deploy a new version to the App Store"
+ lane :deploy do
+   cocoapods(
+     podfile: "../ios/Podfile"
+   )
+   gym(
+     workspace: "../ios/Runner.xcworkspace",
+     scheme: "Runner",
+     export_method: "app-store"
+   )
+   pilot(
+     skip_waiting_for_build_processing: true,
+     skip_submission: false,
+     ipa: '../build/ios/ipa/Runner.ipa',
+     changelog: 'New version available!'
+   )
+ end
+end

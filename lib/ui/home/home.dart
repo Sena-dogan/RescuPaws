@@ -76,8 +76,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           backgroundColor: Colors.transparent,
           bottomNavigationBar: const BottomNavBar(),
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+               Divider(
+                color: context.colorScheme.tertiary.withOpacity(0.15),
+              ),
               Center(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.85,
@@ -94,7 +96,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           AllowedSwipeDirection.only(right: true, left: true),
                       cardBuilder: (BuildContext context, int index,
                           int percentThresholdX, int percentThresholdY) {
-                        return SwipeCard(pawEntry: pawEntries[index], size: Size(MediaQuery.of(context).size.width * 0.85, MediaQuery.of(context).size.height * 0.55));
+                        return SwipeCard(
+                            pawEntry: pawEntries[index],
+                            size: Size(MediaQuery.of(context).size.width * 0.85,
+                                MediaQuery.of(context).size.height * 0.55));
                       }),
                 ),
               ),
