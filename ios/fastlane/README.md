@@ -31,13 +31,13 @@ Runs all the tests
 
 upload to TestFlight track
 
-### ios deploy
+### ios testflight
 
 ```sh
-[bundle exec] fastlane ios deploy
+[bundle exec] fastlane ios testflight
 ```
 
-Deploy a new version to the App Store
+to testflight
 
 ----
 

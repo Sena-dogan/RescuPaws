@@ -13,6 +13,10 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+FASTLANE_USER="canayunus@gmail.com"
+FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD="yctq-ndls-crtj-boon"
+
+
 default_platform(:ios)
 
 platform :ios do
@@ -28,35 +32,22 @@ platform :ios do
  end
 
  desc "upload to TestFlight track"
- lane :upload_ios do   
+ lane :upload_to_testflight do   
    build_number = number_of_commits()
    Dir.chdir "../.." do 
      sh("flutter", "build", "ios", "--release", "--build-number=#{build_number}") 
    end 
-   pilot(
-     skip_waiting_for_build_processing: true,
-     skip_submission: false,
-     ipa: '../build/ios/ipa/patipati.app.ipa',
-     changelog: 'New version available!'
-   )
-   
- end
+   Dir.chdir "../.." do 
+    sh("flutter", "build", "ipa", "--build-number=#{build_number}") 
+  end 
+  ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = "yctq-ndls-crtj-boon"
+  upload_to_testflight(skip_waiting_for_build_processing: true, ipa: "../build/ios/ipa/patipati.app.ipa")
+  end
 
- desc "Deploy a new version to the App Store"
- lane :deploy do
-   cocoapods(
-     podfile: "../ios/Podfile"
-   )
-   gym(
-     workspace: "../ios/Runner.xcworkspace",
-     scheme: "Runner",
-     export_method: "app-store"
-   )
-   pilot(
-     skip_waiting_for_build_processing: true,
-     skip_submission: false,
-     ipa: '../build/ios/ipa/Runner.ipa',
-     changelog: 'New version available!'
-   )
- end
+  desc "to testflight"
+  lane :testflight do
+    ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = "yctq-ndls-crtj-boon"
+    upload_to_testflight(skip_waiting_for_build_processing: true, ipa: "../build/ios/ipa/patipati.app.ipa", uses_non_exempt_encryption: true)
+  end
 end
+
