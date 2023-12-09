@@ -236,7 +236,7 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('İletişim'),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
-                        const String url = 'mailto:developer@patipati.app';
+                        const String url = 'mailto:help@patipati.app';
                         final Uri uri = Uri.parse(url);
                         await launchUrl(uri).catchError((Object? err) =>
                             // ignore: invalid_return_type_for_catch_error
