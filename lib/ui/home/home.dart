@@ -5,10 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../../utils/context_extensions.dart';
 
@@ -19,7 +17,6 @@ import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../widgets/add_nav_button.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'logic/home_screen_logic.dart';
-import 'logic/home_screen_ui_model.dart';
 import 'widgets/left_button.dart';
 import 'widgets/right_button.dart';
 
@@ -79,8 +76,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Column _buildBody(BuildContext context, List<PawEntry> pawEntries) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        Divider(
+          color: context.colorScheme.tertiary.withOpacity(0.15),
+        ),
         Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,

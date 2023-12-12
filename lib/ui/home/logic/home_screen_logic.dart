@@ -1,4 +1,3 @@
-import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/network/paw_entry/paw_entry_repository.dart';
