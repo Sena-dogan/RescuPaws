@@ -66,7 +66,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: _buildBody(context, valueOrNull.data)),
               // An error is available, so we render it.
-              AsyncValue(:final Object error?) => const ErrorWidget(),
+              AsyncValue(:final Object error?) => ErrorWidget(
+                  error: error,
+                ),
               // No data/error, so we're in loading state.
               _ => const Center(child: CircularProgressIndicator()),
             }),
@@ -163,8 +165,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
 class ErrorWidget extends StatelessWidget {
   const ErrorWidget({
+    this.error,
     super.key,
   });
+  final Object? error;
 
   @override
   Widget build(BuildContext context) {
@@ -183,6 +187,7 @@ class ErrorWidget extends StatelessWidget {
             'Bir sorun oluştu.\n',
             style: context.textTheme.bodyLarge,
           ),
+          Text('Hata: $error'),
         ]);
   }
 }

@@ -14,7 +14,7 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
   final GetPawEntryResponse pawEntries = await pawEntryRepository.getPawEntry();
-  return pawEntries;
+  return pawEntries.randomize();
 }
 
 @riverpod

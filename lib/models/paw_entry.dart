@@ -42,3 +42,21 @@ class PawEntry with _$PawEntry {
   factory PawEntry.fromJson(Map<String, dynamic> json) =>
       _$PawEntryFromJson(json);
 }
+
+extension PawEntryX on PawEntry {
+  String get createdAtFormatted {
+    final DateTime createdAt = DateTime.parse(created_at!);
+    final String formattedDate =
+        '${createdAt.day}/${createdAt.month}/${createdAt.year}';
+    return formattedDate;
+  }
+}
+
+extension GetPawEntryResponseX on GetPawEntryResponse {
+  List<PawEntry> get pawEntries => data;
+  GetPawEntryResponse randomize() {
+    return GetPawEntryResponse(
+      data: List<PawEntry>.from(data)..shuffle(),
+    );
+  }
+}

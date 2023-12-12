@@ -49,7 +49,6 @@ class LoginLogic extends _$LoginLogic {
       });
       return true;
     } catch (e, stackTrace) {
-      debugPrint('Error: $e');
       FirebaseCrashlytics.instance.recordError(e, stackTrace);
       setError(e.toString());
       setLogin();
