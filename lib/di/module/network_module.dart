@@ -8,6 +8,7 @@ import 'package:network_logger/network_logger.dart';
 
 import '../../constants/endpoints.dart';
 import '../../data/getstore/get_store_helper.dart';
+import '../../data/network/category/category_rest_client.dart';
 import '../../data/network/paw_entry/paw_entry_rest_client.dart';
 
 /// NetworkModule is used to register network related dependencies.
@@ -61,5 +62,10 @@ abstract class NetworkModule {
   @preResolve
   Future<PawEntryRestClient> providePawEntryRestClient(Dio dio) {
     return Future.value(PawEntryRestClient(dio));
+  }
+
+  @preResolve
+  Future<CategoryRestClient> provideCategoryRestClient(Dio dio) {
+    return Future.value(CategoryRestClient(dio));
   }
 }

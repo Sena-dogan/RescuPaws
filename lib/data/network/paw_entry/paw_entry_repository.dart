@@ -1,4 +1,3 @@
-import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../di/components/service_locator.dart';

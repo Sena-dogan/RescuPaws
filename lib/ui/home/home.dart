@@ -187,7 +187,7 @@ class ErrorWidget extends StatelessWidget {
             'Bir sorun oluştu.\n',
             style: context.textTheme.bodyLarge,
           ),
-          Text('Hata: $error'),
+          //Text('Hata: $error'),
         ]);
   }
 }
