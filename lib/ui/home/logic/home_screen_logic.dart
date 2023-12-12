@@ -10,7 +10,7 @@ part 'home_screen_logic.g.dart';
 @riverpod
 Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
-  ref.cacheFor(const Duration(minutes: 1));
+  ref.cacheFor(const Duration(minutes: 5));
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
   final GetPawEntryResponse pawEntries = await pawEntryRepository.getPawEntry();
