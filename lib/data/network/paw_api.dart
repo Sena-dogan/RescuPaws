@@ -1,6 +1,4 @@
 /// All Restclients that communicate with the Paw requests are defined here.
-import 'package:flutter/foundation.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../models/paw_entry.dart';

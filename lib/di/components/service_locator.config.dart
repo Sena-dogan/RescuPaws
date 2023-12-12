@@ -15,9 +15,11 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../config/router/app_router.dart' as _i5;
 import '../../data/getstore/get_store_helper.dart' as _i4;
-import '../../data/network/paw_api.dart' as _i8;
+import '../../data/network/category/category_rest_client.dart' as _i8;
+import '../../data/network/category_api.dart' as _i10;
+import '../../data/network/paw_api.dart' as _i9;
 import '../../data/network/paw_entry/paw_entry_rest_client.dart' as _i7;
-import '../module/network_module.dart' as _i9;
+import '../module/network_module.dart' as _i11;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -46,9 +48,15 @@ extension GetItInjectableX on _i1.GetIt {
       () => networkModule.providePawEntryRestClient(gh<_i6.Dio>()),
       preResolve: true,
     );
-    gh.factory<_i8.PawApi>(() => _i8.PawApi(gh<_i7.PawEntryRestClient>()));
+    await gh.factoryAsync<_i8.CategoryRestClient>(
+      () => networkModule.provideCategoryRestClient(gh<_i6.Dio>()),
+      preResolve: true,
+    );
+    gh.factory<_i9.PawApi>(() => _i9.PawApi(gh<_i7.PawEntryRestClient>()));
+    gh.factory<_i10.CategoryApi>(
+        () => _i10.CategoryApi(gh<_i8.CategoryRestClient>()));
     return this;
   }
 }
 
-class _$NetworkModule extends _i9.NetworkModule {}
+class _$NetworkModule extends _i11.NetworkModule {}
