@@ -77,9 +77,21 @@ final TextTheme textTheme = TextTheme(
     fontWeight: FontWeight.w600,
     fontSize: 30,
   ),
+  labelSmall: GoogleFonts.poppins(
+    fontWeight: FontWeight.w500,
+    fontSize: 20,
+  ),
+  bodyLarge: GoogleFonts.poppins(
+    fontWeight: FontWeight.w500,
+    fontSize: 15,
+  ),
   bodyMedium: GoogleFonts.poppins(
     fontWeight: FontWeight.w400,
     fontSize: 13,
+  ),
+  bodySmall: GoogleFonts.poppins(
+    fontWeight: FontWeight.w300,
+    fontSize: 11,
   ),
 );
 
