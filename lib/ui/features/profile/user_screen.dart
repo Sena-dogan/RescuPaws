@@ -1,12 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,6 +17,8 @@ import '../../widgets/add_nav_button.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../auth/login_logic.dart';
+import 'user_logic.dart';
+import 'user_ui_model.dart';
 
 /*
   This is the profile screen that is shown when the user is logged in.
@@ -30,6 +30,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final UserUiModel userLogic = ref.watch(userLogicProvider);
     return Container(
       height: context.height,
       width: context.width,
@@ -59,56 +60,79 @@ class ProfileScreen extends ConsumerWidget {
                     children: <Widget>[
                       // Edit icon
                       InkWell(
-                        onTap: () async => ImagePicker()
-                            .pickImage(source: ImageSource.gallery)
-                            .then((XFile? value) async {
-                          // debugPrint base64 encoded image
-                          final File file = File(value!.path);
-                          final String base64Image =
-                              base64Encode(file.readAsBytesSync());
-                          context.showAwesomeMaterialBanner(
-                              title: 'Tebrikler',
-                              message:
-                                  'Çok gizli bir şey buldunuz.\nŞaka şaka, şu an çalışmıyor.');
-                          //Clipboard.setData(ClipboardData(text: base64Image));
-                        }).catchError(
-                                (Object? err) => debugPrint(err.toString())),
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          decoration: ShapeDecoration(
-                            image: DecorationImage(
-                              image: FirebaseAuth
-                                          .instance.currentUser?.photoURL !=
-                                      null
-                                  ? Image.network(
-                                      FirebaseAuth
-                                          .instance.currentUser!.photoURL!,
-                                      errorBuilder: (BuildContext context,
-                                          Object error,
-                                          StackTrace? stackTrace) {
-                                        debugPrint('AAAAAAAAAAAAAAAAAAAAA');
-                                        return Image.network(
-                                            'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
-                                      },
-                                    ).image
-                                  : Image.network(
-                                          'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg')
-                                      .image,
-                              fit: BoxFit.fill,
+                        onTap: () {
+                          final bool resp = ref
+                              .read(userLogicProvider.notifier)
+                              .updateUserImage();
+                          if (resp == false) {
+                            context.showErrorSnackBar(
+                                title: 'Hata',
+                                message: 'Resim yüklenirken bir hata oluştu.');
+                          }
+                        },
+                        child: userLogic.isImageLoading
+                            ? const SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CupertinoActivityIndicator(),
+                              )
+                            : Stack(
+                              children: [
+                                Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: ShapeDecoration(
+                                      image: DecorationImage(
+                                        image: FirebaseAuth.instance.currentUser
+                                                    ?.photoURL !=
+                                                null
+                                            ? Image.network(
+                                                FirebaseAuth.instance.currentUser!
+                                                    .photoURL!,
+                                                errorBuilder: (BuildContext context,
+                                                    Object error,
+                                                    StackTrace? stackTrace) {
+                                                  debugPrint(
+                                                      'AAAAAAAAAAAAAAAAAAAAA');
+                                                  return Image.network(
+                                                      'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
+                                                },
+                                              ).image
+                                            : Image.network(
+                                                    'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg')
+                                                .image,
+                                        fit: BoxFit.fill,
+                                      ),
+                                      shape: const OvalBorder(),
+                                    ),
+                                  ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      color: context.colorScheme.primary,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            shape: const OvalBorder(),
-                          ),
-                        ),
                       ),
                     ],
                   ),
                   title: Text(
-                    FirebaseAuth.instance.currentUser?.displayName ??
-                        'Kullanici',
+                    userLogic.user?.displayName ?? 'Kullanici',
                     style: context.textTheme.labelMedium,
                   ),
-                  subtitle: Text(FirebaseAuth.instance.currentUser?.email ?? '',
+                  subtitle: Text(userLogic.user?.email ?? '',
                       style: context.textTheme.labelSmall),
                 ),
                 // Invite friends button outlined with a border transtiion and with a leading icon

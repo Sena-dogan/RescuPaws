@@ -10,6 +10,8 @@ import '../../constants/endpoints.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../data/network/category/category_rest_client.dart';
 import '../../data/network/paw_entry/paw_entry_rest_client.dart';
+import '../../data/network/utils/utils_rest_client.dart';
+import '../../data/network/utils_api.dart';
 
 /// NetworkModule is used to register network related dependencies.
 /// @module is used to register the module.
@@ -67,5 +69,10 @@ abstract class NetworkModule {
   @preResolve
   Future<CategoryRestClient> provideCategoryRestClient(Dio dio) {
     return Future.value(CategoryRestClient(dio));
+  }
+
+  @preResolve
+  Future<UtilsRestClient> provideUtilsApi(Dio dio) {
+    return Future.value(UtilsRestClient(dio));
   }
 }
