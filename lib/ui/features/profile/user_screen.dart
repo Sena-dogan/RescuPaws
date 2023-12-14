@@ -1,14 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,8 +12,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../config/router/app_router.dart';
 import '../../../config/theme/theme_logic.dart';
 import '../../../constants/assets.dart';
-import '../../../data/network/utils/utils_repository.dart';
-import '../../../models/convert_images.dart';
 import '../../../utils/context_extensions.dart';
 import '../../widgets/add_nav_button.dart';
 import '../../widgets/app_bar_gone.dart';

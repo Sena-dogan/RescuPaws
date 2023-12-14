@@ -7,8 +7,6 @@ import 'package:fpdart/fpdart.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/network/utils/utils_repository.dart';
-import '../../../data/network/utils/utils_rest_client.dart';
 import '../../../data/network/utils_api.dart';
 import '../../../di/components/service_locator.dart';
 import '../../../models/convert_images.dart';
