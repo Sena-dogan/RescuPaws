@@ -7,7 +7,9 @@ import 'package:injectable/injectable.dart';
 
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
+import '../../models/paw_entry.dart';
 import '../../ui/features/auth/login_screen.dart';
+import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
@@ -24,7 +26,8 @@ enum SGRoute {
   register,
   forgotPassword,
   editProfile,
-  changePassword;
+  changePassword,
+  detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
   String get name => toString().replaceAll('SGRoute.', '');
@@ -34,16 +37,16 @@ enum SGRoute {
 class SGGoRouter {
   final GoRouter goRoute = GoRouter(
     initialLocation: SGRoute.intro.route,
-    errorBuilder: (BuildContext context, GoRouterState state) =>
-        Scaffold(body: Column(
-          children: <Widget>[
-            Center(child: Text('Page not found: ${state.path}')),
-            ElevatedButton(
-              onPressed: () => context.go(SGRoute.home.route),
-              child: const Text('Go Back'),
-            ),
-          ],
-        )),
+    errorBuilder: (BuildContext context, GoRouterState state) => Scaffold(
+        body: Column(
+      children: <Widget>[
+        Center(child: Text('Page not found: ${state.path}')),
+        ElevatedButton(
+          onPressed: () => context.go(SGRoute.home.route),
+          child: const Text('Go Back'),
+        ),
+      ],
+    )),
     routes: <GoRoute>[
       GoRoute(
         path: SGRoute.home.route,
@@ -65,6 +68,12 @@ class SGGoRouter {
         path: SGRoute.profile.route,
         builder: (BuildContext context, GoRouterState state) =>
             const ProfileScreen(),
+      ).fade(),
+      GoRoute(
+        path: SGRoute.detail.route,
+        builder: (BuildContext context, GoRouterState state) => DetailScreen(
+          pawEntry: state.extra! as PawEntry,
+        ),
       ).fade(),
     ],
   );
