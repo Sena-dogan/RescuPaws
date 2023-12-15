@@ -1,5 +1,6 @@
 // ignore_for_file: always_specify_types, unused_local_variable
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -248,10 +249,9 @@ class SwipeCard extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(27),
-              child: Image.network(
-                pawEntry.images_uploads?.firstOrNull?.image_url ?? '',
-                errorBuilder:
-                    (BuildContext context, Object error, StackTrace? stackTrace) {
+              child: CachedNetworkImage(
+                imageUrl: pawEntry.images_uploads?.firstOrNull?.image_url ?? '',
+                errorWidget: (BuildContext context, String error, Object obj) {
                   debugPrint(
                       'Error occured while loading image: ${pawEntry.images_uploads?.firstOrNull?.image_url} \n');
                   debugPrint('Id of the paw entry: ${pawEntry.id}');
