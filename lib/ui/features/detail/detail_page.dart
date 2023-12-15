@@ -38,7 +38,7 @@ class DetailScreen extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.all(0),
                 title: Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.5),
@@ -69,7 +69,8 @@ class DetailScreen extends StatelessWidget {
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -82,7 +83,59 @@ class DetailScreen extends StatelessWidget {
                           pawEntry.address ?? '',
                           style: context.textTheme.bodyMedium,
                         ),
-                        const Gap(10),
+                        const Gap(30),
+                        Column(
+                          children: const <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    CharacteristicWidget(
+                                      title: 'Cinsiyet',
+                                      value: 'Dişi',
+                                    ),
+                                    Gap(30),
+                                    CharacteristicWidget(
+                                      title: 'Tuvalet Eğitimi',
+                                      value: 'Var',
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    CharacteristicWidget(
+                                      title: 'Yaş',
+                                      value: '3.5 Ay',
+                                    ),
+                                    Gap(30),
+                                    CharacteristicWidget(
+                                      title: 'Köken',
+                                      value: 'İngiltere',
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    CharacteristicWidget(
+                                      title: 'Ağırlık',
+                                      value: '1.5 Kg',
+                                    ),
+                                    Gap(30),
+                                    CharacteristicWidget(
+                                      title: 'Aşıları',
+                                      value: 'Yapıldı',
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Gap(30),
                         Text(
                           pawEntry.createdAtFormatted,
                           style: context.textTheme.bodyMedium,
@@ -101,6 +154,37 @@ class DetailScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         bottomNavigationBar: const BottomNavBar(),
       ),
+    );
+  }
+}
+
+class CharacteristicWidget extends StatelessWidget {
+  const CharacteristicWidget({
+    required this.title,
+    required this.value,
+    super.key,
+  });
+
+  final String title;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: context.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Gap(5),
+        Text(
+          value,
+          style: context.textTheme.bodyLarge,
+        )
+      ],
     );
   }
 }
