@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
@@ -20,6 +22,7 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -34,21 +37,38 @@ class DetailScreen extends StatelessWidget {
           slivers: <Widget>[
             SliverAppBar(
               pinned: _pinned,
+              leading: IconButton(
+                icon: Container(
+                  height: 50,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () => context.go(SGRoute.home.route),
+              ),
               expandedHeight: MediaQuery.of(context).size.height * 0.5,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.all(0),
                 title: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
+                      color: context.colorScheme.background.withOpacity(0.4),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       )),
                   child: Text(
                     pawEntry.name ?? '',
-                    style: context.textTheme.labelMedium,
+                    style: context.textTheme.labelMedium
                   ),
                 ),
                 background: Image.network(
@@ -84,61 +104,31 @@ class DetailScreen extends StatelessWidget {
                           style: context.textTheme.bodyMedium,
                         ),
                         const Gap(30),
-                        Column(
-                          children: const <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    CharacteristicWidget(
-                                      title: 'Cinsiyet',
-                                      value: 'Dişi',
-                                    ),
-                                    Gap(30),
-                                    CharacteristicWidget(
-                                      title: 'Tuvalet Eğitimi',
-                                      value: 'Var',
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    CharacteristicWidget(
-                                      title: 'Yaş',
-                                      value: '3.5 Ay',
-                                    ),
-                                    Gap(30),
-                                    CharacteristicWidget(
-                                      title: 'Köken',
-                                      value: 'İngiltere',
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    CharacteristicWidget(
-                                      title: 'Ağırlık',
-                                      value: '1.5 Kg',
-                                    ),
-                                    Gap(30),
-                                    CharacteristicWidget(
-                                      title: 'Aşıları',
-                                      value: 'Yapıldı',
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                        Characteristics(),
                         const Gap(30),
                         Text(
                           pawEntry.createdAtFormatted,
                           style: context.textTheme.bodyMedium,
+                        ),
+                        const Gap(30),
+                        AdvertiserInfo(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 30),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(size.width * 0.9, 50),
+                              backgroundColor:
+                                  context.colorScheme.secondaryContainer,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: Text('Mesaj Gönder',
+                                style: context.textTheme.labelSmall?.copyWith(
+                                  color: Colors.white,
+                                )),
+                          ),
                         ),
                       ],
                     ),
@@ -158,8 +148,108 @@ class DetailScreen extends StatelessWidget {
   }
 }
 
-class CharacteristicWidget extends StatelessWidget {
-  const CharacteristicWidget({
+class AdvertiserInfo extends StatelessWidget {
+  const AdvertiserInfo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Container(
+          height: 80,
+          width: 80,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.4),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            Icons.favorite_border,
+            size: 25,
+          ),
+        ),
+        const Gap(20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'İlan Sahibi',
+              style: context.textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Gap(5),
+            Text(
+              'Location',
+              style: context.textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class Characteristics extends StatelessWidget {
+  const Characteristics({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: const <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CharacteristicItem(
+              title: 'Cinsiyet',
+              value: 'Dişi',
+            ),
+            Gap(30),
+            CharacteristicItem(
+              title: 'Tuvalet Eğitimi',
+              value: 'Var',
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CharacteristicItem(
+              title: 'Yaş',
+              value: '3.5 Ay',
+            ),
+            Gap(30),
+            CharacteristicItem(
+              title: 'Köken',
+              value: 'İngiltere',
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CharacteristicItem(
+              title: 'Ağırlık',
+              value: '1.5 Kg',
+            ),
+            Gap(30),
+            CharacteristicItem(
+              title: 'Aşıları',
+              value: 'Yapıldı',
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class CharacteristicItem extends StatelessWidget {
+  const CharacteristicItem({
     required this.title,
     required this.value,
     super.key,
