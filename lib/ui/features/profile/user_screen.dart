@@ -133,7 +133,7 @@ class ProfileScreen extends ConsumerWidget {
                     style: context.textTheme.labelMedium,
                   ),
                   subtitle: Text(userLogic.user?.email ?? '',
-                      style: context.textTheme.labelSmall),
+                      style: context.textTheme.bodyMedium),
                 ),
                 // Invite friends button outlined with a border transtiion and with a leading icon
                 Padding(
