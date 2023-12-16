@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stepindicator/flutter_stepindicator.dart';
 
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
@@ -24,10 +25,19 @@ class _NewPawScreenState extends ConsumerState<NewPawScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: const Scaffold(
+        child:  Scaffold(
           appBar: EmptyAppBar(),
           backgroundColor: Colors.transparent,
-          body: Column(),
+          body: Column(
+            children: <Widget>[
+              FlutterStepIndicator(
+                height: 20,
+                list: [],
+                onChange: (p0) {},
+                page: 0,
+              )
+            ],
+          ),
         ));
   }
 }
