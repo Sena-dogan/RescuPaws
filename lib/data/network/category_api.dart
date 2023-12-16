@@ -13,4 +13,12 @@ class CategoryApi {
         await _categoryRestClient.getCategories();
     return categories;
   }
+
+  Future<GetCategoriesResponse> getSubCategories(int id) async {
+    final GetCategoriesResponse categories =
+        await _categoryRestClient.getSubCategories(id);
+    return categories;
+  }
+
+  
 }

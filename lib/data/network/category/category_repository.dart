@@ -21,6 +21,12 @@ class CategoryRepository
     await _categoryApi.getCategories();
     return categories;
   }
+
+  Future<GetCategoriesResponse> getSubCategories(int id) async {
+    final GetCategoriesResponse categories =
+    await _categoryApi.getSubCategories(id);
+    return categories;
+  }
 }
 
 @riverpod
