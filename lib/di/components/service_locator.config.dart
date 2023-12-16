@@ -15,13 +15,15 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../config/router/app_router.dart' as _i5;
 import '../../data/getstore/get_store_helper.dart' as _i4;
-import '../../data/network/category/category_rest_client.dart' as _i9;
-import '../../data/network/category_api.dart' as _i12;
-import '../../data/network/paw_api.dart' as _i10;
-import '../../data/network/paw_entry/paw_entry_rest_client.dart' as _i7;
-import '../../data/network/utils/utils_rest_client.dart' as _i8;
-import '../../data/network/utils_api.dart' as _i11;
-import '../module/network_module.dart' as _i13;
+import '../../data/network/category/category_rest_client.dart' as _i10;
+import '../../data/network/category_api.dart' as _i14;
+import '../../data/network/location/location_rest_client.dart' as _i7;
+import '../../data/network/location_api.dart' as _i11;
+import '../../data/network/paw_api.dart' as _i12;
+import '../../data/network/paw_entry/paw_entry_rest_client.dart' as _i8;
+import '../../data/network/utils/utils_rest_client.dart' as _i9;
+import '../../data/network/utils_api.dart' as _i13;
+import '../module/network_module.dart' as _i15;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -46,24 +48,30 @@ extension GetItInjectableX on _i1.GetIt {
       () => networkModule.provideDio(gh<_i4.GetStoreHelper>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i7.PawEntryRestClient>(
+    await gh.factoryAsync<_i7.LocationRestClient>(
+      () => networkModule.provideLocationRestClient(gh<_i6.Dio>()),
+      preResolve: true,
+    );
+    await gh.factoryAsync<_i8.PawEntryRestClient>(
       () => networkModule.providePawEntryRestClient(gh<_i6.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i8.UtilsRestClient>(
-      () => networkModule.provideUtilsApi(gh<_i6.Dio>()),
+    await gh.factoryAsync<_i9.UtilsRestClient>(
+      () => networkModule.provideUtilsRestClient(gh<_i6.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i9.CategoryRestClient>(
+    await gh.factoryAsync<_i10.CategoryRestClient>(
       () => networkModule.provideCategoryRestClient(gh<_i6.Dio>()),
       preResolve: true,
     );
-    gh.factory<_i10.PawApi>(() => _i10.PawApi(gh<_i7.PawEntryRestClient>()));
-    gh.factory<_i11.UtilsApi>(() => _i11.UtilsApi(gh<_i8.UtilsRestClient>()));
-    gh.factory<_i12.CategoryApi>(
-        () => _i12.CategoryApi(gh<_i9.CategoryRestClient>()));
+    gh.factory<_i11.LocationApi>(
+        () => _i11.LocationApi(gh<_i7.LocationRestClient>()));
+    gh.factory<_i12.PawApi>(() => _i12.PawApi(gh<_i8.PawEntryRestClient>()));
+    gh.factory<_i13.UtilsApi>(() => _i13.UtilsApi(gh<_i9.UtilsRestClient>()));
+    gh.factory<_i14.CategoryApi>(
+        () => _i14.CategoryApi(gh<_i10.CategoryRestClient>()));
     return this;
   }
 }
 
-class _$NetworkModule extends _i13.NetworkModule {}
+class _$NetworkModule extends _i15.NetworkModule {}
