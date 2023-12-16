@@ -74,6 +74,7 @@ dependencies:
   image_picker: ^1.0.4
   sliver_app_bar_builder: ^1.1.0
   cached_network_image: ^3.3.0
+  flutter_stepindicator: ^0.1.7
 
 
 dev_dependencies:
