@@ -23,8 +23,6 @@ class Category with _$Category {
     required String name,
     required String description,
     required int status,
-    required String created_at,
-    required String? updated_at,
   }) = _Category;
 
   factory Category.fromJson(Map<String, dynamic> json) =>
