@@ -41,12 +41,7 @@ class LoginLogic extends _$LoginLogic {
         idToken: googleAuth?.idToken,
       );
       await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((UserCredential value) {
-        final User firebaseUser = value.user!;
-        firebaseUser.updateDisplayName(googleUser?.displayName);
-        firebaseUser.updatePhotoURL(googleUser?.photoUrl);
-      });
+          .signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
       FirebaseCrashlytics.instance.recordError(e, stackTrace);
@@ -76,15 +71,7 @@ class LoginLogic extends _$LoginLogic {
         accessToken: appleCredential.authorizationCode,
       );
       await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((UserCredential userCredential) {
-        final User firebaseUser = userCredential.user!;
-        if (appleCredential.givenName != null &&
-            appleCredential.familyName != null) {
-          firebaseUser.updateDisplayName(
-              '${appleCredential.givenName} ${appleCredential.familyName}');
-        }
-      });
+          .signInWithCredential(credential);
       return true;
     } catch (e) {
       debugPrint(e.toString());
