@@ -10,10 +10,22 @@ part 'new_paw_logic.g.dart';
 @riverpod
 Future<List<Category>> fetchCategories(FetchCategoriesRef ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
+  ref.keepAlive();
   final CategoryRepository categoryRepository =
       ref.watch(getCategoryRepositoryProvider);
   final GetCategoriesResponse categories =
       await categoryRepository.getCategories();
+  return categories.data;
+}
+
+@riverpod
+Future<List<Category>> fetchSubCategories(
+    FetchSubCategoriesRef ref, int categoryId) async {
+  ref.keepAlive();
+  final CategoryRepository categoryRepository =
+      ref.watch(getCategoryRepositoryProvider);
+  final GetCategoriesResponse categories =
+      await categoryRepository.getSubCategories(categoryId);
   return categories.data;
 }
 

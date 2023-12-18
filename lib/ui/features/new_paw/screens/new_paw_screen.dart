@@ -31,7 +31,7 @@ class _NewPawScreenState extends ConsumerState<NewPawScreen> {
           ),
         ),
         child: Scaffold(
-          appBar: const EmptyAppBar(),
+          appBar: AppBar(),
           backgroundColor: Colors.transparent,
           body: categories.when(
             data: (List<Category> data) {
