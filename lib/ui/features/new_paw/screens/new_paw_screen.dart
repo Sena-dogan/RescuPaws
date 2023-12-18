@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stepindicator/flutter_stepindicator.dart';
+import 'package:gap/gap.dart';
 
 import '../../../../constants/assets.dart';
 import '../../../../models/categories_response.dart';
@@ -35,22 +36,37 @@ class _NewPawScreenState extends ConsumerState<NewPawScreen> {
           backgroundColor: Colors.transparent,
           body: categories.when(
             data: (List<Category> data) {
-              return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.5,
-                ),
-                itemCount: data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {},
-                    child: Card(
-                      child: Center(
-                        child: Text(data[index].name),
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Gap(16),
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.5,
+                        ),
+                        itemCount: data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            onTap: () {
+                              ref.read(newPawLogicProvider.notifier).setCategoryId(data[index].id);
+                              
+                            },
+                            child: Card(
+                              child: Center(
+                                child: Text(data[index].name),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                  );
-                },
+                  ],
+                ),
               );
             },
             error: (Object error, StackTrace stackTrace) => Center(
