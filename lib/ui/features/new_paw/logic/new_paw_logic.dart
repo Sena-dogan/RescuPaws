@@ -29,13 +29,17 @@ Future<List<Category>> fetchSubCategories(
   return categories.data;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class NewPawLogic extends _$NewPawLogic {
   @override
   NewPawUiModel build() {
     return NewPawUiModel(
       user_id: FirebaseAuth.instance.currentUser!.uid,
     );
+  }
+
+  void search(String query) {
+    
   }
 
   void setError(String error) {
@@ -60,6 +64,10 @@ class NewPawLogic extends _$NewPawLogic {
 
   void setCategoryId(int categoryId) {
     state = state.copyWith(category_id: categoryId);
+  }
+
+  void setSubCategoryId(int subCategoryId) {
+    state = state.copyWith(sub_category_id: subCategoryId);
   }
 
   void setCountryId(int countryId) {

@@ -15,6 +15,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     String? name,
     String? description,
     int? category_id,
+    int? sub_category_id,
     int? country_id,
     int? city_id,
     int? district_id,
