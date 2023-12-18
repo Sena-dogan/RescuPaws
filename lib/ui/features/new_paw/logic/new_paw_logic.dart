@@ -1,9 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'new_paw_ui_model.dart';
+import '../../../../data/network/category/category_repository.dart';
+import '../../../../models/categories_response.dart';
+import '../model/new_paw_ui_model.dart';
 
 part 'new_paw_logic.g.dart';
+
+@riverpod
+Future<List<Category>> fetchCategories(FetchCategoriesRef ref) async {
+  /// OLMMM BU COK GUZEL BIR SEY
+  final CategoryRepository categoryRepository =
+      ref.watch(getCategoryRepositoryProvider);
+  final GetCategoriesResponse categories =
+      await categoryRepository.getCategories();
+  return categories.data;
+}
 
 @riverpod
 class NewPawLogic extends _$NewPawLogic {
@@ -12,6 +24,10 @@ class NewPawLogic extends _$NewPawLogic {
     return NewPawUiModel(
       user_id: FirebaseAuth.instance.currentUser!.uid,
     );
+  }
+
+  void setError(String error) {
+    state = state.copyWith(error: error);
   }
 
   void setLoading({bool isLoading = false}) {
