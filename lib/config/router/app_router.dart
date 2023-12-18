@@ -11,7 +11,8 @@ import '../../models/paw_entry.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
-import '../../ui/features/new_paw/screens/new_paw_screen.dart';
+import '../../ui/features/new_paw/screens/select_breed_screen.dart';
+import '../../ui/features/new_paw/screens/select_subBreed_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
 import 'fade_extension.dart';
@@ -22,6 +23,7 @@ enum SGRoute {
   home,
   profile,
   newPaw,
+  subbreed,
   intro,
   firstScreen,
   login,
@@ -80,7 +82,12 @@ class SGGoRouter {
       GoRoute(
         path: SGRoute.newPaw.route,
         builder: (BuildContext context, GoRouterState state) =>
-            const NewPawScreen(),
+            const SelectBreedScreen(),
+      ),
+      GoRoute(
+        path: SGRoute.subbreed.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const SelectSubBreedWidget(),
       ),
     ],
   );
