@@ -11,6 +11,7 @@ import '../../models/paw_entry.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
+import '../../ui/features/new_paw/screens/new_paw_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
 import 'fade_extension.dart';
@@ -20,6 +21,7 @@ GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 enum SGRoute {
   home,
   profile,
+  newPaw,
   intro,
   firstScreen,
   login,
@@ -75,6 +77,11 @@ class SGGoRouter {
           pawEntry: state.extra! as PawEntry,
         ),
       ).fade(),
+      GoRoute(
+        path: SGRoute.newPaw.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const NewPawScreen(),
+      ),
     ],
   );
   GoRouter get getGoRouter => goRoute;
