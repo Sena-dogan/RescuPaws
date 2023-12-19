@@ -44,7 +44,7 @@ class LoginLogic extends _$LoginLogic {
           .signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
-      FirebaseCrashlytics.instance.recordError(e, stackTrace);
+      await FirebaseCrashlytics.instance.recordError(e, stackTrace);
       setError(e.toString());
       setLogin();
       return false;

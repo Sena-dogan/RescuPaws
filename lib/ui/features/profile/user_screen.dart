@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,8 +76,8 @@ class ProfileScreen extends ConsumerWidget {
                                 child: CupertinoActivityIndicator(),
                               )
                             : Stack(
-                              children: [
-                                Container(
+                                children: <Widget>[
+                                  Container(
                                     width: 60,
                                     height: 60,
                                     decoration: ShapeDecoration(
@@ -87,9 +86,10 @@ class ProfileScreen extends ConsumerWidget {
                                                     ?.photoURL !=
                                                 null
                                             ? Image.network(
-                                                FirebaseAuth.instance.currentUser!
-                                                    .photoURL!,
-                                                errorBuilder: (BuildContext context,
+                                                FirebaseAuth.instance
+                                                    .currentUser!.photoURL!,
+                                                errorBuilder: (BuildContext
+                                                        context,
                                                     Object error,
                                                     StackTrace? stackTrace) {
                                                   debugPrint(
@@ -106,25 +106,25 @@ class ProfileScreen extends ConsumerWidget {
                                       shape: const OvalBorder(),
                                     ),
                                   ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                      color: context.colorScheme.primary,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.white,
-                                      size: 15,
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: 20,
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        color: context.colorScheme.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
                       ),
                     ],
                   ),
@@ -143,7 +143,7 @@ class ProfileScreen extends ConsumerWidget {
                       final InAppReview inAppReview = InAppReview.instance;
 
                       if (await inAppReview.isAvailable()) {
-                        inAppReview.openStoreListing();
+                        await inAppReview.openStoreListing();
                       }
                     },
                     icon: const Icon(Icons.star_outlined),
