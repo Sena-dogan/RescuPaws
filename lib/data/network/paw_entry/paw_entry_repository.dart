@@ -11,10 +11,6 @@ class PawEntryRepository {
   final PawApi _pawApi;
 
   Future<GetPawEntryResponse> getPawEntry() async {
-    // Best part of functional programming: no try-catch blocks!
-    // Instead, we use Either to return either a String or a PawEntry.
-    // If the request fails, we return a String with the error message.
-    // If the request succeeds, we return a PawEntry.
     final GetPawEntryResponse pawEntry =
         await _pawApi.getPawEntry();
     return pawEntry;
