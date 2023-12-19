@@ -31,6 +31,7 @@ class LoginLogic extends _$LoginLogic {
       setLogin(isLoading: true);
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
               clientId: Platform.isIOS
+                  //!TODO: Put this in an env file
                   ? '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com'
                   : null)
           .signIn();
