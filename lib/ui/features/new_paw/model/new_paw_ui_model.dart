@@ -19,9 +19,9 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     int? country_id,
     int? city_id,
     int? district_id,
-    bool? gender,
+    int? gender,
     String? age,
-    bool? education,
+    int? education,
     bool? vaccinated,
     String? address,
   }) = _NewPawUiModel;

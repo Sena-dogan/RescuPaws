@@ -38,8 +38,24 @@ class NewPawLogic extends _$NewPawLogic {
     );
   }
 
-  void search(String query) {
-    
+  void setPawName(String name) {
+    state = state.copyWith(name: name);
+  }
+
+  void setPawDescription(String description) {
+    state = state.copyWith(description: description);
+  }
+
+  void setPawAge(String age) {
+    state = state.copyWith(age: age);
+  }
+
+  void setPawGender(int gender) {
+    state = state.copyWith(gender: gender);
+  }
+
+  void setPawEducationLevel(int educationLevel) {
+    state = state.copyWith(education: educationLevel);
   }
 
   void setError(String error) {
