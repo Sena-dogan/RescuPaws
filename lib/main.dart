@@ -34,14 +34,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FlutterError.onError = (FlutterErrorDetails errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // FlutterError.onError = (FlutterErrorDetails errorDetails) {
+  //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  // };
+  // // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  // PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
   //getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
     if (Platform.isAndroid) {
