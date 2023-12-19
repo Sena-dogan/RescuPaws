@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../utils/context_extensions.dart';
@@ -27,7 +29,14 @@ class SelectSubBreedWidget extends ConsumerWidget {
           ),
         ),
         child: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            title: Text(
+              'Cins Seç',
+              style: context.textTheme.labelSmall,
+            ),
+          ),
           backgroundColor: Colors.transparent,
           // floatingActionButton: FloatingActionButton(child: Icon(Icons.search), onPressed: () async {
           //   // TODO: implement search with modal bottom sheet
@@ -56,10 +65,12 @@ class SelectSubBreedWidget extends ConsumerWidget {
                               ref
                                   .read(newPawLogicProvider.notifier)
                                   .setSubCategoryId(data[index].id);
+                              context.push(SGRoute.information.route);
                             },
                             child: Card(
+                              elevation: 2,
                               child: Center(
-                                child: Text(data[index].name),
+                                child: Text(data[index].name, style: context.textTheme.bodyMedium, textAlign: TextAlign.center),
                               ),
                             ),
                           );

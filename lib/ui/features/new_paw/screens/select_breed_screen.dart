@@ -32,7 +32,14 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
           ),
         ),
         child: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            title: Text(
+              'Cins Seç',
+              style: context.textTheme.labelSmall,
+            ),
+          ),
           backgroundColor: Colors.transparent,
           body: categories.when(
             data: (List<Category> data) {
@@ -59,8 +66,9 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
                               context.push(SGRoute.subbreed.route);
                             },
                             child: Card(
+                              elevation: 2,
                               child: Center(
-                                child: Text(data[index].name),
+                                child: Text(data[index].name, style: context.textTheme.bodyLarge),
                               ),
                             ),
                           );
