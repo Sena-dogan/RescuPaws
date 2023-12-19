@@ -29,7 +29,11 @@ class SelectSubBreedWidget extends ConsumerWidget {
         child: Scaffold(
           appBar: AppBar(),
           backgroundColor: Colors.transparent,
-          
+          // floatingActionButton: FloatingActionButton(child: Icon(Icons.search), onPressed: () async {
+          //   // TODO: implement search with modal bottom sheet
+          //   // Senanin koda bak iyi yaziyo
+          //   // await showModalBottomSheet(context: context, builder: )
+          // }),
           body: categories.when(
             data: (List<Category> data) {
               return Padding(
