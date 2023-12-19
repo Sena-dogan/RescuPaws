@@ -131,7 +131,11 @@ linter:
     - no_leading_underscores_for_local_identifiers
     - no_logic_in_create_state
     # - no_runtimeType_toString # ok in tests; we enable this only in packages/
-    - non_constant_identifier_names
+    # I am sorry to say that this is necessary because we have a lot of code that
+    # depends on the string representation of runtimeType, and we don't have the
+    # resources to fix it all right now.
+    # TODO: Use JsonKeys instead of runtimeType.toString() in serialization
+    # - non_constant_identifier_names
     - noop_primitive_operations
     - null_check_on_nullable_type_parameter
     - null_closures
