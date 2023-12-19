@@ -19,6 +19,12 @@ class PawEntryRepository {
         await _pawApi.getPawEntry();
     return pawEntry;
   }
+
+  Future<GetPawEntryResponse> getPawEntryById() async {
+    final GetPawEntryResponse pawEntry =
+        await _pawApi.getPawEntryById();
+    return pawEntry;
+  }
 }
 
 // This is the Riverpod way of injecting dependencies.

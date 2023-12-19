@@ -12,4 +12,7 @@ abstract class PawEntryRestClient {
 
   @GET('/classfields')
   Future<GetPawEntryResponse> getPawEntry();
+
+  @GET('/classfields/{id}')
+  Future<GetPawEntryResponse> getPawEntryById(@Path('id') String id);
 }
