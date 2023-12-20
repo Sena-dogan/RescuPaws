@@ -77,7 +77,7 @@ class ProfileScreen extends ConsumerWidget {
                                 child: CupertinoActivityIndicator(),
                               )
                             : Stack(
-                              children: [
+                              children: <Widget>[
                                 Container(
                                     width: 60,
                                     height: 60,

@@ -17,7 +17,7 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   return pawEntries.randomize();
 }
 
-@riverpod
+@riverpod 
 class HomeScreenLogic extends _$HomeScreenLogic {
   @override
   HomeScreenUiModel build() {
