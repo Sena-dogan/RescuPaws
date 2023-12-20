@@ -154,7 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Image.network(
                             'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'),
                   ).image,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
                 shape: const OvalBorder(),
               ),
@@ -303,6 +303,8 @@ class SwipeCard extends StatelessWidget {
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const Gap(5),

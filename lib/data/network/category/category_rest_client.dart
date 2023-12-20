@@ -12,4 +12,7 @@ abstract class CategoryRestClient {
 
   @GET('/categories')
   Future<GetCategoriesResponse> getCategories();
+
+  @GET('/categories/{id}')
+  Future<GetCategoriesResponse> getSubCategories(@Path('id') int id);
 }
