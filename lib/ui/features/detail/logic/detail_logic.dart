@@ -1,21 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/paw_entry_detail.dart';
-import '../../../../utils/riverpod_extensions.dart';
 import 'detail_ui_model.dart';
 
 part 'detail_logic.g.dart';
 
 @riverpod
-Future<GetPawEntryDetailResponse> fetchPawEntryDetail(
+Future<PawEntryDetail?> fetchPawEntryDetail(
     FetchPawEntryDetailRef ref, String classfieldsId) async {
-  ref.cacheFor(const Duration(minutes: 5));
+  debugPrint("Id is $classfieldsId");
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
-  final GetPawEntryDetailResponse pawEntryDetail =
+  final GetPawEntryDetailResponse pawEntryDetailResponse =
       await pawEntryRepository.getPawEntryDetail(classfieldsId);
-  return pawEntryDetail;
+  return pawEntryDetailResponse.data;
 }
 
 @riverpod

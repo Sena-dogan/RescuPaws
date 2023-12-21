@@ -2,6 +2,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../data/enums/detail_enums.dart';
 import 'images_upload.dart';
 import 'user.dart';
 
@@ -11,7 +12,7 @@ part 'paw_entry_detail.g.dart';
 @freezed
 class GetPawEntryDetailResponse with _$GetPawEntryDetailResponse {
   factory GetPawEntryDetailResponse({
-    required PawEntryDetail data,
+    required PawEntryDetail? data,
   }) = _GetPawEntryDetailResponse;
 
   factory GetPawEntryDetailResponse.fromJson(Map<String, dynamic> json) =>
@@ -41,7 +42,7 @@ class PawEntryDetail with _$PawEntryDetail {
     dynamic deleted_at,
     String? created_at,
     String? updated_at,
-    required User user,
+    User? user,
     List<ImagesUploads>? images_uploads,
   }) = _PawEntryDetail;
 
@@ -50,6 +51,39 @@ class PawEntryDetail with _$PawEntryDetail {
 }
 
 extension PawEntryDetailX on PawEntryDetail {
+  Gender get genderEnum {
+    switch (gender) {
+      case 0:
+        return Gender.Female;
+      case 1:
+        return Gender.Male;
+      default:
+        throw Exception('Invalid gender value');
+    }
+  }
+
+  HaveorNot get educationEnum {
+    switch (education) {
+      case 0:
+        return HaveorNot.Not;
+      case 1:
+        return HaveorNot.Have;
+      default:
+        throw Exception('Invalid education value');
+    }
+  }
+
+  HaveorNot get vaccinatedEnum {
+    switch (vaccinated) {
+      case 0:
+        return HaveorNot.Have;
+      case 1:
+        return HaveorNot.Not;
+      default:
+        throw Exception('Invalid vaccinated value');
+    }
+  }
+
   String get createdAtFormatted {
     final DateTime createdAt = DateTime.parse(created_at!);
     final String formattedDate =
@@ -59,5 +93,5 @@ extension PawEntryDetailX on PawEntryDetail {
 }
 
 extension GetPawEntryDetailResponseX on GetPawEntryDetailResponse {
-  PawEntryDetail get pawEntryDetail => data;
+  PawEntryDetail? get pawEntryDetail => data;
 }
