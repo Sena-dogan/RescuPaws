@@ -2,6 +2,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../models/location_response.dart';
+
 part 'new_paw_ui_model.freezed.dart';
 
 @freezed
@@ -16,9 +18,9 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     String? description,
     int? category_id,
     int? sub_category_id,
-    int? country_id,
-    int? city_id,
-    int? district_id,
+    Country? country,
+    City? city,
+    District? district,
     int? gender,
     String? age,
     int? education,

@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/network/category/category_repository.dart';
 import '../../../../models/categories_response.dart';
+import '../../../../models/location_response.dart';
 import '../model/new_paw_ui_model.dart';
 
 part 'new_paw_logic.g.dart';
@@ -86,15 +87,15 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(sub_category_id: subCategoryId);
   }
 
-  void setCountryId(int countryId) {
-    state = state.copyWith(country_id: countryId);
+  void setCountry(Country? country) {
+    state = state.copyWith(country: country);
   }
 
-  void setCityId(int cityId) {
-    state = state.copyWith(city_id: cityId);
+  void setCity(City? city) {
+    state = state.copyWith(city: city);
   }
 
-  void setDistrictId(int districtId) {
-    state = state.copyWith(district_id: districtId);
+  void setDistrict(District? district) {
+    state = state.copyWith(district: district);
   }
 }
