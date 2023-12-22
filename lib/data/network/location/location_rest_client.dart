@@ -15,4 +15,10 @@ abstract class LocationRestClient {
     @Path('countryId') int countryId,
     @Path('cityId') int cityId,
   );
+
+  @GET('/countries')
+  Future<GetLocationsResponse> getCountries();
+
+  @GET('/cities/{countryId}')
+  Future<GetLocationsResponse> getCities(@Path('countryId') int countryId);
 }
