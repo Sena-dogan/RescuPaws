@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/paw_entry_detail.dart';
@@ -46,5 +47,9 @@ class DetailLogic extends _$DetailLogic {
     _detailUiModel =
         _detailUiModel.copyWith(isFavorite: !_detailUiModel.isFavorite);
     state = state.copyWith(isFavorite: _detailUiModel.isFavorite);
+  }
+
+  void shareContent(String content) {
+    Share.share(content);
   }
 }

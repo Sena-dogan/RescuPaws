@@ -67,7 +67,11 @@ class DetailBody extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                ref
+                    .read(detailLogicProvider.notifier)
+                    .shareContent(pawEntryDetail?.name ?? '');
+              },
             ),
             FavButton(ref: ref),
           ],
