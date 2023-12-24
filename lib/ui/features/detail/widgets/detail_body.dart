@@ -61,65 +61,19 @@ class DetailBody extends StatelessWidget {
                   color: Colors.black.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
-                child: ref.watch(detailLogicProvider).isFavorite
-                    ? const Icon(Icons.favorite, size: 25, color: Colors.white)
-                    : const Icon(Icons.favorite_border,
-                        size: 25, color: Colors.white),
-              ),
-              onPressed: () {
-                ref.read(detailLogicProvider.notifier).setFavorite();
-              },
-            ),
-            IconButton(
-              icon: Container(
-                height: 50,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
-                  shape: BoxShape.circle,
-                ),
                 child: const Icon(
-                  Icons.more_horiz_rounded,
-                  size: 25,
+                  Icons.share_outlined,
+                  size: 20,
                   color: Colors.white,
                 ),
               ),
               onPressed: () {},
             ),
+            FavButton(ref: ref),
           ],
           expandedHeight: MediaQuery.of(context).size.height * 0.5,
-          flexibleSpace: FlexibleSpaceBar(
-            titlePadding: EdgeInsets.zero,
-            title: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: context.colorScheme.background.withOpacity(0.4),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  )),
-              child: Text(pawEntryDetail?.name ?? '',
-                  style: context.textTheme.labelMedium),
-            ),
-            background: GestureDetector(
-              onDoubleTap: () {
-                ref.read(detailLogicProvider.notifier).setFavorite();
-              },
-              child: Image.network(
-                pawEntryDetail?.images_uploads?.firstOrNull?.image_url ?? '',
-                errorBuilder: (BuildContext context, Object error,
-                    StackTrace? stackTrace) {
-                  debugPrint(
-                      'Error occured while loading image: ${pawEntryDetail?.images_uploads?.firstOrNull?.image_url} \n');
-                  debugPrint('Id of the paw entry: ${pawEntryDetail?.id}');
-                  return Image.network(
-                      'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
-                },
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          flexibleSpace:
+              PawImageandName(pawEntryDetail: pawEntryDetail, ref: ref),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -178,6 +132,82 @@ class DetailBody extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class FavButton extends StatelessWidget {
+  const FavButton({
+    super.key,
+    required this.ref,
+  });
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Container(
+        height: 50,
+        width: 40,
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.4),
+          shape: BoxShape.circle,
+        ),
+        child: ref.watch(detailLogicProvider).isFavorite
+            ? const Icon(Icons.favorite, size: 25, color: Colors.white)
+            : const Icon(Icons.favorite_border, size: 25, color: Colors.white),
+      ),
+      onPressed: () {
+        ref.read(detailLogicProvider.notifier).setFavorite();
+      },
+    );
+  }
+}
+
+class PawImageandName extends StatelessWidget {
+  const PawImageandName({
+    super.key,
+    required this.pawEntryDetail,
+    required this.ref,
+  });
+
+  final PawEntryDetail? pawEntryDetail;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlexibleSpaceBar(
+      titlePadding: EdgeInsets.zero,
+      title: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: context.colorScheme.background.withOpacity(0.4),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            )),
+        child: Text(pawEntryDetail?.name ?? '',
+            style: context.textTheme.labelMedium),
+      ),
+      background: GestureDetector(
+        onDoubleTap: () {
+          ref.read(detailLogicProvider.notifier).setFavorite();
+        },
+        child: Image.network(
+          pawEntryDetail?.images_uploads?.firstOrNull?.image_url ?? '',
+          errorBuilder:
+              (BuildContext context, Object error, StackTrace? stackTrace) {
+            debugPrint(
+                'Error occured while loading image: ${pawEntryDetail?.images_uploads?.firstOrNull?.image_url} \n');
+            debugPrint('Id of the paw entry: ${pawEntryDetail?.id}');
+            return Image.network(
+                'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+          },
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }
