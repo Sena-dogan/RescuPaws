@@ -7,7 +7,6 @@ import '../../../../config/router/app_router.dart';
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/detail_logic.dart';
-import '../logic/detail_ui_model.dart';
 import 'advertiser_info.dart';
 import 'characteristics.dart';
 
