@@ -40,6 +40,7 @@ class DetailScreen extends ConsumerWidget {
         body: switch (pawEntryDetail) {
           AsyncData<PawEntryDetail?>(:final PawEntryDetail? value) =>
             DetailBody(
+              ref: ref,
               pinned: _pinned,
               pawEntryDetail: value,
               size: size,
@@ -49,7 +50,7 @@ class DetailScreen extends ConsumerWidget {
               onRefresh: () async => ref
                   .refresh(fetchPawEntryDetailProvider(id.toString()).future),
             ),
-          _ => const CircularProgressIndicator(),
+          _ => Center(child: const CircularProgressIndicator()),
         },
         floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

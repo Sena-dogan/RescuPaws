@@ -20,6 +20,8 @@ Future<PawEntryDetail?> fetchPawEntryDetail(
 
 @riverpod
 class DetailLogic extends _$DetailLogic {
+  DetailUiModel _detailUiModel = DetailUiModel();
+
   @override
   DetailUiModel build() {
     return DetailUiModel();
@@ -39,4 +41,10 @@ class DetailLogic extends _$DetailLogic {
   void setLoading() => state = state.copyWith(
         isLoading: true,
       );
+
+  void setFavorite() {
+    _detailUiModel =
+        _detailUiModel.copyWith(isFavorite: !_detailUiModel.isFavorite);
+    state = state.copyWith(isFavorite: _detailUiModel.isFavorite);
+  }
 }

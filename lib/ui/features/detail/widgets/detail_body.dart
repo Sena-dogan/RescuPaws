@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../config/router/app_router.dart';
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../utils/context_extensions.dart';
+import '../logic/detail_logic.dart';
+import '../logic/detail_ui_model.dart';
 import 'advertiser_info.dart';
 import 'characteristics.dart';
 
 class DetailBody extends StatelessWidget {
   const DetailBody({
     super.key,
+    required this.ref,
     required bool pinned,
     required this.pawEntryDetail,
     required this.size,
   }) : _pinned = pinned;
 
+  final WidgetRef ref;
   final bool _pinned;
   final PawEntryDetail? pawEntryDetail;
   final Size size;
 
   @override
   Widget build(BuildContext context) {
+    //final DetailUiModel detailUiModel;
     if (pawEntryDetail == null) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -41,12 +47,47 @@ class DetailBody extends StatelessWidget {
               ),
               child: const Icon(
                 Icons.arrow_back,
-                size: 25,
+                size: 20,
                 color: Colors.white,
               ),
             ),
             onPressed: () => context.go(SGRoute.home.route),
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Container(
+                height: 50,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.4),
+                  shape: BoxShape.circle,
+                ),
+                child: ref.watch(detailLogicProvider).isFavorite
+                    ? const Icon(Icons.favorite, size: 25, color: Colors.white)
+                    : const Icon(Icons.favorite_border,
+                        size: 25, color: Colors.white),
+              ),
+              onPressed: () {
+                ref.read(detailLogicProvider.notifier).setFavorite();
+              },
+            ),
+            IconButton(
+              icon: Container(
+                height: 50,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.4),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.more_horiz_rounded,
+                  size: 25,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {},
+            ),
+          ],
           expandedHeight: MediaQuery.of(context).size.height * 0.5,
           flexibleSpace: FlexibleSpaceBar(
             titlePadding: EdgeInsets.zero,
@@ -62,17 +103,22 @@ class DetailBody extends StatelessWidget {
               child: Text(pawEntryDetail?.name ?? '',
                   style: context.textTheme.labelMedium),
             ),
-            background: Image.network(
-              pawEntryDetail?.images_uploads?.firstOrNull?.image_url ?? '',
-              errorBuilder:
-                  (BuildContext context, Object error, StackTrace? stackTrace) {
-                debugPrint(
-                    'Error occured while loading image: ${pawEntryDetail?.images_uploads?.firstOrNull?.image_url} \n');
-                debugPrint('Id of the paw entry: ${pawEntryDetail?.id}');
-                return Image.network(
-                    'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+            background: GestureDetector(
+              onDoubleTap: () {
+                ref.read(detailLogicProvider.notifier).setFavorite();
               },
-              fit: BoxFit.cover,
+              child: Image.network(
+                pawEntryDetail?.images_uploads?.firstOrNull?.image_url ?? '',
+                errorBuilder: (BuildContext context, Object error,
+                    StackTrace? stackTrace) {
+                  debugPrint(
+                      'Error occured while loading image: ${pawEntryDetail?.images_uploads?.firstOrNull?.image_url} \n');
+                  debugPrint('Id of the paw entry: ${pawEntryDetail?.id}');
+                  return Image.network(
+                      'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+                },
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

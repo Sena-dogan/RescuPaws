@@ -10,5 +10,6 @@ class DetailUiModel with _$DetailUiModel {
     @Default(<PawEntryDetail>[]) List<PawEntryDetail> pawEntryDetails,
     @Default(null) String? errorMessage,
     @Default(false) bool isLoading,
+    @Default(false) bool isFavorite,
   }) = _DetailUiModel;
 }
