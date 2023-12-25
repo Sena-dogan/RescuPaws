@@ -15,6 +15,7 @@ import '../../config/router/app_router.dart';
 import '../../constants/assets.dart';
 import '../../models/paw_entry.dart';
 import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
+import '../../utils/error_widgett.dart';
 import '../widgets/add_nav_button.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'logic/home_screen_logic.dart';
@@ -67,7 +68,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: _buildBody(context, valueOrNull.data)),
               // An error is available, so we render it.
-              AsyncValue(:final Object error?) => ErrorWidget(
+              AsyncValue(:final Object error?) => ErrorWidgett(
                   error: error,
                   onRefresh: () async =>
                       ref.refresh(fetchPawEntriesProvider.future),
@@ -166,47 +167,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-class ErrorWidget extends StatelessWidget {
-  const ErrorWidget({
-    this.error,
-    required this.onRefresh,
-    super.key,
-  });
-  final Object? error;
-  final Future<void> Function() onRefresh;
-
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: onRefresh,
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.7,
-          width: MediaQuery.sizeOf(context).width,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                  child: Image.asset(
-                    Assets.PawPaw,
-                    filterQuality: FilterQuality.none,
-                    fit: BoxFit.none,
-                  ),
-                ),
-                const Gap(10),
-                Text(
-                  'Bir sorun oluştu.\n',
-                  style: context.textTheme.bodyLarge,
-                ),
-                //Text('Hata: $error'),
-              ]),
-        ),
-      ),
-    );
-  }
-}
-
 class SwipeCard extends StatelessWidget {
   const SwipeCard({
     super.key,
@@ -221,7 +181,7 @@ class SwipeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go(SGRoute.detail.route, extra: pawEntry);
+        context.go(SGRoute.detail.route, extra: pawEntry.id);
       },
       child: Stack(
         children: <Widget>[

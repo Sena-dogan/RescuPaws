@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../di/components/service_locator.dart';
 import '../../../models/paw_entry.dart';
+import '../../../models/paw_entry_detail.dart';
 import '../paw_api.dart';
 
 part 'paw_entry_repository.g.dart';
@@ -15,9 +16,15 @@ class PawEntryRepository {
     // Instead, we use Either to return either a String or a PawEntry.
     // If the request fails, we return a String with the error message.
     // If the request succeeds, we return a PawEntry.
-    final GetPawEntryResponse pawEntry =
-        await _pawApi.getPawEntry();
+    final GetPawEntryResponse pawEntry = await _pawApi.getPawEntry();
     return pawEntry;
+  }
+
+  Future<GetPawEntryDetailResponse> getPawEntryDetail(
+      String classfieldsId) async {
+    final GetPawEntryDetailResponse pawEntryDetail =
+        await _pawApi.getPawEntryDetail(classfieldsId);
+    return pawEntryDetail;
   }
 }
 

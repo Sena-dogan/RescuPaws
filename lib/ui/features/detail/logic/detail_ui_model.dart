@@ -1,0 +1,15 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../models/paw_entry_detail.dart';
+
+part 'detail_ui_model.freezed.dart';
+
+@freezed
+class DetailUiModel with _$DetailUiModel {
+  factory DetailUiModel({
+    @Default(<PawEntryDetail>[]) List<PawEntryDetail> pawEntryDetails,
+    @Default(null) String? errorMessage,
+    @Default(false) bool isLoading,
+    @Default(false) bool isFavorite,
+  }) = _DetailUiModel;
+}

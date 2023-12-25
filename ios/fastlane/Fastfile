@@ -32,7 +32,7 @@ platform :ios do
  end
 
  desc "upload to TestFlight track"
- lane :upload_to_testflight do   
+ lane :upload_to_ios_testflight do   
    build_number = number_of_commits()
    Dir.chdir "../.." do 
      sh("flutter", "build", "ios", "--release", "--build-number=#{build_number}") 
@@ -41,11 +41,11 @@ platform :ios do
     sh("flutter", "build", "ipa", "--build-number=#{build_number}") 
   end 
   ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = "yctq-ndls-crtj-boon"
-  upload_to_testflight(skip_waiting_for_build_processing: true, ipa: "../build/ios/ipa/patipati.app.ipa")
+  upload_to_testflight(skip_waiting_for_build_processing: true, ipa: "../build/ios/ipa/patipati.app.ipa", uses_non_exempt_encryption: true)
   end
 
   desc "to testflight"
-  lane :testflight do
+  lane :ios_testflight do
     ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = "yctq-ndls-crtj-boon"
     upload_to_testflight(skip_waiting_for_build_processing: true, ipa: "../build/ios/ipa/patipati.app.ipa", uses_non_exempt_encryption: true)
   end

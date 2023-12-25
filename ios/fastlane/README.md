@@ -23,18 +23,18 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Runs all the tests
 
-### ios upload_ios
+### ios upload_to_ios_testflight
 
 ```sh
-[bundle exec] fastlane ios upload_ios
+[bundle exec] fastlane ios upload_to_ios_testflight
 ```
 
 upload to TestFlight track
 
-### ios testflight
+### ios ios_testflight
 
 ```sh
-[bundle exec] fastlane ios testflight
+[bundle exec] fastlane ios ios_testflight
 ```
 
 to testflight
