@@ -187,6 +187,7 @@ class ProfileScreen extends ConsumerWidget {
                       onTap: () async {
                         await showAdaptiveDialog(
                             context: context,
+                            barrierDismissible: true,
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 backgroundColor: context.colorScheme.surface,
