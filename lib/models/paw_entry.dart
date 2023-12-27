@@ -18,7 +18,6 @@ class GetPawEntryResponse with _$GetPawEntryResponse {
       _$GetPawEntryResponseFromJson(json);
 }
 
-//! TODO: Check nullable fields from the API docs
 @freezed
 class PawEntry with _$PawEntry {
   factory PawEntry({

@@ -21,7 +21,6 @@ class GetPawEntryDetailResponse with _$GetPawEntryDetailResponse {
       _$GetPawEntryDetailResponseFromJson(json);
 }
 
-//! TODO: Check nullable fields from the API docs
 @freezed
 class PawEntryDetail with _$PawEntryDetail {
   factory PawEntryDetail({
