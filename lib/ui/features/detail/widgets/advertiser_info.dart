@@ -7,10 +7,10 @@ import '../../../../utils/context_extensions.dart';
 class AdvertiserInfo extends StatelessWidget {
   const AdvertiserInfo({
     super.key,
-    required this.pawEntryDetail,
+    required this.pawEntryDetailResponse,
   });
 
-  final PawEntryDetail? pawEntryDetail;
+  final GetPawEntryDetailResponse? pawEntryDetailResponse;
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +33,10 @@ class AdvertiserInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'İlan Sahibi',
+              pawEntryDetailResponse!.userData?.displayName ?? 'User Not Found',
               style: context.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            const Gap(5),
-            Text(
-              'Location',
-              style: context.textTheme.bodyLarge,
             ),
           ],
         ),

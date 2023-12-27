@@ -9,14 +9,14 @@ import 'detail_ui_model.dart';
 part 'detail_logic.g.dart';
 
 @riverpod
-Future<PawEntryDetail?> fetchPawEntryDetail(
+Future<GetPawEntryDetailResponse?> fetchPawEntryDetail(
     FetchPawEntryDetailRef ref, String classfieldsId) async {
   debugPrint('Id is $classfieldsId');
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
   final GetPawEntryDetailResponse pawEntryDetailResponse =
       await pawEntryRepository.getPawEntryDetail(classfieldsId);
-  return pawEntryDetailResponse.data;
+  return pawEntryDetailResponse;
 }
 
 @riverpod
