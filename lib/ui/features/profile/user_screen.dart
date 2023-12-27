@@ -1,3 +1,4 @@
+import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,8 +78,8 @@ class ProfileScreen extends ConsumerWidget {
                                 child: CupertinoActivityIndicator(),
                               )
                             : Stack(
-                              children: <Widget>[
-                                Container(
+                                children: <Widget>[
+                                  Container(
                                     width: 60,
                                     height: 60,
                                     decoration: ShapeDecoration(
@@ -87,9 +88,10 @@ class ProfileScreen extends ConsumerWidget {
                                                     ?.photoURL !=
                                                 null
                                             ? Image.network(
-                                                FirebaseAuth.instance.currentUser!
-                                                    .photoURL!,
-                                                errorBuilder: (BuildContext context,
+                                                FirebaseAuth.instance
+                                                    .currentUser!.photoURL!,
+                                                errorBuilder: (BuildContext
+                                                        context,
                                                     Object error,
                                                     StackTrace? stackTrace) {
                                                   debugPrint(
@@ -106,25 +108,25 @@ class ProfileScreen extends ConsumerWidget {
                                       shape: const OvalBorder(),
                                     ),
                                   ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                      color: context.colorScheme.primary,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.white,
-                                      size: 15,
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: 20,
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        color: context.colorScheme.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
                       ),
                     ],
                   ),
@@ -189,48 +191,51 @@ class ProfileScreen extends ConsumerWidget {
                             context: context,
                             barrierDismissible: true,
                             builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: context.colorScheme.surface,
-                                title: const Text(
-                                  'Tema',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    ListTile(
-                                      leading: const Icon(Icons.light_mode),
-                                      title: const Text('Açık Tema'),
-                                      onTap: () {
-                                        ref
-                                            .read(themeLogicProvider.notifier)
-                                            .setThemeMode(ThemeMode.light);
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(Icons.dark_mode),
-                                      title: const Text('Koyu Tema'),
-                                      onTap: () {
-                                        ref
-                                            .read(themeLogicProvider.notifier)
-                                            .setThemeMode(ThemeMode.dark);
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: const Icon(Icons.lightbulb),
-                                      title: const Text('Sistem Teması'),
-                                      onTap: () {
-                                        ref
-                                            .read(themeLogicProvider.notifier)
-                                            .setThemeMode(ThemeMode.system);
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
+                              return BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                child: AlertDialog(
+                                  backgroundColor: context.colorScheme.surface,
+                                  title: const Text(
+                                    'Tema',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      ListTile(
+                                        leading: const Icon(Icons.light_mode),
+                                        title: const Text('Açık Tema'),
+                                        onTap: () {
+                                          ref
+                                              .read(themeLogicProvider.notifier)
+                                              .setThemeMode(ThemeMode.light);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(Icons.dark_mode),
+                                        title: const Text('Koyu Tema'),
+                                        onTap: () {
+                                          ref
+                                              .read(themeLogicProvider.notifier)
+                                              .setThemeMode(ThemeMode.dark);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: const Icon(Icons.lightbulb),
+                                        title: const Text('Sistem Teması'),
+                                        onTap: () {
+                                          ref
+                                              .read(themeLogicProvider.notifier)
+                                              .setThemeMode(ThemeMode.system);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             });
