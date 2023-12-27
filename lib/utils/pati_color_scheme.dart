@@ -33,6 +33,8 @@ ColorScheme lightColorScheme() {
 
     /// text color
     scrim: Color(0xFF050405),
+
+    error: Color(0xFFD32F2F),
   );
 }
 
@@ -67,5 +69,7 @@ ColorScheme darkColorScheme() {
 
     /// text color
     scrim: Color(0xFFD4D4D4),
+
+    error: Color(0xFFD32F2F),
   );
 }

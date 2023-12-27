@@ -303,47 +303,21 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('Hesabımı Sil'),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
-                        await showAdaptiveDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: context.colorScheme.surface,
-                                title: const Text(
-                                  'Hesabınızı silmek istediğinize emin misiniz?',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    child: Text('İptal',
-                                        style: context.textTheme.bodyMedium),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await ref
-                                          .read(loginLogicProvider.notifier)
-                                          .removeUser()
-                                          .then((bool value) => value
-                                              ? context.go(SGRoute.login.route)
-                                              : null)
-                                          .catchError((Object? err) =>
-                                              // ignore: invalid_return_type_for_catch_error
-                                              debugPrint(err.toString()));
-                                    },
-                                    child: Text(
-                                      'Sil',
-                                      style: context.textTheme.bodyMedium!
-                                          .copyWith(
-                                              color: context.colorScheme.error),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            });
+                        await popUp(context, ref,
+                            title:
+                                'Hesabınızı silmek istediğinize emin misiniz?',
+                            buttonTitle: 'Sil',
+                            onPressed: () async {
+                          await ref
+                              .read(loginLogicProvider.notifier)
+                              .removeUser()
+                              .then((bool value) => value
+                                  ? context.go(SGRoute.login.route)
+                                  : null)
+                              .catchError((Object? err) =>
+                                  // ignore: invalid_return_type_for_catch_error
+                                  debugPrint(err.toString()));
+                        });
                       },
                     ),
                     ListTile(
@@ -351,14 +325,24 @@ class ProfileScreen extends ConsumerWidget {
                       title: const Text('Çıkış Yap'),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () async {
-                        await ref
-                            .read(loginLogicProvider.notifier)
-                            .signOut()
-                            .then((bool value) =>
-                                value ? context.go(SGRoute.login.route) : null)
-                            .catchError((Object? err) =>
-                                // ignore: invalid_return_type_for_catch_error
-                                debugPrint(err.toString()));
+                        await popUp(
+                          context,
+                          ref,
+                          title:
+                              'Hesabınızdan çıkış yapmak istediğinize emin misiniz?',
+                          buttonTitle: 'Çıkış Yap',
+                          onPressed: () async {
+                            await ref
+                                .read(loginLogicProvider.notifier)
+                                .signOut()
+                                .then((bool value) => value
+                                    ? context.go(SGRoute.login.route)
+                                    : null)
+                                .catchError((Object? err) =>
+                                    // ignore: invalid_return_type_for_catch_error
+                                    debugPrint(err.toString()));
+                          },
+                        );
                       },
                     ),
                   ],
@@ -369,5 +353,48 @@ class ProfileScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<dynamic> popUp(BuildContext context, WidgetRef ref,
+      {required String title,
+      required Function()? onPressed,
+      required String buttonTitle}) {
+    return showAdaptiveDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: AlertDialog(
+              backgroundColor: context.colorScheme.surface,
+              title: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              actionsAlignment: MainAxisAlignment.center,
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('İptal', style: context.textTheme.bodyLarge),
+                ),
+                TextButton(
+                  onPressed: onPressed,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        context.colorScheme.error),
+                  ),
+                  child: Text(
+                    buttonTitle,
+                    style: context.textTheme.bodyLarge!
+                        .copyWith(color: context.colorScheme.scrim),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
