@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../data/enums/detail_enums.dart';
 import 'images_upload.dart';
 import 'user.dart';
+import 'user_data.dart';
 
 part 'paw_entry_detail.freezed.dart';
 part 'paw_entry_detail.g.dart';
@@ -13,6 +14,7 @@ part 'paw_entry_detail.g.dart';
 class GetPawEntryDetailResponse with _$GetPawEntryDetailResponse {
   factory GetPawEntryDetailResponse({
     required PawEntryDetail? data,
+    UserData? userData,
   }) = _GetPawEntryDetailResponse;
 
   factory GetPawEntryDetailResponse.fromJson(Map<String, dynamic> json) =>

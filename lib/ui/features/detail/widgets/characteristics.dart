@@ -8,10 +8,10 @@ import '../../../../utils/context_extensions.dart';
 class Characteristics extends StatelessWidget {
   const Characteristics({
     super.key,
-    required this.pawEntryDetail,
+    required this.pawEntryDetailResponse,
   });
 
-  final PawEntryDetail? pawEntryDetail;
+  final GetPawEntryDetailResponse? pawEntryDetailResponse;
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +23,14 @@ class Characteristics extends StatelessWidget {
           children: <Widget>[
             CharacteristicItem(
               title: 'Cinsiyet',
-              value: pawEntryDetail?.genderEnum == Gender.Female
+              value: pawEntryDetailResponse!.pawEntryDetail?.genderEnum == Gender.Female
                   ? 'Dişi'
                   : 'Erkek',
             ),
             const Gap(30),
             CharacteristicItem(
               title: 'Tuvalet Eğitimi',
-              value: pawEntryDetail?.educationEnum == HaveorNot.Have
+              value: pawEntryDetailResponse!.pawEntryDetail?.educationEnum == HaveorNot.Have
                   ? 'Var'
                   : 'Yok',
             ),
@@ -46,7 +46,7 @@ class Characteristics extends StatelessWidget {
             const Gap(30),
             CharacteristicItem(
               title: 'Yaş',
-              value: pawEntryDetail?.age.toString() ?? '',
+              value: pawEntryDetailResponse!.pawEntryDetail?.age.toString() ?? '',
             ),
           ],
         ),
@@ -55,12 +55,12 @@ class Characteristics extends StatelessWidget {
           children: <Widget>[
             CharacteristicItem(
               title: 'Ağırlık',
-              value: pawEntryDetail?.weight.toString() ?? '',
+              value: pawEntryDetailResponse!.pawEntryDetail?.weight.toString() ?? '',
             ),
             const Gap(30),
             CharacteristicItem(
               title: 'Aşıları',
-              value: pawEntryDetail?.vaccinatedEnum == HaveorNot.Have
+              value: pawEntryDetailResponse!.pawEntryDetail?.vaccinatedEnum == HaveorNot.Have
                   ? 'Var'
                   : 'Yok',
             ),

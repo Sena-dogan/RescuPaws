@@ -24,7 +24,7 @@ class DetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //AsyncValue<Activity> activity = ref.watch(activityProvider);
-    final AsyncValue<PawEntryDetail?> pawEntryDetail =
+    final AsyncValue<GetPawEntryDetailResponse?> pawEntryDetailResponse =
         ref.watch(fetchPawEntryDetailProvider(id.toString()));
     final Size size = MediaQuery.of(context).size;
     return Container(
@@ -37,12 +37,14 @@ class DetailScreen extends ConsumerWidget {
         ),
       ),
       child: Scaffold(
-        body: switch (pawEntryDetail) {
-          AsyncData<PawEntryDetail?>(:final PawEntryDetail? value) =>
+        body: switch (pawEntryDetailResponse) {
+          AsyncData<GetPawEntryDetailResponse?>(
+            :final GetPawEntryDetailResponse? value
+          ) =>
             DetailBody(
               ref: ref,
               pinned: _pinned,
-              pawEntryDetail: value,
+              pawEntryDetailResponse: value,
               size: size,
             ),
           AsyncValue<Object?>(:final Object error?) => ErrorWidgett(

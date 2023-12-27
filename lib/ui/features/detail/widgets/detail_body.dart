@@ -15,19 +15,19 @@ class DetailBody extends StatelessWidget {
     super.key,
     required this.ref,
     required bool pinned,
-    required this.pawEntryDetail,
+    required this.pawEntryDetailResponse,
     required this.size,
   }) : _pinned = pinned;
 
   final WidgetRef ref;
   final bool _pinned;
-  final PawEntryDetail? pawEntryDetail;
+  final GetPawEntryDetailResponse? pawEntryDetailResponse;
   final Size size;
 
   @override
   Widget build(BuildContext context) {
     //final DetailUiModel detailUiModel;
-    if (pawEntryDetail == null) {
+    if (pawEntryDetailResponse == null) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -68,16 +68,15 @@ class DetailBody extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                ref
-                    .read(detailLogicProvider.notifier)
-                    .shareContent(pawEntryDetail?.name ?? '');
+                ref.read(detailLogicProvider.notifier).shareContent(
+                    pawEntryDetailResponse!.pawEntryDetail?.name ?? '');
               },
             ),
             FavButton(ref: ref),
           ],
           expandedHeight: MediaQuery.of(context).size.height * 0.5,
-          flexibleSpace:
-              PawImageandName(pawEntryDetail: pawEntryDetail, ref: ref),
+          flexibleSpace: PawImageandName(
+              pawEntryDetailResponse: pawEntryDetailResponse, ref: ref),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -89,26 +88,28 @@ class DetailBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      pawEntryDetail?.description ?? '',
+                      pawEntryDetailResponse!.pawEntryDetail?.description ?? '',
                       style: context.textTheme.labelSmall,
                     ),
                     const Gap(10),
                     Text(
-                      pawEntryDetail?.address ?? '',
+                      pawEntryDetailResponse!.pawEntryDetail?.address ?? '',
                       style: context.textTheme.bodyMedium,
                     ),
                     const Gap(30),
                     Characteristics(
-                      pawEntryDetail: pawEntryDetail,
+                      pawEntryDetailResponse: pawEntryDetailResponse,
                     ),
                     const Gap(30),
                     Text(
-                      pawEntryDetail?.createdAtFormatted ?? '',
+                      pawEntryDetailResponse!
+                              .pawEntryDetail?.createdAtFormatted ??
+                          '',
                       style: context.textTheme.bodyMedium,
                     ),
                     const Gap(30),
                     AdvertiserInfo(
-                      pawEntryDetail: pawEntryDetail,
+                      pawEntryDetailResponse: pawEntryDetailResponse,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30),
@@ -172,11 +173,11 @@ class FavButton extends StatelessWidget {
 class PawImageandName extends StatelessWidget {
   const PawImageandName({
     super.key,
-    required this.pawEntryDetail,
+    required this.pawEntryDetailResponse,
     required this.ref,
   });
 
-  final PawEntryDetail? pawEntryDetail;
+  final GetPawEntryDetailResponse? pawEntryDetailResponse;
   final WidgetRef ref;
 
   @override
@@ -192,7 +193,7 @@ class PawImageandName extends StatelessWidget {
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             )),
-        child: Text(pawEntryDetail?.name ?? '',
+        child: Text(pawEntryDetailResponse!.pawEntryDetail?.name ?? '',
             style: context.textTheme.labelMedium),
       ),
       background: GestureDetector(
@@ -200,12 +201,15 @@ class PawImageandName extends StatelessWidget {
           ref.read(detailLogicProvider.notifier).setFavorite();
         },
         child: Image.network(
-          pawEntryDetail?.images_uploads?.firstOrNull?.image_url ?? '',
+          pawEntryDetailResponse!
+                  .pawEntryDetail?.images_uploads?.firstOrNull?.image_url ??
+              '',
           errorBuilder:
               (BuildContext context, Object error, StackTrace? stackTrace) {
             debugPrint(
-                'Error occured while loading image: ${pawEntryDetail?.images_uploads?.firstOrNull?.image_url} \n');
-            debugPrint('Id of the paw entry: ${pawEntryDetail?.id}');
+                'Error occured while loading image: ${pawEntryDetailResponse!.pawEntryDetail?.images_uploads?.firstOrNull?.image_url} \n');
+            debugPrint(
+                'Id of the paw entry: ${pawEntryDetailResponse!.pawEntryDetail?.id}');
             return Image.network(
                 'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
           },
