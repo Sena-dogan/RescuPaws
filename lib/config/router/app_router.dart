@@ -13,6 +13,7 @@ import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
 import '../../ui/features/new_paw/screens/information_screen.dart';
+import '../../ui/features/new_paw/screens/new_paw_image_screen.dart';
 import '../../ui/features/new_paw/screens/select_breed_screen.dart';
 import '../../ui/features/new_paw/screens/select_subBreed_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
@@ -28,6 +29,7 @@ enum SGRoute {
   subbreed,
   information,
   address,
+  pawimage,
   intro,
   firstScreen,
   login,
@@ -102,6 +104,11 @@ class SGGoRouter {
         path: SGRoute.address.route,
         builder: (BuildContext context, GoRouterState state) =>
             const AddressInputScreen(),
+      ),
+      GoRoute(
+        path: SGRoute.pawimage.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const NewPawImageScreen(),
       ),
     ],
   );

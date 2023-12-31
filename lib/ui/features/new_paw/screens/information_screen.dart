@@ -222,7 +222,7 @@ class _NewPawInformationScreenState
                                   }
                                   //TODO: Remove baypass else block
                                    else {
-                                    context.push(SGRoute.address.route);
+                                    context.push(SGRoute.pawimage.route);
                                   }
                                 },
                                 child: Text(
