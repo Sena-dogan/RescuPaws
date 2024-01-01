@@ -184,6 +184,7 @@ class PawImageandName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return FlexibleSpaceBar(
       titlePadding: EdgeInsets.zero,
       title: Container(
@@ -204,11 +205,9 @@ class PawImageandName extends StatelessWidget {
           },
           child: CarouselSlider(
             options: CarouselOptions(
-              height: 400.0,
-              autoPlay: true,
-              aspectRatio: 2.0,
-              enlargeCenterPage: true,
-              // add more options here if needed
+              height: size.height * 0.6,
+              viewportFraction: 1.0,
+              enableInfiniteScroll: false,
             ),
             items: pawEntryDetailResponse!.pawEntryDetail?.images_uploads
                 ?.map((ImagesUploads item) {
@@ -216,7 +215,7 @@ class PawImageandName extends StatelessWidget {
                 builder: (BuildContext context) {
                   return Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    margin: EdgeInsets.zero,
                     child: Image.network(
                       item.image_url ?? '',
                       errorBuilder: (BuildContext context, Object error,
