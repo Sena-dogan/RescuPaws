@@ -20,9 +20,18 @@ class SwipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        context.go(SGRoute.detail.route, extra: pawEntry.id);
+    return GestureDetector(
+      onTapUp: (TapUpDetails details) {
+        // left right and middle
+        debugPrint(
+            'x: ${details.globalPosition.dx} y: ${details.globalPosition.dy}');
+        if (details.globalPosition.dx < context.width / 3) {
+          debugPrint('left');
+        } else if (details.globalPosition.dx > context.width / 3 * 2) {
+          debugPrint('right');
+        } else {
+          debugPrint('middle');
+        }
       },
       child: Stack(
         children: <Widget>[
