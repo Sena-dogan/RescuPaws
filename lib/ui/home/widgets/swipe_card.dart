@@ -20,6 +20,7 @@ class SwipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String image = pawEntry.images_uploads?.firstOrNull?.image_url ?? '';
     return GestureDetector(
       onTapUp: (TapUpDetails details) {
         // left right and middle
@@ -30,7 +31,7 @@ class SwipeCard extends StatelessWidget {
         } else if (details.globalPosition.dx > context.width / 3 * 2) {
           debugPrint('right');
         } else {
-          debugPrint('middle');
+          context.push(SGRoute.detail.route, extra: pawEntry.id);
         }
       },
       child: Stack(
@@ -60,7 +61,7 @@ class SwipeCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(27),
               child: CachedNetworkImage(
-                imageUrl: pawEntry.images_uploads?.firstOrNull?.image_url ?? '',
+                imageUrl: image,
                 errorWidget: (BuildContext context, String error, Object obj) {
                   debugPrint(
                       'Error occured while loading image: ${pawEntry.images_uploads?.firstOrNull?.image_url} \n');
