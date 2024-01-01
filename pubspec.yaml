@@ -75,6 +75,7 @@ dependencies:
   sliver_app_bar_builder: ^1.1.0
   cached_network_image: ^3.3.0
   share_plus: ^7.2.1
+  carousel_slider: ^4.2.1
 
 
 dev_dependencies:

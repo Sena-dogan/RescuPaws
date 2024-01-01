@@ -1,9 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../config/router/app_router.dart';
+import '../../../../models/images_upload.dart';
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/detail_logic.dart';
@@ -197,25 +199,42 @@ class PawImageandName extends StatelessWidget {
             style: context.textTheme.labelMedium),
       ),
       background: GestureDetector(
-        onDoubleTap: () {
-          ref.read(detailLogicProvider.notifier).setFavorite();
-        },
-        child: Image.network(
-          pawEntryDetailResponse!
-                  .pawEntryDetail?.images_uploads?.firstOrNull?.image_url ??
-              '',
-          errorBuilder:
-              (BuildContext context, Object error, StackTrace? stackTrace) {
-            debugPrint(
-                'Error occured while loading image: ${pawEntryDetailResponse!.pawEntryDetail?.images_uploads?.firstOrNull?.image_url} \n');
-            debugPrint(
-                'Id of the paw entry: ${pawEntryDetailResponse!.pawEntryDetail?.id}');
-            return Image.network(
-                'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+          onDoubleTap: () {
+            ref.read(detailLogicProvider.notifier).setFavorite();
           },
-          fit: BoxFit.cover,
-        ),
-      ),
+          child: CarouselSlider(
+            options: CarouselOptions(
+              height: 400.0,
+              autoPlay: true,
+              aspectRatio: 2.0,
+              enlargeCenterPage: true,
+              // add more options here if needed
+            ),
+            items: pawEntryDetailResponse!.pawEntryDetail?.images_uploads
+                ?.map((ImagesUploads item) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Image.network(
+                      item.image_url ?? '',
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        debugPrint(
+                            'Error occured while loading image: ${item.image_url} \n');
+                        debugPrint(
+                            'Id of the paw entry: ${pawEntryDetailResponse!.pawEntryDetail?.id}');
+                        return Image.network(
+                            'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+                      },
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          )),
     );
   }
 }
