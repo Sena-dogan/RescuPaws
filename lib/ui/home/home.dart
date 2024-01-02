@@ -94,6 +94,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 controller: controller,
                 onSwipe: (int oldIndex, int? newIndex,
                     CardSwiperDirection direction) {
+                  ref
+                      .read(homeScreenLogicProvider.notifier)
+                      .setSelectedCard(newIndex ?? 0);
                   return true;
                 },
                 allowedSwipeDirection:
@@ -102,6 +105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     int percentThresholdX, int percentThresholdY) {
                   return SwipeCard(
                       pawEntry: pawEntries[index],
+                      cardIndex: index,
                       size: Size(MediaQuery.of(context).size.width * 0.85,
                           MediaQuery.of(context).size.height * 0.55));
                 }),

@@ -38,9 +38,15 @@ class HomeScreenLogic extends _$HomeScreenLogic {
         isLoading: true,
       );
 
-  void setTap(int index) {
+  void setTap(int index) => state = state.copyWith(
+        selectedImageIndex: index,
+      );
+
+  void setSelectedCard(int index) {
     state = state.copyWith(
-      selectedIndex: index,
+      selectedCardIndex: index,
+      selectedImageIndex:
+          0, // Reset the image index when a new card is selected
     );
   }
 }
