@@ -115,8 +115,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            LeftButton(controller: controller),
-            RightButton(controller: controller)
+            GestureDetector(
+              onPanUpdate: (DragUpdateDetails details) {
+                // Check if the user is trying to swipe the card
+                if (details.delta.dx.abs() > details.delta.dy.abs()) {
+                  // Prevent the CardSwiper from receiving the swipe gesture
+                  return;
+                }
+              },
+              child: LeftButton(controller: controller),
+            ),
+            GestureDetector(
+              onPanUpdate: (DragUpdateDetails details) {
+                // Check if the user is trying to swipe the card
+                if (details.delta.dx.abs() > details.delta.dy.abs()) {
+                  // Prevent the CardSwiper from receiving the swipe gesture
+                  return;
+                }
+              },
+              child: RightButton(controller: controller),
+            )
           ],
         )
       ],

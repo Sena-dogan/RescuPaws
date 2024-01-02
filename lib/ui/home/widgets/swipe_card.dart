@@ -30,7 +30,10 @@ class SwipeCard extends ConsumerWidget {
     int selectedImageIndex =
         ref.watch(homeScreenLogicProvider).selectedImageIndex;
     final List<ImagesUploads>? images = pawEntry.images_uploads;
-    final String image = images?[selectedImageIndex].image_url ?? '';
+    final String? image = images != null && selectedImageIndex < images.length
+        ? images[selectedImageIndex].image_url
+        : '';
+
     return IgnorePointer(
       ignoring: cardIndex != selectedCardIndex,
       child: GestureDetector(
@@ -88,7 +91,7 @@ class SwipeCard extends ConsumerWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(27),
                 child: CachedNetworkImage(
-                  imageUrl: image,
+                  imageUrl: image ?? '',
                   errorWidget:
                       (BuildContext context, String error, Object obj) {
                     debugPrint(
