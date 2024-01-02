@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,10 +23,34 @@ class NewPawImageScreen extends ConsumerStatefulWidget {
 
 class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
   late PermissionState ps;
+  List<AssetEntity>? assets;
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
-    ps = await PhotoManager.requestPermissionExtend();
+    PhotoManager.requestPermissionExtend().then((PermissionState value) {
+      ps = value;
+      if (ps == PermissionState.authorized) {
+        _fetchAssets();
+      }
+      setState(() {});
+    });
+  }
+
+  _fetchAssets() async {
+    // Set onlyAll to true, to fetch only the 'Recent' album
+    // which contains all the photos/videos in the storage
+    final List<AssetPathEntity> albums =
+        await PhotoManager.getAssetPathList(onlyAll: true);
+    final AssetPathEntity recentAlbum = albums.first;
+
+    // Now that we got the album, fetch all the assets it contains
+    final List<AssetEntity> recentAssets = await recentAlbum.getAssetListRange(
+      start: 0, // start at index 0
+      end: 30, // end at a very big index (to get all the assets)
+    );
+
+    // Update the state and notify UI
+    setState(() => assets = recentAssets);
   }
 
   @override
@@ -75,7 +101,23 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
                           itemCount: list.length,
                           itemBuilder: (BuildContext context, int index) {
                             final AssetEntity entity = list[index];
-                            return CachedNetworkImage(imageUrl: entity.id);
+                            final Uint8List? thumbData = entity.thumb;
+                            return GestureDetector(
+                              onTap: () async {},
+                              child: GridTile(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: CachedNetworkImage(
+                                    imageUrl: entity.thumbnailData,
+                                    fit: BoxFit.cover,
+                                    placeholder: (BuildContext context,
+                                            String url) =>
+                                        const Center(
+                                            child: CircularProgressIndicator()),
+                                  ),
+                                ),
+                              ),
+                            );
                           },
                         ),
                       );

@@ -25,6 +25,9 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+dependency_overrides: 
+  photo_manager: ^3.0.0-dev.2
+
 dependencies:
   flutter:
     sdk: flutter
