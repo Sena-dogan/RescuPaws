@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/router/app_router.dart';
+import '../../../models/images_upload.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
 import 'filter_widget.dart';
@@ -20,16 +21,26 @@ class SwipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String image = pawEntry.images_uploads?.firstOrNull?.image_url ?? '';
+    final List<ImagesUploads>? images = pawEntry.images_uploads;
+    int index = 0;
+    final String image = images?[index].image_url ?? '';
     return GestureDetector(
       onTapUp: (TapUpDetails details) {
         // left right and middle
         debugPrint(
             'x: ${details.globalPosition.dx} y: ${details.globalPosition.dy}');
         if (details.globalPosition.dx < context.width / 3) {
-          debugPrint('left');
+          if (index == 0) {
+            index = images?.length ?? 0;
+          }
+          index -= 1;
+          debugPrint('tapped left');
         } else if (details.globalPosition.dx > context.width / 3 * 2) {
-          debugPrint('right');
+          if (index == images?.length) {
+            index = 0;
+          }
+          index += 1;
+          debugPrint('tapped right');
         } else {
           context.push(SGRoute.detail.route, extra: pawEntry.id);
         }
