@@ -33,7 +33,6 @@ class SwipeCard extends ConsumerWidget {
     final String? image = images != null && selectedImageIndex < images.length
         ? images[selectedImageIndex].image_url
         : '';
-
     return IgnorePointer(
       ignoring: cardIndex != selectedCardIndex,
       child: GestureDetector(
