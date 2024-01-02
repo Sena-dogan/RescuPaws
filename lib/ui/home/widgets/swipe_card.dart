@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,9 +8,10 @@ import '../../../config/router/app_router.dart';
 import '../../../models/images_upload.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
+import '../logic/home_screen_logic.dart';
 import 'filter_widget.dart';
 
-class SwipeCard extends StatelessWidget {
+class SwipeCard extends ConsumerWidget {
   const SwipeCard({
     super.key,
     required this.pawEntry,
@@ -20,9 +22,9 @@ class SwipeCard extends StatelessWidget {
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    int index = ref.watch(homeScreenLogicProvider).selectedIndex;
     final List<ImagesUploads>? images = pawEntry.images_uploads;
-    int index = 0;
     final String image = images?[index].image_url ?? '';
     return GestureDetector(
       onTapUp: (TapUpDetails details) {
