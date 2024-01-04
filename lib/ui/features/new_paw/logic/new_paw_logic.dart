@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/network/category/category_repository.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../models/location_response.dart';
+import '../../../../utils/riverpod_extensions.dart';
 import '../model/new_paw_ui_model.dart';
 
 part 'new_paw_logic.g.dart';
@@ -28,6 +30,30 @@ Future<List<Category>> fetchSubCategories(
   final GetCategoriesResponse categories =
       await categoryRepository.getSubCategories(categoryId);
   return categories.data;
+}
+
+@riverpod
+Future<PermissionState> fetchPermissionState(FetchPermissionStateRef ref) async {
+  ref.keepAlive();
+  final PermissionState ps = await PhotoManager.requestPermissionExtend();
+  return ps;
+}
+
+@riverpod
+Future<List<AssetEntity>> fetchImages(FetchImagesRef ref) async {
+  ref.cacheFor(const Duration(minutes: 10));
+  final List<AssetEntity> assets = await PhotoManager.getAssetListRange(
+    start: 0,
+    end: 7,
+    type: RequestType.image,
+    filterOption: FilterOptionGroup(
+      createTimeCond: DateTimeCond(
+        min: DateTime.now().subtract(const Duration(days: 2)),
+        max: DateTime.now(),
+      ),
+    ),
+  );
+  return assets;
 }
 
 @Riverpod(keepAlive: true)
