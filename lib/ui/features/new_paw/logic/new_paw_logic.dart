@@ -109,16 +109,7 @@ class NewPawLogic extends _$NewPawLogic {
   }
 
   bool isSelected(AssetEntity asset) {
-    var assetId = asset.id;
-    bool isSelected = false;
-    // Check ids of the assets
-    state.assets?.forEach((element) {
-      if (element.id == assetId) {
-        isSelected = true;
-        return;
-      }
-    });
-    return isSelected;
+    return state.assets?.contains(asset) ?? false;
   }
 
   void nextPage() {

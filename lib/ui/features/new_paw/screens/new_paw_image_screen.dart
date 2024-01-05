@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:cached_memory_image/cached_memory_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,29 +66,25 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: SizedBox(
-          width: context.width,
-          height: context.height,
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                    'Patili dostunuzun fotoğrafları için izninize ihtiyacımız var.'),
-                const Gap(16),
-                ElevatedButton(
-                  onPressed: () async {
-                    await PhotoManager.openSetting();
-                    final PermissionState ps =
-                        await PhotoManager.requestPermissionExtend();
-                    if (ps == PermissionState.authorized) {
-                      ref.refresh(fetchPermissionStateProvider);
-                    }
-                  },
-                  child: Text('Izin Ver', style: context.textTheme.bodyMedium),
-                ),
-              ],
-            ),
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                  'Patili dostunuzun fotoğrafları için izninize ihtiyacımız var.'),
+              const Gap(16),
+              ElevatedButton(
+                onPressed: () async {
+                  await PhotoManager.openSetting();
+                  final PermissionState ps =
+                      await PhotoManager.requestPermissionExtend();
+                  if (ps == PermissionState.authorized) {
+                    ref.refresh(fetchPermissionStateProvider);
+                  }
+                },
+                child: Text('Izin Ver', style: context.textTheme.bodyMedium),
+              ),
+            ],
           ),
         ),
       ),
@@ -115,7 +112,7 @@ class ImagePreviewSlider extends ConsumerWidget {
                     // If we have no data, display a spinner
                     if (bytes == null) return const CircularProgressIndicator();
                     // If there's data, display it as an image
-                    return Image.memory(bytes, fit: BoxFit.cover);
+                    return Image.memory(bytes, fit: BoxFit.fitHeight);
                   },
                 ))
             .toList(),
@@ -142,8 +139,6 @@ class GalleryListBuilder extends ConsumerWidget {
         final List<Widget> assetList = images
             .map((AssetEntity e) => AssetThumbnail(
                   asset: e,
-                  isSelected:
-                      ref.watch(newPawLogicProvider.notifier).isSelected(e),
                   onTap: () {
                     debugPrint('tapped');
                     ref.read(newPawLogicProvider.notifier).addImage(e);
@@ -176,7 +171,7 @@ class GalleryListBuilder extends ConsumerWidget {
                   child: ImagePreviewSlider(),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -199,7 +194,7 @@ class GalleryListBuilder extends ConsumerWidget {
   }
 }
 
-class AssetThumbnail extends StatelessWidget {
+class AssetThumbnail extends ConsumerWidget {
   const AssetThumbnail({
     super.key,
     required this.asset,
@@ -212,7 +207,8 @@ class AssetThumbnail extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final NewPawUiModel newPawUiModel = ref.watch(newPawLogicProvider);
     // We're using a FutureBuilder since thumbData is a future
     return FutureBuilder<Uint8List?>(
       future: asset.thumbnailData,
@@ -222,18 +218,25 @@ class AssetThumbnail extends StatelessWidget {
         if (bytes == null) return const CircularProgressIndicator();
         // If there's data, display it as an image
         return InkWell(
-          onTap: onTap,
+          onTap: () {
+            onTap?.call();
+          },
           child: SizedBox(
             child: Stack(
               children: <Widget>[
-                Image.memory(bytes, fit: BoxFit.fitWidth, width: 300, height: 300),
+                CachedMemoryImage(
+                    uniqueKey: asset.id,
+                    bytes: bytes,
+                    fit: BoxFit.fitWidth,
+                    width: 300,
+                    height: 300),
                 Positioned(
                   top: 0,
                   right: 0,
                   child: Container(
                     color: Colors.black.withOpacity(0.5),
                     child: Visibility(
-                        visible: isSelected,
+                        visible: newPawUiModel.assets?.contains(asset) ?? false,
                         child: const Icon(Icons.check, color: Colors.white)),
                   ),
                 ),
