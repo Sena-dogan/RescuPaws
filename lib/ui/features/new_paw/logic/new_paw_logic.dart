@@ -33,7 +33,8 @@ Future<List<Category>> fetchSubCategories(
 }
 
 @riverpod
-Future<PermissionState> fetchPermissionState(FetchPermissionStateRef ref) async {
+Future<PermissionState> fetchPermissionState(
+    FetchPermissionStateRef ref) async {
   ref.keepAlive();
   final PermissionState ps = await PhotoManager.requestPermissionExtend();
   return ps;
@@ -44,7 +45,7 @@ Future<List<AssetEntity>> fetchImages(FetchImagesRef ref) async {
   ref.cacheFor(const Duration(minutes: 10));
   final List<AssetEntity> assets = await PhotoManager.getAssetListRange(
     start: 0,
-    end: 7,
+    end: 10,
     type: RequestType.image,
     filterOption: FilterOptionGroup(
       createTimeCond: DateTimeCond(
@@ -93,8 +94,31 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(isImageLoading: isLoading);
   }
 
-  void setImages(List<String> images) {
-    state = state.copyWith(images: images);
+  void setImages(List<AssetEntity> images) {
+    state = state.copyWith(assets: images);
+  }
+
+  void addImage(AssetEntity image) {
+    final List<AssetEntity> images =
+        List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
+    if (images.contains(image))
+      images.remove(image);
+    else
+      images.add(image);
+    state = state.copyWith(assets: images);
+  }
+
+  bool isSelected(AssetEntity asset) {
+    var assetId = asset.id;
+    bool isSelected = false;
+    // Check ids of the assets
+    state.assets?.forEach((element) {
+      if (element.id == assetId) {
+        isSelected = true;
+        return;
+      }
+    });
+    return isSelected;
   }
 
   void nextPage() {

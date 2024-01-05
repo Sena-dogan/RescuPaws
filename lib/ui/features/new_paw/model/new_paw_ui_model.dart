@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 import '../../../../models/location_response.dart';
 
@@ -12,7 +13,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     @Default(false) bool isImageLoading,
     @Default(null) String? error,
     @Default(0) int? page,
-    List<String>? images,
+    @Default(<AssetEntity>[]) List<AssetEntity>? assets,
     String? user_id,
     String? name,
     String? description,

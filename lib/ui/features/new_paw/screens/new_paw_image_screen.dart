@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -93,6 +95,37 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
   }
 }
 
+class ImagePreviewSlider extends ConsumerWidget {
+  const ImagePreviewSlider({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final List<AssetEntity> assets =
+        ref.watch(newPawLogicProvider).assets ?? <AssetEntity>[];
+    return SizedBox(
+      width: context.width,
+      child: CarouselSlider(
+        items: assets
+            .map((AssetEntity e) => FutureBuilder<Uint8List?>(
+                  future: e.thumbnailData,
+                  builder: (_, AsyncSnapshot<Uint8List?> snapshot) {
+                    final Uint8List? bytes = snapshot.data;
+                    // If we have no data, display a spinner
+                    if (bytes == null) return const CircularProgressIndicator();
+                    // If there's data, display it as an image
+                    return Image.memory(bytes, fit: BoxFit.cover);
+                  },
+                ))
+            .toList(),
+        options:
+            CarouselOptions(viewportFraction: 1, enableInfiniteScroll: false),
+      ),
+    );
+  }
+}
+
 class GalleryListBuilder extends ConsumerWidget {
   const GalleryListBuilder({
     super.key,
@@ -106,6 +139,31 @@ class GalleryListBuilder extends ConsumerWidget {
       error: (Object error, StackTrace? stackTrace) =>
           const Center(child: CircularProgressIndicator()),
       data: (List<AssetEntity> images) {
+        final List<Widget> assetList = images
+            .map((AssetEntity e) => AssetThumbnail(
+                  asset: e,
+                  isSelected:
+                      ref.watch(newPawLogicProvider.notifier).isSelected(e),
+                  onTap: () {
+                    debugPrint('tapped');
+                    ref.read(newPawLogicProvider.notifier).addImage(e);
+                  },
+                ))
+            .toList();
+        final List<Widget> cameraAndGallery = <Widget>[];
+        cameraAndGallery.add(
+          GestureDetector(
+            onTap: () {},
+            child: const CameraWidget(),
+          ),
+        );
+        cameraAndGallery.add(
+          GestureDetector(
+            onTap: () {},
+            child: const GalleryWidget(),
+          ),
+        );
+        cameraAndGallery.addAll(assetList);
         return SizedBox(
           width: context.width,
           height: context.height,
@@ -113,55 +171,25 @@ class GalleryListBuilder extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                FutureBuilder(
-                  future: PhotoManager.getAssetListRange(
-                    start: 0,
-                    end: 20,
-                    filterOption: FilterOptionGroup(
-                      createTimeCond: DateTimeCond(
-                        min: DateTime.now().subtract(const Duration(days: 2)),
-                        max: DateTime.now(),
-                      ),
+                const Expanded(
+                  flex: 2,
+                  child: ImagePreviewSlider(),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
                     ),
+                    itemCount: cameraAndGallery.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                        child: cameraAndGallery[index],
+                      );
+                    },
                   ),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<AssetEntity>> snapshot) {
-                    if (snapshot.hasData) {
-                      final List<Widget> assetList = snapshot.data!
-                          .map((AssetEntity e) => AssetThumbnail(asset: e))
-                          .toList();
-                      final List<Widget> cameraAndGallery = <Widget>[];
-                      cameraAndGallery.add(
-                        GestureDetector(
-                          onTap: () {},
-                          child: const CameraWidget(),
-                        ),
-                      );
-                      cameraAndGallery.add(
-                        GestureDetector(
-                          onTap: () {},
-                          child: const GalleryWidget(),
-                        ),
-                      );
-                      cameraAndGallery.addAll(assetList);
-                      return Expanded(
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                          ),
-                          itemCount: cameraAndGallery.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return SizedBox(
-                              child: cameraAndGallery[index],
-                            );
-                          },
-                        ),
-                      );
-                    }
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                )
+                ),
               ],
             ),
           ),
@@ -175,9 +203,13 @@ class AssetThumbnail extends StatelessWidget {
   const AssetThumbnail({
     super.key,
     required this.asset,
+    this.isSelected = false,
+    this.onTap,
   });
 
   final AssetEntity asset;
+  final bool isSelected;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +221,26 @@ class AssetThumbnail extends StatelessWidget {
         // If we have no data, display a spinner
         if (bytes == null) return const CircularProgressIndicator();
         // If there's data, display it as an image
-        return Image.memory(bytes, fit: BoxFit.cover);
+        return InkWell(
+          onTap: onTap,
+          child: SizedBox(
+            child: Stack(
+              children: <Widget>[
+                Image.memory(bytes, fit: BoxFit.fitWidth, width: 300, height: 300),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: Visibility(
+                        visible: isSelected,
+                        child: const Icon(Icons.check, color: Colors.white)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }

@@ -82,6 +82,7 @@ dependencies:
   multi_image_picker_view: ^1.0.0
   file_picker: ^6.1.1
   photo_manager: ^2.8.1
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
