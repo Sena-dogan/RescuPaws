@@ -49,4 +49,11 @@ class HomeScreenLogic extends _$HomeScreenLogic {
           0, // Reset the image index when a new card is selected
     );
   }
+
+  void setSelectedImageIndex(int cardIndex, int imageIndex) {
+    final List<PawEntry> pawEntries = List<PawEntry>.from(state.pawEntries);
+    final PawEntry pawEntry = pawEntries[cardIndex];
+    pawEntries[cardIndex] = pawEntry.copyWith(selectedImageIndex: imageIndex);
+    state = state.copyWith(pawEntries: pawEntries);
+  }
 }
