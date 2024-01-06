@@ -5,60 +5,61 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/router/app_router.dart';
+import '../../../data/enums/detail_enums.dart';
 import '../../../models/images_upload.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
-import '../logic/home_screen_logic.dart';
-import 'filter_widget.dart';
+import '../widgets/filter_widget.dart';
+import 'swipe_card_logic.dart';
 
 class SwipeCard extends ConsumerWidget {
   const SwipeCard({
     super.key,
     required this.pawEntry,
-    required this.cardIndex,
     this.size = const Size(308, 426.76),
   });
 
   final PawEntry pawEntry;
-  final int cardIndex;
   final Size size;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final int selectedCardIndex =
-        ref.watch(homeScreenLogicProvider).selectedCardIndex;
+    final int id = ref.watch(swipeCardLogicProvider).id;
+    // image length is 3
+    // selectedImageIndex is 2
+    // when i tap right, i want to go to the next image
+    // setTap function will increase the selectedImageIndex by 1
+    // so it will be 3 and it will be out of bound
+    // but if you do selectedImageIndex % images.length
+    // it will be 3 % 3 = 0
     int selectedImageIndex =
-        ref.watch(homeScreenLogicProvider).selectedImageIndex;
+        ref.watch(swipeCardLogicProvider).selectedImageIndex %
+            pawEntry.images_uploads!.length;
+    if (id != pawEntry.id) {
+      selectedImageIndex = 0;
+    }
     final List<ImagesUploads>? images = pawEntry.images_uploads;
     final String? image = images != null && selectedImageIndex < images.length
         ? images[selectedImageIndex].image_url
         : '';
     return GestureDetector(
       onTapUp: (TapUpDetails details) {
+        debugPrint(
+            'tHello i am Gustova fring number ${pawEntry.id}. Today i will serve your chicken. Killer chicken :))))))))))))))))))))}');
         // Only respond to tap events if this card is the selected card
-        if (cardIndex == selectedCardIndex) {
-          // left right and middle
-          debugPrint(
-              'x: ${details.globalPosition.dx} y: ${details.globalPosition.dy}');
-          if (details.globalPosition.dx < context.width / 3) {
-            if (selectedImageIndex > 0) {
-              selectedImageIndex -= 1;
-              debugPrint('tapped left');
-              ref
-                  .read(homeScreenLogicProvider.notifier)
-                  .setTap(selectedImageIndex);
-            }
-          } else if (details.globalPosition.dx > context.width / 3 * 2) {
-            if (selectedImageIndex < (images?.length ?? 1) - 1) {
-              selectedImageIndex += 1;
-              debugPrint('tapped right');
-              ref
-                  .read(homeScreenLogicProvider.notifier)
-                  .setTap(selectedImageIndex);
-            }
-          } else {
-            context.push(SGRoute.detail.route, extra: pawEntry.id);
+        // left right and middle
+        debugPrint(
+            'x: ${details.globalPosition.dx} y: ${details.globalPosition.dy}');
+        if (details.globalPosition.dx < context.width / 3) {
+          if (selectedImageIndex > 0) {
+            debugPrint('tapped left');
+            ref.read(swipeCardLogicProvider.notifier).setTap(Direction.Left);
           }
+        } else if (details.globalPosition.dx > context.width / 3 * 2) {
+          debugPrint('tapped right');
+          ref.read(swipeCardLogicProvider.notifier).setTap(Direction.Right);
+        } else {
+          context.push(SGRoute.detail.route, extra: pawEntry.id);
         }
       },
       child: Stack(
@@ -89,8 +90,7 @@ class SwipeCard extends ConsumerWidget {
               borderRadius: BorderRadius.circular(27),
               child: CachedNetworkImage(
                 imageUrl: image ?? '',
-                errorWidget:
-                    (BuildContext context, String error, Object obj) {
+                errorWidget: (BuildContext context, String error, Object obj) {
                   debugPrint(
                       'Error occured while loading image: ${pawEntry.images_uploads?.firstOrNull?.image_url} \n');
                   debugPrint('Id of the paw entry: ${pawEntry.id}');

@@ -16,9 +16,10 @@ import '../../utils/error_widgett.dart';
 import '../widgets/add_nav_button.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'logic/home_screen_logic.dart';
+import 'swipe_card/swipe_card_logic.dart';
 import 'widgets/left_button.dart';
 import 'widgets/right_button.dart';
-import 'widgets/swipe_card.dart';
+import 'swipe_card/swipe_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -94,18 +95,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 controller: controller,
                 onSwipe: (int oldIndex, int? newIndex,
                     CardSwiperDirection direction) {
-                  ref
-                      .read(homeScreenLogicProvider.notifier)
-                      .setSelectedCard(newIndex ?? 0);
+                  debugPrint('oldIndex: $oldIndex newIndex: $newIndex');
+                  if (newIndex != null) {
+                    ref.read(swipeCardLogicProvider.notifier).setId(
+                        pawEntries[newIndex].id);
+                  }
                   return true;
                 },
                 allowedSwipeDirection:
                     AllowedSwipeDirection.only(right: true, left: true),
                 cardBuilder: (BuildContext context, int index,
                     int percentThresholdX, int percentThresholdY) {
+                      debugPrint('id: ${pawEntries[index].id} index: $index');
                   return SwipeCard(
                       pawEntry: pawEntries[index],
-                      cardIndex: index,
                       size: Size(MediaQuery.of(context).size.width * 0.85,
                           MediaQuery.of(context).size.height * 0.55));
                 }),
