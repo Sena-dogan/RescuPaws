@@ -92,32 +92,68 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
   }
 }
 
-class ImagePreviewSlider extends ConsumerWidget {
-  const ImagePreviewSlider({
-    super.key,
-  });
+class ImagePreviewSlider extends ConsumerStatefulWidget {
+  const ImagePreviewSlider({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ImagePreviewSliderState();
+}
+
+class _ImagePreviewSliderState extends ConsumerState<ImagePreviewSlider> {
+  late CarouselController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = CarouselController();
+  }
+  @override
+  Widget build(BuildContext context) {
     final List<AssetEntity> assets =
         ref.watch(newPawLogicProvider).assets ?? <AssetEntity>[];
-    return SizedBox(
+    return Container(
+      color: Colors.black,
       width: context.width,
-      child: CarouselSlider(
-        items: assets
-            .map((AssetEntity e) => FutureBuilder<Uint8List?>(
-                  future: e.thumbnailData,
-                  builder: (_, AsyncSnapshot<Uint8List?> snapshot) {
-                    final Uint8List? bytes = snapshot.data;
-                    // If we have no data, display a spinner
-                    if (bytes == null) return const CircularProgressIndicator();
-                    // If there's data, display it as an image
-                    return Image.memory(bytes, fit: BoxFit.fitHeight);
-                  },
-                ))
-            .toList(),
-        options:
-            CarouselOptions(viewportFraction: 1, enableInfiniteScroll: false),
+      child: Row(
+        children: <Widget>[
+          IconButton(
+            onPressed: () {
+              debugPrint('back');
+              controller.previousPage();
+            },
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          ),
+          const Gap(16),
+          Expanded(
+            child: CarouselSlider(
+              carouselController: controller,
+              items: assets
+                  .map((AssetEntity e) => FutureBuilder<Uint8List?>(
+                        future: e.thumbnailData,
+                        builder: (_, AsyncSnapshot<Uint8List?> snapshot) {
+                          final Uint8List? bytes = snapshot.data;
+                          // If we have no data, display a spinner
+                          if (bytes == null)
+                            return const CircularProgressIndicator();
+                          // If there's data, display it as an image
+                          return Image.memory(bytes, fit: BoxFit.fitHeight);
+                        },
+                      ))
+                  .toList(),
+              options: CarouselOptions(
+                  viewportFraction: 1, enableInfiniteScroll: false),
+            ),
+          ),
+          const Gap(16),
+          IconButton(
+            onPressed: () {
+              debugPrint('next');
+              controller.nextPage();
+            },
+            icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+          ),
+        ],
       ),
     );
   }

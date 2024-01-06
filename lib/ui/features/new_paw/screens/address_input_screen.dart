@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
+import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../data/network/location/location_repository.dart';
 import '../../../../models/location_response.dart';
@@ -147,38 +149,35 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                                     },
                                                   ),
                                                 ),
-                                                const Spacer(),
-                                                Align(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      fixedSize:
-                                                          MaterialStateProperty
-                                                              .all<Size>(
-                                                        Size(
-                                                          context.width * 0.8,
-                                                          context.height * 0.06,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      
-                                                    },
-                                                    child: Text(
-                                                      'Kaydet',
-                                                      style: context.textTheme
-                                                          .labelMedium,
-                                                    ),
-                                                  ),
-                                                ),
                                               ],
                                             ),
                                           ));
                                     });
                               });
                         },
-                      )
+                      ),
+                      const Spacer(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            fixedSize: MaterialStateProperty.all<Size>(
+                              Size(
+                                context.width * 0.8,
+                                context.height * 0.06,
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            context.go(SGRoute.pawimage.route);
+                          },
+                          child: Text(
+                            'Devam Et',
+                            style: context.textTheme.labelMedium,
+                          ),
+                        ),
+                      ),
+                      const Gap(10),
                     ],
                   ),
               error: (Object error, StackTrace stackTrace) =>
