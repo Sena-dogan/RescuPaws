@@ -33,8 +33,10 @@ class SwipeCard extends ConsumerWidget {
     // but if you do selectedImageIndex % images.length
     // it will be 3 % 3 = 0
     int selectedImageIndex =
-        ref.watch(swipeCardLogicProvider).selectedImageIndex %
-            pawEntry.images_uploads!.length;
+        ref.watch(swipeCardLogicProvider).selectedImageIndex < 0
+            ? pawEntry.images_uploads!.length - 1
+            : ref.watch(swipeCardLogicProvider).selectedImageIndex %
+                pawEntry.images_uploads!.length;
     if (id != pawEntry.id) {
       selectedImageIndex = 0;
     }
@@ -44,17 +46,13 @@ class SwipeCard extends ConsumerWidget {
         : '';
     return GestureDetector(
       onTapUp: (TapUpDetails details) {
-        debugPrint(
-            'tHello i am Gustova fring number ${pawEntry.id}. Today i will serve your chicken. Killer chicken :))))))))))))))))))))}');
+        // debugPrint(
+        //     'tHello i am Gustova fring number ${pawEntry.id}. Today i will serve your chicken. Killer chicken :))))))))))))))))))))}');
         // Only respond to tap events if this card is the selected card
         // left right and middle
-        debugPrint(
-            'x: ${details.globalPosition.dx} y: ${details.globalPosition.dy}');
         if (details.globalPosition.dx < context.width / 3) {
-          if (selectedImageIndex > 0) {
-            debugPrint('tapped left');
-            ref.read(swipeCardLogicProvider.notifier).setTap(Direction.Left);
-          }
+          debugPrint('tapped left');
+          ref.read(swipeCardLogicProvider.notifier).setTap(Direction.Left);
         } else if (details.globalPosition.dx > context.width / 3 * 2) {
           debugPrint('tapped right');
           ref.read(swipeCardLogicProvider.notifier).setTap(Direction.Right);

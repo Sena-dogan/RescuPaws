@@ -95,7 +95,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 controller: controller,
                 onSwipe: (int oldIndex, int? newIndex,
                     CardSwiperDirection direction) {
-                  debugPrint('oldIndex: $oldIndex newIndex: $newIndex');
                   if (newIndex != null) {
                     ref.read(swipeCardLogicProvider.notifier).setId(
                         pawEntries[newIndex].id);
@@ -106,7 +105,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     AllowedSwipeDirection.only(right: true, left: true),
                 cardBuilder: (BuildContext context, int index,
                     int percentThresholdX, int percentThresholdY) {
-                      debugPrint('id: ${pawEntries[index].id} index: $index');
                   return SwipeCard(
                       pawEntry: pawEntries[index],
                       size: Size(MediaQuery.of(context).size.width * 0.85,
