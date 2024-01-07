@@ -10,6 +10,7 @@ import '../../../models/images_upload.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
 import 'swipe_card_logic.dart';
+import 'widgets/image_line_indicator.dart';
 
 class SwipeCard extends ConsumerWidget {
   const SwipeCard({
@@ -162,22 +163,39 @@ class SwipeCard extends ConsumerWidget {
                       ],
                     ),
                     const Gap(20),
-                    // Tags row with color with opacity is 0.5 have border radius 12 with 4px padding and primary color
-                    // const Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: <Widget>[
-                    //     FilterWidget(),
-                    //     Gap(5),
-                    //     FilterWidget(),
-                    //     Gap(5),
-                    //     FilterWidget(),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),
             ),
           ),
+          Positioned(
+              child: Container(
+            height: size.height * 0.1,
+            decoration: const ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(27),
+                  topRight: Radius.circular(27),
+                ),
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Color.fromARGB(205, 68, 49, 28),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: ImageLineIndicator(
+                numberOfImages: pawEntry.images_uploads?.length == 1
+                    ? 0
+                    : pawEntry.images_uploads?.length ?? 0,
+              ),
+            ),
+          ))
         ],
       ),
     );
