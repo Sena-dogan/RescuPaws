@@ -9,7 +9,6 @@ import '../../../data/enums/detail_enums.dart';
 import '../../../models/images_upload.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
-import '../widgets/filter_widget.dart';
 import 'swipe_card_logic.dart';
 
 class SwipeCard extends ConsumerWidget {
