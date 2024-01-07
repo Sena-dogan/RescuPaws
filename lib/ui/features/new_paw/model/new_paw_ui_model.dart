@@ -15,6 +15,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     @Default(null) String? error,
     @Default(0) int? page,
     @Default(<AssetEntity>[]) List<AssetEntity>? assets,
+    CarouselController? carouselController,
     String? user_id,
     String? name,
     String? description,

@@ -6,3 +6,4 @@ targets:
           - lib/**/*.dart
       mockito:mockBuilder:
         enabled: false
+      

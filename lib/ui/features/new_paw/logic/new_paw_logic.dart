@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -98,13 +99,19 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(assets: images);
   }
 
+  void setController(CarouselController controller) {
+    state = state.copyWith(carouselController: controller);
+  }
+
   void addImage(AssetEntity image) {
     final List<AssetEntity> images =
         List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
     if (images.contains(image))
       images.remove(image);
-    else
+    else {
       images.add(image);
+      state.carouselController?.nextPage();
+    }
     state = state.copyWith(assets: images);
   }
 

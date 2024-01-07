@@ -47,7 +47,9 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
             if (ps != PermissionState.authorized) {
               return _handleError(context);
             } else {
-              return const GalleryListBuilder();
+              return GalleryListBuilder(
+                onTap: (AssetEntity e) {},
+              );
             }
           },
         ),
@@ -70,8 +72,12 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                  'Patili dostunuzun fotoğrafları için izninize ihtiyacımız var.'),
+              Image.asset(Assets.PawPaw),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                    'Patili dostunuzun fotoğrafları için izninize ihtiyacımız var.'),
+              ),
               const Gap(16),
               ElevatedButton(
                 onPressed: () async {
@@ -107,7 +113,11 @@ class _ImagePreviewSliderState extends ConsumerState<ImagePreviewSlider> {
   void initState() {
     super.initState();
     controller = CarouselController();
+    controller.onReady.then((_) {
+      ref.read(newPawLogicProvider.notifier).setController(controller);
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     final List<AssetEntity> assets =
@@ -130,19 +140,24 @@ class _ImagePreviewSliderState extends ConsumerState<ImagePreviewSlider> {
               carouselController: controller,
               items: assets
                   .map((AssetEntity e) => FutureBuilder<Uint8List?>(
-                        future: e.thumbnailData,
+                        future: e.originBytes,
                         builder: (_, AsyncSnapshot<Uint8List?> snapshot) {
                           final Uint8List? bytes = snapshot.data;
                           // If we have no data, display a spinner
                           if (bytes == null)
-                            return const CircularProgressIndicator();
+                            return const Center(
+                                child: CircularProgressIndicator.adaptive());
                           // If there's data, display it as an image
-                          return Image.memory(bytes, fit: BoxFit.fitHeight);
+                          return CachedMemoryImage(
+                            uniqueKey: e.id,
+                            bytes: bytes,
+                            fit: BoxFit.fitHeight,
+                          );
                         },
                       ))
                   .toList(),
               options: CarouselOptions(
-                  viewportFraction: 1, enableInfiniteScroll: false),
+                  viewportFraction: 1, enableInfiniteScroll: false, aspectRatio: 1),
             ),
           ),
           const Gap(16),
@@ -162,7 +177,10 @@ class _ImagePreviewSliderState extends ConsumerState<ImagePreviewSlider> {
 class GalleryListBuilder extends ConsumerWidget {
   const GalleryListBuilder({
     super.key,
+    required this.onTap,
   });
+
+  final Function(AssetEntity)? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -178,6 +196,7 @@ class GalleryListBuilder extends ConsumerWidget {
                   onTap: () {
                     debugPrint('tapped');
                     ref.read(newPawLogicProvider.notifier).addImage(e);
+                    onTap?.call(e);
                   },
                 ))
             .toList();
@@ -304,10 +323,15 @@ class GalleryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: context.colorScheme.primary,
-      child: const Center(
-        child: Icon(Icons.photo_library, color: Colors.black, size: 42),
+    return InkWell(
+      onTap: () {
+        
+      },
+      child: Container(
+        color: context.colorScheme.primary,
+        child: const Center(
+          child: Icon(Icons.photo_library, color: Colors.black, size: 42),
+        ),
       ),
     );
   }
