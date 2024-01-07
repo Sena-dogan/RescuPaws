@@ -164,16 +164,16 @@ class SwipeCard extends ConsumerWidget {
                     ),
                     const Gap(20),
                     // Tags row with color with opacity is 0.5 have border radius 12 with 4px padding and primary color
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        FilterWidget(),
-                        Gap(5),
-                        FilterWidget(),
-                        Gap(5),
-                        FilterWidget(),
-                      ],
-                    ),
+                    // const Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: <Widget>[
+                    //     FilterWidget(),
+                    //     Gap(5),
+                    //     FilterWidget(),
+                    //     Gap(5),
+                    //     FilterWidget(),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
