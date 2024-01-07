@@ -13,7 +13,7 @@ class SwipeCardLogic extends _$SwipeCardLogic {
   }
 
   void setId(int id) {
-    state = state.copyWith(id: id);
+    state = state.copyWith(id: id, selectedImageIndex: 0);
   }
 
   void setTap(Direction direction) {
