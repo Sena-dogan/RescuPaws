@@ -78,7 +78,8 @@ class DetailBody extends StatelessWidget {
           ],
           expandedHeight: MediaQuery.of(context).size.height * 0.5,
           flexibleSpace: PawImageandName(
-              pawEntryDetailResponse: pawEntryDetailResponse, ref: ref),
+            pawEntryDetailResponse: pawEntryDetailResponse,
+          ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -172,18 +173,16 @@ class FavButton extends StatelessWidget {
   }
 }
 
-class PawImageandName extends StatelessWidget {
+class PawImageandName extends ConsumerWidget {
   const PawImageandName({
     super.key,
     required this.pawEntryDetailResponse,
-    required this.ref,
   });
 
   final GetPawEntryDetailResponse? pawEntryDetailResponse;
-  final WidgetRef ref;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     return FlexibleSpaceBar(
       titlePadding: EdgeInsets.zero,
@@ -196,8 +195,12 @@ class PawImageandName extends StatelessWidget {
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             )),
-        child: Text(pawEntryDetailResponse!.pawEntryDetail?.name ?? '',
-            style: context.textTheme.labelMedium),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: FractionalOffset.centerLeft,
+          child: Text(pawEntryDetailResponse!.pawEntryDetail?.name ?? '',
+              maxLines: 1, style: context.textTheme.labelSmall),
+        ),
       ),
       background: GestureDetector(
           onDoubleTap: () {

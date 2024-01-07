@@ -193,6 +193,7 @@ class SwipeCard extends ConsumerWidget {
                 numberOfImages: pawEntry.images_uploads?.length == 1
                     ? 0
                     : pawEntry.images_uploads?.length ?? 0,
+                selectedIndex: selectedImageIndex,
               ),
             ),
           ))

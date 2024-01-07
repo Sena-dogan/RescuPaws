@@ -44,13 +44,13 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     text: 'Minik Bir Dost,\n',
-                    style: context.textTheme.labelMedium?.copyWith(
+                    style: context.textTheme.labelLarge?.copyWith(
                       color: context.colorScheme.scrim,
                     ),
                     children: <TextSpan>[
                       TextSpan(
                         text: 'Sonsuz Bir Sevgi',
-                        style: context.textTheme.labelMedium?.copyWith(
+                        style: context.textTheme.labelLarge?.copyWith(
                           color: context.colorScheme.scrim,
                         ),
                       ),
