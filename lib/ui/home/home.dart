@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../utils/context_extensions.dart';
-
 import '../../config/router/app_router.dart';
 import '../../constants/assets.dart';
 import '../../models/paw_entry.dart';
@@ -16,10 +15,10 @@ import '../../utils/error_widgett.dart';
 import '../widgets/add_nav_button.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'logic/home_screen_logic.dart';
+import 'swipe_card/swipe_card.dart';
 import 'swipe_card/swipe_card_logic.dart';
 import 'widgets/left_button.dart';
 import 'widgets/right_button.dart';
-import 'swipe_card/swipe_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

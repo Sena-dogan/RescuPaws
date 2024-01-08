@@ -30,7 +30,7 @@ class ImageLineIndicator extends StatelessWidget {
             height: 5,
             decoration: BoxDecoration(
               color: index == selectedIndex
-                  ? context.colorScheme.primary
+                  ? context.colorScheme.secondary
                   : unselectedColor,
               borderRadius: BorderRadius.circular(5),
             ),

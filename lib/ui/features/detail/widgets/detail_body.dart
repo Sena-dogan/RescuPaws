@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../config/router/app_router.dart';
 import '../../../../models/images_upload.dart';
@@ -183,6 +184,10 @@ class PawImageandName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final PageController pageController = PageController(
+      initialPage: ref.watch(detailLogicProvider).currentImageIndex,
+    );
+
     final Size size = MediaQuery.of(context).size;
     return FlexibleSpaceBar(
       titlePadding: EdgeInsets.zero,
@@ -202,41 +207,77 @@ class PawImageandName extends ConsumerWidget {
               maxLines: 1, style: context.textTheme.labelSmall),
         ),
       ),
-      background: GestureDetector(
-          onDoubleTap: () {
-            ref.read(detailLogicProvider.notifier).setFavorite();
-          },
-          child: CarouselSlider(
-            options: CarouselOptions(
-              height: size.height * 0.6,
-              viewportFraction: 1.0,
-              enableInfiniteScroll: false,
-            ),
-            items: pawEntryDetailResponse!.pawEntryDetail?.images_uploads
-                ?.map((ImagesUploads item) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.zero,
-                    child: Image.network(
-                      item.image_url ?? '',
-                      errorBuilder: (BuildContext context, Object error,
-                          StackTrace? stackTrace) {
-                        debugPrint(
-                            'Error occured while loading image: ${item.image_url} \n');
-                        debugPrint(
-                            'Id of the paw entry: ${pawEntryDetailResponse!.pawEntryDetail?.id}');
-                        return Image.network(
-                            'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
-                      },
-                      fit: BoxFit.cover,
-                    ),
-                  );
+      background: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          GestureDetector(
+            onDoubleTap: () {
+              ref.read(detailLogicProvider.notifier).setFavorite();
+            },
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: size.height * 0.6,
+                viewportFraction: 1.0,
+                enableInfiniteScroll: false,
+                onPageChanged: (int index, CarouselPageChangedReason reason) {
+                  ref
+                      .read(detailLogicProvider.notifier)
+                      .setCurrentImageIndex(index);
                 },
-              );
-            }).toList(),
-          )),
+              ),
+              items: pawEntryDetailResponse!.pawEntryDetail?.images_uploads
+                  ?.map((ImagesUploads item) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.zero,
+                      child: Image.network(
+                        item.image_url ?? '',
+                        errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) {
+                          debugPrint(
+                              'Error occured while loading image: ${item.image_url} \n');
+                          debugPrint(
+                              'Id of the paw entry: ${pawEntryDetailResponse!.pawEntryDetail?.id}');
+                          return Image.network(
+                              'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+                        },
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+          Positioned(
+            bottom: 50.0,
+            child: SmoothPageIndicator(
+              controller: pageController,
+              count: pawEntryDetailResponse
+                          ?.pawEntryDetail!.images_uploads?.length ==
+                      1
+                  ? 0
+                  : pawEntryDetailResponse
+                          ?.pawEntryDetail!.images_uploads?.length ??
+                      0,
+              effect: JumpingDotEffect(
+                dotWidth: 50,
+                dotHeight: 50,
+                activeDotColor: context.colorScheme.primary,
+              ),
+              onDotClicked: (int index) {
+                pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

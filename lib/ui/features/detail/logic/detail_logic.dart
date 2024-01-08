@@ -54,4 +54,8 @@ class DetailLogic extends _$DetailLogic {
   void shareContent(String content) {
     Share.share(content);
   }
+
+  void setCurrentImageIndex(int index) {
+    state = state.copyWith(currentImageIndex: index);
+  }
 }
