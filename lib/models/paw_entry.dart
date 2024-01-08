@@ -36,6 +36,7 @@ class PawEntry with _$PawEntry {
     String? updated_at,
     required User user,
     List<ImagesUploads>? images_uploads,
+    @Default(0) int selectedImageIndex, // Add this line
   }) = _PawEntry;
 
   factory PawEntry.fromJson(Map<String, dynamic> json) =>

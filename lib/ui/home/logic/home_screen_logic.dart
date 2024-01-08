@@ -17,7 +17,7 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   return pawEntries.randomize();
 }
 
-@riverpod 
+@riverpod
 class HomeScreenLogic extends _$HomeScreenLogic {
   @override
   HomeScreenUiModel build() {
@@ -37,4 +37,23 @@ class HomeScreenLogic extends _$HomeScreenLogic {
   void setLoading() => state = state.copyWith(
         isLoading: true,
       );
+
+  void setTap(int index) => state = state.copyWith(
+        selectedImageIndex: index,
+      );
+
+  void setSelectedCard(int index) {
+    state = state.copyWith(
+      selectedCardIndex: index,
+      selectedImageIndex:
+          0, // Reset the image index when a new card is selected
+    );
+  }
+
+  void setSelectedImageIndex(int cardIndex, int imageIndex) {
+    final List<PawEntry> pawEntries = List<PawEntry>.from(state.pawEntries);
+    final PawEntry pawEntry = pawEntries[cardIndex];
+    pawEntries[cardIndex] = pawEntry.copyWith(selectedImageIndex: imageIndex);
+    state = state.copyWith(pawEntries: pawEntries);
+  }
 }

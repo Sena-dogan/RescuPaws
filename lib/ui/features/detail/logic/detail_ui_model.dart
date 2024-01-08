@@ -11,5 +11,6 @@ class DetailUiModel with _$DetailUiModel {
     @Default(null) String? errorMessage,
     @Default(false) bool isLoading,
     @Default(false) bool isFavorite,
+    @Default(0) int currentImageIndex,
   }) = _DetailUiModel;
 }

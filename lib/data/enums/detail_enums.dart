@@ -7,3 +7,8 @@ enum Gender {
   Female,
   Male,
 }
+
+enum Direction {
+  Left,
+  Right,
+}

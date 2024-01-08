@@ -4,6 +4,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/paw_entry_detail.dart';
+import '../../../../utils/riverpod_extensions.dart';
 import 'detail_ui_model.dart';
 
 part 'detail_logic.g.dart';
@@ -14,6 +15,7 @@ Future<GetPawEntryDetailResponse?> fetchPawEntryDetail(
   debugPrint('Id is $classfieldsId');
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
+  ref.cacheFor(const Duration(minutes: 5));
   final GetPawEntryDetailResponse pawEntryDetailResponse =
       await pawEntryRepository.getPawEntryDetail(classfieldsId);
   return pawEntryDetailResponse;
@@ -51,5 +53,9 @@ class DetailLogic extends _$DetailLogic {
 
   void shareContent(String content) {
     Share.share(content);
+  }
+
+  void setCurrentImageIndex(int index) {
+    state = state.copyWith(currentImageIndex: index);
   }
 }

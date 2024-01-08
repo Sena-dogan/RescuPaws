@@ -71,11 +71,11 @@ class MyApp extends ConsumerWidget {
 final TextTheme textTheme = TextTheme(
   labelLarge: GoogleFonts.poppins(
     fontWeight: FontWeight.w700,
-    fontSize: 40,
+    fontSize: 30,
   ),
   labelMedium: GoogleFonts.poppins(
     fontWeight: FontWeight.w600,
-    fontSize: 30,
+    fontSize: 25,
   ),
   labelSmall: GoogleFonts.poppins(
     fontWeight: FontWeight.w500,

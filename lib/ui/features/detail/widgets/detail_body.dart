@@ -9,6 +9,7 @@ import '../../../../utils/context_extensions.dart';
 import '../logic/detail_logic.dart';
 import 'advertiser_info.dart';
 import 'characteristics.dart';
+import 'paw_image_and_name.dart';
 
 class DetailBody extends StatelessWidget {
   const DetailBody({
@@ -72,11 +73,12 @@ class DetailBody extends StatelessWidget {
                     pawEntryDetailResponse!.pawEntryDetail?.name ?? '');
               },
             ),
-            FavButton(ref: ref),
+            const FavButton(),
           ],
           expandedHeight: MediaQuery.of(context).size.height * 0.5,
           flexibleSpace: PawImageandName(
-              pawEntryDetailResponse: pawEntryDetailResponse, ref: ref),
+            pawEntryDetailResponse: pawEntryDetailResponse,
+          ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -141,16 +143,11 @@ class DetailBody extends StatelessWidget {
   }
 }
 
-class FavButton extends StatelessWidget {
-  const FavButton({
-    super.key,
-    required this.ref,
-  });
-
-  final WidgetRef ref;
+class FavButton extends ConsumerWidget {
+  const FavButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
       icon: Container(
         height: 50,
@@ -166,56 +163,6 @@ class FavButton extends StatelessWidget {
       onPressed: () {
         ref.read(detailLogicProvider.notifier).setFavorite();
       },
-    );
-  }
-}
-
-class PawImageandName extends StatelessWidget {
-  const PawImageandName({
-    super.key,
-    required this.pawEntryDetailResponse,
-    required this.ref,
-  });
-
-  final GetPawEntryDetailResponse? pawEntryDetailResponse;
-  final WidgetRef ref;
-
-  @override
-  Widget build(BuildContext context) {
-    return FlexibleSpaceBar(
-      titlePadding: EdgeInsets.zero,
-      title: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            color: context.colorScheme.background.withOpacity(0.4),
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            )),
-        child: Text(pawEntryDetailResponse!.pawEntryDetail?.name ?? '',
-            style: context.textTheme.labelMedium),
-      ),
-      background: GestureDetector(
-        onDoubleTap: () {
-          ref.read(detailLogicProvider.notifier).setFavorite();
-        },
-        child: Image.network(
-          pawEntryDetailResponse!
-                  .pawEntryDetail?.images_uploads?.firstOrNull?.image_url ??
-              '',
-          errorBuilder:
-              (BuildContext context, Object error, StackTrace? stackTrace) {
-            debugPrint(
-                'Error occured while loading image: ${pawEntryDetailResponse!.pawEntryDetail?.images_uploads?.firstOrNull?.image_url} \n');
-            debugPrint(
-                'Id of the paw entry: ${pawEntryDetailResponse!.pawEntryDetail?.id}');
-            return Image.network(
-                'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
-          },
-          fit: BoxFit.cover,
-        ),
-      ),
     );
   }
 }
