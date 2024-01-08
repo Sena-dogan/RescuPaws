@@ -252,7 +252,7 @@ class PawImageandName extends ConsumerWidget {
             ),
           ),
           Positioned(
-            bottom: 50.0,
+            bottom: size.height * 0.085,
             child: SmoothPageIndicator(
               controller: pageController,
               count: pawEntryDetailResponse
@@ -263,8 +263,8 @@ class PawImageandName extends ConsumerWidget {
                           ?.pawEntryDetail!.images_uploads?.length ??
                       0,
               effect: JumpingDotEffect(
-                dotWidth: 50,
-                dotHeight: 50,
+                dotWidth: 30,
+                dotHeight: 30,
                 activeDotColor: context.colorScheme.primary,
               ),
               onDotClicked: (int index) {
