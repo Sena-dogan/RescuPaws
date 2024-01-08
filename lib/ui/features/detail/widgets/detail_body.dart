@@ -174,7 +174,7 @@ class FavButton extends StatelessWidget {
   }
 }
 
-class PawImageandName extends ConsumerWidget {
+class PawImageandName extends ConsumerStatefulWidget {
   const PawImageandName({
     super.key,
     required this.pawEntryDetailResponse,
@@ -183,11 +183,15 @@ class PawImageandName extends ConsumerWidget {
   final GetPawEntryDetailResponse? pawEntryDetailResponse;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final PageController pageController = PageController(
-      initialPage: ref.watch(detailLogicProvider).currentImageIndex,
-    );
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _PawImageandNameState();
+}
 
+class _PawImageandNameState extends ConsumerState<PawImageandName> {
+  final controller = PageController(viewportFraction: 1, keepPage: true);
+
+  @override
+  Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return FlexibleSpaceBar(
       titlePadding: EdgeInsets.zero,
@@ -203,7 +207,7 @@ class PawImageandName extends ConsumerWidget {
         child: FittedBox(
           fit: BoxFit.scaleDown,
           alignment: FractionalOffset.centerLeft,
-          child: Text(pawEntryDetailResponse!.pawEntryDetail?.name ?? '',
+          child: Text(widget.pawEntryDetailResponse!.pawEntryDetail?.name ?? '',
               maxLines: 1, style: context.textTheme.labelSmall),
         ),
       ),
@@ -214,66 +218,96 @@ class PawImageandName extends ConsumerWidget {
             onDoubleTap: () {
               ref.read(detailLogicProvider.notifier).setFavorite();
             },
-            child: CarouselSlider(
-              options: CarouselOptions(
-                height: size.height * 0.6,
-                viewportFraction: 1.0,
-                enableInfiniteScroll: false,
-                onPageChanged: (int index, CarouselPageChangedReason reason) {
-                  ref
-                      .read(detailLogicProvider.notifier)
-                      .setCurrentImageIndex(index);
-                },
-              ),
-              items: pawEntryDetailResponse!.pawEntryDetail?.images_uploads
-                  ?.map((ImagesUploads item) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.zero,
-                      child: Image.network(
-                        item.image_url ?? '',
-                        errorBuilder: (BuildContext context, Object error,
-                            StackTrace? stackTrace) {
-                          debugPrint(
-                              'Error occured while loading image: ${item.image_url} \n');
-                          debugPrint(
-                              'Id of the paw entry: ${pawEntryDetailResponse!.pawEntryDetail?.id}');
-                          return Image.network(
-                              'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
-                        },
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  },
+            child: PageView.builder(
+              controller: controller,
+              itemCount: widget.pawEntryDetailResponse?.pawEntryDetail!
+                          .images_uploads?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.zero,
+                  child: Image.network(
+                    widget.pawEntryDetailResponse?.pawEntryDetail!
+                            .images_uploads?[index].image_url ??
+                        '',
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      debugPrint(
+                          'Error occured while loading image: ${widget.pawEntryDetailResponse?.pawEntryDetail!.images_uploads?[index].image_url} \n');
+                      debugPrint(
+                          'Id of the paw entry: ${widget.pawEntryDetailResponse?.pawEntryDetail?.id}');
+                      return Image.network(
+                          'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+                    },
+                    fit: BoxFit.cover,
+                  ),
                 );
-              }).toList(),
-            ),
+              },
+            )
+            // child: CarouselSlider(
+            //   carouselController: scrollController,
+            //   options: CarouselOptions(
+            //     height: size.height * 0.6,
+            //     viewportFraction: 1.0,
+            //     enableInfiniteScroll: false,
+            //     onPageChanged: (int index, CarouselPageChangedReason reason) {
+            //       ref
+            //           .read(detailLogicProvider.notifier)
+            //           .setCurrentImageIndex(index);
+            //     },
+            //   ),
+            //   items: widget
+            //       .pawEntryDetailResponse!.pawEntryDetail?.images_uploads
+            //       ?.map((ImagesUploads item) {
+            //     return Builder(
+            //       builder: (BuildContext context) {
+            //         return Container(
+            //           width: MediaQuery.of(context).size.width,
+            //           margin: EdgeInsets.zero,
+            //           child: Image.network(
+            //             item.image_url ?? '',
+            //             errorBuilder: (BuildContext context, Object error,
+            //                 StackTrace? stackTrace) {
+            //               debugPrint(
+            //                   'Error occured while loading image: ${item.image_url} \n');
+            //               debugPrint(
+            //                   'Id of the paw entry: ${widget.pawEntryDetailResponse!.pawEntryDetail?.id}');
+            //               return Image.network(
+            //                   'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+            //             },
+            //             fit: BoxFit.cover,
+            //           ),
+            //         );
+            //       },
+            //     );
+            //   }).toList(),
+            // ),
           ),
           Positioned(
-            bottom: size.height * 0.085,
+            bottom: size.height * 0.09,
             child: SmoothPageIndicator(
-              controller: pageController,
-              count: pawEntryDetailResponse
-                          ?.pawEntryDetail!.images_uploads?.length ==
+              controller: controller,
+              count: widget.pawEntryDetailResponse?.pawEntryDetail!
+                          .images_uploads?.length ==
                       1
                   ? 0
-                  : pawEntryDetailResponse
-                          ?.pawEntryDetail!.images_uploads?.length ??
+                  : widget.pawEntryDetailResponse?.pawEntryDetail!
+                          .images_uploads?.length ??
                       0,
               effect: JumpingDotEffect(
-                dotWidth: 30,
-                dotHeight: 30,
+                    dotHeight: 16,
+                    dotWidth: 16,
+                    jumpScale: .7,
+                    verticalOffset: 15,
                 activeDotColor: context.colorScheme.primary,
               ),
               onDotClicked: (int index) {
-                pageController.animateToPage(
+                controller.animateToPage(
                   index,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.ease,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
                 );
-              },
+              }
             ),
           ),
         ],
