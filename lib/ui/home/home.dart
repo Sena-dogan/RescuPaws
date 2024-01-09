@@ -72,7 +72,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ref.refresh(fetchPawEntriesProvider.future),
                 ),
               // No data/error, so we're in loading state.
-              _ => const Center(child: CircularProgressIndicator()),
+              _ => Center(
+                    child: Image.asset(
+                  'assets/gifs/gif-pati.gif',
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                )),
             }),
       ),
     );
@@ -95,8 +100,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 onSwipe: (int oldIndex, int? newIndex,
                     CardSwiperDirection direction) {
                   if (newIndex != null) {
-                    ref.read(swipeCardLogicProvider.notifier).setId(
-                        pawEntries[newIndex].id);
+                    ref
+                        .read(swipeCardLogicProvider.notifier)
+                        .setId(pawEntries[newIndex].id);
                   }
                   return true;
                 },
