@@ -1,5 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -15,6 +18,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     @Default(null) String? error,
     @Default(0) int? page,
     @Default(<AssetEntity>[]) List<AssetEntity>? assets,
+    List<Uint8List>? imageBytes,
     CarouselController? carouselController,
     String? user_id,
     String? name,
@@ -26,6 +30,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     District? district,
     int? gender,
     String? age,
+    String? weight,
     int? education,
     bool? vaccinated,
     String? address,

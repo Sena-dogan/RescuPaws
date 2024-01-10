@@ -107,6 +107,35 @@ class _NewPawInformationScreenState
                                   ),
                                   hintText: 'Ay cinsinden giriniz.'),
                             ),
+
+                            const Gap(16),
+                            // Weight
+                            TextFormField(
+                              validator: (String? value) {
+                                if (value != null &&
+                                        int.tryParse(value.trim()) == null ||
+                                    int.tryParse(value!.trim())! < 0 ||
+                                    int.tryParse(value.trim())! > 50) {
+                                  return 'Lütfen geçerli bir kilo giriniz.';
+                                }
+                                if (value == null && value.trim().isEmpty) {
+                                  return 'Lütfen bir kilo giriniz.';
+                                }
+                                return null;
+                              },
+                              onChanged: (String value) => ref
+                                  .read(newPawLogicProvider.notifier)
+                                  .setPawWeight(value.trim()),
+                              decoration: const InputDecoration(
+                                labelText: 'Kilo Bilgisi',
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                            ),
                             const Gap(16),
                             // Gender selection widget
                             DropdownButtonFormField<String>(
@@ -221,7 +250,7 @@ class _NewPawInformationScreenState
                                     context.push(SGRoute.address.route);
                                   }
                                   //TODO: Remove baypass else block
-                                   else {
+                                  else {
                                     context.push(SGRoute.pawimage.route);
                                   }
                                 },

@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -38,6 +42,7 @@ Future<PermissionState> fetchPermissionState(
     FetchPermissionStateRef ref) async {
   ref.keepAlive();
   final PermissionState ps = await PhotoManager.requestPermissionExtend();
+  debugPrint('permission state: $ps');
   return ps;
 }
 
@@ -46,14 +51,14 @@ Future<List<AssetEntity>> fetchImages(FetchImagesRef ref) async {
   ref.cacheFor(const Duration(minutes: 10));
   final List<AssetEntity> assets = await PhotoManager.getAssetListRange(
     start: 0,
-    end: 10,
+    end: 20,
     type: RequestType.image,
     filterOption: FilterOptionGroup(
-      createTimeCond: DateTimeCond(
-        min: DateTime.now().subtract(const Duration(days: 2)),
-        max: DateTime.now(),
-      ),
-    ),
+        // createTimeCond: DateTimeCond(
+        //   min: DateTime.now().subtract(const Duration(days: 2)),
+        //   max: DateTime.now(),
+        // ),
+        ),
   );
   return assets;
 }
@@ -77,6 +82,10 @@ class NewPawLogic extends _$NewPawLogic {
 
   void setPawAge(String age) {
     state = state.copyWith(age: age);
+  }
+
+  void setPawWeight(String weight) {
+    state = state.copyWith(weight: weight);
   }
 
   void setPawGender(int gender) {
@@ -103,12 +112,39 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(carouselController: controller);
   }
 
+  Future<void> addAssets(List<AssetEntity> assets) {
+    final List<AssetEntity> images =
+        List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
+    images.addAll(assets);
+    final List<Uint8List> imageBytes = state.imageBytes ?? <Uint8List>[];
+    images.forEach((AssetEntity element) async {
+      final Uint8List? bytes = await element.originBytes;
+      if (bytes != null) {
+        imageBytes.add(bytes);
+      }
+    });
+    state = state.copyWith(assets: images, imageBytes: imageBytes);
+    return Future<void>.value();
+  }
+
+  Future<AssetEntity?> addFile(File? file) async {
+    if (file == null) {
+      return null;
+    }
+    final AssetEntity? asset = await PhotoManager.editor.saveImageWithPath(
+      file.path,
+      title: 'paw',
+    );
+    addImage(asset!);
+    return asset;
+  }
+
   void addImage(AssetEntity image) {
     final List<AssetEntity> images =
         List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
-    if (images.contains(image))
+    if (images.contains(image)) {
       images.remove(image);
-    else {
+    } else {
       images.add(image);
       state.carouselController?.nextPage();
     }

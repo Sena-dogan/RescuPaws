@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cached_memory_image/cached_memory_image.dart';
@@ -6,6 +7,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:insta_assets_picker/insta_assets_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import '../../../../constants/assets.dart';
@@ -47,10 +50,23 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
             if (ps != PermissionState.authorized) {
               return _handleError(context);
             } else {
-              return GalleryListBuilder(
-                onTap: (AssetEntity e) {},
-              );
+              InstaAssetPicker.pickAssets(context,
+                  maxAssets: 10,
+                  closeOnComplete: true,
+                  
+                  onCompleted: (Stream<InstaAssetsExportDetails> a) {
+                a.listen((InstaAssetsExportDetails event) async {
+                  final List<AssetEntity> assets = event.selectedAssets;
+                  await ref
+                      .read(newPawLogicProvider.notifier)
+                      .addAssets(assets)
+                      .then((_) {
+                    debugPrint('assets added');
+                  });
+                });
+              });
             }
+            return _handleError(context);
           },
         ),
       ),
@@ -73,9 +89,9 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(Assets.PawPaw),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
                     'Patili dostunuzun fotoğrafları için izninize ihtiyacımız var.'),
               ),
               const Gap(16),
@@ -116,6 +132,8 @@ class _ImagePreviewSliderState extends ConsumerState<ImagePreviewSlider> {
     controller.onReady.then((_) {
       ref.read(newPawLogicProvider.notifier).setController(controller);
     });
+    InstaAssetPicker.pickAssets(context,
+        onCompleted: (Stream<InstaAssetsExportDetails> a) {});
   }
 
   @override
@@ -157,7 +175,9 @@ class _ImagePreviewSliderState extends ConsumerState<ImagePreviewSlider> {
                       ))
                   .toList(),
               options: CarouselOptions(
-                  viewportFraction: 1, enableInfiniteScroll: false, aspectRatio: 1),
+                  viewportFraction: 1,
+                  enableInfiniteScroll: false,
+                  aspectRatio: 1),
             ),
           ),
           const Gap(16),
@@ -202,16 +222,25 @@ class GalleryListBuilder extends ConsumerWidget {
             .toList();
         final List<Widget> cameraAndGallery = <Widget>[];
         cameraAndGallery.add(
-          GestureDetector(
-            onTap: () {},
-            child: const CameraWidget(),
+          CameraWidget(
+            onSaved: (AssetEntity? asset) {
+              if (asset != null) {
+                cameraAndGallery.add(
+                  AssetThumbnail(
+                    asset: asset,
+                    onTap: () {
+                      debugPrint('tapped');
+                      ref.read(newPawLogicProvider.notifier).addImage(asset);
+                      onTap?.call(asset);
+                    },
+                  ),
+                );
+              }
+            },
           ),
         );
         cameraAndGallery.add(
-          GestureDetector(
-            onTap: () {},
-            child: const GalleryWidget(),
-          ),
+          const GalleryWidget(),
         );
         cameraAndGallery.addAll(assetList);
         return SizedBox(
@@ -304,15 +333,28 @@ class AssetThumbnail extends ConsumerWidget {
   }
 }
 
-class CameraWidget extends StatelessWidget {
-  const CameraWidget({super.key});
+class CameraWidget extends ConsumerWidget {
+  const CameraWidget({super.key, this.onSaved});
+  final Function(AssetEntity?)? onSaved;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: context.colorScheme.primary,
-      child: const Center(
-        child: Icon(Icons.camera_alt, color: Colors.black, size: 42),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return InkWell(
+      onTap: () async {
+        await ImagePicker()
+            .pickImage(source: ImageSource.camera)
+            .then((XFile? image) async {
+          await ref
+              .read(newPawLogicProvider.notifier)
+              .addFile(image == null ? null : File(image.path))
+              .then((AssetEntity? asset) => onSaved?.call(asset));
+        });
+      },
+      child: Container(
+        color: context.colorScheme.primary,
+        child: const Center(
+          child: Icon(Icons.camera_alt, color: Colors.black, size: 42),
+        ),
       ),
     );
   }
@@ -324,9 +366,7 @@ class GalleryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        
-      },
+      onTap: () {},
       child: Container(
         color: context.colorScheme.primary,
         child: const Center(

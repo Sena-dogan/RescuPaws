@@ -58,8 +58,8 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         //! The plugin connectivity_plus requires a higher Android SDK version. Therefore we set the minSdkVersion to 19 (KitKat).
-        minSdkVersion 19
-        targetSdkVersion 34
+        minSdkVersion 21
+        targetSdkVersion 33
         compileSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
