@@ -17,7 +17,7 @@ class AddNavButton extends StatelessWidget {
       child: FittedBox(
         child: FloatingActionButton(
           onPressed: () {
-            context.push(SGRoute.newPaw.route);
+            context.push(SGRoute.breed.route);
           },
           clipBehavior: Clip.antiAlias,
           // Shape of 4 edged circle rotated 45 degrees

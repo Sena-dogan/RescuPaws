@@ -13,6 +13,7 @@ import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
 import '../../ui/features/new_paw/screens/information_screen.dart';
+import '../../ui/features/new_paw/screens/new_breed_screen.dart';
 import '../../ui/features/new_paw/screens/new_paw_image_screen.dart';
 import '../../ui/features/new_paw/screens/select_breed_screen.dart';
 import '../../ui/features/new_paw/screens/select_subBreed_screen.dart';
@@ -25,7 +26,8 @@ GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 enum SGRoute {
   home,
   profile,
-  newPaw,
+  newpaw,
+  breed,
   subbreed,
   information,
   address,
@@ -86,7 +88,7 @@ class SGGoRouter {
         ),
       ).fade(),
       GoRoute(
-        path: SGRoute.newPaw.route,
+        path: SGRoute.breed.route,
         builder: (BuildContext context, GoRouterState state) =>
             const SelectBreedScreen(),
       ),
@@ -110,6 +112,12 @@ class SGGoRouter {
         builder: (BuildContext context, GoRouterState state) =>
             const NewPawImageScreen(),
       ),
+      GoRoute(
+        path: SGRoute.newpaw.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const NewPawScreen(),
+        redirect: _authGuard,
+      ).fade(),
     ],
   );
   GoRouter get getGoRouter => goRoute;
