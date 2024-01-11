@@ -95,6 +95,7 @@ class ProfileScreen extends ConsumerWidget {
                                                   debugPrint(
                                                       'AAAAAAAAAAAAAAAAAAAAA');
                                                   return Image.network(
+                                                      //TODO: Add an placeholder image to Assets
                                                       'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
                                                 },
                                               ).image
