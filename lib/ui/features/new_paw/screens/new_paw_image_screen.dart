@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -7,10 +6,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:insta_assets_picker/insta_assets_picker.dart';
-import 'package:photo_manager/photo_manager.dart';
 
+import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/new_paw_logic.dart';
@@ -47,25 +47,24 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
           error: (Object error, StackTrace? stackTrace) =>
               const Center(child: CircularProgressIndicator()),
           data: (PermissionState ps) {
-            if (ps != PermissionState.authorized) {
-              return _handleError(context);
-            } else {
-              InstaAssetPicker.pickAssets(context,
-                  maxAssets: 10,
-                  closeOnComplete: true,
-                  
-                  onCompleted: (Stream<InstaAssetsExportDetails> a) {
-                a.listen((InstaAssetsExportDetails event) async {
-                  final List<AssetEntity> assets = event.selectedAssets;
-                  await ref
-                      .read(newPawLogicProvider.notifier)
-                      .addAssets(assets)
-                      .then((_) {
-                    debugPrint('assets added');
-                  });
+            InstaAssetPicker.pickAssets(context,
+                maxAssets: 10, closeOnComplete: true,
+                selectedAssets: newPaw.assets,
+                onCompleted: (Stream<InstaAssetsExportDetails> a) {
+              a.listen((InstaAssetsExportDetails event) async {
+                if (!mounted) return;
+                final List<AssetEntity> assets = event.selectedAssets;
+                await ref
+                    .read(newPawLogicProvider.notifier)
+                    .addAssets(assets)
+                    .then((_) {
+                  debugPrint('assets added');
                 });
               });
-            }
+            }).then((_) {
+              debugPrint('assets picked');
+              context.go(SGRoute.home.route);
+            });
             return _handleError(context);
           },
         ),
