@@ -112,21 +112,39 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(carouselController: controller);
   }
 
-  Future<void> addAssets(List<AssetEntity> assets) {
+  /// Adds the given list of [assets] to the existing assets in the state.
+  ///
+  /// This method takes a list of [AssetEntity] objects and adds them to the
+  /// existing assets in the state. It also retrieves the origin bytes of each
+  /// asset and adds them to the [imageBytes] list. The updated state is then
+  /// returned.
+  ///
+  /// The [assets] parameter is a list of [AssetEntity] objects representing the
+  /// assets to be added.
+  ///
+  /// Returns a [Future] that completes when the assets have been added.
+  Future<void> addAssets(List<AssetEntity> assets) async {
     final List<AssetEntity> images =
         List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
+    final List<Uint8List> imageBytes =
+        List<Uint8List>.from(state.imageBytes ?? <Uint8List>[]);
     images.addAll(assets);
-    final List<Uint8List> imageBytes = state.imageBytes ?? <Uint8List>[];
-    images.forEach((AssetEntity element) async {
+    for (final AssetEntity element in images) {
       final Uint8List? bytes = await element.originBytes;
       if (bytes != null) {
         imageBytes.add(bytes);
       }
-    });
+    }
     state = state.copyWith(assets: images, imageBytes: imageBytes);
     return Future<void>.value();
   }
 
+  /// Adds a file to the asset manager and returns the corresponding [AssetEntity].
+  /// If the [file] is null, returns null.
+  /// Uses the [PhotoManager.editor.saveImageWithPath] method to save the image with the given [file.path].
+  /// The saved image is titled 'paw'.
+  /// After adding the image to the asset manager, it is also added to the list of images.
+  /// Returns the added [AssetEntity].
   Future<AssetEntity?> addFile(File? file) async {
     if (file == null) {
       return null;
@@ -139,6 +157,11 @@ class NewPawLogic extends _$NewPawLogic {
     return asset;
   }
 
+  /// Adds an [AssetEntity] to the list of images in the state.
+  ///
+  /// If the [image] already exists in the list, it is removed.
+  /// Otherwise, it is added to the list and the carousel controller moves to the next page.
+  /// Finally, the state is updated with the new list of assets.
   void addImage(AssetEntity image) {
     final List<AssetEntity> images =
         List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
