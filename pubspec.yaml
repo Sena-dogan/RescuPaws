@@ -88,6 +88,7 @@ dependencies:
   insta_assets_picker: ^2.2.1
   photo_manager_image_provider: ^2.1.0
   wechat_assets_picker: ^8.9.0-dev.1
+  phone_form_field: ^8.1.1
 
 dev_dependencies:
   flutter_test:
