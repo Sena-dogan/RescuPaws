@@ -38,6 +38,8 @@ class SwipeCard extends ConsumerWidget {
             : ref.watch(swipeCardLogicProvider).selectedImageIndex %
                 pawEntry.images_uploads!.length;
     if (id != pawEntry.id) {
+      debugPrint('SwipeCard id: $id');
+      debugPrint('SwipeCard pawEntry.id: ${pawEntry.id}');
       selectedImageIndex = 0;
     }
     final List<ImagesUploads>? images = pawEntry.images_uploads;
