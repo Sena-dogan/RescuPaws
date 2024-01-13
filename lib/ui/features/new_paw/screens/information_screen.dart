@@ -35,7 +35,7 @@ class _NewPawInformationScreenState
             backgroundColor: Colors.transparent,
             centerTitle: true,
             title: Text(
-              'Bilgi Ekle',
+              'Hayvan Bilgileri',
               style: context.textTheme.labelSmall,
             )),
         backgroundColor: Colors.transparent,
@@ -128,6 +128,7 @@ class _NewPawInformationScreenState
                                   .setPawWeight(value.trim()),
                               decoration: const InputDecoration(
                                 labelText: 'Kilo Bilgisi',
+                                hintText: 'Kilo cinsinden giriniz.',
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey),
                                 ),
@@ -201,7 +202,7 @@ class _NewPawInformationScreenState
                                 if (value != null)
                                   ref
                                       .read(newPawLogicProvider.notifier)
-                                      .setPawGender(
+                                      .setPawEducationLevel(
                                           value == 'Eğitimli' ? 1 : 0);
                               },
                             ),
@@ -248,10 +249,6 @@ class _NewPawInformationScreenState
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
                                     context.push(SGRoute.address.route);
-                                  }
-                                  //TODO: Remove baypass else block
-                                  else {
-                                    context.push(SGRoute.pawimage.route);
                                   }
                                 },
                                 child: Text(
