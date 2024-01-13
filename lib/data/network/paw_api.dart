@@ -1,6 +1,7 @@
 /// All Restclients that communicate with the Paw requests are defined here.
 import 'package:injectable/injectable.dart';
 
+import '../../models/new_paw_model.dart';
 import '../../models/paw_entry.dart';
 import '../../utils/firebase_utils.dart';
 import 'paw_entry/paw_entry_rest_client.dart';
@@ -20,6 +21,12 @@ class PawApi {
     final String id = currentUserUid;
     final GetPawEntryResponse pawEntry =
         await _pawEntryRestClient.getPawEntryById(id);
+    return pawEntry;
+  }
+
+  Future<NewPawResponse> createPawEntry(NewPawModel newPawModel) async {
+    final NewPawResponse pawEntry =
+        await _pawEntryRestClient.createPawEntry(newPawModel);
     return pawEntry;
   }
 }

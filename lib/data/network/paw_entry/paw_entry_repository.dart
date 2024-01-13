@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../di/components/service_locator.dart';
+import '../../../models/new_paw_model.dart';
 import '../../../models/paw_entry.dart';
 import '../paw_api.dart';
 
@@ -11,14 +12,18 @@ class PawEntryRepository {
   final PawApi _pawApi;
 
   Future<GetPawEntryResponse> getPawEntry() async {
-    final GetPawEntryResponse pawEntry =
-        await _pawApi.getPawEntry();
+    final GetPawEntryResponse pawEntry = await _pawApi.getPawEntry();
     return pawEntry;
   }
 
   Future<GetPawEntryResponse> getPawEntryById() async {
-    final GetPawEntryResponse pawEntry =
-        await _pawApi.getPawEntryById();
+    final GetPawEntryResponse pawEntry = await _pawApi.getPawEntryById();
+    return pawEntry;
+  }
+
+  Future<NewPawResponse> createPawEntry(NewPawModel newPawModel) async {
+    final NewPawResponse pawEntry =
+        await _pawApi.createPawEntry(newPawModel);
     return pawEntry;
   }
 }

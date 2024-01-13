@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../constants/endpoints.dart';
+import '../../../models/new_paw_model.dart';
 import '../../../models/paw_entry.dart';
 
 part 'paw_entry_rest_client.g.dart';
@@ -15,4 +16,7 @@ abstract class PawEntryRestClient {
 
   @GET('/classfields/{id}')
   Future<GetPawEntryResponse> getPawEntryById(@Path('id') String id);
+
+  @POST('/create-classfields')
+  Future<NewPawResponse> createPawEntry(@Body() NewPawModel newPawModel);
 }
