@@ -1,15 +1,20 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/network/category/category_repository.dart';
+import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../models/location_response.dart';
+import '../../../../models/new_paw_model.dart';
+import '../../../../models/paw_entry.dart';
 import '../../../../utils/riverpod_extensions.dart';
 import '../model/new_paw_ui_model.dart';
 
@@ -35,6 +40,17 @@ Future<List<Category>> fetchSubCategories(
   final GetCategoriesResponse categories =
       await categoryRepository.getSubCategories(categoryId);
   return categories.data;
+}
+
+@riverpod
+Future<NewPawResponse> createPawEntry(
+    CreatePawEntryRef ref, NewPawModel newPawModel) async {
+  Logger().i('new paw model: $newPawModel');
+  final PawEntryRepository pawEntryRepository =
+      ref.watch(getPawEntryRepositoryProvider);
+  final NewPawResponse pawEntry =
+      await pawEntryRepository.createPawEntry(newPawModel);
+  return pawEntry;
 }
 
 @riverpod
@@ -124,18 +140,20 @@ class NewPawLogic extends _$NewPawLogic {
   ///
   /// Returns a [Future] that completes when the assets have been added.
   Future<void> addAssets(List<AssetEntity> assets) async {
+    setLoading(isLoading: true);
     final List<AssetEntity> images =
         List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
-    final List<Uint8List> imageBytes =
-        List<Uint8List>.from(state.imageBytes ?? <Uint8List>[]);
+    final List<String> imageBytes =
+        List<String>.from(state.imageBytes ?? <String>[]);
     images.addAll(assets);
     for (final AssetEntity element in images) {
       final Uint8List? bytes = await element.originBytes;
       if (bytes != null) {
-        imageBytes.add(bytes);
+        imageBytes.add(base64Encode(bytes));
       }
     }
-    state = state.copyWith(assets: images, imageBytes: imageBytes);
+    state = state.copyWith(
+        assets: images, imageBytes: imageBytes, isImageLoading: false);
     return Future<void>.value();
   }
 
@@ -174,18 +192,6 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(assets: images);
   }
 
-  bool isSelected(AssetEntity asset) {
-    return state.assets?.contains(asset) ?? false;
-  }
-
-  void nextPage() {
-    state = state.copyWith(page: state.page! + 1);
-  }
-
-  void previousPage() {
-    state = state.copyWith(page: state.page! - 1);
-  }
-
   void setCategoryId(int categoryId) {
     state = state.copyWith(category_id: categoryId);
   }
@@ -204,5 +210,9 @@ class NewPawLogic extends _$NewPawLogic {
 
   void setDistrict(District? district) {
     state = state.copyWith(district: district);
+  }
+
+  void setAddress(String? address) {
+    state = state.copyWith(address: address);
   }
 }
