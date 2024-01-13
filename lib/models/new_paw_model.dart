@@ -8,21 +8,45 @@ part 'new_paw_model.g.dart';
 @freezed
 class NewPawModel with _$NewPawModel {
   factory NewPawModel({
-    List<String>? images,
+    List<String>? image,
     String? user_id,
     String? name,
     String? description,
+    String? weight,
     int? category_id,
     int? country_id,
     int? city_id,
     int? district_id,
-    bool? gender,
+    int? gender,
     String? age,
-    bool? education,
-    bool? vaccinated,
+    int? education,
+    @Default(0) int? vaccinated,
     String? address,
   }) = _NewPawModel;
 
   factory NewPawModel.fromJson(Map<String, dynamic> json) =>
       _$NewPawModelFromJson(json);
+}
+
+/*
+{
+    "status": "error",
+    "message": "Validation failed",
+    "errors": {
+        "image": [
+            "Image is required!"
+        ]
+    }
+}
+*/
+@freezed
+class NewPawResponse with _$NewPawResponse {
+  factory NewPawResponse({
+    required String status,
+    required String message,
+    required Map<String, dynamic> errors,
+  }) = _NewPawResponse;
+
+  factory NewPawResponse.fromJson(Map<String, dynamic> json) =>
+      _$NewPawResponseFromJson(json);
 }
