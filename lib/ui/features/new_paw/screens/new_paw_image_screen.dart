@@ -47,24 +47,29 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
           error: (Object error, StackTrace? stackTrace) =>
               const Center(child: CircularProgressIndicator()),
           data: (PermissionState ps) {
-            InstaAssetPicker.pickAssets(context,
-                maxAssets: 10, closeOnComplete: true,
-                selectedAssets: newPaw.assets,
-                onCompleted: (Stream<InstaAssetsExportDetails> a) {
-              a.listen((InstaAssetsExportDetails event) async {
+            if (newPaw.isImageLoading == true ||
+                (newPaw.assets != null && newPaw.assets!.isNotEmpty == true))
+              return const Center(child: CircularProgressIndicator());
+            //TODO: Fix InstaAssetPicker reappering after image selection
+            if (mounted &&
+                newPaw.isImageLoading == false &&
+                ps == PermissionState.authorized)
+              InstaAssetPicker.pickAssets(context,
+                  maxAssets: 10, closeOnComplete: true,
+                  onCompleted: (Stream<InstaAssetsExportDetails> assetStream) {
                 if (!mounted) return;
-                final List<AssetEntity> assets = event.selectedAssets;
+              }).then((List<AssetEntity>? selectedAssets) async {
+                if (selectedAssets == null) return;
+                final List<AssetEntity> assets = selectedAssets;
                 await ref
                     .read(newPawLogicProvider.notifier)
                     .addAssets(assets)
-                    .then((_) {
+                    .then((_) async {
                   debugPrint('assets added');
+                  debugPrint('assets picked');
+                  await context.push(SGRoute.newpaw.route);
                 });
               });
-            }).then((_) {
-              debugPrint('assets picked');
-              context.go(SGRoute.home.route);
-            });
             return _handleError(context);
           },
         ),
@@ -110,6 +115,12 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    debugPrint('dispose');
+    super.dispose();
   }
 }
 
