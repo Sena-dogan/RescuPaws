@@ -3,8 +3,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../models/new_paw_model.dart';
 import '../../models/paw_entry.dart';
-import '../../utils/firebase_utils.dart';
 import '../../models/paw_entry_detail.dart';
+import '../../utils/firebase_utils.dart';
 import 'paw_entry/paw_entry_rest_client.dart';
 
 @injectable

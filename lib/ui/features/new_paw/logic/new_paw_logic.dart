@@ -14,7 +14,6 @@ import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../models/location_response.dart';
 import '../../../../models/new_paw_model.dart';
-import '../../../../models/paw_entry.dart';
 import '../../../../utils/riverpod_extensions.dart';
 import '../model/new_paw_ui_model.dart';
 

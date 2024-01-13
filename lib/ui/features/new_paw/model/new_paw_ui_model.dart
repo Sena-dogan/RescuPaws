@@ -1,10 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:carousel_slider/carousel_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -45,6 +41,7 @@ extension NewPawExtension on NewPawUiModel {
     return NewPawModel(
       address: address,
       age: age,
+
       /// Its sub_category_id not category_id in the backend sorry for the confusion
       category_id: sub_category_id,
       city_id: city?.id,

@@ -122,6 +122,7 @@ class SGGoRouter {
   GoRouter get getGoRouter => goRoute;
 }
 
+// ignore: unused_element
 final String? Function(BuildContext context, GoRouterState state) _introGuard =
     (BuildContext context, GoRouterState state) {
   if (!(getStoreHelper.getIntro() == null ||

@@ -105,6 +105,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
                   final PermissionState ps =
                       await PhotoManager.requestPermissionExtend();
                   if (ps == PermissionState.authorized) {
+                    // ignore: unused_result
                     ref.refresh(fetchPermissionStateProvider);
                   }
                 },
