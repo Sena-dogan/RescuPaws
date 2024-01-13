@@ -156,6 +156,36 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                               });
                         },
                       ),
+                      const Gap(10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          validator: (String? value) {
+                            if (value != null && value.trim().isEmpty) {
+                              return 'Lütfen "açıklama" giriniz.';
+                            }
+                            return null;
+                          },
+                          minLines: 2,
+                          maxLines: 5,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          onChanged: (String value) {
+                            ref
+                                .read(newPawLogicProvider.notifier)
+                                .setAddress(value);
+                          },
+                          autofillHints: const <String>[
+                            AutofillHints.streetAddressLevel1,
+                            AutofillHints.streetAddressLine1,
+                            AutofillHints.streetAddressLine2,
+                            AutofillHints.postalCode,
+                          ],
+                          decoration: const InputDecoration(
+                            labelText: 'Açık Adres',
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                          ),
+                        ),
+                      ),
                       const Spacer(),
                       Align(
                         alignment: Alignment.bottomCenter,
@@ -169,7 +199,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                             ),
                           ),
                           onPressed: () {
-                            context.go(SGRoute.pawimage.route);
+                            context.push(SGRoute.pawimage.route);
                           },
                           child: Text(
                             'Devam Et',
