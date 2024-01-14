@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -50,7 +49,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
                 newPaw.isImageLoading == false &&
                 ps == PermissionState.authorized)
               InstaAssetPicker.pickAssets(context,
-                  maxAssets: 10, closeOnComplete: true,
+                  maxAssets: 5, closeOnComplete: true,
                   onCompleted: (Stream<InstaAssetsExportDetails> assetStream) {
                 if (!mounted) return;
               }).then((List<AssetEntity>? selectedAssets) async {
