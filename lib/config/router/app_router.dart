@@ -52,6 +52,7 @@ class SGGoRouter {
     initialLocation: SGRoute.intro.route,
     errorBuilder: (BuildContext context, GoRouterState state) => Scaffold(
         body: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Lottie.asset(
           Assets.NotFound,
