@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -123,10 +122,6 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(assets: images);
   }
 
-  void setController(CarouselController controller) {
-    state = state.copyWith(carouselController: controller);
-  }
-
   /// Adds the given list of [assets] to the existing assets in the state.
   ///
   /// This method takes a list of [AssetEntity] objects and adds them to the
@@ -186,7 +181,6 @@ class NewPawLogic extends _$NewPawLogic {
       images.remove(image);
     } else {
       images.add(image);
-      state.carouselController?.nextPage();
     }
     state = state.copyWith(assets: images);
   }
