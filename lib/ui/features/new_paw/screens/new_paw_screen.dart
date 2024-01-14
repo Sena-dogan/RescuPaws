@@ -30,43 +30,43 @@ class NewPawScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: createPawEntry.when(data: (NewPawResponse data) {
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return SizedBox(
-                  height: context.size!.height * 0.4,
-                  child: Column(
-                    children: <Widget>[
-                      Lottie.asset(
-                        Assets.Success,
-                        repeat: true,
-                        height: 200,
-                      ),
-                      const Text('Ilanınız başarıyla oluşturuldu.\n'
-                          'İlanınız onaylandıktan sonra yayınlanacaktır.'),
-                    ],
-                  ),
-                );
-              }).then((_) {
+          Future<void>.delayed(const Duration(seconds: 6), () {
+            ref.invalidate(createPawEntryProvider);
             ref.invalidate(newPawLogicProvider);
             context.go(SGRoute.home.route);
           });
-          return null;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Lottie.asset(
+                Assets.Success,
+                repeat: true,
+                height: 300,
+              ),
+              Center(
+                child: Text('Tebrikler. Kayıt başarılı',
+                    style: context.textTheme.titleLarge),
+              ),
+            ],
+          );
         }, error: (Object error, StackTrace stackTrace) {
-          Future<void>.delayed(const Duration(seconds: 3), () {
+          Future<void>.delayed(const Duration(seconds: 6), () {
+            ref.invalidate(createPawEntryProvider);
             ref.invalidate(newPawLogicProvider);
             context.go(SGRoute.home.route);
           });
           FirebaseCrashlytics.instance.recordError(error, stackTrace);
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Lottie.asset(
                 Assets.Error,
                 repeat: true,
                 height: 200,
               ),
-              const Center(
-                child: Text('Bir hata oluştu. Lütfen tekrar deneyiniz.'),
+              Center(
+                child: Text('Bir hata oluştu.',
+                    style: context.textTheme.titleLarge),
               ),
             ],
           );
