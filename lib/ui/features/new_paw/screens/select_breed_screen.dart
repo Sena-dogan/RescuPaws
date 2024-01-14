@@ -22,6 +22,7 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
   Widget build(BuildContext context) {
     final AsyncValue<List<Category>> categories =
         ref.watch(fetchCategoriesProvider);
+    //TODO: implement search on breeds and subbreeds
     return Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -68,7 +69,8 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
                             child: Card(
                               elevation: 2,
                               child: Center(
-                                child: Text(data[index].name, style: context.textTheme.bodyLarge),
+                                child: Text(data[index].name,
+                                    style: context.textTheme.bodyLarge),
                               ),
                             ),
                           );

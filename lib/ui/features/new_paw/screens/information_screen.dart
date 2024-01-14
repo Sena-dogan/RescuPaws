@@ -183,7 +183,7 @@ class _NewPawInformationScreenState
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               decoration: const InputDecoration(
-                                labelText: 'Eğitim Durumu',
+                                labelText: 'Tuvalet Eğitimi Durumu',
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey),
                                 ),

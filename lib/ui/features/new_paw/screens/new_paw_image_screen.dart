@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:insta_assets_picker/insta_assets_picker.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
@@ -86,7 +87,11 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset(Assets.PawPaw),
+              Lottie.asset(
+                Assets.Error,
+                repeat: true,
+                height: 200,
+              ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
