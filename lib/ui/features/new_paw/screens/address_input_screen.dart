@@ -199,6 +199,13 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                             ),
                           ),
                           onPressed: () {
+                            if (newPawLogic.address == null ||
+                                newPawLogic.address!.isEmpty || newPawLogic.city == null || newPawLogic.district == null) {
+                              context.showErrorSnackBar(
+                                  title: 'Hata',
+                                  message: 'Lütfen adres bilgilerini giriniz.');
+                              return;
+                            }
                             context.push(SGRoute.pawimage.route);
                           },
                           child: Text(
@@ -207,7 +214,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                           ),
                         ),
                       ),
-                      const Gap(10),
+                      const Gap(20),
                     ],
                   ),
               error: (Object error, StackTrace stackTrace) =>
