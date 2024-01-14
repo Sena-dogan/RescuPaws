@@ -21,7 +21,7 @@ class ImageLineIndicator extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
+      children: List<Widget>.generate(
         numberOfImages,
         (int index) => Padding(
           padding: EdgeInsets.symmetric(horizontal: spacing / 2),

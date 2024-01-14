@@ -19,6 +19,4 @@ class CategoryApi {
         await _categoryRestClient.getSubCategories(id);
     return categories;
   }
-
-  
 }
