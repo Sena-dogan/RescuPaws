@@ -91,6 +91,7 @@ dependencies:
   share_plus: ^7.2.1
   carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.1.0
+  lottie: ^3.0.0
 
 
 dev_dependencies:
@@ -129,6 +130,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/images/
+    - assets/animations/
   fonts:
     - family: Nunito
       fonts:
