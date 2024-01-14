@@ -42,9 +42,9 @@ class NewPawModel with _$NewPawModel {
 @freezed
 class NewPawResponse with _$NewPawResponse {
   factory NewPawResponse({
-    required String status,
+    required String? status,
     required String message,
-    required Map<String, dynamic> errors,
+    required Map<String, dynamic>? errors,
   }) = _NewPawResponse;
 
   factory NewPawResponse.fromJson(Map<String, dynamic> json) =>
