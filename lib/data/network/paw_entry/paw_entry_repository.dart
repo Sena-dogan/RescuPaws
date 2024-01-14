@@ -23,7 +23,8 @@ class PawEntryRepository {
   }
 
   Future<NewPawResponse> createPawEntry(NewPawModel newPawModel) async {
-    final NewPawResponse pawEntry = await _pawApi.createPawEntry(newPawModel);
+    final NewPawResponse pawEntry =
+        await _pawApi.createPawEntry(newPawModel);
     return pawEntry;
   }
 
