@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
+import 'package:lottie/lottie.dart';
 
+import '../../constants/assets.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
@@ -51,6 +53,11 @@ class SGGoRouter {
     errorBuilder: (BuildContext context, GoRouterState state) => Scaffold(
         body: Column(
       children: <Widget>[
+        Lottie.asset(
+          Assets.NotFound,
+          repeat: true,
+          height: 300,
+        ),
         Center(child: Text('Page not found: ${state.path}')),
         ElevatedButton(
           onPressed: () => context.go(SGRoute.home.route),
