@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
+import 'package:searchable_listview/searchable_listview.dart';
 
 import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
@@ -38,11 +40,6 @@ class SelectSubBreedWidget extends ConsumerWidget {
             ),
           ),
           backgroundColor: Colors.transparent,
-          // floatingActionButton: FloatingActionButton(child: Icon(Icons.search), onPressed: () async {
-          //   // TODO: implement search with modal bottom sheet
-          //   // Senanin koda bak iyi yaziyo
-          //   // await showModalBottomSheet(context: context, builder: )
-          // }),
           body: categories.when(
             data: (List<Category> data) {
               return Padding(
@@ -52,31 +49,92 @@ class SelectSubBreedWidget extends ConsumerWidget {
                   children: <Widget>[
                     const Gap(16),
                     Expanded(
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.5,
-                        ),
-                        itemCount: data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              ref
-                                  .read(newPawLogicProvider.notifier)
-                                  .setSubCategoryId(data[index].id);
-                              context.push(SGRoute.information.route);
-                            },
-                            child: Card(
-                              elevation: 2,
-                              child: Center(
-                                child: Text(data[index].name, style: context.textTheme.bodyMedium, textAlign: TextAlign.center),
+                        child: SearchableList<Category>(
+                      initialList: data,
+                      style: context.textTheme.bodyMedium,
+                      autoFocusOnSearch: false,
+                      emptyWidget: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Lottie.asset(
+                                  Assets.NotFound,
+                                  repeat: true,
+                                  height: 200,
+                                ),
                               ),
                             ),
-                          );
-                        },
+                            Text(
+                              'Aradığınız kategori bulunamadı.',
+                              style: context.textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                      inputDecoration: InputDecoration(
+                        hintText: 'Bir kategori arayın..',
+                        hintStyle: context.textTheme.bodyMedium,
+                        constraints: BoxConstraints.tight(
+                          const Size.fromHeight(60),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      filter: (String query) {
+                        return data
+                            .where((Category element) => element.name
+                                .toLowerCase()
+                                .contains(query.toLowerCase()))
+                            .toList();
+                      },
+                      errorWidget: const SizedBox(),
+                      builder: (List<Category> displayedList, int itemIndex,
+                          Category item) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(
+                                color: context.colorScheme.primary,
+                              ),
+                            ),
+                            elevation: 5,
+                            shadowColor: context.colorScheme.shadow,
+                            child: ListTile(
+                              onTap: () {
+                                ref
+                                    .read(newPawLogicProvider.notifier)
+                                    .setSubCategoryId(item.id);
+                                context.push(SGRoute.information.route);
+                              },
+                              minVerticalPadding: 15,
+                              title: Text(item.name,
+                                  style: context.textTheme.labelSmall),
+                              trailing: const Icon(Icons.arrow_forward_ios),
+                              leading: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: CircleAvatar(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                      Assets.paw,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              style: ListTileStyle.list,
+                            ),
+                          ),
+                        );
+                      },
+                    )),
                   ],
                 ),
               );
