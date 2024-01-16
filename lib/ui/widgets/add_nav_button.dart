@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ionicons/ionicons.dart';
 
 import '../../config/router/app_router.dart';
+import '../../constants/assets.dart';
 
 class AddNavButton extends StatelessWidget {
   const AddNavButton({
@@ -26,17 +26,10 @@ class AddNavButton extends StatelessWidget {
             rotation: 90,
             pointRounding: 0.7,
           ),
-          child: const Icon(
-            Ionicons.add_circle_outline,
-            size: 23,
-            color: Colors.white,
-            // shadows: <Shadow>[
-            //   BoxShadow(
-            //     color: Colors.black54,
-            //     offset: Offset(0, 1),
-            //     blurRadius: 0.1,
-            //   )
-            // ],
+          child: Image.asset(
+            Assets.paw,
+            width: 40,
+            height: 40,
           ),
         ),
       ),

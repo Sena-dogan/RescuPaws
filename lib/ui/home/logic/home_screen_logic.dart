@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/riverpod_extensions.dart';
+import '../swipe_card/swipe_card_logic.dart';
 import 'home_screen_ui_model.dart';
 
 part 'home_screen_logic.g.dart';
@@ -13,8 +14,12 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   ref.cacheFor(const Duration(minutes: 5));
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
-  final GetPawEntryResponse pawEntries = await pawEntryRepository.getPawEntry();
-  return pawEntries.randomize();
+  GetPawEntryResponse pawEntries = await pawEntryRepository.getPawEntry();
+  pawEntries = pawEntries.randomize();
+  ref
+      .read(swipeCardLogicProvider.notifier)
+      .setId(pawEntries.data.firstOrNull?.id ?? 0);
+  return pawEntries;
 }
 
 @riverpod

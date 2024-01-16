@@ -23,9 +23,16 @@ class AdvertiserInfo extends StatelessWidget {
             color: Colors.black.withOpacity(0.4),
             shape: BoxShape.circle,
           ),
-          child: const Icon(
-            Icons.favorite_border,
-            size: 25,
+          child: ClipOval(
+            child: Image.network(
+                pawEntryDetailResponse!.userData?.photoUrl ?? '',
+                fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) =>
+                    const Icon(
+                      Icons.error,
+                      color: Colors.white,
+                    )),
           ),
         ),
         const Gap(20),
