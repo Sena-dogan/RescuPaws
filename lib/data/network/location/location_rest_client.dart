@@ -10,9 +10,15 @@ part 'location_rest_client.g.dart';
 abstract class LocationRestClient {
   factory LocationRestClient(Dio dio, {String baseUrl}) = _LocationRestClient;
 
-  @GET('/countries/{countryId}/{cityId}')
+  @GET('/location/{countryId}/{cityId}')
   Future<GetLocationsResponse> getLocations(
     @Path('countryId') int countryId,
     @Path('cityId') int cityId,
   );
+
+  @GET('/location')
+  Future<GetLocationsResponse> getCountries();
+
+  @GET('/location/{countryId}')
+  Future<GetLocationsResponse> getCities(@Path('countryId') int countryId);
 }

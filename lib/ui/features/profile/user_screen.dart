@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +96,7 @@ class ProfileScreen extends ConsumerWidget {
                                                   debugPrint(
                                                       'AAAAAAAAAAAAAAAAAAAAA');
                                                   return Image.network(
+                                                      //TODO: Add an placeholder image to Assets
                                                       'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
                                                 },
                                               ).image
@@ -145,7 +145,7 @@ class ProfileScreen extends ConsumerWidget {
                       final InAppReview inAppReview = InAppReview.instance;
 
                       if (await inAppReview.isAvailable()) {
-                        inAppReview.openStoreListing();
+                        await inAppReview.openStoreListing();
                       }
                     },
                     icon: const Icon(Icons.star_outlined),

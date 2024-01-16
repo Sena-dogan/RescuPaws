@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
+
+import '../../config/router/app_router.dart';
 
 class AddNavButton extends StatelessWidget {
   const AddNavButton({
@@ -13,7 +16,9 @@ class AddNavButton extends StatelessWidget {
       height: 75,
       child: FittedBox(
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            context.push(SGRoute.breed.route);
+          },
           clipBehavior: Clip.antiAlias,
           // Shape of 4 edged circle rotated 45 degrees
           shape: const StarBorder.polygon(

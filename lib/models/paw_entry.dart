@@ -42,6 +42,18 @@ class PawEntry with _$PawEntry {
   factory PawEntry.fromJson(Map<String, dynamic> json) =>
       _$PawEntryFromJson(json);
 }
+/*
+Paw entry json example 
+{
+  id: 1,
+  name: "Kedi",
+  description: "Bir kedi buldum",
+  category_id: 1,
+  main_image: "https://patiicinsecilmisanaresim.jpg",
+  address: "Kadıköy",
+  tags: [],
+}
+*/
 
 extension PawEntryX on PawEntry {
   String get createdAtFormatted {

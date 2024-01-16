@@ -31,6 +31,7 @@ class LoginLogic extends _$LoginLogic {
       setLogin(isLoading: true);
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
               clientId: Platform.isIOS
+                  //!TODO: Put this in an env file
                   ? '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com'
                   : null)
           .signIn();
@@ -44,7 +45,7 @@ class LoginLogic extends _$LoginLogic {
           .signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
-      FirebaseCrashlytics.instance.recordError(e, stackTrace);
+      await FirebaseCrashlytics.instance.recordError(e, stackTrace);
       setError(e.toString());
       setLogin();
       return false;

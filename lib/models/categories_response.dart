@@ -18,13 +18,12 @@ class GetCategoriesResponse with _$GetCategoriesResponse {
 @freezed
 class Category with _$Category {
   factory Category({
-    required int? parent_id,
+    /// Bruh why parent_id is String when id is int
+    @Default(null) String? parent_id,
     required int id,
     required String name,
-    required String description,
+    required String? description,
     required int status,
-    required String created_at,
-    required String? updated_at,
   }) = _Category;
 
   factory Category.fromJson(Map<String, dynamic> json) =>

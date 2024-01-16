@@ -8,4 +8,10 @@ class Assets {
   static const String Dog = 'assets/images/intro_dog.png';
   static const String husky = 'assets/images/huskyyy.jpg';
   static const String paw = 'assets/images/paw.png';
+
+  // Lottie Assets
+  static const String Success = 'assets/animations/success_animation.json';
+  static const String Error = 'assets/animations/error_animation.json';
+  static const String NotFound = 'assets/animations/404_animation.json'; 
+  static const String Loading = 'assets/animations/loading_animation.json';
 }

@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../di/components/service_locator.dart';
+import '../../../models/new_paw_model.dart';
 import '../../../models/paw_entry.dart';
 import '../../../models/paw_entry_detail.dart';
 import '../paw_api.dart';
@@ -12,11 +13,18 @@ class PawEntryRepository {
   final PawApi _pawApi;
 
   Future<GetPawEntryResponse> getPawEntry() async {
-    // Best part of functional programming: no try-catch blocks!
-    // Instead, we use Either to return either a String or a PawEntry.
-    // If the request fails, we return a String with the error message.
-    // If the request succeeds, we return a PawEntry.
     final GetPawEntryResponse pawEntry = await _pawApi.getPawEntry();
+    return pawEntry;
+  }
+
+  Future<GetPawEntryResponse> getPawEntryById() async {
+    final GetPawEntryResponse pawEntry = await _pawApi.getPawEntryById();
+    return pawEntry;
+  }
+
+  Future<NewPawResponse> createPawEntry(NewPawModel newPawModel) async {
+    final NewPawResponse pawEntry =
+        await _pawApi.createPawEntry(newPawModel);
     return pawEntry;
   }
 

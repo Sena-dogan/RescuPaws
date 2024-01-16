@@ -71,7 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   onRefresh: () async =>
                       ref.refresh(fetchPawEntriesProvider.future),
                 ),
-              // No data/error, so we're in loading state.
+              // No data/error, so we're in loading state. TODO: Implement shimmer or custom loading widget
               _ => Center(
                     child: Image.asset(
                   'assets/gifs/gif-pati.gif',
