@@ -25,7 +25,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     District? district,
     int? gender,
     String? age,
-    String? weight,
+    num? weight,
     int? education,
     @Default(0) int? vaccinated,
     String? address,
@@ -50,7 +50,7 @@ extension NewPawExtension on NewPawUiModel {
       name: name,
       image: imageBytes,
       user_id: user_id,
-      weight: weight,
+      weight: weight.toString(),
       vaccinated: vaccinated,
     );
   }

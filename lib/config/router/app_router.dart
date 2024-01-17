@@ -18,6 +18,7 @@ import '../../ui/features/new_paw/screens/new_paw_image_screen.dart';
 import '../../ui/features/new_paw/screens/new_paw_screen.dart';
 import '../../ui/features/new_paw/screens/select_breed_screen.dart';
 import '../../ui/features/new_paw/screens/select_subBreed_screen.dart';
+import '../../ui/features/new_paw/screens/weight_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
 import 'fade_extension.dart';
@@ -40,6 +41,7 @@ enum SGRoute {
   forgotPassword,
   editProfile,
   changePassword,
+  weight,
   detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
@@ -108,6 +110,11 @@ class SGGoRouter {
         path: SGRoute.information.route,
         builder: (BuildContext context, GoRouterState state) =>
             const NewPawInformationScreen(),
+      ),
+      GoRoute(
+        path: SGRoute.weight.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const WeightScreen(),
       ),
       GoRoute(
         path: SGRoute.address.route,

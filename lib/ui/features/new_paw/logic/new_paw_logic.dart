@@ -98,7 +98,7 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(age: age);
   }
 
-  void setPawWeight(String weight) {
+  void setPawWeight(num weight) {
     state = state.copyWith(weight: weight);
   }
 

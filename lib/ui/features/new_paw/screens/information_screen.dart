@@ -110,34 +110,34 @@ class _NewPawInformationScreenState
 
                             const Gap(16),
                             // Weight
-                            TextFormField(
-                              validator: (String? value) {
-                                if (value != null &&
-                                        int.tryParse(value.trim()) == null ||
-                                    int.tryParse(value!.trim())! < 0 ||
-                                    int.tryParse(value.trim())! > 50) {
-                                  return 'Lütfen geçerli bir kilo giriniz.';
-                                }
-                                if (value == null && value.trim().isEmpty) {
-                                  return 'Lütfen bir kilo giriniz.';
-                                }
-                                return null;
-                              },
-                              onChanged: (String value) => ref
-                                  .read(newPawLogicProvider.notifier)
-                                  .setPawWeight(value.trim()),
-                              decoration: const InputDecoration(
-                                labelText: 'Kilo Bilgisi',
-                                hintText: 'Kilo cinsinden giriniz.',
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
-                              ),
-                            ),
-                            const Gap(16),
+                            // TextFormField(
+                            //   validator: (String? value) {
+                            //     if (value != null &&
+                            //             int.tryParse(value.trim()) == null ||
+                            //         int.tryParse(value!.trim())! < 0 ||
+                            //         int.tryParse(value.trim())! > 50) {
+                            //       return 'Lütfen geçerli bir kilo giriniz.';
+                            //     }
+                            //     if (value == null && value.trim().isEmpty) {
+                            //       return 'Lütfen bir kilo giriniz.';
+                            //     }
+                            //     return null;
+                            //   },
+                            //   onChanged: (String value) => ref
+                            //       .read(newPawLogicProvider.notifier)
+                            //       .setPawWeight(value.trim()),
+                            //   decoration: const InputDecoration(
+                            //     labelText: 'Kilo Bilgisi',
+                            //     hintText: 'Kilo cinsinden giriniz.',
+                            //     focusedBorder: UnderlineInputBorder(
+                            //       borderSide: BorderSide(color: Colors.grey),
+                            //     ),
+                            //     enabledBorder: UnderlineInputBorder(
+                            //       borderSide: BorderSide(color: Colors.grey),
+                            //     ),
+                            //   ),
+                            // ),
+                            // const Gap(16),
                             // Gender selection widget
                             DropdownButtonFormField<String>(
                               validator: (String? value) {
@@ -248,7 +248,7 @@ class _NewPawInformationScreenState
                                 ),
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
-                                    context.push(SGRoute.address.route);
+                                    context.push(SGRoute.weight.route);
                                   }
                                 },
                                 child: Text(
