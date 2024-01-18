@@ -74,7 +74,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               // No data/error, so we're in loading state. TODO: Implement shimmer or custom loading widget
               _ => Center(
                     child: Image.asset(
-                  'assets/gifs/gif-pati.gif',
+                  Assets.PawGif,
                   height: MediaQuery.of(context).size.height * 0.5,
                   width: MediaQuery.of(context).size.width * 0.5,
                 )),
