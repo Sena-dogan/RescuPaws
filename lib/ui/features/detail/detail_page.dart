@@ -52,7 +52,12 @@ class DetailScreen extends ConsumerWidget {
               onRefresh: () async => ref
                   .refresh(fetchPawEntryDetailProvider(id.toString()).future),
             ),
-          _ => Center(child: const CircularProgressIndicator()),
+          _ => Center(
+                child: Image.asset(
+              'assets/gifs/gif-pati.gif',
+              height: MediaQuery.of(context).size.height * 0.5,
+              width: MediaQuery.of(context).size.width * 0.5,
+            )),
         },
         floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
