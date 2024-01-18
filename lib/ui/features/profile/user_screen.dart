@@ -13,6 +13,7 @@ import '../../../config/router/app_router.dart';
 import '../../../config/theme/theme_logic.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
+import '../../home/widgets/loading_paw_widget.dart';
 import '../../widgets/add_nav_button.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
@@ -49,8 +50,11 @@ class ProfileScreen extends ConsumerWidget {
         bottomNavigationBar: const BottomNavBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: userLogic.isLoading
-            ? const Center(
-                child: CupertinoActivityIndicator(),
+            ? Center(
+                child: SizedBox(
+                    width: context.width * 0.4,
+                    height: context.height * 0.4,
+                    child: const LoadingPawWidget()),
               )
             : Padding(
                 padding: const EdgeInsets.all(10.0),
