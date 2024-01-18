@@ -23,13 +23,12 @@ class UserLogic extends _$UserLogic {
     );
   }
 
-
   bool updateUserImage() {
     final UtilsApi utilsApi = getIt<UtilsApi>();
     ImagePicker()
         .pickImage(source: ImageSource.gallery)
         .then((XFile? value) async {
-      setLoading(isLoading: true);
+      setImageLoading(isLoading: true);
       // debugPrint base64 encoded image
       final File file = File(value!.path);
       final String base64Image = base64Encode(file.readAsBytesSync());
@@ -39,19 +38,25 @@ class UserLogic extends _$UserLogic {
           await utilsApi.convertImages(request);
       response.fold((Object error) {
         debugPrint('error: $error');
-        setLoading();
+        setImageLoading();
         return false;
       }, (ConvertImagesResponse response) async {
         debugPrint('response: ${response.url}');
-        await FirebaseAuth.instance.currentUser!.updatePhotoURL(response.url[0]);
+        await FirebaseAuth.instance.currentUser!
+            .updatePhotoURL(response.url[0]);
         setUser();
       });
     });
+    setImageLoading();
     return true;
   }
 
-  void setLoading({bool isLoading = false}) {
+  void setImageLoading({bool isLoading = false}) {
     state = state.copyWith(isImageLoading: isLoading);
+  }
+
+  void setLoading({bool isLoading = true}) {
+    state = state.copyWith(isLoading: isLoading);
   }
 
   void setUser({bool isLoading = false}) {
