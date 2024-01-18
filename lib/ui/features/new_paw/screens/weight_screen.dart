@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wheel_slider/wheel_slider.dart';
 
 import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
-import '../logic/new_paw_logic.dart';
-import '../widgets/custom_box.dart';
+import '../widgets/wheel_box.dart';
 
-class WeightScreen extends ConsumerWidget {
+class WeightScreen extends ConsumerStatefulWidget {
   const WeightScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    const int totalCount = 10;
-    const num initValue = 0.5;
-    const num currentValue = 0.5;
+  ConsumerState<ConsumerStatefulWidget> createState() => _WeightScreenState();
+}
 
+class _WeightScreenState extends ConsumerState<WeightScreen> {
+  int totalCount = 10;
+  num initValue = 0.5;
+  num currentValue = 0.5;
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -37,29 +44,33 @@ class WeightScreen extends ConsumerWidget {
                 style: context.textTheme.labelSmall,
               )),
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(
-                'Evcil Hayvanınızın Kilosu Nedir?',
-                style: context.textTheme.labelMedium,
+              Lottie.asset(
+                Assets.Success,
+                repeat: true,
+                height: size.height * 0.3,
               ),
-              CustomBox(
-                wheelSlider: WheelSlider(
-                  totalCount: totalCount,
-                  initValue: initValue,
-                  onValueChanged: (dynamic value) {
-                    ref
-                        .read(newPawLogicProvider.notifier)
-                        .setPawWeight(value as num);
-                  },
-                  pointerColor: context.colorScheme.primary,
-                ),
-                valueText: Text(
-                  currentValue.toString(),
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    height: 2.0,
-                    fontWeight: FontWeight.w500,
+              Center(
+                child: WheelBox(
+                  wheelSlider: WheelSlider(
+                    interval: 0.1,
+                    totalCount: totalCount,
+                    initValue: initValue,
+                    onValueChanged: (dynamic val) {
+                      //how can i update the value of currentValue with riverpod 2.0.
+                    },
+                    pointerColor: Colors.white,
+                    pointerWidth: 10.0,
+                    pointerHeight: 70.0,
+                    lineColor: context.colorScheme.secondary,
+                  ),
+                  valueText: Text(
+                    currentValue.toStringAsFixed(1),
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 40,
+                    ),
                   ),
                 ),
               ),
@@ -67,7 +78,23 @@ class WeightScreen extends ConsumerWidget {
                 onPressed: () {
                   context.push(SGRoute.address.route);
                 },
-                child: const Text('Continue'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      context.colorScheme.primary),
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                    EdgeInsets.symmetric(
+                        horizontal: size.width * 0.3, vertical: 15.0),
+                  ),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'Continue',
+                  style: context.textTheme.labelSmall,
+                ),
               ),
             ],
           )),
