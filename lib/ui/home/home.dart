@@ -18,6 +18,7 @@ import 'logic/home_screen_logic.dart';
 import 'swipe_card/swipe_card.dart';
 import 'swipe_card/swipe_card_logic.dart';
 import 'widgets/left_button.dart';
+import 'widgets/loading_paw_widget.dart';
 import 'widgets/right_button.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -71,13 +72,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   onRefresh: () async =>
                       ref.refresh(fetchPawEntriesProvider.future),
                 ),
-              // No data/error, so we're in loading state. TODO: Implement shimmer or custom loading widget
+              // No data/error, so we're in loading state.
               _ => Center(
-                    child: Image.asset(
-                  'assets/gifs/gif-pati.gif',
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                )),
+                  child: SizedBox(
+                      width: context.width * 0.4,
+                      height: context.height * 0.4,
+                      child: const LoadingPawWidget()),
+                )
             }),
       ),
     );

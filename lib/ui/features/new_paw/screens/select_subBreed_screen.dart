@@ -12,6 +12,7 @@ import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../../home/widgets/loading_paw_widget.dart';
 import '../logic/new_paw_logic.dart';
 
 class SelectSubBreedWidget extends ConsumerWidget {
@@ -142,8 +143,11 @@ class SelectSubBreedWidget extends ConsumerWidget {
             error: (Object error, StackTrace stackTrace) => Center(
               child: Text(error.toString()),
             ),
-            loading: () => const Center(
-              child: CupertinoActivityIndicator(),
+            loading: () => Center(
+              child: SizedBox(
+                  width: context.width * 0.4,
+                  height: context.height * 0.4,
+                  child: const LoadingPawWidget()),
             ),
           ),
         ));
