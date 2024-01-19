@@ -8,6 +8,7 @@ import 'package:wheel_slider/wheel_slider.dart';
 import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
+import '../logic/new_paw_logic.dart';
 import '../widgets/wheel_box.dart';
 
 class WeightScreen extends ConsumerStatefulWidget {
@@ -46,11 +47,11 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Lottie.asset(
-                Assets.Success,
-                repeat: true,
-                height: size.height * 0.3,
-              ),
+              // Lottie.asset(
+              //   Assets.Success,
+              //   repeat: true,
+              //   height: size.height * 0.3,
+              // ),
               Center(
                 child: WheelBox(
                   wheelSlider: WheelSlider(
@@ -58,7 +59,11 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                     totalCount: totalCount,
                     initValue: initValue,
                     onValueChanged: (dynamic val) {
-                      //how can i update the value of currentValue with riverpod 2.0.
+                      val = currentValue;
+                      ref
+                          .read(newPawLogicProvider.notifier)
+                          .setPawWeight(val as num);
+                      currentValue = val;
                     },
                     pointerColor: Colors.white,
                     pointerWidth: 10.0,
