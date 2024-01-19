@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wheel_slider/wheel_slider.dart';
 
@@ -19,12 +18,12 @@ class WeightScreen extends ConsumerStatefulWidget {
 }
 
 class _WeightScreenState extends ConsumerState<WeightScreen> {
-  int totalCount = 10;
-  num initValue = 0.5;
-  num currentValue = 0.5;
+  int totalCount = 2000;
+  num initValue = 0;
 
   @override
   Widget build(BuildContext context) {
+    final num currentValue = ref.watch(newPawLogicProvider).weight ?? initValue;
     final Size size = MediaQuery.of(context).size;
     return Container(
       constraints: const BoxConstraints.expand(),
@@ -47,11 +46,11 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              // Lottie.asset(
-              //   Assets.Success,
-              //   repeat: true,
-              //   height: size.height * 0.3,
-              // ),
+              Lottie.asset(
+                Assets.WorkoutDog,
+                repeat: true,
+                height: size.height * 0.3,
+              ),
               Center(
                 child: WheelBox(
                   wheelSlider: WheelSlider(
@@ -59,22 +58,44 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                     totalCount: totalCount,
                     initValue: initValue,
                     onValueChanged: (dynamic val) {
-                      val = currentValue;
                       ref
                           .read(newPawLogicProvider.notifier)
                           .setPawWeight(val as num);
-                      currentValue = val;
                     },
-                    pointerColor: Colors.white,
-                    pointerWidth: 10.0,
-                    pointerHeight: 70.0,
-                    lineColor: context.colorScheme.secondary,
+                    pointerColor: context.colorScheme.scrim.withOpacity(0.9),
+                    customPointer: Stack(
+                      children: <Widget>[
+                        Center(
+                          child: Container(
+                            height: 45,
+                            width: 45,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    context.colorScheme.scrim.withOpacity(0.9),
+                                width: 1.5,
+                              ),
+                              color: context.colorScheme.primary,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Image.asset(
+                            Assets.paw,
+                            width: 40,
+                            height: 40,
+                          ),
+                        ),
+                      ],
+                    ),
+                    lineColor: context.colorScheme.primary,
                   ),
                   valueText: Text(
                     currentValue.toStringAsFixed(1),
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 40,
+                    style: context.textTheme.displayMedium?.copyWith(
+                      color: context.colorScheme.scrim.withOpacity(0.8),
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -98,7 +119,9 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                 ),
                 child: Text(
                   'Continue',
-                  style: context.textTheme.labelSmall,
+                  style: context.textTheme.labelSmall?.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

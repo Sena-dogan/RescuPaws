@@ -26,14 +26,14 @@ class WheelBox extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             'Evcil Hayvanınızın Kilosu Nedir?',
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              fontSize: 22,
+            style: context.textTheme.bodyLarge?.copyWith(
+              color: context.colorScheme.scrim,
+              fontSize: 18,
             ),
             textAlign: TextAlign.center,
           ),
         ),
-        const Gap(20.0),
+        const Gap(16.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
           child: Container(
@@ -51,6 +51,7 @@ class WheelBox extends ConsumerWidget {
             ),
           ),
         ),
+        const Gap(10.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -58,7 +59,7 @@ class WheelBox extends ConsumerWidget {
               text: 'Kg',
               color: ref.watch(newPawLogicProvider).isKg
                   ? context.colorScheme.secondaryContainer
-                  : Colors.grey,
+                  : Colors.grey.shade400,
               onPressed: () {
                 ref.read(newPawLogicProvider.notifier).setKg(true);
               },
@@ -68,7 +69,7 @@ class WheelBox extends ConsumerWidget {
               text: 'Lb',
               color: ref.watch(newPawLogicProvider).isLb
                   ? context.colorScheme.secondaryContainer
-                  : Colors.grey,
+                  : Colors.grey.shade400,
               onPressed: () {
                 ref.read(newPawLogicProvider.notifier).setLb(true);
               },
@@ -102,6 +103,7 @@ class MeasureWidget extends ConsumerWidget {
         color: Colors.transparent,
         border: Border.all(
           color: color,
+          width: 3.0,
         ),
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -109,8 +111,9 @@ class MeasureWidget extends ConsumerWidget {
         onPressed: onPressed,
         child: Text(
           text,
-          style: context.textTheme.labelSmall?.copyWith(
+          style: context.textTheme.labelMedium?.copyWith(
             color: color,
+            fontWeight: FontWeight.w800,
           ),
         ),
       ),

@@ -18,6 +18,7 @@ class MyApp extends ConsumerWidget {
     final ThemeUiModel currentTheme = ref.watch(themeLogicProvider);
     return MaterialApp.router(
       routerConfig: getIt<SGGoRouter>().getGoRouter,
+
       /// Localization is not available for the title.
       title: 'Pati Pati App',
 
@@ -69,6 +70,18 @@ class MyApp extends ConsumerWidget {
 }
 
 final TextTheme textTheme = TextTheme(
+  displayLarge: GoogleFonts.poppins(
+    fontWeight: FontWeight.w700,
+    fontSize: 45,
+  ),
+  displayMedium: GoogleFonts.poppins(
+    fontWeight: FontWeight.w700,
+    fontSize: 40,
+  ),
+  displaySmall: GoogleFonts.poppins(
+    fontWeight: FontWeight.w700,
+    fontSize: 35,
+  ),
   labelLarge: GoogleFonts.poppins(
     fontWeight: FontWeight.w700,
     fontSize: 30,
