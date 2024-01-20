@@ -30,8 +30,7 @@ class NewPawScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: createPawEntry.when(data: (NewPawResponse data) {
-          Future<void>.delayed(const Duration(seconds: 6), () {
-            ref.invalidate(createPawEntryProvider);
+          Future<void>.delayed(const Duration(seconds: 3), () {
             ref.invalidate(newPawLogicProvider);
             context.go(SGRoute.home.route);
           });
@@ -50,8 +49,7 @@ class NewPawScreen extends ConsumerWidget {
             ],
           );
         }, error: (Object error, StackTrace stackTrace) {
-          Future<void>.delayed(const Duration(seconds: 6), () {
-            ref.invalidate(createPawEntryProvider);
+          Future<void>.delayed(const Duration(seconds: 3), () {
             ref.invalidate(newPawLogicProvider);
             context.go(SGRoute.home.route);
           });
