@@ -18,7 +18,7 @@ class WeightScreen extends ConsumerStatefulWidget {
 }
 
 class _WeightScreenState extends ConsumerState<WeightScreen> {
-  int totalCount = 2000;
+  int totalCount = 1500;
   num initValue = 0;
 
   @override
@@ -101,7 +101,13 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  context.push(SGRoute.address.route);
+                  if (currentValue > 0) {
+                    context.push(SGRoute.address.route);
+                  } else {
+                    context.showErrorSnackBar(
+                        title: 'Hata',
+                        message: 'Lütfen kilo bilgisini giriniz.');
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(

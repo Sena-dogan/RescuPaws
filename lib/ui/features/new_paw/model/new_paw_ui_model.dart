@@ -36,6 +36,12 @@ abstract class NewPawUiModel with _$NewPawUiModel {
 // Extension of NewPawUiModel so that we can convert it to NewPawModel easily
 extension NewPawExtension on NewPawUiModel {
   NewPawModel toNewPawModel() {
+    String weight = this.weight.toString();
+    if (isKg) {
+      weight = '${this.weight} kg';
+    } else {
+      weight = '${this.weight} lbs';
+    }
     return NewPawModel(
       address: address,
       age: age,
@@ -51,7 +57,7 @@ extension NewPawExtension on NewPawUiModel {
       name: name,
       image: imageBytes,
       user_id: user_id,
-      weight: weight.toString(),
+      weight: weight,
       vaccinated: vaccinated,
     );
   }
