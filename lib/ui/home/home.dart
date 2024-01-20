@@ -75,8 +75,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               _ => Center(
                     child: Image.asset(
                   Assets.PawGif,
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.4,
                 )),
             }),
       ),
