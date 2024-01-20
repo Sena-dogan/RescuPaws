@@ -13,7 +13,6 @@ abstract class NewPawUiModel with _$NewPawUiModel {
   factory NewPawUiModel({
     @Default(false) bool isImageLoading,
     @Default(true) bool isKg,
-    @Default(false) bool isLb,
     @Default(null) String? error,
     @Default(<AssetEntity>[]) List<AssetEntity>? assets,
     List<String>? imageBytes,

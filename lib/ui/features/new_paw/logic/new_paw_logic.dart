@@ -102,12 +102,15 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(weight: weight);
   }
 
-  void setKg(bool isKg) {
-    state = state.copyWith(isKg: isKg, isLb: !isKg);
-  }
-
-  void setLb(bool isLb) {
-    state = state.copyWith(isLb: isLb, isKg: !isLb);
+  void setWeightMeasure() {
+    final bool isKg = !state.isKg;
+    num weight = state.weight ?? 0;
+    if (isKg) {
+      weight = weight / 2.20462;
+    } else {
+      weight = weight * 2.20462;
+    }
+    state = state.copyWith(isKg: isKg, weight: weight);
   }
 
   void setPawGender(int gender) {

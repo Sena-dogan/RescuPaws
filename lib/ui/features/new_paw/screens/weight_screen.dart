@@ -48,7 +48,6 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
             children: <Widget>[
               Lottie.asset(
                 Assets.WorkoutDog,
-                repeat: true,
                 height: size.height * 0.3,
               ),
               Center(

@@ -60,17 +60,17 @@ class WheelBox extends ConsumerWidget {
                   ? context.colorScheme.secondaryContainer
                   : Colors.grey.shade400,
               onPressed: () {
-                ref.read(newPawLogicProvider.notifier).setKg(true);
+                ref.read(newPawLogicProvider.notifier).setWeightMeasure();
               },
             ),
             Gap(size.width * 0.1),
             MeasureWidget(
               text: 'Lb',
-              color: ref.watch(newPawLogicProvider).isLb
-                  ? context.colorScheme.secondaryContainer
-                  : Colors.grey.shade400,
+              color: ref.watch(newPawLogicProvider).isKg
+                  ? Colors.grey.shade400
+                  : context.colorScheme.secondaryContainer,
               onPressed: () {
-                ref.read(newPawLogicProvider.notifier).setLb(true);
+                ref.read(newPawLogicProvider.notifier).setWeightMeasure();
               },
             ),
           ],
