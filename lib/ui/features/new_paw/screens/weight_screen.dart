@@ -50,52 +50,53 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                 Assets.WorkoutDog,
                 height: size.height * 0.3,
               ),
-              Center(
-                child: WheelBox(
-                  wheelSlider: WheelSlider(
-                    interval: 0.1,
-                    totalCount: totalCount,
-                    initValue: initValue,
-                    onValueChanged: (dynamic val) {
-                      ref
-                          .read(newPawLogicProvider.notifier)
-                          .setPawWeight(val as num);
-                    },
-                    pointerColor: context.colorScheme.scrim.withOpacity(0.9),
-                    customPointer: Stack(
-                      children: <Widget>[
-                        Center(
-                          child: Container(
-                            height: 45,
-                            width: 45,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color:
-                                    context.colorScheme.scrim.withOpacity(0.9),
-                                width: 1.5,
-                              ),
-                              color: context.colorScheme.primary,
-                              borderRadius: BorderRadius.circular(10.0),
+              WheelBox(
+                wheelSlider: WheelSlider(
+                  interval: 0.1,
+                  totalCount: totalCount,
+                  initValue: initValue,
+                  // ignore: avoid_redundant_argument_values
+                  hapticFeedbackType: HapticFeedbackType.vibrate,
+                  onValueChanged: (dynamic val) {
+                    ref
+                        .read(newPawLogicProvider.notifier)
+                        .setPawWeight(val as num);
+                  },
+                  pointerColor: context.colorScheme.scrim.withOpacity(0.9),
+                  itemSize: 20,
+                  perspective: 0.0035,
+                  customPointer: Stack(
+                    children: <Widget>[
+                      Center(
+                        child: Container(
+                          height: 45,
+                          width: 45,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: context.colorScheme.scrim.withOpacity(0.9),
+                              width: 1.5,
                             ),
+                            color: context.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        Center(
-                          child: Image.asset(
-                            Assets.paw,
-                            width: 40,
-                            height: 40,
-                          ),
+                      ),
+                      Center(
+                        child: Image.asset(
+                          Assets.paw,
+                          width: 40,
+                          height: 40,
                         ),
-                      ],
-                    ),
-                    lineColor: context.colorScheme.primary,
+                      ),
+                    ],
                   ),
-                  valueText: Text(
-                    currentValue.toStringAsFixed(1),
-                    style: context.textTheme.displayMedium?.copyWith(
-                      color: context.colorScheme.scrim.withOpacity(0.8),
-                      fontWeight: FontWeight.bold,
-                    ),
+                  lineColor: context.colorScheme.primary,
+                ),
+                valueText: Text(
+                  currentValue.toStringAsFixed(1),
+                  style: context.textTheme.displayMedium?.copyWith(
+                    color: context.colorScheme.scrim.withOpacity(0.8),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -123,7 +124,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                   ),
                 ),
                 child: Text(
-                  'Continue',
+                  'Devam et',
                   style: context.textTheme.labelSmall?.copyWith(
                     color: Colors.white,
                   ),
