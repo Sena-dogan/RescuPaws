@@ -8,7 +8,6 @@ class Assets {
   static const String Dog = 'assets/images/intro_dog.png';
   static const String husky = 'assets/images/huskyyy.jpg';
   static const String paw = 'assets/images/paw.png';
-  static const String PawGif = 'assets/gifs/gif-pati.gif';
 
   // Lottie Assets
   static const String Success = 'assets/animations/success_animation.json';
@@ -16,4 +15,7 @@ class Assets {
   static const String NotFound = 'assets/animations/404_animation.json';
   static const String Loading = 'assets/animations/loading_animation.json';
   static const String WorkoutDog = 'assets/animations/workout_dog_lottie.json';
+
+  // Gifs
+  static const String LoadingPaw = 'assets/gifs/gif-pati.gif';
 }

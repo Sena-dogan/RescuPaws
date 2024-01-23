@@ -43,6 +43,10 @@ Future<List<Category>> fetchSubCategories(
 @riverpod
 Future<NewPawResponse> createPawEntry(
     CreatePawEntryRef ref, NewPawModel newPawModel) async {
+  if (newPawModel.name == null) {
+    Logger().e('new paw model name is null');
+    throw Exception('new paw model name is null');
+  }
   Logger().i('new paw model: $newPawModel');
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);

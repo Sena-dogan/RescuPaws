@@ -7,6 +7,7 @@ part 'user_ui_model.freezed.dart';
 abstract class UserUiModel with _$UserUiModel {
   const factory UserUiModel({
     @Default(false) bool isImageLoading,
+    @Default(false) bool isLoading,
     @Default(null) User? user,
   }) = _UserUiModel;
 

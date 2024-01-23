@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import '../../../config/theme/theme_logic.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
 import '../../../utils/pop_up.dart';
+import '../../home/widgets/loading_paw_widget.dart';
 import '../../widgets/add_nav_button.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
@@ -49,309 +51,368 @@ class ProfileScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         bottomNavigationBar: const BottomNavBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Gap(20),
-                ListTile(
-                  trailing: Stack(
+        body: userLogic.isLoading
+            ? Center(
+                child: SizedBox(
+                    width: context.width * 0.4,
+                    height: context.height * 0.4,
+                    child: const LoadingPawWidget()),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      // Edit icon
-                      InkWell(
-                        onTap: () {
-                          final bool resp = ref
-                              .read(userLogicProvider.notifier)
-                              .updateUserImage();
-                          if (resp == false) {
-                            context.showErrorSnackBar(
-                                title: 'Hata',
-                                message: 'Resim yüklenirken bir hata oluştu.');
-                          }
-                        },
-                        child: userLogic.isImageLoading
-                            ? const SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: CupertinoActivityIndicator(),
-                              )
-                            : Stack(
-                                children: <Widget>[
-                                  Container(
-                                    width: 60,
-                                    height: 60,
-                                    decoration: ShapeDecoration(
-                                      image: DecorationImage(
-                                        image: FirebaseAuth.instance.currentUser
-                                                    ?.photoURL !=
-                                                null
-                                            ? Image.network(
-                                                FirebaseAuth.instance
-                                                    .currentUser!.photoURL!,
-                                                errorBuilder: (BuildContext
-                                                        context,
-                                                    Object error,
-                                                    StackTrace? stackTrace) {
-                                                  debugPrint(
-                                                      'AAAAAAAAAAAAAAAAAAAAA');
-                                                  return Image.network(
-                                                      //TODO: Add an placeholder image to Assets
-                                                      'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
-                                                },
-                                              ).image
-                                            : Image.network(
-                                                    'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg')
-                                                .image,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      shape: const OvalBorder(),
+                      const Gap(20),
+                      ListTile(
+                        trailing: Stack(
+                          children: <Widget>[
+                            // Edit icon
+                            InkWell(
+                              onTap: () {
+                                final bool resp = ref
+                                    .read(userLogicProvider.notifier)
+                                    .updateUserImage();
+                                if (resp == false) {
+                                  context.showErrorSnackBar(
+                                      title: 'Hata',
+                                      message:
+                                          'Resim yüklenirken bir hata oluştu.');
+                                }
+                              },
+                              child: userLogic.isImageLoading
+                                  ? const SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: CupertinoActivityIndicator(),
+                                    )
+                                  : Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          width: 60,
+                                          height: 60,
+                                          decoration: ShapeDecoration(
+                                            image: DecorationImage(
+                                              image: FirebaseAuth
+                                                          .instance
+                                                          .currentUser
+                                                          ?.photoURL !=
+                                                      null
+                                                  ? Image.network(
+                                                      FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .photoURL!,
+                                                      errorBuilder:
+                                                          (BuildContext context,
+                                                              Object error,
+                                                              StackTrace?
+                                                                  stackTrace) {
+                                                        debugPrint(
+                                                            'AAAAAAAAAAAAAAAAAAAAA');
+                                                        return Image.network(
+                                                            //TODO: Add an placeholder image to Assets
+                                                            'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
+                                                      },
+                                                    ).image
+                                                  : Image.network(
+                                                          'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg')
+                                                      .image,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            shape: const OvalBorder(),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          right: 0,
+                                          child: Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  context.colorScheme.primary,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(
+                                              Icons.edit,
+                                              color: Colors.white,
+                                              size: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Container(
-                                      width: 20,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        color: context.colorScheme.primary,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Icon(
-                                        Icons.edit,
-                                        color: Colors.white,
-                                        size: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            ),
+                          ],
+                        ),
+                        title: Text(
+                          userLogic.user?.displayName ?? 'Kullanici',
+                          style: context.textTheme.labelMedium,
+                        ),
+                        subtitle: Text(userLogic.user?.email ?? '',
+                            style: context.textTheme.bodyMedium),
                       ),
-                    ],
-                  ),
-                  title: Text(
-                    userLogic.user?.displayName ?? 'Kullanici',
-                    style: context.textTheme.labelMedium,
-                  ),
-                  subtitle: Text(userLogic.user?.email ?? '',
-                      style: context.textTheme.bodyMedium),
-                ),
-                // Invite friends button outlined with a border transtiion and with a leading icon
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton.icon(
-                    onPressed: () async {
-                      final InAppReview inAppReview = InAppReview.instance;
+                      // Invite friends button outlined with a border transtiion and with a leading icon
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: OutlinedButton.icon(
+                          onPressed: () async {
+                            final InAppReview inAppReview =
+                                InAppReview.instance;
 
-                      if (await inAppReview.isAvailable()) {
-                        await inAppReview.openStoreListing();
-                      }
-                    },
-                    icon: const Icon(Icons.star_outlined),
-                    label: Text(
-                      'Değerlendir',
-                      style: context.textTheme.bodyMedium,
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      side: const BorderSide(color: Colors.grey),
-                    ),
-                  ),
-                ),
-                const Gap(20),
-                // Security section with full widht  and with a leading icon
-                // Help and support section with full widht  and with a leading icon
-                // Instead of share button, it is like a section that takes all the width
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        'Cihaz',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                            if (await inAppReview.isAvailable()) {
+                              await inAppReview.openStoreListing();
+                            }
+                          },
+                          icon: const Icon(Icons.star_outlined),
+                          label: Text(
+                            'Değerlendir',
+                            style: context.textTheme.bodyMedium,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            side: const BorderSide(color: Colors.grey),
+                          ),
                         ),
                       ),
-                    ),
-                    const Divider(
-                      indent: 8,
-                    ),
-                    const Gap(10),
-                    ListTile(
-                      leading: const Icon(Icons.lightbulb_outline),
-                      title: const Text('Tema'),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () async {
-                        await showAdaptiveDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (BuildContext context) {
-                              return BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                                child: AlertDialog(
-                                  backgroundColor: context.colorScheme.surface,
-                                  title: const Text(
-                                    'Tema',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      ListTile(
-                                        leading: const Icon(Icons.light_mode),
-                                        title: const Text('Açık Tema'),
-                                        onTap: () {
-                                          ref
-                                              .read(themeLogicProvider.notifier)
-                                              .setThemeMode(ThemeMode.light);
-                                          Navigator.of(context).pop();
-                                        },
+                      const Gap(20),
+                      // Security section with full widht  and with a leading icon
+                      // Help and support section with full widht  and with a leading icon
+                      // Instead of share button, it is like a section that takes all the width
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              'Cihaz',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const Divider(
+                            indent: 8,
+                          ),
+                          const Gap(10),
+                          ListTile(
+                            leading: const Icon(Icons.lightbulb_outline),
+                            title: const Text('Tema'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () async {
+                              await showAdaptiveDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
+                                    return BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 5, sigmaY: 5),
+                                      child: AlertDialog(
+                                        backgroundColor:
+                                            context.colorScheme.surface,
+                                        title: const Text(
+                                          'Tema',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            ListTile(
+                                              leading:
+                                                  const Icon(Icons.light_mode),
+                                              title: const Text('Açık Tema'),
+                                              onTap: () {
+                                                ref
+                                                    .read(themeLogicProvider
+                                                        .notifier)
+                                                    .setThemeMode(
+                                                        ThemeMode.light);
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            ListTile(
+                                              leading:
+                                                  const Icon(Icons.dark_mode),
+                                              title: const Text('Koyu Tema'),
+                                              onTap: () {
+                                                ref
+                                                    .read(themeLogicProvider
+                                                        .notifier)
+                                                    .setThemeMode(
+                                                        ThemeMode.dark);
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            ListTile(
+                                              leading:
+                                                  const Icon(Icons.lightbulb),
+                                              title:
+                                                  const Text('Sistem Teması'),
+                                              onTap: () {
+                                                ref
+                                                    .read(themeLogicProvider
+                                                        .notifier)
+                                                    .setThemeMode(
+                                                        ThemeMode.system);
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      ListTile(
-                                        leading: const Icon(Icons.dark_mode),
-                                        title: const Text('Koyu Tema'),
-                                        onTap: () {
-                                          ref
-                                              .read(themeLogicProvider.notifier)
-                                              .setThemeMode(ThemeMode.dark);
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      ListTile(
-                                        leading: const Icon(Icons.lightbulb),
-                                        title: const Text('Sistem Teması'),
-                                        onTap: () {
-                                          ref
-                                              .read(themeLogicProvider.notifier)
-                                              .setThemeMode(ThemeMode.system);
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
+                                    );
+                                  });
+                            },
+                          ),
+                          const Gap(10),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              'Yardım ve Destek',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const Divider(
+                            indent: 8,
+                          ),
+                          const Gap(10),
+                          ListTile(
+                            leading:
+                                const Icon(Icons.document_scanner_outlined),
+                            title: const Text('Lisanslar'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () async {
+                              showLicensePage(
+                                context: context,
+                                applicationName: '',
+                                applicationLegalese: '© 2023 Patipati',
+                                applicationIcon: const SizedBox(
+                                  width: 150,
+                                  height: 150,
+                                  child: Image(
+                                    image: AssetImage(Assets.PatiApp),
                                   ),
                                 ),
                               );
-                            });
-                      },
-                    ),
-                    const Gap(10),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        'Yardım ve Destek',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Ionicons.call),
+                            title: const Text('İletişim'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () async {
+                              const String url = 'mailto:help@patipati.app';
+                              final Uri uri = Uri.parse(url);
+                              await launchUrl(uri).catchError((Object? err) =>
+                                  // ignore: invalid_return_type_for_catch_error
+                                  debugPrint(err.toString()));
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Ionicons.reader_outline),
+                            title: const Text('Gizlilik Politikası'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () async {
+                              const String url =
+                                  'https://patipati.app/privacy-policy';
+                              final Uri uri = Uri.parse(url);
+                              await launchUrl(uri).catchError((Object? err) =>
+                                  // ignore: invalid_return_type_for_catch_error
+                                  debugPrint(err.toString()));
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Ionicons.ticket_outline),
+                            title: const Text('Kullanım Koşulları'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () async {
+                              const String url =
+                                  'https://patipati.app/user-terms';
+                              final Uri uri = Uri.parse(url);
+                              await launchUrl(uri).catchError((Object? err) =>
+                                  // ignore: invalid_return_type_for_catch_error
+                                  debugPrint(err.toString()));
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Ionicons.remove_circle_outline),
+                            title: const Text('Hesabımı Sil'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () async {
+                              await popUp(
+                                context,
+                                title:
+                                    'Hesabınızı silmek istediğinize emin misiniz?',
+                                buttonTitle: 'Sil',
+                                onPressed: () async {
+                                  context.pop();
+                                  ref
+                                      .read(userLogicProvider.notifier)
+                                      .setLoading();
+                                  await ref
+                                      .read(loginLogicProvider.notifier)
+                                      .removeUser()
+                                      .then((bool value) => value
+                                          ? context.go(SGRoute.login.route)
+                                          : null)
+                                      .catchError((Object? err) =>
+                                          // ignore: invalid_return_type_for_catch_error
+                                          debugPrint(err.toString()));
+                                },
+                              );
+                              ref
+                                  .read(userLogicProvider.notifier)
+                                  .setLoading(isLoading: false);
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.logout),
+                            title: const Text('Çıkış Yap'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () async {
+                              await popUp(
+                                context,
+                                title:
+                                    'Hesabınızdan çıkış yapmak istediğinize emin misiniz?',
+                                buttonTitle: 'Çıkış Yap',
+                                onPressed: () async {
+                                  context.pop();
+                                  ref
+                                      .read(userLogicProvider.notifier)
+                                      .setLoading();
+                                  //TODO: Merge login and user logic
+                                  await ref
+                                      .read(loginLogicProvider.notifier)
+                                      .signOut()
+                                      .then((bool value) => value
+                                          ? context.go(SGRoute.login.route)
+                                          : null)
+                                      .catchError((Object? err) =>
+                                          // ignore: invalid_return_type_for_catch_error
+                                          debugPrint(err.toString()));
+                                },
+                              );
+                              ref
+                                  .read(userLogicProvider.notifier)
+                                  .setLoading(isLoading: false);
+                            },
+                          ),
+                        ],
                       ),
-                    ),
-                    const Divider(
-                      indent: 8,
-                    ),
-                    const Gap(10),
-                    // ListTile(
-                    //   leading: Icon(Icons.help),
-                    //   title: Text('Sıkça Sorulan Sorular'),
-                    //   trailing: Icon(Icons.arrow_forward_ios),
-                    // ),
-                    ListTile(
-                      leading: const Icon(Ionicons.call),
-                      title: const Text('İletişim'),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () async {
-                        const String url = 'mailto:help@patipati.app';
-                        final Uri uri = Uri.parse(url);
-                        await launchUrl(uri).catchError((Object? err) =>
-                            // ignore: invalid_return_type_for_catch_error
-                            debugPrint(err.toString()));
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Ionicons.reader_outline),
-                      title: const Text('Gizlilik Politikası'),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () async {
-                        const String url =
-                            'https://patipati.app/privacy-policy';
-                        final Uri uri = Uri.parse(url);
-                        await launchUrl(uri).catchError((Object? err) =>
-                            // ignore: invalid_return_type_for_catch_error
-                            debugPrint(err.toString()));
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Ionicons.ticket_outline),
-                      title: const Text('Kullanım Koşulları'),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () async {
-                        const String url = 'https://patipati.app/user-terms';
-                        final Uri uri = Uri.parse(url);
-                        await launchUrl(uri).catchError((Object? err) =>
-                            // ignore: invalid_return_type_for_catch_error
-                            debugPrint(err.toString()));
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Ionicons.remove_circle_outline),
-                      title: const Text('Hesabımı Sil'),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () async {
-                        await popUp(
-                          context,
-                          title: 'Hesabınızı silmek istediğinize emin misiniz?',
-                          buttonTitle: 'Sil',
-                          onPressed: () async {
-                            await ref
-                                .read(loginLogicProvider.notifier)
-                                .removeUser()
-                                .then((bool value) => value
-                                    ? context.go(SGRoute.login.route)
-                                    : null)
-                                .catchError((Object? err) =>
-                                    // ignore: invalid_return_type_for_catch_error
-                                    debugPrint(err.toString()));
-                          },
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.logout),
-                      title: const Text('Çıkış Yap'),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () async {
-                        await popUp(
-                          context,
-                          title:
-                              'Hesabınızdan çıkış yapmak istediğinize emin misiniz?',
-                          buttonTitle: 'Çıkış Yap',
-                          onPressed: () async {
-                            await ref
-                                .read(loginLogicProvider.notifier)
-                                .signOut()
-                                .then((bool value) => value
-                                    ? context.go(SGRoute.login.route)
-                                    : null)
-                                .catchError((Object? err) =>
-                                    // ignore: invalid_return_type_for_catch_error
-                                    debugPrint(err.toString()));
-                          },
-                        );
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }
