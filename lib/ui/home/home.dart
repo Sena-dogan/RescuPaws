@@ -73,11 +73,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ref.refresh(fetchPawEntriesProvider.future),
                 ),
               // No data/error, so we're in loading state.
-              _ => Center(
-                  child: SizedBox(
-                      width: context.width * 0.4,
-                      height: context.height * 0.4,
-                      child: const LoadingPawWidget()),
+              _ => const Center(
+                  child: LoadingPawWidget(),
                 )
             }),
       ),
