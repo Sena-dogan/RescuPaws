@@ -307,7 +307,7 @@ class ProfileScreen extends ConsumerWidget {
                             },
                           ),
                           ListTile(
-                            leading: const Icon(Ionicons.call),
+                            leading: const Icon(Ionicons.call_outline),
                             title: const Text('İletişim'),
                             trailing: const Icon(Icons.arrow_forward_ios),
                             onTap: () async {
