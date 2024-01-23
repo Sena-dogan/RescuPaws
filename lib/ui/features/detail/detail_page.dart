@@ -26,7 +26,7 @@ class DetailScreen extends ConsumerWidget {
     //AsyncValue<Activity> activity = ref.watch(activityProvider);
     final AsyncValue<GetPawEntryDetailResponse?> pawEntryDetailResponse =
         ref.watch(fetchPawEntryDetailProvider(id.toString()));
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.sizeOf(context);
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(

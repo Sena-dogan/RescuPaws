@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import '../../../config/router/app_router.dart';
 import '../../../config/theme/theme_logic.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
+import '../../../utils/pop_up.dart';
 import '../../home/widgets/loading_paw_widget.dart';
 import '../../widgets/add_nav_button.dart';
 import '../../widgets/app_bar_gone.dart';
@@ -305,7 +307,7 @@ class ProfileScreen extends ConsumerWidget {
                             },
                           ),
                           ListTile(
-                            leading: const Icon(Ionicons.call_outline),
+                            leading: const Icon(Ionicons.call),
                             title: const Text('İletişim'),
                             trailing: const Icon(Icons.arrow_forward_ios),
                             onTap: () async {
@@ -346,25 +348,28 @@ class ProfileScreen extends ConsumerWidget {
                             leading: const Icon(Ionicons.remove_circle_outline),
                             title: const Text('Hesabımı Sil'),
                             trailing: const Icon(Icons.arrow_forward_ios),
-                            onTap: () {
-                              popUp(context, ref,
-                                  title:
-                                      'Hesabınızı silmek istediğinize emin misiniz?',
-                                  buttonTitle: 'Sil', onPressed: () async {
-                                context.pop();
-                                ref
-                                    .read(userLogicProvider.notifier)
-                                    .setLoading();
-                                await ref
-                                    .read(loginLogicProvider.notifier)
-                                    .removeUser()
-                                    .then((bool value) => value
-                                        ? context.go(SGRoute.login.route)
-                                        : null)
-                                    .catchError((Object? err) =>
-                                        // ignore: invalid_return_type_for_catch_error
-                                        debugPrint(err.toString()));
-                              });
+                            onTap: () async {
+                              await popUp(
+                                context,
+                                title:
+                                    'Hesabınızı silmek istediğinize emin misiniz?',
+                                buttonTitle: 'Sil',
+                                onPressed: () async {
+                                  context.pop();
+                                  ref
+                                      .read(userLogicProvider.notifier)
+                                      .setLoading();
+                                  await ref
+                                      .read(loginLogicProvider.notifier)
+                                      .removeUser()
+                                      .then((bool value) => value
+                                          ? context.go(SGRoute.login.route)
+                                          : null)
+                                      .catchError((Object? err) =>
+                                          // ignore: invalid_return_type_for_catch_error
+                                          debugPrint(err.toString()));
+                                },
+                              );
                               ref
                                   .read(userLogicProvider.notifier)
                                   .setLoading(isLoading: false);
@@ -374,10 +379,9 @@ class ProfileScreen extends ConsumerWidget {
                             leading: const Icon(Icons.logout),
                             title: const Text('Çıkış Yap'),
                             trailing: const Icon(Icons.arrow_forward_ios),
-                            onTap: () {
-                              popUp(
+                            onTap: () async {
+                              await popUp(
                                 context,
-                                ref,
                                 title:
                                     'Hesabınızdan çıkış yapmak istediğinize emin misiniz?',
                                 buttonTitle: 'Çıkış Yap',
@@ -411,48 +415,5 @@ class ProfileScreen extends ConsumerWidget {
               ),
       ),
     );
-  }
-
-  Future<dynamic> popUp(BuildContext context, WidgetRef ref,
-      {required String title,
-      required Function()? onPressed,
-      required String buttonTitle}) {
-    return showAdaptiveDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: AlertDialog(
-              backgroundColor: context.colorScheme.surface,
-              title: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              actionsAlignment: MainAxisAlignment.center,
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text('İptal', style: context.textTheme.bodyLarge),
-                ),
-                TextButton(
-                  onPressed: onPressed,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        context.colorScheme.error),
-                  ),
-                  child: Text(
-                    buttonTitle,
-                    style: context.textTheme.bodyLarge!
-                        .copyWith(color: context.colorScheme.scrim),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
   }
 }

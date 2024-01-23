@@ -12,8 +12,9 @@ class Assets {
   // Lottie Assets
   static const String Success = 'assets/animations/success_animation.json';
   static const String Error = 'assets/animations/error_animation.json';
-  static const String NotFound = 'assets/animations/404_animation.json'; 
+  static const String NotFound = 'assets/animations/404_animation.json';
   static const String Loading = 'assets/animations/loading_animation.json';
+  static const String WorkoutDog = 'assets/animations/workout_dog_lottie.json';
 
   // Gifs
   static const String LoadingPaw = 'assets/gifs/gif-pati.gif';

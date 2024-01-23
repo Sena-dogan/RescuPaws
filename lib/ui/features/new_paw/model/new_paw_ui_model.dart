@@ -12,6 +12,7 @@ part 'new_paw_ui_model.freezed.dart';
 abstract class NewPawUiModel with _$NewPawUiModel {
   factory NewPawUiModel({
     @Default(false) bool isImageLoading,
+    @Default(true) bool isKg,
     @Default(null) String? error,
     @Default(<AssetEntity>[]) List<AssetEntity>? assets,
     List<String>? imageBytes,
@@ -25,7 +26,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     District? district,
     int? gender,
     String? age,
-    String? weight,
+    num? weight,
     int? education,
     @Default(0) int? vaccinated,
     String? address,
@@ -35,6 +36,12 @@ abstract class NewPawUiModel with _$NewPawUiModel {
 // Extension of NewPawUiModel so that we can convert it to NewPawModel easily
 extension NewPawExtension on NewPawUiModel {
   NewPawModel toNewPawModel() {
+    String weight = this.weight.toString();
+    if (isKg) {
+      weight = '${this.weight} kg';
+    } else {
+      weight = '${this.weight} lbs';
+    }
     return NewPawModel(
       address: address,
       age: age,
