@@ -24,7 +24,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
   @override
   Widget build(BuildContext context) {
     final num currentValue = ref.watch(newPawLogicProvider).weight ?? initValue;
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.sizeOf(context);
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(

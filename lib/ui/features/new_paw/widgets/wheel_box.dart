@@ -18,7 +18,7 @@ class WheelBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.sizeOf(context);
     return Column(
       children: <Widget>[
         Padding(
@@ -94,7 +94,7 @@ class MeasureWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.sizeOf(context);
     return Container(
       height: 60,
       width: size.width * 0.3,
