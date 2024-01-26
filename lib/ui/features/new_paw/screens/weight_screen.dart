@@ -56,7 +56,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                   totalCount: totalCount,
                   initValue: initValue,
                   // ignore: avoid_redundant_argument_values
-                  hapticFeedbackType: HapticFeedbackType.vibrate,
+                  hapticFeedbackType: HapticFeedbackType.heavyImpact,
                   onValueChanged: (dynamic val) {
                     ref
                         .read(newPawLogicProvider.notifier)

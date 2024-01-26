@@ -58,7 +58,8 @@ class Characteristics extends StatelessWidget {
           children: <Widget>[
             CharacteristicItem(
               title: 'Ağırlık',
-              value: '${pawEntryDetailResponse!.pawEntryDetail?.weight} kg',
+              value:
+                  '${pawEntryDetailResponse!.pawEntryDetail!.weight?.substring(0, 3)} kg',
             ),
             const Gap(30),
             CharacteristicItem(
