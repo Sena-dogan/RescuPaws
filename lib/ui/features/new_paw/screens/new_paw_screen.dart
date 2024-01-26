@@ -8,6 +8,7 @@ import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../models/new_paw_model.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../../home/widgets/loading_paw_widget.dart';
 import '../logic/new_paw_logic.dart';
 import '../model/new_paw_ui_model.dart';
 
@@ -69,8 +70,11 @@ class NewPawScreen extends ConsumerWidget {
             ],
           );
         }, loading: () {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: SizedBox(
+                width: context.width * 0.4,
+                height: context.height * 0.4,
+                child: const LoadingPawWidget()),
           );
         }),
       ),

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constants/assets.dart';
@@ -89,42 +90,50 @@ class SGGoRouter {
         path: SGRoute.profile.route,
         builder: (BuildContext context, GoRouterState state) =>
             const ProfileScreen(),
+        redirect: _authGuard,
       ).fade(),
       GoRoute(
         path: SGRoute.detail.route,
         builder: (BuildContext context, GoRouterState state) => DetailScreen(
           id: state.extra! as int,
         ),
+        redirect: _authGuard,
       ).fade(),
       GoRoute(
         path: SGRoute.breed.route,
         builder: (BuildContext context, GoRouterState state) =>
             const SelectBreedScreen(),
+        redirect: _authGuard,
       ),
       GoRoute(
         path: SGRoute.subbreed.route,
         builder: (BuildContext context, GoRouterState state) =>
             const SelectSubBreedWidget(),
+        redirect: _authGuard,
       ),
       GoRoute(
         path: SGRoute.information.route,
         builder: (BuildContext context, GoRouterState state) =>
             const NewPawInformationScreen(),
+        redirect: _authGuard,
       ),
       GoRoute(
         path: SGRoute.weight.route,
         builder: (BuildContext context, GoRouterState state) =>
             const WeightScreen(),
+        redirect: _authGuard,
       ),
       GoRoute(
         path: SGRoute.address.route,
         builder: (BuildContext context, GoRouterState state) =>
             const AddressInputScreen(),
+        redirect: _authGuard,
       ),
       GoRoute(
         path: SGRoute.pawimage.route,
         builder: (BuildContext context, GoRouterState state) =>
             const NewPawImageScreen(),
+        redirect: _authGuard,
       ),
       GoRoute(
         path: SGRoute.newpaw.route,
@@ -154,5 +163,8 @@ final String? Function(BuildContext context, GoRouterState state) _authGuard =
   if (FirebaseAuth.instance.currentUser == null) {
     return SGRoute.login.route;
   }
+  FirebaseAuth.instance.currentUser!.reload().catchError((Object error) {
+    return Future<void>.error(SGRoute.login.route);
+  });
   return null;
 };
