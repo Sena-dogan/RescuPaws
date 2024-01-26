@@ -159,13 +159,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       leadingWidth: 128 + 20 * 2,
       backgroundColor: Colors.transparent,
       actions: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.notifications_none_rounded,
+              size: 30,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const VerticalDivider(
+          color: Colors.grey,
+          endIndent: 16,
+          indent: 16,
+          width: 1,
+          thickness: 1,
+        ),
         InkWell(
           onTap: () {
             context.go(SGRoute.profile.route);
             ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(1);
           },
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
               width: 42,
               height: 42,
