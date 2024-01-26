@@ -15,6 +15,7 @@ class Characteristics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String weight = pawEntryDetailResponse!.pawEntryDetail!.weight ?? '';
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -58,8 +59,7 @@ class Characteristics extends StatelessWidget {
           children: <Widget>[
             CharacteristicItem(
               title: 'Ağırlık',
-              value:
-                  '${pawEntryDetailResponse!.pawEntryDetail!.weight?.substring(0, 3)} kg',
+              value: weight.length > 3 ? '${weight.substring(0, 3)} kg' : '$weight kg',
             ),
             const Gap(30),
             CharacteristicItem(
