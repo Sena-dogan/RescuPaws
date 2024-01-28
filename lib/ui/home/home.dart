@@ -1,16 +1,12 @@
 // ignore_for_file: always_specify_types, unused_local_variable
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../utils/context_extensions.dart';
-import '../../config/router/app_router.dart';
 import '../../constants/assets.dart';
 import '../../models/paw_entry.dart';
-import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../../utils/error_widgett.dart';
 import '../widgets/add_nav_button.dart';
 import '../widgets/bottom_nav_bar.dart';
@@ -170,40 +166,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
         ),
-        const VerticalDivider(
-          color: Colors.grey,
-          endIndent: 16,
-          indent: 16,
-          width: 1,
-          thickness: 1,
-        ),
-        InkWell(
-          onTap: () {
-            context.go(SGRoute.profile.route);
-            ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(1);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Container(
-              width: 42,
-              height: 42,
-              decoration: ShapeDecoration(
-                image: DecorationImage(
-                  image: Image.network(
-                    FirebaseAuth.instance.currentUser?.photoURL ??
-                        'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg',
-                    errorBuilder: (BuildContext context, Object error,
-                            StackTrace? stackTrace) =>
-                        Image.network(
-                            'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'),
-                  ).image,
-                  fit: BoxFit.cover,
-                ),
-                shape: const OvalBorder(),
-              ),
-            ),
-          ),
-        )
       ],
     );
   }
