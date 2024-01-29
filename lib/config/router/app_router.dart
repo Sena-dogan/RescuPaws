@@ -1,10 +1,8 @@
-// ignore_for_file: prefer_function_declarations_over_variables
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constants/assets.dart';

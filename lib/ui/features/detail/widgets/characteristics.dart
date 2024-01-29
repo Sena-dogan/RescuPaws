@@ -15,6 +15,7 @@ class Characteristics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String weight = pawEntryDetailResponse!.pawEntryDetail!.weight ?? '';
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -23,14 +24,16 @@ class Characteristics extends StatelessWidget {
           children: <Widget>[
             CharacteristicItem(
               title: 'Cinsiyet',
-              value: pawEntryDetailResponse!.pawEntryDetail?.genderEnum == Gender.Female
+              value: pawEntryDetailResponse!.pawEntryDetail?.genderEnum ==
+                      Gender.Female
                   ? 'Dişi'
                   : 'Erkek',
             ),
             const Gap(30),
             CharacteristicItem(
               title: 'Tuvalet Eğitimi',
-              value: pawEntryDetailResponse!.pawEntryDetail?.educationEnum == HaveorNot.Have
+              value: pawEntryDetailResponse!.pawEntryDetail?.educationEnum ==
+                      HaveorNot.Have
                   ? 'Var'
                   : 'Yok',
             ),
@@ -46,7 +49,8 @@ class Characteristics extends StatelessWidget {
             const Gap(30),
             CharacteristicItem(
               title: 'Yaş',
-              value: pawEntryDetailResponse!.pawEntryDetail?.age.toString() ?? '',
+              value:
+                  pawEntryDetailResponse!.pawEntryDetail?.age.toString() ?? '',
             ),
           ],
         ),
@@ -55,14 +59,14 @@ class Characteristics extends StatelessWidget {
           children: <Widget>[
             CharacteristicItem(
               title: 'Ağırlık',
-              value: pawEntryDetailResponse!.pawEntryDetail?.weight.toString() ?? '',
+              value: weight.length > 3
+                  ? '${weight.substring(0, 3)} kg'
+                  : '$weight kg',
             ),
             const Gap(30),
-            CharacteristicItem(
+            const CharacteristicItem(
               title: 'Aşıları',
-              value: pawEntryDetailResponse!.pawEntryDetail?.vaccinatedEnum == HaveorNot.Have
-                  ? 'Var'
-                  : 'Yok',
+              value: 'aşılar',
             ),
           ],
         ),
