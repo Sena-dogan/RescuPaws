@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +17,7 @@ import '../../ui/features/new_paw/screens/new_paw_screen.dart';
 import '../../ui/features/new_paw/screens/select_breed_screen.dart';
 import '../../ui/features/new_paw/screens/select_subBreed_screen.dart';
 import '../../ui/features/new_paw/screens/weight_screen.dart';
+import '../../ui/features/notification/no_notif_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
 import 'fade_extension.dart';
@@ -41,6 +41,7 @@ enum SGRoute {
   editProfile,
   changePassword,
   weight,
+  noNotif,
   detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
@@ -137,6 +138,12 @@ class SGGoRouter {
         path: SGRoute.newpaw.route,
         builder: (BuildContext context, GoRouterState state) =>
             const NewPawScreen(),
+        redirect: _authGuard,
+      ).fade(),
+      GoRoute(
+        path: SGRoute.noNotif.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const NoNotifScreen(),
         redirect: _authGuard,
       ).fade(),
     ],
