@@ -52,11 +52,8 @@ class ProfileScreen extends ConsumerWidget {
         bottomNavigationBar: const BottomNavBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: userLogic.isLoading
-            ? Center(
-                child: SizedBox(
-                    width: context.width * 0.4,
-                    height: context.height * 0.4,
-                    child: const LoadingPawWidget()),
+            ? const Center(
+                child: LoadingPawWidget(),
               )
             : Padding(
                 padding: const EdgeInsets.all(10.0),

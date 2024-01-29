@@ -143,11 +143,8 @@ class SelectSubBreedWidget extends ConsumerWidget {
             error: (Object error, StackTrace stackTrace) => Center(
               child: Text(error.toString()),
             ),
-            loading: () => Center(
-              child: SizedBox(
-                  width: context.width * 0.4,
-                  height: context.height * 0.4,
-                  child: const LoadingPawWidget()),
+            loading: () => const Center(
+              child: LoadingPawWidget(),
             ),
           ),
         ));

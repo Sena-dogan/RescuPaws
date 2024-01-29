@@ -9,8 +9,13 @@ class LoadingPawWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-          Assets.LoadingPaw,
-        );
+    final Size size = MediaQuery.sizeOf(context);
+    return SizedBox(
+      width: size.width * 0.25,
+      height: size.height * 0.25,
+      child: Image.asset(
+        Assets.LoadingPaw,
+      ),
+    );
   }
 }

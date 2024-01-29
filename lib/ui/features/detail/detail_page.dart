@@ -7,6 +7,7 @@ import '../../../constants/assets.dart';
 import '../../../models/paw_entry_detail.dart';
 import '../../../utils/context_extensions.dart';
 import '../../../utils/error_widgett.dart';
+import '../../home/widgets/loading_paw_widget.dart';
 import '../../widgets/add_nav_button.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import 'logic/detail_logic.dart';
@@ -53,11 +54,8 @@ class DetailScreen extends ConsumerWidget {
                   .refresh(fetchPawEntryDetailProvider(id.toString()).future),
             ),
           _ => Center(
-                child: Image.asset(
-              'assets/gifs/gif-pati.gif',
-              height: MediaQuery.of(context).size.height * 0.5,
-              width: MediaQuery.of(context).size.width * 0.5,
-            )),
+              child: LoadingPawWidget(),
+            ),
         },
         floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
