@@ -9,6 +9,9 @@ abstract class LoginUiModel with _$LoginUiModel {
     @Default(false) bool isLoggedIn,
     @Default(false) bool isLoading,
     @Default(null) String? error,
+    @Default(null) String? email,
+    @Default(null) String? password,
+    @Default(false) bool isObscure,
   }) = _LoginUiModel;
 
   factory LoginUiModel.fromJson(Map<String, dynamic> json) => _$LoginUiModelFromJson(json);

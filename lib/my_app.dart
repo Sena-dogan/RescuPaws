@@ -70,7 +70,7 @@ class MyApp extends ConsumerWidget {
 }
 
 final TextTheme textTheme = TextTheme(
-  displayLarge: GoogleFonts.poppins(
+  displayLarge: GoogleFonts.outfit(
     fontWeight: FontWeight.w700,
     fontSize: 45,
   ),

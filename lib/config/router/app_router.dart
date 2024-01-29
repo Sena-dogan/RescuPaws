@@ -10,6 +10,7 @@ import 'package:lottie/lottie.dart';
 import '../../constants/assets.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
+import '../../ui/features/auth/email_login_screen.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
@@ -37,6 +38,7 @@ enum SGRoute {
   pawimage,
   intro,
   firstScreen,
+  emailLogin,
   login,
   register,
   forgotPassword,
@@ -80,6 +82,11 @@ class SGGoRouter {
         path: SGRoute.intro.route,
         builder: (BuildContext context, GoRouterState state) =>
             const IntroScreen(),
+      ).fade(),
+      GoRoute(
+        path: SGRoute.emailLogin.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const EmailLoginScreen(),
       ).fade(),
       GoRoute(
         path: SGRoute.login.route,

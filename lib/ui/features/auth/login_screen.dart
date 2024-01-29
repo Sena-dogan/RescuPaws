@@ -76,6 +76,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: SocialLoginButton(
                   buttonType: SocialLoginButtonType.google,
+                  text: 'Google ile giriş yap',
                   onPressed: () async {
                     await ref
                         .read(loginLogicProvider.notifier)
@@ -95,6 +96,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: SocialLoginButton(
                     buttonType: SocialLoginButtonType.appleBlack,
+                    text: 'Apple ile giriş yap',
                     onPressed: () {
                       ref
                           .read(loginLogicProvider.notifier)
@@ -108,6 +110,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     },
                     borderRadius: 30),
               ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: SocialLoginButton(
+                  buttonType: SocialLoginButtonType.generalLogin,
+                  text: 'E-posta ile giriş yap',
+                  onPressed: () {
+                    context.push(SGRoute.emailLogin.route);
+                  },
+                  backgroundColor: context.colorScheme.primary,
+                  borderRadius: 30),
             ),
             _buildTermsOfService(),
             _buildPrivacyPolicy(),
@@ -124,7 +137,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'acknowledge receipt of our ',
+            'onaylamış olursunuz.',
             style: GoogleFonts.outfit(
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -140,7 +153,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   debugPrint(err.toString()));
             },
             child: Text(
-              'Privacy Policy',
+              'Gizlilik Politikamızı ',
               style: GoogleFonts.outfit(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -163,7 +176,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'By sign in, you accept our ',
+              'Oturum açarak ',
               style: GoogleFonts.outfit(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -179,7 +192,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     debugPrint(err.toString()));
               },
               child: Text(
-                'Terms of Service',
+                'Hizmet Koşullarımızı ',
                 style: GoogleFonts.outfit(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -188,7 +201,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ),
             ),
-            Text(' and ',
+            Text('kabul etmiş ve ',
                 style: GoogleFonts.outfit(
                     fontSize: 14, fontWeight: FontWeight.w400)),
           ],

@@ -96,6 +96,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             height: MediaQuery.of(context).size.height * 0.55,
             child: CardSwiper(
                 cardsCount: pawEntries.length,
+                numberOfCardsDisplayed: pawEntries.length > 1 ? 2 : 1,
                 duration: const Duration(milliseconds: 300),
                 controller: controller,
                 onSwipe: (int oldIndex, int? newIndex,

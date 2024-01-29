@@ -4,12 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'login_ui_model.dart';
 
 part 'login_logic.g.dart';
+
+
 
 @riverpod
 class LoginLogic extends _$LoginLogic {
@@ -41,8 +44,7 @@ class LoginLogic extends _$LoginLogic {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      await FirebaseAuth.instance
-          .signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
       await FirebaseCrashlytics.instance.recordError(e, stackTrace);
@@ -71,8 +73,7 @@ class LoginLogic extends _$LoginLogic {
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
       );
-      await FirebaseAuth.instance
-          .signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
       debugPrint(e.toString());
@@ -164,5 +165,39 @@ class LoginLogic extends _$LoginLogic {
 
   void setLoggedIn(bool isLoggedIn) {
     state = state.copyWith(isLoggedIn: isLoggedIn);
+  }
+
+  void toggleObscure() {
+    state = state.copyWith(isObscure: !state.isObscure);
+  }
+
+  Future<void> forgotPassword() {
+    if (state.email == null) {
+      throw const FormatException('Email is required');
+    }
+    return FirebaseAuth.instance.sendPasswordResetEmail(email: state.email!);
+  }
+
+  void emailChanged(String value) {
+    state = state.copyWith(email: value);
+  }
+
+  void passwordChanged(String value) {
+    state = state.copyWith(password: value);
+  }
+
+  Future<void> signInWithEmailAndPassword() async {
+    try {
+      setLogin(isLoading: true);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: state.email!,
+        password: state.password!,
+      );
+    } catch (e) {
+      Logger().e(e.toString());
+      rethrow;
+    } finally {
+      setLogin();
+    }
   }
 }
