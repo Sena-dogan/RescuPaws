@@ -64,13 +64,36 @@ class Characteristics extends StatelessWidget {
                   : '$weight kg',
             ),
             const Gap(30),
-            const CharacteristicItem(
-              title: 'Aşıları',
-              value: 'aşılar',
-            ),
+            const VaccineButton(),
           ],
         ),
       ],
+    );
+  }
+}
+
+class VaccineButton extends StatelessWidget {
+  const VaccineButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+          height: 40,
+          width: 65,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(color: context.colorScheme.primary),
+          ),
+          child: Center(
+            child: Text(
+              'Aşılar',
+              style: context.textTheme.bodyLarge,
+            ),
+          )),
     );
   }
 }
