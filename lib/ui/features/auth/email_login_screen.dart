@@ -73,25 +73,39 @@ class _EmailLoginScreenState extends ConsumerState<EmailLoginScreen> {
               SizedBox(
                 width: size.width * 0.8,
                 height: 50,
-                child: TextField(
-                  controller: _emailController,
-                  onChanged: (String value) {
-                    ref.read(loginLogicProvider.notifier).emailChanged(value);
-                  },
-                  autofillHints: const <String>[AutofillHints.email],
-                  decoration: InputDecoration(
-                    hintText: 'E-posta',
-                    hintStyle: context.textTheme.bodyMedium?.copyWith(
-                      color: context.colorScheme.scrim,
-                    ),
-                    fillColor: Colors.transparent,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(27),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
+                child: TextFormField(
+                    controller: _emailController,
+                    onChanged: (String value) {
+                      ref.read(loginLogicProvider.notifier).emailChanged(value);
+                    },
+                    autofillHints: const <String>[AutofillHints.email],
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    ],
+                    decoration: InputDecoration(
+                      hintText: 'E-posta',
+                      hintStyle: context.textTheme.bodyMedium?.copyWith(
+                        color: context.colorScheme.scrim,
+                      ),
+                      fillColor: Colors.transparent,
+                      filled: true,
+                      contentPadding: const EdgeInsets.all(15),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: context.colorScheme.primary),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: context.colorScheme.primary),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: context.colorScheme.primary),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    )),
               ),
               const Gap(10),
               SizedBox(
