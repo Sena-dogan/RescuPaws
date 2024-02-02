@@ -106,7 +106,6 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                     context.push(SGRoute.address.route);
                   } else {
                     context.showErrorSnackBar(
-                        title: 'Hata',
                         message: 'Lütfen kilo bilgisini giriniz.');
                   }
                 },
