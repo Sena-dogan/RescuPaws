@@ -207,50 +207,54 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ],
         onEditingComplete: () =>
             ref.read(loginLogicProvider.notifier).signInWithEmailAndPassword(),
-        decoration: InputDecoration(
-          hintText: 'Şifre',
-          hintStyle: context.textTheme.bodyMedium?.copyWith(
-            color: context.colorScheme.scrim,
-          ),
-          errorStyle: context.textTheme.bodyMedium?.copyWith(
-            color: context.colorScheme.error,
-          ),
-          fillColor: context.colorScheme.background,
-          filled: true,
-          contentPadding: const EdgeInsets.all(15),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.error),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.error),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          suffixIcon: IconButton(
-            onPressed: () {
-              ref.read(loginLogicProvider.notifier).toggleObscure();
-            },
-            icon: Icon(
-              loginModel.isObscure
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
-              color: context.colorScheme.scrim.withOpacity(0.5),
-            ),
-          ),
-        ),
+        decoration: _passDecoration(context, loginModel),
       ),
     );
+  }
+
+  InputDecoration _passDecoration(BuildContext context, LoginUiModel loginModel) {
+    return InputDecoration(
+        hintText: 'Şifre',
+        hintStyle: context.textTheme.bodyMedium?.copyWith(
+          color: context.colorScheme.scrim,
+        ),
+        errorStyle: context.textTheme.bodyMedium?.copyWith(
+          color: context.colorScheme.error,
+        ),
+        fillColor: context.colorScheme.background,
+        filled: true,
+        contentPadding: const EdgeInsets.all(15),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: context.colorScheme.primary),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: context.colorScheme.primary),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: context.colorScheme.error),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: context.colorScheme.error),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        suffixIcon: IconButton(
+          onPressed: () {
+            ref.read(loginLogicProvider.notifier).toggleObscure();
+          },
+          icon: Icon(
+            loginModel.isObscure
+                ? Icons.visibility_outlined
+                : Icons.visibility_off_outlined,
+            color: context.colorScheme.scrim.withOpacity(0.5),
+          ),
+        ),
+      );
   }
 
   Widget _buildEmail(Size size, BuildContext context) {
@@ -276,47 +280,47 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.deny(RegExp(r'\s')),
           ],
-          decoration: InputDecoration(
-            hintText: 'E-posta',
-            hintStyle: context.textTheme.bodyMedium?.copyWith(
-              color: context.colorScheme.scrim,
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.error),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.error),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            errorStyle: context.textTheme.bodyMedium?.copyWith(
-              color: context.colorScheme.error,
-            ),
-            fillColor: context.colorScheme.background,
-            filled: true,
-            contentPadding: const EdgeInsets.all(15),
-            disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
-              borderRadius: BorderRadius.circular(16),
-            ),
-          )),
+          decoration: _emailDecoration(context)),
     );
   }
 
-  GlobalKey<FormState> _emailKey() {
-    return GlobalKey<FormState>();
+  InputDecoration _emailDecoration(BuildContext context) {
+    return InputDecoration(
+          hintText: 'E-posta',
+          hintStyle: context.textTheme.bodyMedium?.copyWith(
+            color: context.colorScheme.scrim,
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.error),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.error),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          errorStyle: context.textTheme.bodyMedium?.copyWith(
+            color: context.colorScheme.error,
+          ),
+          fillColor: context.colorScheme.background,
+          filled: true,
+          contentPadding: const EdgeInsets.all(15),
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.primary),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.primary),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.primary),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.primary),
+            borderRadius: BorderRadius.circular(16),
+          ),
+        );
   }
 
   SizedBox _buildOrDivider(Size size, BuildContext context) {
@@ -488,7 +492,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    ref.read(loginLogicProvider.notifier).dispose();
     super.dispose();
   }
 }
