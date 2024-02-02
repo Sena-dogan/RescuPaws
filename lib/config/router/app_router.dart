@@ -4,14 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constants/assets.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
-import '../../ui/features/auth/email_login_screen.dart';
 import '../../ui/features/auth/login_screen.dart';
+import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
@@ -84,14 +83,14 @@ class SGGoRouter {
             const IntroScreen(),
       ).fade(),
       GoRoute(
-        path: SGRoute.emailLogin.route,
-        builder: (BuildContext context, GoRouterState state) =>
-            const EmailLoginScreen(),
-      ).fade(),
-      GoRoute(
         path: SGRoute.login.route,
         builder: (BuildContext context, GoRouterState state) =>
             const LoginScreen(),
+      ).fade(),
+      GoRoute(
+        path: SGRoute.register.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const RegisterScreen(),
       ).fade(),
       GoRoute(
         path: SGRoute.profile.route,
