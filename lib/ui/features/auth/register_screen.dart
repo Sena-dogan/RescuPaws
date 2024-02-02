@@ -25,7 +25,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   late final TextEditingController _passwordController;
   late final TextEditingController _passwordConfirmController;
 
-
   @override
   void initState() {
     super.initState();
@@ -64,9 +63,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Kayıt Ol',
-                  style: context.textTheme.labelSmall?.copyWith(
-                      color: context.colorScheme.primary, fontSize: 16)),
+              child: TextButton(
+                onPressed: () {
+                  context.go(SGRoute.login.route);
+                },
+                child: Text('Giriş Yap',
+                    style: context.textTheme.labelSmall?.copyWith(
+                        color: context.colorScheme.primary, fontSize: 16)),
+              ),
             ),
           ],
         ),
@@ -83,11 +87,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const Gap(16),
                 _buildPass(size, loginModel, context),
                 const Gap(16),
+                _buildPassConfirm(size, loginModel, context),
+                const Gap(16),
                 _buildTermsOfService(),
                 _buildPrivacyPolicy(),
-                const Gap(16),
+                const Spacer(),
                 _buildSignInButton(context),
-                _forgotPasswordButton(context),
+                _alreadyHaveAccount(context),
                 const Spacer(),
               ],
             ),
@@ -105,24 +111,34 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     );
   }
 
-  TextButton _forgotPasswordButton(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        context.go(SGRoute.forgotPassword.route);
-      },
-      child: Text(
-        'Şifremi unuttum',
-        style: context.textTheme.bodyMedium?.copyWith(
-          color: context.colorScheme.primary,
+  Widget _alreadyHaveAccount(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          'Zaten bir Hesabın var mı?',
+          style: context.textTheme.bodyMedium?.copyWith(
+            color: context.colorScheme.scrim,
+          ),
         ),
-      ),
+        TextButton(
+          onPressed: () {
+            context.go(SGRoute.login.route);
+          },
+          child: Text(
+            'Giriş Yap',
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: context.colorScheme.primary,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   SizedBox _buildSignInButton(BuildContext context) {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.9,
-      height: 48,
       child: ElevatedButton(
         onPressed: () async {
           await ref
@@ -133,10 +149,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             context.showErrorSnackBar(
                 message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
             return false;
-          }).then((bool value) => value
-                  ? context.go(SGRoute.home.route)
-                  : context.showErrorSnackBar(
-                      message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
+          }).then((bool value) {
+            if (value) {
+              context.go(SGRoute.home.route);
+            }
+          });
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: context.colorScheme.primary,
@@ -159,48 +176,37 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       Size size, LoginUiModel loginModel, BuildContext context) {
     return SizedBox(
       width: size.width * 0.9,
-      height: 50,
       child: TextFormField(
         controller: _passwordController,
         obscureText: loginModel.isObscure,
         onChanged: (String value) {
           ref.read(loginLogicProvider.notifier).passwordChanged(value);
         },
+        keyboardType: loginModel.isObscure
+            ? TextInputType.visiblePassword
+            : TextInputType.text,
+        textInputAction: TextInputAction.next,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (String? value) {
+          // Min 8 characters, at least one uppercase and lowercase and special character
+          if (value == null || value.isEmpty) {
+            return 'Lütfen şifrenizi giriniz';
+          } else if (value.length < 8) {
+            return 'Şifreniz en az 8 karakter olmalıdır';
+          } else if (!value.contains(RegExp(r'[A-Z]'))) {
+            return 'Şifreniz en az bir büyük harf içermelidir';
+          } else if (!value.contains(RegExp(r'[a-z]'))) {
+            return 'Şifreniz en az bir küçük harf içermelidir';
+          } else if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+            return 'Şifreniz en az bir özel karakter içermelidir';
+          }
+          return null;
+        },
         autofillHints: const <String>[AutofillHints.password],
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
         ],
-        decoration: InputDecoration(
-          hintText: 'Şifre',
-          hintStyle: context.textTheme.bodyMedium?.copyWith(
-            color: context.colorScheme.scrim,
-          ),
-          fillColor: context.colorScheme.background,
-          filled: true,
-          contentPadding: const EdgeInsets.all(15),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          suffixIcon: IconButton(
-            onPressed: () {
-              ref.read(loginLogicProvider.notifier).toggleObscure();
-            },
-            icon: Icon(
-              loginModel.isObscure
-                  ? Icons.visibility_off_outlined
-                  : Icons.visibility_outlined,
-              color: context.colorScheme.scrim.withOpacity(0.5),
-            ),
-          ),
-        ),
+        decoration: _passDecoration(context, loginModel),
       ),
     );
   }
@@ -208,124 +214,26 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   SizedBox _buildEmail(Size size, BuildContext context) {
     return SizedBox(
       width: size.width * 0.9,
-      height: 50,
       child: TextFormField(
           controller: _emailController,
           onChanged: (String value) {
             ref.read(loginLogicProvider.notifier).emailChanged(value);
           },
+          textInputAction: TextInputAction.next,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen e-posta adresinizi giriniz';
+            } else if (!value.contains('@')) {
+              return 'Lütfen geçerli bir e-posta adresi giriniz';
+            }
+            return null;
+          },
           autofillHints: const <String>[AutofillHints.email],
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.deny(RegExp(r'\s')),
           ],
-          decoration: InputDecoration(
-            hintText: 'E-posta',
-            hintStyle: context.textTheme.bodyMedium?.copyWith(
-              color: context.colorScheme.scrim,
-            ),
-            fillColor: context.colorScheme.background,
-            filled: true,
-            contentPadding: const EdgeInsets.all(15),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
-              borderRadius: BorderRadius.circular(16),
-            ),
-          )),
-    );
-  }
-
-  SizedBox _buildOrDivider(Size size, BuildContext context) {
-    return SizedBox(
-      width: size.width * 0.9,
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Divider(
-              color: context.colorScheme.scrim.withOpacity(0.2),
-              thickness: 1,
-            ),
-          ),
-          const Gap(10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              'veya',
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: context.colorScheme.scrim,
-              ),
-            ),
-          ),
-          const Gap(10),
-          Expanded(
-            child: Divider(
-              color: context.colorScheme.scrim.withOpacity(0.2),
-              thickness: 1,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoginButtons(Size size) {
-    return Container(
-      color: Colors.transparent,
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      width: size.width * 0.9,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: SocialLoginButton(
-                elevation: const MaterialStatePropertyAll<double>(0.0),
-                strokeColor: context.colorScheme.primary,
-                buttonType: SocialLoginButtonType.google,
-                backgroundColor: Colors.transparent,
-                text: 'Google ile devam et',
-                textColor: context.colorScheme.scrim,
-                onPressed: () async {
-                  await ref
-                      .read(loginLogicProvider.notifier)
-                      .signInWithGoogle()
-                      .then((bool value) => value
-                          ? context.go(SGRoute.home.route)
-                          : context.showErrorSnackBar(
-                              message:
-                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
-                },
-                borderRadius: 30),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: SocialLoginButton(
-                elevation: const MaterialStatePropertyAll<double>(0.0),
-                strokeColor: context.colorScheme.primary,
-                backgroundColor: Colors.transparent,
-                textColor: context.colorScheme.scrim,
-                buttonType: SocialLoginButtonType.apple,
-                text: 'Apple ile devam et',
-                onPressed: () {
-                  ref.read(loginLogicProvider.notifier).signInWithApple().then(
-                      (bool value) => value
-                          ? context.go(SGRoute.home.route)
-                          : context.showErrorSnackBar(
-                              message:
-                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
-                },
-                borderRadius: 30),
-          ),
-        ],
-      ),
+          decoration: _emailDecoration(context)),
     );
   }
 
@@ -400,10 +308,139 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ),
             Text('kabul etmiş ve ',
                 style: GoogleFonts.outfit(
-                    fontSize: 14, fontWeight: FontWeight.w400)),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: context.colorScheme.scrim)),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildPassConfirm(
+      Size size, LoginUiModel loginModel, BuildContext context) {
+    return SizedBox(
+      width: size.width * 0.9,
+      child: TextFormField(
+        controller: _passwordConfirmController,
+        obscureText: loginModel.isObscure,
+        onChanged: (String value) {
+          ref.read(loginLogicProvider.notifier).passwordConfirmChanged(value);
+        },
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        textInputAction: TextInputAction.done,
+        onEditingComplete: () {
+          if (_passwordController.text == _passwordConfirmController.text) {
+            ref.read(loginLogicProvider.notifier).signUpWithEmailAndPassword();
+          }
+        },
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'Lütfen şifrenizi tekrar giriniz';
+          } else if (value != _passwordController.text) {
+            return 'Şifreler eşleşmiyor';
+          }
+          return null;
+        },
+        autofillHints: const <String>[AutofillHints.password],
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.deny(RegExp(r'\s')),
+        ],
+        decoration: _passDecoration(context, loginModel),
+      ),
+    );
+  }
+
+  InputDecoration _passDecoration(
+      BuildContext context, LoginUiModel loginModel) {
+    return InputDecoration(
+      hintText: 'Şifre',
+      hintStyle: context.textTheme.bodyMedium?.copyWith(
+        color: context.colorScheme.scrim,
+      ),
+      errorStyle: context.textTheme.bodyMedium?.copyWith(
+        color: context.colorScheme.error,
+      ),
+      fillColor: context.colorScheme.background,
+      filled: true,
+      contentPadding: const EdgeInsets.all(15),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.error),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.error),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      suffixIcon: IconButton(
+        onPressed: () {
+          ref.read(loginLogicProvider.notifier).toggleObscure();
+        },
+        icon: Icon(
+          loginModel.isObscure
+              ? Icons.visibility_outlined
+              : Icons.visibility_off_outlined,
+          color: context.colorScheme.scrim.withOpacity(0.5),
+        ),
+      ),
+    );
+  }
+
+  InputDecoration _emailDecoration(BuildContext context) {
+    return InputDecoration(
+      hintText: 'E-posta',
+      hintStyle: context.textTheme.bodyMedium?.copyWith(
+        color: context.colorScheme.scrim,
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.error),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.error),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      errorStyle: context.textTheme.bodyMedium?.copyWith(
+        color: context.colorScheme.error,
+      ),
+      fillColor: context.colorScheme.background,
+      filled: true,
+      contentPadding: const EdgeInsets.all(15),
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _passwordConfirmController.dispose();
+    super.dispose();
   }
 }
