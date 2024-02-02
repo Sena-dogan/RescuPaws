@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/router/app_router.dart';
@@ -173,14 +175,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               .read(loginLogicProvider.notifier)
               .signInWithEmailAndPassword()
               .catchError((Object? err) {
-            debugPrint(err.toString());
-            if (err is FormatException) {
+            if (err is FirebaseAuthException) {
+              switch (err.code) {
+                case 'invalid-email':
+                  context.showErrorSnackBar(
+                      message: 'Lütfen geçerli bir e-posta adresi giriniz.');
+                  break;
+                case 'user-not-found':
+                  context.showErrorSnackBar(
+                      message: 'Bu e-posta adresi ile bir hesap bulunamadı.');
+                  break;
+                case 'wrong-password':
+                  context.showErrorSnackBar(
+                      message: 'Şifreniz yanlış. Lütfen tekrar deneyiniz.');
+                  break;
+                default:
+                  context.showErrorSnackBar(
+                      message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
+              }
+            } else if (err is FormatException) {
               context.showErrorSnackBar(
-                  message: 'Lütfen tüm alanları doldurunuz.');
-              return false;
+                  message: 'Lütfen e-posta adresi ve şifrenizi giriniz.');
+            } else {
+              Logger().e(err);
+              context.showErrorSnackBar(
+                  message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
             }
-            context.showErrorSnackBar(
-                message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
             return false;
           }).then((bool value) {
             if (value) {
