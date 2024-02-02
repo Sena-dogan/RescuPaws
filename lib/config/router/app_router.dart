@@ -9,6 +9,7 @@ import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
+import '../../ui/features/detail/vaccine_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
 import '../../ui/features/new_paw/screens/information_screen.dart';
@@ -42,6 +43,7 @@ enum SGRoute {
   changePassword,
   weight,
   noNotif,
+  vaccine,
   detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
@@ -144,6 +146,12 @@ class SGGoRouter {
         path: SGRoute.noNotif.route,
         builder: (BuildContext context, GoRouterState state) =>
             const NoNotifScreen(),
+        redirect: _authGuard,
+      ).fade(),
+      GoRoute(
+        path: SGRoute.vaccine.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const VaccineScreen(),
         redirect: _authGuard,
       ).fade(),
     ],

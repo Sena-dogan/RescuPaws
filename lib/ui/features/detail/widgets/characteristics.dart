@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../config/router/app_router.dart';
 import '../../../../data/enums/detail_enums.dart';
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../utils/context_extensions.dart';
@@ -80,7 +82,9 @@ class VaccineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        context.push(SGRoute.vaccine.route);
+      },
       child: Container(
           height: 40,
           width: 65,
