@@ -1,10 +1,12 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../../config/router/app_router.dart';
+import '../../constants/icons.dart';
 import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../../utils/context_extensions.dart';
 
@@ -22,15 +24,12 @@ class BottomNavBar extends ConsumerWidget {
           return index == 0
               ? Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(
-                        Ionicons.home_outline,
-                        color: isActive
-                            ? context.colorScheme.primary
-                            : context.colorScheme.tertiary,
-                        size: 24,
-                      ),
+                    SvgPicture.asset(
+                      AppIcons.home,
+                      color: isActive
+                          ? context.colorScheme.primary
+                          : context.colorScheme.tertiary,
+                      height: 40,
                     ),
                     Text(
                       'Ana Sayfa',
@@ -44,15 +43,12 @@ class BottomNavBar extends ConsumerWidget {
                 )
               : Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(
-                        Ionicons.person_outline,
-                        color: isActive
-                            ? context.colorScheme.primary
-                            : context.colorScheme.tertiary,
-                        size: 24,
-                      ),
+                    SvgPicture.asset(
+                      AppIcons.profile,
+                      color: isActive
+                          ? context.colorScheme.primary
+                          : context.colorScheme.tertiary,
+                      height: 40,
                     ),
                     Text(
                       'Profil',
@@ -72,7 +68,7 @@ class BottomNavBar extends ConsumerWidget {
           debugPrint('Current Route is ${SGRoute.values[index].route}');
           context.go(SGRoute.values[index].route);
         },
-        gapLocation: GapLocation.center,
+        gapLocation: GapLocation.none,
         //borderColor: Colors.grey.withOpacity(0.5),
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 20,

@@ -92,6 +92,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   lottie: ^3.0.0
   wheel_slider: ^1.2.1
+  flutter_svg: ^2.0.9
 
 
 dev_dependencies:
