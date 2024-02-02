@@ -56,16 +56,9 @@ class _EmailLoginScreenState extends ConsumerState<EmailLoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Spacer(),
-              Image.asset(
-                Assets.PatiApp,
-                fit: BoxFit.cover,
-                width: 185,
-                height: 44,
-              ),
-              const Spacer(),
               Text(
-                'Giriş Yapın',
-                style: context.textTheme.labelLarge?.copyWith(
+                'Giriş Yap',
+                style: context.textTheme.labelSmall?.copyWith(
                   color: context.colorScheme.scrim,
                 ),
               ),
@@ -87,7 +80,7 @@ class _EmailLoginScreenState extends ConsumerState<EmailLoginScreen> {
                       hintStyle: context.textTheme.bodyMedium?.copyWith(
                         color: context.colorScheme.scrim,
                       ),
-                      fillColor: Colors.transparent,
+                      fillColor: context.colorScheme.background,
                       filled: true,
                       contentPadding: const EdgeInsets.all(15),
                       enabledBorder: OutlineInputBorder(
@@ -128,9 +121,19 @@ class _EmailLoginScreenState extends ConsumerState<EmailLoginScreen> {
                     hintStyle: context.textTheme.bodyMedium?.copyWith(
                       color: context.colorScheme.scrim,
                     ),
-                    fillColor: Colors.transparent,
+                    fillColor: context.colorScheme.background,
                     filled: true,
                     contentPadding: const EdgeInsets.all(15),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: context.colorScheme.primary),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: context.colorScheme.primary),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
