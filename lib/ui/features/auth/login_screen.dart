@@ -137,13 +137,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               .signInWithEmailAndPassword()
               .catchError((Object? err) {
             debugPrint(err.toString());
+            if (err is FormatException) {
+              context.showErrorSnackBar(
+                  message: 'Lütfen tüm alanları doldurunuz.');
+              return false;
+            }
             context.showErrorSnackBar(
                 message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
             return false;
-          }).then((bool value) => value
-                  ? context.go(SGRoute.home.route)
-                  : context.showErrorSnackBar(
-                      message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
+          }).then((bool value) {
+            if (value) {
+              context.go(SGRoute.home.route);
+            }
+          });
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: context.colorScheme.primary,
@@ -166,21 +172,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       Size size, LoginUiModel loginModel, BuildContext context) {
     return SizedBox(
       width: size.width * 0.9,
-      height: 50,
       child: TextFormField(
         controller: _passwordController,
         obscureText: loginModel.isObscure,
         onChanged: (String value) {
           ref.read(loginLogicProvider.notifier).passwordChanged(value);
         },
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'Lütfen şifrenizi giriniz';
+          } else if (value.length < 6) {
+            return 'Şifreniz en az 6 karakter olmalıdır';
+          }
+          return null;
+        },
+        keyboardType: loginModel.isObscure
+            ? TextInputType.text
+            : TextInputType.visiblePassword,
         autofillHints: const <String>[AutofillHints.password],
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
         ],
+        onEditingComplete: () =>
+            ref.read(loginLogicProvider.notifier).signInWithEmailAndPassword(),
         decoration: InputDecoration(
           hintText: 'Şifre',
           hintStyle: context.textTheme.bodyMedium?.copyWith(
             color: context.colorScheme.scrim,
+          ),
+          errorStyle: context.textTheme.bodyMedium?.copyWith(
+            color: context.colorScheme.error,
           ),
           fillColor: context.colorScheme.background,
           filled: true,
@@ -196,14 +218,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.error),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: context.colorScheme.error),
+            borderRadius: BorderRadius.circular(16),
+          ),
           suffixIcon: IconButton(
             onPressed: () {
               ref.read(loginLogicProvider.notifier).toggleObscure();
             },
             icon: Icon(
               loginModel.isObscure
-                  ? Icons.visibility_off_outlined
-                  : Icons.visibility_outlined,
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
               color: context.colorScheme.scrim.withOpacity(0.5),
             ),
           ),
@@ -212,15 +242,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  SizedBox _buildEmail(Size size, BuildContext context) {
+  Widget _buildEmail(Size size, BuildContext context) {
     return SizedBox(
       width: size.width * 0.9,
-      height: 50,
       child: TextFormField(
           controller: _emailController,
           onChanged: (String value) {
             ref.read(loginLogicProvider.notifier).emailChanged(value);
           },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen e-posta adresinizi giriniz';
+            } else if (!value.contains('@')) {
+              return 'Lütfen geçerli bir e-posta adresi giriniz';
+            }
+            return null;
+          },
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.emailAddress,
           autofillHints: const <String>[AutofillHints.email],
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.deny(RegExp(r'\s')),
@@ -230,9 +270,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             hintStyle: context.textTheme.bodyMedium?.copyWith(
               color: context.colorScheme.scrim,
             ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: context.colorScheme.error),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: context.colorScheme.error),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            errorStyle: context.textTheme.bodyMedium?.copyWith(
+              color: context.colorScheme.error,
+            ),
             fillColor: context.colorScheme.background,
             filled: true,
             contentPadding: const EdgeInsets.all(15),
+            disabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: context.colorScheme.primary),
+              borderRadius: BorderRadius.circular(16),
+            ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: context.colorScheme.primary),
               borderRadius: BorderRadius.circular(16),
@@ -247,6 +302,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           )),
     );
+  }
+
+  GlobalKey<FormState> _emailKey() {
+    return GlobalKey<FormState>();
   }
 
   SizedBox _buildOrDivider(Size size, BuildContext context) {
@@ -412,5 +471,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    ref.read(loginLogicProvider.notifier).dispose();
+    super.dispose();
   }
 }
