@@ -207,7 +207,9 @@ class LoginLogic extends _$LoginLogic {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: state.email!,
         password: state.password!,
-      );
+      ).then((UserCredential value) async {
+        await value.user?.sendEmailVerification();
+      });
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -217,5 +219,9 @@ class LoginLogic extends _$LoginLogic {
 
   void dispose() {
     state = const LoginUiModel();
+  }
+
+  void passwordConfirmChanged(String value) {
+    state = state.copyWith(confirmPassword: value);
   }
 }
