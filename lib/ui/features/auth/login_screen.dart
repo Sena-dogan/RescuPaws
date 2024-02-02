@@ -68,9 +68,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             width: size.width,
             height: size.height * 0.9,
             child: loginModel.isLoading
-                ? SizedBox(
-                    height: size.height * 0.3,
-                    child: const LoadingPawWidget(),
+                ? const Center(
+                    child: LoadingPawWidget(),
                   )
                 : Column(
                     children: <Widget>[
@@ -150,7 +149,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           if (value) {
             context.showAwesomeMaterialBanner(
                 title: 'Başarılı',
-                message: 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi');
+                message:
+                    'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi');
           }
         });
       },
@@ -209,36 +209,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       Size size, LoginUiModel loginModel, BuildContext context) {
     return SizedBox(
       width: size.width * 0.9,
-      child: TextFormField(
-        controller: _passwordController,
-        obscureText: loginModel.isObscure,
-        onChanged: (String value) {
-          ref.read(loginLogicProvider.notifier).passwordChanged(value);
-        },
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'Lütfen şifrenizi giriniz';
-          } else if (value.length < 6) {
-            return 'Şifreniz en az 6 karakter olmalıdır';
-          }
-          return null;
-        },
-        keyboardType: loginModel.isObscure
-            ? TextInputType.text
-            : TextInputType.visiblePassword,
-        autofillHints: const <String>[AutofillHints.password],
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.deny(RegExp(r'\s')),
-        ],
-        onEditingComplete: () => ref
-            .read(loginLogicProvider.notifier)
-            .signInWithEmailAndPassword()
-            .then((bool value) => value
-                ? context.go(SGRoute.home.route)
-                : context.showErrorSnackBar(
-                    message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.')),
-        decoration: _passDecoration(context, loginModel),
+      child: AutofillGroup(
+        child: TextFormField(
+          controller: _passwordController,
+          obscureText: loginModel.isObscure,
+          onChanged: (String value) {
+            ref.read(loginLogicProvider.notifier).passwordChanged(value);
+          },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen şifrenizi giriniz';
+            } else if (value.length < 6) {
+              return 'Şifreniz en az 6 karakter olmalıdır';
+            }
+            return null;
+          },
+          keyboardType: loginModel.isObscure
+              ? TextInputType.text
+              : TextInputType.visiblePassword,
+          autofillHints: const <String>[AutofillHints.password],
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+          ],
+          onEditingComplete: () => ref
+              .read(loginLogicProvider.notifier)
+              .signInWithEmailAndPassword()
+              .then((bool value) => value
+                  ? context.go(SGRoute.home.route)
+                  : context.showErrorSnackBar(
+                      message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.')),
+          decoration: _passDecoration(context, loginModel),
+        ),
       ),
     );
   }
@@ -292,27 +294,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget _buildEmail(Size size, BuildContext context) {
     return SizedBox(
       width: size.width * 0.9,
-      child: TextFormField(
-          controller: _emailController,
-          onChanged: (String value) {
-            ref.read(loginLogicProvider.notifier).emailChanged(value);
-          },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (String? value) {
-            if (value == null || value.isEmpty) {
-              return 'Lütfen e-posta adresinizi giriniz';
-            } else if (!value.contains('@')) {
-              return 'Lütfen geçerli bir e-posta adresi giriniz';
-            }
-            return null;
-          },
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.emailAddress,
-          autofillHints: const <String>[AutofillHints.email],
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.deny(RegExp(r'\s')),
-          ],
-          decoration: _emailDecoration(context)),
+      child: AutofillGroup(
+        child: TextFormField(
+            controller: _emailController,
+            onChanged: (String value) {
+              ref.read(loginLogicProvider.notifier).emailChanged(value);
+            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Lütfen e-posta adresinizi giriniz';
+              } else if (!value.contains('@')) {
+                return 'Lütfen geçerli bir e-posta adresi giriniz';
+              }
+              return null;
+            },
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.emailAddress,
+            autofillHints: const <String>[AutofillHints.email],
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.deny(RegExp(r'\s')),
+            ],
+            decoration: _emailDecoration(context)),
+      ),
     );
   }
 
