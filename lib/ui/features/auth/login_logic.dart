@@ -12,8 +12,6 @@ import 'login_ui_model.dart';
 
 part 'login_logic.g.dart';
 
-
-
 @riverpod
 class LoginLogic extends _$LoginLogic {
   @override
@@ -186,18 +184,17 @@ class LoginLogic extends _$LoginLogic {
     state = state.copyWith(password: value);
   }
 
-  Future<void> signInWithEmailAndPassword() async {
+  Future<bool> signInWithEmailAndPassword() async {
     try {
       setLogin(isLoading: true);
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: state.email!,
         password: state.password!,
       );
+      return true;
     } catch (e) {
       Logger().e(e.toString());
       rethrow;
-    } finally {
-      setLogin();
     }
   }
 }
