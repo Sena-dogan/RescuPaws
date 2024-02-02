@@ -9,9 +9,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
+import '../../home/widgets/loading_paw_widget.dart';
 import 'login_logic.dart';
 import 'login_ui_model.dart';
-import 'social_button.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -78,25 +78,27 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           child: SizedBox(
             width: size.width,
             height: size.height * 0.9,
-            child: Column(
-              children: <Widget>[
-                Gap(size.height * 0.05),
-                _loginText(context),
-                const Gap(25),
-                _buildEmail(size, context),
-                const Gap(16),
-                _buildPass(size, loginModel, context),
-                const Gap(16),
-                _buildPassConfirm(size, loginModel, context),
-                const Gap(16),
-                _buildTermsOfService(),
-                _buildPrivacyPolicy(),
-                const Spacer(),
-                _buildSignInButton(context),
-                _alreadyHaveAccount(context),
-                const Spacer(),
-              ],
-            ),
+            child: loginModel.isLoading
+                ? const Center(child: LoadingPawWidget())
+                : Column(
+                    children: <Widget>[
+                      Gap(size.height * 0.05),
+                      _loginText(context),
+                      const Gap(25),
+                      _buildEmail(size, context),
+                      const Gap(16),
+                      _buildPass(size, loginModel, context),
+                      const Gap(16),
+                      _buildPassConfirm(size, loginModel, context),
+                      const Gap(16),
+                      _buildTermsOfService(),
+                      _buildPrivacyPolicy(),
+                      const Spacer(),
+                      _buildSignInButton(context),
+                      _alreadyHaveAccount(context),
+                      const Spacer(),
+                    ],
+                  ),
           ),
         ),
       ),
@@ -331,7 +333,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         textInputAction: TextInputAction.done,
         onEditingComplete: () {
           if (_passwordController.text == _passwordConfirmController.text) {
-            ref.read(loginLogicProvider.notifier).signUpWithEmailAndPassword();
+            ref
+                .read(loginLogicProvider.notifier)
+                .signUpWithEmailAndPassword()
+                .then((bool value) {
+              if (value) {
+                context.go(SGRoute.home.route);
+              }
+            });
           }
         },
         validator: (String? value) {
