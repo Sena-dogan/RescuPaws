@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -28,7 +29,6 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> signInWithGoogle() async {
     try {
-      setLogin(isLoading: true);
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
               clientId: Platform.isIOS
                   //!TODO: Put this in an env file
@@ -41,14 +41,17 @@ class LoginLogic extends _$LoginLogic {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      await FirebaseAuth.instance
-          .signInWithCredential(credential);
+      setLogin(isLoading: true);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
+      Logger().e(e.toString());
       await FirebaseCrashlytics.instance.recordError(e, stackTrace);
       setError(e.toString());
       setLogin();
       return false;
+    } finally {
+      setLogin();
     }
   }
 
@@ -58,7 +61,6 @@ class LoginLogic extends _$LoginLogic {
     try {
       debugPrint(
           'AAAAAAAAAA my name is apple. i am 7 years old. i like to eat apples');
-      setLogin(isLoading: true);
       final AuthorizationCredentialAppleID appleCredential =
           await SignInWithApple.getAppleIDCredential(
         scopes: <AppleIDAuthorizationScopes>[
@@ -71,13 +73,15 @@ class LoginLogic extends _$LoginLogic {
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
       );
-      await FirebaseAuth.instance
-          .signInWithCredential(credential);
+      setLogin(isLoading: true);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
-      debugPrint(e.toString());
+      Logger().e(e.toString());
       setError(e.toString());
       return false;
+    } finally {
+      setLogin();
     }
   }
 
@@ -164,5 +168,80 @@ class LoginLogic extends _$LoginLogic {
 
   void setLoggedIn(bool isLoggedIn) {
     state = state.copyWith(isLoggedIn: isLoggedIn);
+  }
+
+  void toggleObscure() {
+    state = state.copyWith(isObscure: !state.isObscure);
+  }
+
+  Future<bool> forgotPassword() async {
+    if (state.email == null || state.email!.isEmpty) {
+      throw const FormatException('Email is required');
+    }
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: state.email!)
+        .then((void value) {
+      Logger().i('Password reset email sent');
+    });
+    return true;
+  }
+
+  void emailChanged(String value) {
+    state = state.copyWith(email: value);
+  }
+
+  void passwordChanged(String value) {
+    state = state.copyWith(password: value);
+  }
+
+  Future<bool> signInWithEmailAndPassword() async {
+    if (state.email == null || state.password == null) {
+      throw const FormatException('Email and password are required');
+    }
+    try {
+      setLogin(isLoading: true);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+        email: state.email!,
+        password: state.password!,
+      )
+          .then((UserCredential value) {
+        Logger().i(value.user?.metadata);
+      });
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      rethrow;
+    } finally {
+      setLogin();
+    }
+  }
+
+  Future<bool> signUpWithEmailAndPassword() async {
+    try {
+      setLogin(isLoading: true);
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+        email: state.email!,
+        password: state.password!,
+      )
+          .then((UserCredential value) async {
+        // Log the ip address and other user details
+        Logger().i(value.user?.metadata);
+        await value.user?.sendEmailVerification();
+      });
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      rethrow;
+    }
+  }
+
+  void dispose() {
+    state = const LoginUiModel();
+  }
+
+  void passwordConfirmChanged(String value) {
+    state = state.copyWith(confirmPassword: value);
   }
 }

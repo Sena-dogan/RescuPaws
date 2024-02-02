@@ -39,7 +39,8 @@ class MyApp extends ConsumerWidget {
           useMaterial3: true,
           swapLegacyOnMaterial3: true,
           textTheme: textTheme,
-          colorScheme: lightColorScheme()
+          colorScheme: lightColorScheme(),
+          fontFamily: GoogleFonts.poppins().fontFamily
 
           // To use the Playground font, add GoogleFonts package and uncomment
           // fontFamily: GoogleFonts.notoSans().fontFamily,
@@ -56,7 +57,8 @@ class MyApp extends ConsumerWidget {
           useMaterial3: true,
           swapLegacyOnMaterial3: true,
           textTheme: textTheme,
-          colorScheme: darkColorScheme()
+          colorScheme: darkColorScheme(),
+          fontFamily: GoogleFonts.poppins().fontFamily
           // To use the Playground font, add GoogleFonts package and uncomment
           // fontFamily: GoogleFonts.notoSans().fontFamily,
           ),
