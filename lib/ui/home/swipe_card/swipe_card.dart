@@ -154,10 +154,13 @@ class SwipeCard extends ConsumerWidget {
                           color: Colors.white,
                         ),
                         const Gap(5),
-                        Text(
-                          pawEntry.address ?? '',
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: Colors.white,
+                        Flexible(
+                          child: Text(
+                            maxLines: 1,
+                            pawEntry.address ?? '',
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],

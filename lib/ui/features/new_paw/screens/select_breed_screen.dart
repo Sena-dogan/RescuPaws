@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -85,11 +84,8 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
             error: (Object error, StackTrace stackTrace) => Center(
               child: Text(error.toString()),
             ),
-            loading: () => Center(
-              child: SizedBox(
-                  width: context.width * 0.4,
-                  height: context.height * 0.4,
-                  child: const LoadingPawWidget()),
+            loading: () => const Center(
+              child: LoadingPawWidget(),
             ),
           ),
         ));
