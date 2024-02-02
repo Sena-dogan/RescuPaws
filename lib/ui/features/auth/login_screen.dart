@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
+import '../../home/widgets/loading_paw_widget.dart';
 import 'login_logic.dart';
 import 'login_ui_model.dart';
 import 'social_button.dart';
@@ -66,29 +67,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: SizedBox(
             width: size.width,
             height: size.height * 0.9,
-            child: Column(
-              children: <Widget>[
-                Gap(size.height * 0.05),
-                _loginText(context),
-                const Gap(25),
-                _buildLoginButtons(Size(size.width, size.height * 0.12)),
-                const Gap(25),
-                _buildOrDivider(size, context),
-                const Gap(25),
-                _emailText(context),
-                const Gap(25),
-                _buildEmail(size, context),
-                const Gap(16),
-                _buildPass(size, loginModel, context),
-                const Gap(16),
-                _buildTermsOfService(),
-                _buildPrivacyPolicy(),
-                const Gap(16),
-                _buildSignInButton(context),
-                _forgotPasswordButton(context),
-                const Spacer(),
-              ],
-            ),
+            child: loginModel.isLoading
+                ? SizedBox(
+                    height: size.height * 0.3,
+                    child: const LoadingPawWidget(),
+                  )
+                : Column(
+                    children: <Widget>[
+                      Gap(size.height * 0.05),
+                      _loginText(context),
+                      const Gap(25),
+                      _buildLoginButtons(Size(size.width, size.height * 0.12)),
+                      const Gap(25),
+                      _buildOrDivider(size, context),
+                      const Gap(25),
+                      _emailText(context),
+                      const Gap(25),
+                      _buildEmail(size, context),
+                      const Gap(16),
+                      _buildPass(size, loginModel, context),
+                      const Gap(16),
+                      _buildTermsOfService(),
+                      _buildPrivacyPolicy(),
+                      const Gap(16),
+                      _buildSignInButton(context),
+                      _forgotPasswordButton(context),
+                      const Spacer(),
+                    ],
+                  ),
           ),
         ),
       ),
@@ -125,8 +131,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   TextButton _forgotPasswordButton(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        context.go(SGRoute.forgotPassword.route);
+      onPressed: () async {
+        await ref
+            .read(loginLogicProvider.notifier)
+            .forgotPassword()
+            .catchError((Object? err) {
+          debugPrint('Error caught: $err');
+          if (err is FormatException) {
+            context.showErrorSnackBar(
+                message: 'Lütfen e-posta adresinizi giriniz.');
+            return false;
+          } else {
+            context.showErrorSnackBar(
+                message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
+            return false;
+          }
+        }).then((bool value) {
+          if (value) {
+            context.showAwesomeMaterialBanner(
+                title: 'Başarılı',
+                message: 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi');
+          }
+        });
       },
       child: Text(
         'Şifremi unuttum',
@@ -205,56 +231,62 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
         ],
-        onEditingComplete: () =>
-            ref.read(loginLogicProvider.notifier).signInWithEmailAndPassword(),
+        onEditingComplete: () => ref
+            .read(loginLogicProvider.notifier)
+            .signInWithEmailAndPassword()
+            .then((bool value) => value
+                ? context.go(SGRoute.home.route)
+                : context.showErrorSnackBar(
+                    message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.')),
         decoration: _passDecoration(context, loginModel),
       ),
     );
   }
 
-  InputDecoration _passDecoration(BuildContext context, LoginUiModel loginModel) {
+  InputDecoration _passDecoration(
+      BuildContext context, LoginUiModel loginModel) {
     return InputDecoration(
-        hintText: 'Şifre',
-        hintStyle: context.textTheme.bodyMedium?.copyWith(
-          color: context.colorScheme.scrim,
+      hintText: 'Şifre',
+      hintStyle: context.textTheme.bodyMedium?.copyWith(
+        color: context.colorScheme.scrim,
+      ),
+      errorStyle: context.textTheme.bodyMedium?.copyWith(
+        color: context.colorScheme.error,
+      ),
+      fillColor: context.colorScheme.background,
+      filled: true,
+      contentPadding: const EdgeInsets.all(15),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.error),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.error),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      suffixIcon: IconButton(
+        onPressed: () {
+          ref.read(loginLogicProvider.notifier).toggleObscure();
+        },
+        icon: Icon(
+          loginModel.isObscure
+              ? Icons.visibility_outlined
+              : Icons.visibility_off_outlined,
+          color: context.colorScheme.scrim.withOpacity(0.5),
         ),
-        errorStyle: context.textTheme.bodyMedium?.copyWith(
-          color: context.colorScheme.error,
-        ),
-        fillColor: context.colorScheme.background,
-        filled: true,
-        contentPadding: const EdgeInsets.all(15),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.colorScheme.primary),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.colorScheme.primary),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.colorScheme.error),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.colorScheme.error),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        suffixIcon: IconButton(
-          onPressed: () {
-            ref.read(loginLogicProvider.notifier).toggleObscure();
-          },
-          icon: Icon(
-            loginModel.isObscure
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
-            color: context.colorScheme.scrim.withOpacity(0.5),
-          ),
-        ),
-      );
+      ),
+    );
   }
 
   Widget _buildEmail(Size size, BuildContext context) {
@@ -286,41 +318,41 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   InputDecoration _emailDecoration(BuildContext context) {
     return InputDecoration(
-          hintText: 'E-posta',
-          hintStyle: context.textTheme.bodyMedium?.copyWith(
-            color: context.colorScheme.scrim,
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.error),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.error),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          errorStyle: context.textTheme.bodyMedium?.copyWith(
-            color: context.colorScheme.error,
-          ),
-          fillColor: context.colorScheme.background,
-          filled: true,
-          contentPadding: const EdgeInsets.all(15),
-          disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(16),
-          ),
-        );
+      hintText: 'E-posta',
+      hintStyle: context.textTheme.bodyMedium?.copyWith(
+        color: context.colorScheme.scrim,
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.error),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.error),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      errorStyle: context.textTheme.bodyMedium?.copyWith(
+        color: context.colorScheme.error,
+      ),
+      fillColor: context.colorScheme.background,
+      filled: true,
+      contentPadding: const EdgeInsets.all(15),
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
   }
 
   SizedBox _buildOrDivider(Size size, BuildContext context) {
