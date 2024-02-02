@@ -169,11 +169,16 @@ class LoginLogic extends _$LoginLogic {
     state = state.copyWith(isObscure: !state.isObscure);
   }
 
-  Future<void> forgotPassword() {
-    if (state.email == null) {
+  Future<bool> forgotPassword() async {
+    if (state.email == null || state.email!.isEmpty) {
       throw const FormatException('Email is required');
     }
-    return FirebaseAuth.instance.sendPasswordResetEmail(email: state.email!);
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: state.email!)
+        .then((void value) {
+      Logger().i('Password reset email sent');
+    });
+    return true;
   }
 
   void emailChanged(String value) {
@@ -190,24 +195,34 @@ class LoginLogic extends _$LoginLogic {
     }
     try {
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
         email: state.email!,
         password: state.password!,
-      );
+      )
+          .then((UserCredential value) {
+        Logger().i(value.user?.metadata);
+      });
       return true;
     } catch (e) {
       Logger().e(e.toString());
       rethrow;
+    } finally {
+      setLogin();
     }
   }
 
   Future<bool> signUpWithEmailAndPassword() async {
     try {
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
         email: state.email!,
         password: state.password!,
-      ).then((UserCredential value) async {
+      )
+          .then((UserCredential value) async {
+        // Log the ip address and other user details
+        Logger().i(value.user?.metadata);
         await value.user?.sendEmailVerification();
       });
       return true;
