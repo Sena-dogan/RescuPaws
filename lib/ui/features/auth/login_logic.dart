@@ -29,7 +29,6 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> signInWithGoogle() async {
     try {
-      setLogin(isLoading: true);
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
               clientId: Platform.isIOS
                   //!TODO: Put this in an env file
@@ -42,13 +41,17 @@ class LoginLogic extends _$LoginLogic {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
+      setLogin(isLoading: true);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
+      Logger().e(e.toString());
       await FirebaseCrashlytics.instance.recordError(e, stackTrace);
       setError(e.toString());
       setLogin();
       return false;
+    } finally {
+      setLogin();
     }
   }
 
@@ -58,7 +61,6 @@ class LoginLogic extends _$LoginLogic {
     try {
       debugPrint(
           'AAAAAAAAAA my name is apple. i am 7 years old. i like to eat apples');
-      setLogin(isLoading: true);
       final AuthorizationCredentialAppleID appleCredential =
           await SignInWithApple.getAppleIDCredential(
         scopes: <AppleIDAuthorizationScopes>[
@@ -71,12 +73,15 @@ class LoginLogic extends _$LoginLogic {
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
       );
+      setLogin(isLoading: true);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
-      debugPrint(e.toString());
+      Logger().e(e.toString());
       setError(e.toString());
       return false;
+    } finally {
+      setLogin();
     }
   }
 
