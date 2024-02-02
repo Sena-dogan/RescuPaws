@@ -11,6 +11,7 @@ abstract class LoginUiModel with _$LoginUiModel {
     @Default(null) String? error,
     @Default(null) String? email,
     @Default(null) String? password,
+    @Default(null) String? confirmPassword,
     @Default(true) bool isObscure,
   }) = _LoginUiModel;
 
