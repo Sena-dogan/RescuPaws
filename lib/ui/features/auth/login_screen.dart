@@ -59,12 +59,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Kayıt Ol',
-                  style: context.textTheme.labelSmall?.copyWith(
-                      color: context.colorScheme.primary, fontSize: 16)),
-            ),
+            _buildRegisterButton(context),
           ],
         ),
         body: SingleChildScrollView(
@@ -95,6 +90,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Padding _buildRegisterButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextButton(
+        onPressed: () {
+          context.go(SGRoute.register.route);
+        },
+        child: Text(
+          'Kayıt Ol',
+          style: context.textTheme.labelSmall
+              ?.copyWith(color: context.colorScheme.primary, fontSize: 16),
         ),
       ),
     );
