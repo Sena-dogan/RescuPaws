@@ -185,6 +185,9 @@ class LoginLogic extends _$LoginLogic {
   }
 
   Future<bool> signInWithEmailAndPassword() async {
+    if (state.email == null || state.password == null) {
+      throw const FormatException('Email and password are required');
+    }
     try {
       setLogin(isLoading: true);
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -196,5 +199,23 @@ class LoginLogic extends _$LoginLogic {
       Logger().e(e.toString());
       rethrow;
     }
+  }
+
+  Future<bool> signUpWithEmailAndPassword() async {
+    try {
+      setLogin(isLoading: true);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: state.email!,
+        password: state.password!,
+      );
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      rethrow;
+    }
+  }
+
+  void dispose() {
+    state = const LoginUiModel();
   }
 }
