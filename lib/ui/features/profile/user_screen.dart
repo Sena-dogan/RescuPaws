@@ -73,7 +73,6 @@ class ProfileScreen extends ConsumerWidget {
                                     .updateUserImage();
                                 if (resp == false) {
                                   context.showErrorSnackBar(
-                                      title: 'Hata',
                                       message:
                                           'Resim yüklenirken bir hata oluştu.');
                                 }

@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +8,7 @@ import '../../constants/assets.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
+import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
@@ -35,6 +35,7 @@ enum SGRoute {
   pawimage,
   intro,
   firstScreen,
+  emailLogin,
   login,
   register,
   forgotPassword,
@@ -83,6 +84,11 @@ class SGGoRouter {
         path: SGRoute.login.route,
         builder: (BuildContext context, GoRouterState state) =>
             const LoginScreen(),
+      ).fade(),
+      GoRoute(
+        path: SGRoute.register.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const RegisterScreen(),
       ).fade(),
       GoRoute(
         path: SGRoute.profile.route,
@@ -144,7 +150,7 @@ class SGGoRouter {
   GoRouter get getGoRouter => goRoute;
 }
 
-// ignore: unused_element
+// ignore: unused_element, prefer_function_declarations_over_variables
 final String? Function(BuildContext context, GoRouterState state) _introGuard =
     (BuildContext context, GoRouterState state) {
   if (!(getStoreHelper.getIntro() == null ||
@@ -155,7 +161,7 @@ final String? Function(BuildContext context, GoRouterState state) _introGuard =
 };
 
 /// Example: Auth guard for Route Protection. GetStoreHelper is used to get token.
-// ignore: unused_element
+// ignore: prefer_function_declarations_over_variables
 final String? Function(BuildContext context, GoRouterState state) _authGuard =
     (BuildContext context, GoRouterState state) {
   if (FirebaseAuth.instance.currentUser == null) {
