@@ -17,7 +17,7 @@ extension ContextExtension on BuildContext {
   /// We use the [ScaffoldMessenger] to show the SnackBar.
   /// When representing errors, we use the [ContentType.failure] to show a red banner.
   void showErrorSnackBar({
-    required String title,
+    String title = 'Hata',
     required String message,
     String actionText = 'OK',
     void Function()? onActionPressed,

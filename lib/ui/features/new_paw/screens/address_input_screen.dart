@@ -200,9 +200,10 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                           ),
                           onPressed: () {
                             if (newPawLogic.address == null ||
-                                newPawLogic.address!.isEmpty || newPawLogic.city == null || newPawLogic.district == null) {
+                                newPawLogic.address!.isEmpty ||
+                                newPawLogic.city == null ||
+                                newPawLogic.district == null) {
                               context.showErrorSnackBar(
-                                  title: 'Hata',
                                   message: 'Lütfen adres bilgilerini giriniz.');
                               return;
                             }
