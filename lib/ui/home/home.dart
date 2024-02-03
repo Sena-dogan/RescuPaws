@@ -163,10 +163,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             onPressed: () {
               context.go(SGRoute.noNotif.route);
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.notifications_none_rounded,
               size: 30,
-              color: Colors.white,
+              color: context.colorScheme.scrim.withOpacity(0.8),
             ),
           ),
         ),
