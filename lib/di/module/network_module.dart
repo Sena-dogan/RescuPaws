@@ -3,7 +3,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 
 import 'package:network_logger/network_logger.dart';
 
@@ -25,9 +24,7 @@ abstract class NetworkModule {
   @preResolve
   Future<Dio> provideDio(GetStoreHelper getStoreHelper) {
     final Dio dio = Dio();
-    final Logger logger = Logger();
     final String? token = getStoreHelper.getToken();
-    logger.d('Token is $token');
 
     dio
       ..options.baseUrl = Endpoints.baseUrl
