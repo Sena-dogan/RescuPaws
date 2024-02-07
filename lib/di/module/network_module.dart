@@ -28,7 +28,6 @@ abstract class NetworkModule {
     final Logger logger = Logger();
     final String? token = getStoreHelper.getToken();
     logger.d('Token is $token');
-    
 
     dio
       ..options.baseUrl = Endpoints.baseUrl
@@ -42,7 +41,7 @@ abstract class NetworkModule {
         'Authorization': 'Bearer $token',
       }
       ..interceptors.add(LogInterceptor(
-request: false,
+        request: false,
         responseBody: true,
         requestHeader: false,
       ))

@@ -62,8 +62,8 @@ class LoginLogic extends _$LoginLogic {
         idToken: googleAuth?.idToken,
       );
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.signInWithCredential(credential);
       await ref.read(fetchTokenProvider.future);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
       Logger().e(e.toString());
@@ -95,8 +95,8 @@ class LoginLogic extends _$LoginLogic {
         accessToken: appleCredential.authorizationCode,
       );
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.signInWithCredential(credential);
       await ref.read(fetchTokenProvider.future);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -109,6 +109,8 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> signOut() async {
     try {
+      final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+      getStoreHelper.clear();
       await FirebaseAuth.instance.signOut();
       // Check google sign in
       final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -222,6 +224,7 @@ class LoginLogic extends _$LoginLogic {
     }
     try {
       setLogin(isLoading: true);
+      await ref.read(fetchTokenProvider.future);
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
         email: state.email!,
