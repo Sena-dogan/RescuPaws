@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../utils/context_extensions.dart';
+import '../../config/router/app_router.dart';
 import '../../constants/assets.dart';
 import '../../models/paw_entry.dart';
 import '../../utils/error_widgett.dart';
@@ -159,11 +161,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: IconButton(
-            onPressed: () {},
-            icon: const Icon(
+            onPressed: () {
+              context.go(SGRoute.noNotif.route);
+            },
+            icon: Icon(
               Icons.notifications_none_rounded,
               size: 30,
-              color: Colors.white,
+              color: context.colorScheme.scrim.withOpacity(0.8),
             ),
           ),
         ),
