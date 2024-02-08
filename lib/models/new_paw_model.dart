@@ -20,7 +20,6 @@ class NewPawModel with _$NewPawModel {
     int? gender,
     String? age,
     int? education,
-    @Default(0) int? vaccinated,
     String? address,
   }) = _NewPawModel;
 
