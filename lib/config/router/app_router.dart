@@ -20,7 +20,6 @@ import '../../ui/features/new_paw/screens/select_subBreed_screen.dart';
 import '../../ui/features/new_paw/screens/weight_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
-import 'fade_extension.dart';
 
 GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
@@ -74,35 +73,35 @@ class SGGoRouter {
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),
         redirect: _authGuard,
-      ).fade(),
+      ),
       GoRoute(
         path: SGRoute.intro.route,
         builder: (BuildContext context, GoRouterState state) =>
             const IntroScreen(),
-      ).fade(),
+      ),
       GoRoute(
         path: SGRoute.login.route,
         builder: (BuildContext context, GoRouterState state) =>
             const LoginScreen(),
-      ).fade(),
+      ),
       GoRoute(
         path: SGRoute.register.route,
         builder: (BuildContext context, GoRouterState state) =>
             const RegisterScreen(),
-      ).fade(),
+      ),
       GoRoute(
         path: SGRoute.profile.route,
         builder: (BuildContext context, GoRouterState state) =>
             const ProfileScreen(),
         redirect: _authGuard,
-      ).fade(),
+      ),
       GoRoute(
         path: SGRoute.detail.route,
         builder: (BuildContext context, GoRouterState state) => DetailScreen(
           id: state.extra! as int,
         ),
         redirect: _authGuard,
-      ).fade(),
+      ),
       GoRoute(
         path: SGRoute.breed.route,
         builder: (BuildContext context, GoRouterState state) =>
@@ -144,7 +143,7 @@ class SGGoRouter {
         builder: (BuildContext context, GoRouterState state) =>
             const NewPawScreen(),
         redirect: _authGuard,
-      ).fade(),
+      ),
     ],
   );
   GoRouter get getGoRouter => goRoute;
