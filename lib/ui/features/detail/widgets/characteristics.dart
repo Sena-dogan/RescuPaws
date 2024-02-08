@@ -66,7 +66,9 @@ class Characteristics extends StatelessWidget {
                   : '$weight kg',
             ),
             const Gap(30),
-            const VaccineButton(),
+            VaccineButton(
+              pawEntryDetailResponse: pawEntryDetailResponse,
+            ),
           ],
         ),
       ],
@@ -77,13 +79,19 @@ class Characteristics extends StatelessWidget {
 class VaccineButton extends StatelessWidget {
   const VaccineButton({
     super.key,
+    required this.pawEntryDetailResponse,
   });
+
+  final GetPawEntryDetailResponse? pawEntryDetailResponse;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push(SGRoute.vaccine.route);
+        context.push(
+          SGRoute.vaccine.route,
+          extra: pawEntryDetailResponse!.data?.id,
+        );
       },
       child: Container(
           height: 40,
