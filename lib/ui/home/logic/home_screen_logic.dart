@@ -1,8 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../data/getstore/get_store_helper.dart';
 import '../../../data/network/paw_entry/paw_entry_repository.dart';
+import '../../../di/components/service_locator.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/riverpod_extensions.dart';
+import '../../features/auth/login_logic.dart';
 import '../swipe_card/swipe_card_logic.dart';
 import 'home_screen_ui_model.dart';
 
@@ -12,6 +15,10 @@ part 'home_screen_logic.g.dart';
 Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
   ref.cacheFor(const Duration(minutes: 5));
+  GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+  if (getStoreHelper.getToken() == null) {
+    await ref.read(fetchTokenProvider.future);
+  }
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
   GetPawEntryResponse pawEntries = await pawEntryRepository.getPawEntry();

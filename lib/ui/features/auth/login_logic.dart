@@ -8,9 +8,29 @@ import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../../../data/getstore/get_store_helper.dart';
+import '../../../data/network/auth/auth_repository.dart';
+import '../../../di/components/service_locator.dart';
+import '../../../models/token_request.dart';
+import '../../../models/token_response.dart';
 import 'login_ui_model.dart';
 
 part 'login_logic.g.dart';
+
+@riverpod
+Future<TokenResponse?> fetchToken(FetchTokenRef ref) async {
+  final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+  final AuthRepository authRepository = ref.watch(getAuthRepositoryProvider);
+  final TokenResponse getTokenResponse =
+      await authRepository.getToken(TokenRequest()).then((TokenResponse value) {
+    if (value.token != null)
+      getStoreHelper.saveToken(value.token!);
+    else
+      throw Exception('Token is null');
+    return value;
+  });
+  return getTokenResponse;
+}
 
 @riverpod
 class LoginLogic extends _$LoginLogic {
@@ -42,6 +62,7 @@ class LoginLogic extends _$LoginLogic {
         idToken: googleAuth?.idToken,
       );
       setLogin(isLoading: true);
+      await ref.read(fetchTokenProvider.future);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
@@ -74,6 +95,7 @@ class LoginLogic extends _$LoginLogic {
         accessToken: appleCredential.authorizationCode,
       );
       setLogin(isLoading: true);
+      await ref.read(fetchTokenProvider.future);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
@@ -87,6 +109,8 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> signOut() async {
     try {
+      final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+      getStoreHelper.clear();
       await FirebaseAuth.instance.signOut();
       // Check google sign in
       final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -200,6 +224,7 @@ class LoginLogic extends _$LoginLogic {
     }
     try {
       setLogin(isLoading: true);
+      await ref.read(fetchTokenProvider.future);
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
         email: state.email!,

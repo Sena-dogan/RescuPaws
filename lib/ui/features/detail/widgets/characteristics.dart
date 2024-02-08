@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../config/router/app_router.dart';
 import '../../../../data/enums/detail_enums.dart';
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../utils/context_extensions.dart';
@@ -64,13 +66,46 @@ class Characteristics extends StatelessWidget {
                   : '$weight kg',
             ),
             const Gap(30),
-            const CharacteristicItem(
-              title: 'Aşıları',
-              value: 'aşılar',
+            VaccineButton(
+              pawEntryDetailResponse: pawEntryDetailResponse,
             ),
           ],
         ),
       ],
+    );
+  }
+}
+
+class VaccineButton extends StatelessWidget {
+  const VaccineButton({
+    super.key,
+    required this.pawEntryDetailResponse,
+  });
+
+  final GetPawEntryDetailResponse? pawEntryDetailResponse;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        context.push(
+          SGRoute.vaccine.route,
+          extra: pawEntryDetailResponse!.data?.id,
+        );
+      },
+      child: Container(
+          height: 40,
+          width: 65,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(color: context.colorScheme.primary),
+          ),
+          child: Center(
+            child: Text(
+              'Aşılar',
+              style: context.textTheme.bodyLarge,
+            ),
+          )),
     );
   }
 }

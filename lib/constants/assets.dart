@@ -15,6 +15,7 @@ class Assets {
   static const String NotFound = 'assets/animations/404_animation.json';
   static const String Loading = 'assets/animations/loading_animation.json';
   static const String WorkoutDog = 'assets/animations/workout_dog_lottie.json';
+  static const String NoNotif = 'assets/animations/no_notif.json';
 
   // Gifs
   static const String LoadingPaw = 'assets/gifs/gif-pati.gif';

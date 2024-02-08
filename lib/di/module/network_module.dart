@@ -8,6 +8,7 @@ import 'package:network_logger/network_logger.dart';
 
 import '../../constants/endpoints.dart';
 import '../../data/getstore/get_store_helper.dart';
+import '../../data/network/auth/auth_rest_client.dart';
 import '../../data/network/category/category_rest_client.dart';
 import '../../data/network/location/location_rest_client.dart';
 import '../../data/network/paw_entry/paw_entry_rest_client.dart';
@@ -23,6 +24,7 @@ abstract class NetworkModule {
   @preResolve
   Future<Dio> provideDio(GetStoreHelper getStoreHelper) {
     final Dio dio = Dio();
+    final String? token = getStoreHelper.getToken();
 
     dio
       ..options.baseUrl = Endpoints.baseUrl
@@ -32,7 +34,8 @@ abstract class NetworkModule {
           const Duration(milliseconds: Endpoints.receiveTimeout)
       ..options.headers = {
         'Content-Type': 'application/json',
-        'accept': 'text/plain'
+        'accept': 'text/plain',
+        'Authorization': 'Bearer $token',
       }
       ..interceptors.add(LogInterceptor(
         request: false,
@@ -79,5 +82,10 @@ abstract class NetworkModule {
   @preResolve
   Future<LocationRestClient> provideLocationRestClient(Dio dio) {
     return Future.value(LocationRestClient(dio));
+  }
+
+  @preResolve
+  Future<AuthRestClient> provideAuthRestClient(Dio dio) {
+    return Future.value(AuthRestClient(dio));
   }
 }
