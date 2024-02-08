@@ -43,7 +43,6 @@ class DetailScreen extends ConsumerWidget {
             :final GetPawEntryDetailResponse? value
           ) =>
             DetailBody(
-              ref: ref,
               pinned: _pinned,
               pawEntryDetailResponse: value,
               size: size,

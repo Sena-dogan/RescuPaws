@@ -11,23 +11,20 @@ import 'advertiser_info.dart';
 import 'characteristics.dart';
 import 'paw_image_and_name.dart';
 
-class DetailBody extends StatelessWidget {
+class DetailBody extends ConsumerWidget {
   const DetailBody({
     super.key,
-    required this.ref,
     required bool pinned,
     required this.pawEntryDetailResponse,
     required this.size,
   }) : _pinned = pinned;
 
-  final WidgetRef ref;
   final bool _pinned;
   final GetPawEntryDetailResponse? pawEntryDetailResponse;
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
-    //final DetailUiModel detailUiModel;
+  Widget build(BuildContext context, WidgetRef ref) {
     if (pawEntryDetailResponse == null) {
       return const Center(
         child: CircularProgressIndicator(),

@@ -157,8 +157,9 @@ class SGGoRouter {
       ).fade(),
       GoRoute(
         path: SGRoute.vaccine.route,
-        builder: (BuildContext context, GoRouterState state) =>
-            const VaccineScreen(),
+        builder: (BuildContext context, GoRouterState state) => VaccineScreen(
+          id: state.extra! as int,
+        ),
         redirect: _authGuard,
       ).fade(),
     ],
