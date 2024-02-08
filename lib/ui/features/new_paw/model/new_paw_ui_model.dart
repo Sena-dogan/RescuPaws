@@ -28,7 +28,6 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     String? age,
     num? weight,
     int? education,
-    @Default(0) int? vaccinated,
     String? address,
   }) = _NewPawUiModel;
 }
@@ -58,7 +57,6 @@ extension NewPawExtension on NewPawUiModel {
       image: imageBytes,
       user_id: user_id,
       weight: weight,
-      vaccinated: vaccinated,
     );
   }
 }
