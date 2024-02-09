@@ -1,8 +1,8 @@
 /// All Restclients that communicate with the Paw requests are defined here.
 import 'package:injectable/injectable.dart';
 
-import '../../models/token_request.dart';
-import '../../models/token_response.dart';
+import '../../models/token/token_request.dart';
+import '../../models/token/token_response.dart';
 import 'auth/auth_rest_client.dart';
 
 @injectable

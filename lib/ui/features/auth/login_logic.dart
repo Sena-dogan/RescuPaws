@@ -11,8 +11,9 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../../data/getstore/get_store_helper.dart';
 import '../../../data/network/auth/auth_repository.dart';
 import '../../../di/components/service_locator.dart';
-import '../../../models/token_request.dart';
-import '../../../models/token_response.dart';
+
+import '../../../models/token/token_request.dart';
+import '../../../models/token/token_response.dart';
 import 'login_ui_model.dart';
 
 part 'login_logic.g.dart';
