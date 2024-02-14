@@ -219,7 +219,7 @@ class _NewPawInformationScreenState
                                 ),
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
-                                    context.push(SGRoute.weight.route);
+                                    context.push(SGRoute.vaccineNewPaw.route);
                                   }
                                 },
                                 child: Text(

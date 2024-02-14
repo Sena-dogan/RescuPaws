@@ -18,6 +18,7 @@ import '../../ui/features/new_paw/screens/new_paw_image_screen.dart';
 import '../../ui/features/new_paw/screens/new_paw_screen.dart';
 import '../../ui/features/new_paw/screens/select_breed_screen.dart';
 import '../../ui/features/new_paw/screens/select_subBreed_screen.dart';
+import '../../ui/features/new_paw/screens/vaccine_new_paw.dart';
 import '../../ui/features/new_paw/screens/weight_screen.dart';
 import '../../ui/features/notification/no_notif_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
@@ -46,6 +47,7 @@ enum SGRoute {
   weight,
   noNotif,
   vaccine,
+  vaccineNewPaw,
   detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
@@ -148,20 +150,26 @@ class SGGoRouter {
         builder: (BuildContext context, GoRouterState state) =>
             const NewPawScreen(),
         redirect: _authGuard,
-      ).fade(),
+      ),
       GoRoute(
         path: SGRoute.noNotif.route,
         builder: (BuildContext context, GoRouterState state) =>
             const NoNotifScreen(),
         redirect: _authGuard,
-      ).fade(),
+      ),
       GoRoute(
         path: SGRoute.vaccine.route,
         builder: (BuildContext context, GoRouterState state) => VaccineScreen(
           id: state.extra! as int,
         ),
         redirect: _authGuard,
-      ).fade(),
+      ),
+      GoRoute(
+        path: SGRoute.vaccineNewPaw.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const VaccinesNewPaw(),
+        redirect: _authGuard,
+      ),
     ],
   );
   GoRouter get getGoRouter => goRoute;

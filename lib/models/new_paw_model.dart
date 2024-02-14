@@ -20,7 +20,14 @@ class NewPawModel with _$NewPawModel {
     int? gender,
     String? age,
     int? education,
-    @Default(0) int? vaccinated,
+    int? rabies_vaccine,
+    int? distemper_vaccine,
+    int? hepatitis_vaccine,
+    int? parvovirus_vaccine,
+    int? bordotella_vaccine,
+    int? leptospirosis_vaccine,
+    int? panleukopenia_vaccine,
+    int? herpesvirus_and_calicivirus_vaccine,
     String? address,
   }) = _NewPawModel;
 

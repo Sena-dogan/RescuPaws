@@ -13,6 +13,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
   factory NewPawUiModel({
     @Default(false) bool isImageLoading,
     @Default(true) bool isKg,
+    @Default(false) bool isVaccineSelected,
     @Default(null) String? error,
     @Default(<AssetEntity>[]) List<AssetEntity>? assets,
     List<String>? imageBytes,
@@ -28,7 +29,14 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     String? age,
     num? weight,
     int? education,
-    @Default(0) int? vaccinated,
+    int? rabies_vaccine,
+    int? distemper_vaccine,
+    int? hepatitis_vaccine,
+    int? parvovirus_vaccine,
+    int? bordotella_vaccine,
+    int? leptospirosis_vaccine,
+    int? panleukopenia_vaccine,
+    int? herpesvirus_and_calicivirus_vaccine,
     String? address,
   }) = _NewPawUiModel;
 }
@@ -58,7 +66,14 @@ extension NewPawExtension on NewPawUiModel {
       image: imageBytes,
       user_id: user_id,
       weight: weight,
-      vaccinated: vaccinated,
+      rabies_vaccine: rabies_vaccine,
+      distemper_vaccine: distemper_vaccine,
+      hepatitis_vaccine: hepatitis_vaccine,
+      parvovirus_vaccine: parvovirus_vaccine,
+      bordotella_vaccine: bordotella_vaccine,
+      leptospirosis_vaccine: leptospirosis_vaccine,
+      panleukopenia_vaccine: panleukopenia_vaccine,
+      herpesvirus_and_calicivirus_vaccine: herpesvirus_and_calicivirus_vaccine,
     );
   }
 }

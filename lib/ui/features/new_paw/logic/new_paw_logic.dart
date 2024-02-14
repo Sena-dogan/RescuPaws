@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../data/enums/new_paw_enums.dart';
 import '../../../../data/network/category/category_repository.dart';
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/categories_response.dart';
@@ -100,6 +101,39 @@ class NewPawLogic extends _$NewPawLogic {
 
   void setPawAge(String age) {
     state = state.copyWith(age: age);
+  }
+
+  void setVaccineSelected(bool isVaccineSelected) {
+    state = state.copyWith(isVaccineSelected: isVaccineSelected);
+  }
+
+  void setPawVaccine(Vaccines vaccines, int vaccine) {
+    switch (vaccines) {
+      case Vaccines.RABIES:
+        state = state.copyWith(rabies_vaccine: vaccine);
+        break;
+      case Vaccines.DISTEMPER:
+        state = state.copyWith(distemper_vaccine: vaccine);
+        break;
+      case Vaccines.HEPATITIS:
+        state = state.copyWith(hepatitis_vaccine: vaccine);
+        break;
+      case Vaccines.PARVOVIRUS:
+        state = state.copyWith(parvovirus_vaccine: vaccine);
+        break;
+      case Vaccines.BORDETELLA:
+        state = state.copyWith(bordotella_vaccine: vaccine);
+        break;
+      case Vaccines.LEPTOSPIROSIS:
+        state = state.copyWith(leptospirosis_vaccine: vaccine);
+        break;
+      case Vaccines.PANLEUKOPENIA:
+        state = state.copyWith(panleukopenia_vaccine: vaccine);
+        break;
+      case Vaccines.HERPESVIRUSandCALICIVIRUS:
+        state = state.copyWith(herpesvirus_and_calicivirus_vaccine: vaccine);
+        break;
+    }
   }
 
   void setPawWeight(num weight) {
