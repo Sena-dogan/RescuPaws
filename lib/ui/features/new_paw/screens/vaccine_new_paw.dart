@@ -7,6 +7,7 @@ import '../../../../constants/assets.dart';
 import '../../../../data/enums/new_paw_enums.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/new_paw_logic.dart';
+import '../model/new_paw_ui_model.dart';
 
 class VaccinesNewPaw extends ConsumerWidget {
   const VaccinesNewPaw({super.key});
@@ -67,6 +68,8 @@ class _VaccineCreateBodyState extends ConsumerState<VaccineCreateBody> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final NewPawUiModel newPawUiModel = ref.watch(newPawLogicProvider);
+    final NewPawLogic newPawLogic = ref.read(newPawLogicProvider.notifier);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -77,89 +80,59 @@ class _VaccineCreateBodyState extends ConsumerState<VaccineCreateBody> {
               NewPawHaveVaccineWidget(
                 title: 'Rabies Aşısı',
                 onTap: () {
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setVaccineSelected(true);
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setPawVaccine(Vaccines.RABIES, 1);
+                  newPawLogic.togglePawVaccine(Vaccines.RABIES);
                 },
+                isVaccineSelected: newPawUiModel.rabies_vaccine,
               ),
               NewPawHaveVaccineWidget(
                 title: 'Distemper Aşısı',
                 onTap: () {
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setVaccineSelected(true);
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setPawVaccine(Vaccines.DISTEMPER, 1);
+                  newPawLogic.togglePawVaccine(Vaccines.DISTEMPER);
                 },
+                isVaccineSelected: newPawUiModel.distemper_vaccine,
               ),
               NewPawHaveVaccineWidget(
                 title: 'Hepatitis Aşısı',
                 onTap: () {
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setVaccineSelected(true);
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setPawVaccine(Vaccines.HEPATITIS, 1);
+                  newPawLogic.togglePawVaccine(Vaccines.HEPATITIS);
                 },
+                isVaccineSelected: newPawUiModel.hepatitis_vaccine,
               ),
               NewPawHaveVaccineWidget(
                 title: 'Parvovirus Aşısı',
                 onTap: () {
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setVaccineSelected(true);
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setPawVaccine(Vaccines.PARVOVIRUS, 1);
+                  newPawLogic.togglePawVaccine(Vaccines.PARVOVIRUS);
                 },
+                isVaccineSelected: newPawUiModel.parvovirus_vaccine,
               ),
               NewPawHaveVaccineWidget(
                 title: 'Bordotella Aşısı',
                 onTap: () {
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setVaccineSelected(true);
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setPawVaccine(Vaccines.BORDETELLA, 1);
+                  newPawLogic.togglePawVaccine(Vaccines.BORDETELLA);
                 },
+                isVaccineSelected: newPawUiModel.bordotella_vaccine,
               ),
               NewPawHaveVaccineWidget(
                 title: 'Leptospirosis Aşısı',
                 onTap: () {
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setVaccineSelected(true);
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setPawVaccine(Vaccines.LEPTOSPIROSIS, 1);
+                  newPawLogic.togglePawVaccine(Vaccines.LEPTOSPIROSIS);
                 },
+                isVaccineSelected: newPawUiModel.leptospirosis_vaccine,
               ),
               NewPawHaveVaccineWidget(
                 title: 'Panleukopenia Aşısı',
                 onTap: () {
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setVaccineSelected(true);
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setPawVaccine(Vaccines.PANLEUKOPENIA, 1);
+                  newPawLogic.togglePawVaccine(Vaccines.PANLEUKOPENIA);
                 },
+                isVaccineSelected: newPawUiModel.panleukopenia_vaccine,
               ),
               NewPawHaveVaccineWidget(
                 title: 'Herpesvirus and Calicivirus Aşısı',
+                isVaccineSelected:
+                    newPawUiModel.herpesvirus_and_calicivirus_vaccine,
                 onTap: () {
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setVaccineSelected(true);
-                  ref
-                      .read(newPawLogicProvider.notifier)
-                      .setPawVaccine(Vaccines.HERPESVIRUSandCALICIVIRUS, 1);
+                  newPawLogic
+                      .togglePawVaccine(Vaccines.HERPESVIRUSandCALICIVIRUS);
                 },
               ),
               Align(
@@ -192,60 +165,51 @@ class _VaccineCreateBodyState extends ConsumerState<VaccineCreateBody> {
   }
 }
 
-class NewPawHaveVaccineWidget extends ConsumerWidget {
+class NewPawHaveVaccineWidget extends StatelessWidget {
   const NewPawHaveVaccineWidget({
     super.key,
     required this.title,
     required this.onTap,
+    required this.isVaccineSelected,
   });
 
   final String title;
+  final bool isVaccineSelected;
   final void Function() onTap;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bool isVaccineSelected =
-        ref.read(newPawLogicProvider).isVaccineSelected;
+  Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          width: size.width * 0.9,
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: isVaccineSelected
-                  ? Colors.green.withOpacity(0.4)
-                  : !isVaccineSelected
-                      ? Colors.red.withOpacity(0.4)
-                      : Colors.grey.withOpacity(0.4),
-              width: 2,
-            ),
+      child: Container(
+        width: size.width * 0.9,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: isVaccineSelected
+                ? Colors.green.withOpacity(0.4)
+                : Colors.red.withOpacity(0.4),
+            width: 2,
           ),
-          child: ListTile(
-            title: Text(
-              title,
-              style: context.textTheme.bodyLarge,
-              selectionColor: context.colorScheme.scrim,
-            ),
-            trailing: isVaccineSelected
-                ? const Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  )
-                : !isVaccineSelected
-                    ? const Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      )
-                    : const Icon(
-                        Icons.help,
-                        color: Colors.grey,
-                      ),
+        ),
+        child: ListTile(
+          onTap: onTap,
+          title: Text(
+            title,
+            style: context.textTheme.bodyLarge,
+            selectionColor: context.colorScheme.scrim,
           ),
+          trailing: isVaccineSelected
+              ? const Icon(
+                  Icons.check,
+                  color: Colors.green,
+                )
+              : const Icon(
+                  Icons.close,
+                  color: Colors.red,
+                ),
         ),
       ),
     );

@@ -103,35 +103,32 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(age: age);
   }
 
-  void setVaccineSelected(bool isVaccineSelected) {
-    state = state.copyWith(isVaccineSelected: isVaccineSelected);
-  }
 
-  void setPawVaccine(Vaccines vaccines, int vaccine) {
+  void togglePawVaccine(Vaccines vaccines) {
     switch (vaccines) {
       case Vaccines.RABIES:
-        state = state.copyWith(rabies_vaccine: vaccine);
+        state = state.copyWith(rabies_vaccine: !state.rabies_vaccine);
         break;
       case Vaccines.DISTEMPER:
-        state = state.copyWith(distemper_vaccine: vaccine);
+        state = state.copyWith(distemper_vaccine: !state.distemper_vaccine);
         break;
       case Vaccines.HEPATITIS:
-        state = state.copyWith(hepatitis_vaccine: vaccine);
+        state = state.copyWith(hepatitis_vaccine: !state.hepatitis_vaccine);
         break;
       case Vaccines.PARVOVIRUS:
-        state = state.copyWith(parvovirus_vaccine: vaccine);
+        state = state.copyWith(parvovirus_vaccine: !state.parvovirus_vaccine);
         break;
       case Vaccines.BORDETELLA:
-        state = state.copyWith(bordotella_vaccine: vaccine);
-        break;
+        state = state.copyWith(bordotella_vaccine: !state.bordotella_vaccine);
+        break; 
       case Vaccines.LEPTOSPIROSIS:
-        state = state.copyWith(leptospirosis_vaccine: vaccine);
+        state = state.copyWith(leptospirosis_vaccine: !state.leptospirosis_vaccine);
         break;
       case Vaccines.PANLEUKOPENIA:
-        state = state.copyWith(panleukopenia_vaccine: vaccine);
+        state = state.copyWith(panleukopenia_vaccine: !state.panleukopenia_vaccine);
         break;
       case Vaccines.HERPESVIRUSandCALICIVIRUS:
-        state = state.copyWith(herpesvirus_and_calicivirus_vaccine: vaccine);
+        state = state.copyWith(herpesvirus_and_calicivirus_vaccine: !state.herpesvirus_and_calicivirus_vaccine);
         break;
     }
   }
