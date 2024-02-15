@@ -2,23 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../constants/assets.dart';
-import '../../../models/paw_entry_detail.dart';
-import '../../../utils/context_extensions.dart';
-import '../../../utils/error_widgett.dart';
-import '../../home/widgets/loading_paw_widget.dart';
-import 'logic/detail_logic.dart';
-import 'widgets/vaccine_body_detail.dart';
+import '../../../../constants/assets.dart';
+import '../../../../utils/context_extensions.dart';
+import '../widgets/vaccine_create_body.dart';
 
-class VaccineScreen extends ConsumerWidget {
-  const VaccineScreen({super.key, required this.id});
-
-  final int id;
+class VaccinesNewPaw extends ConsumerWidget {
+  const VaccinesNewPaw({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<GetPawEntryDetailResponse?> pawEntryDetailResponse =
-        ref.watch(fetchPawEntryDetailProvider(id.toString()));
     return Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -56,22 +48,7 @@ class VaccineScreen extends ConsumerWidget {
               style: context.textTheme.labelSmall,
             ),
           ),
-          body: switch (pawEntryDetailResponse) {
-            AsyncData<GetPawEntryDetailResponse?>(
-              :final GetPawEntryDetailResponse? value
-            ) =>
-              VaccineBody(
-                pawEntryDetailResponse: value,
-              ),
-            AsyncValue<Object?>(:final Object error?) => ErrorWidgett(
-                error: error,
-                onRefresh: () async => ref
-                    .refresh(fetchPawEntryDetailProvider(id.toString()).future),
-              ),
-            _ => const Center(
-                child: LoadingPawWidget(),
-              ),
-          },
+          body: const VaccineCreateBody(),
         ));
   }
 }

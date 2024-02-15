@@ -7,6 +7,7 @@ import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/new_paw_logic.dart';
+import '../widgets/save_button.dart';
 
 class NewPawInformationScreen extends ConsumerStatefulWidget {
   const NewPawInformationScreen({super.key});
@@ -205,28 +206,11 @@ class _NewPawInformationScreenState
                               ),
                             ),
                             const Spacer(),
-                            //TODO: Make save button widget
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  fixedSize: MaterialStateProperty.all<Size>(
-                                    Size(
-                                      context.width * 0.8,
-                                      context.height * 0.06,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    context.push(SGRoute.weight.route);
-                                  }
-                                },
-                                child: Text(
-                                  'Kaydet',
-                                  style: context.textTheme.labelMedium,
-                                ),
-                              ),
+                            SaveButton(
+                              title: 'Kaydet',
+                              onPressed: () {
+                                context.push(SGRoute.vaccineNewPaw.route);
+                              },
                             ),
                           ].seperate(2),
                         ),
