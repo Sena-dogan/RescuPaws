@@ -206,7 +206,6 @@ class _NewPawInformationScreenState
                               ),
                             ),
                             const Spacer(),
-                            //TODO: Make save button widget
                             SaveButton(
                               onPressed: () {
                                 context.push(SGRoute.vaccineNewPaw.route);
