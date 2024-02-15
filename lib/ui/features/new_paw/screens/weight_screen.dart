@@ -102,6 +102,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                 ),
               ),
               SaveButton(
+                title: 'Kaydet',
                 onPressed: () {
                   if (currentValue > 0) {
                     context.push(SGRoute.address.route);

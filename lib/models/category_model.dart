@@ -6,7 +6,7 @@ part 'category_model.g.dart';
 @freezed
 class CategoryResponse with _$CategoryResponse {
   factory CategoryResponse({
-    @Default(null) String? parent_id,
+    @Default(0) String? parent_id,
     required int id,
     required String name,
     required String? description,

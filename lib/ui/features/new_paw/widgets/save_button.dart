@@ -6,9 +6,11 @@ class SaveButton extends StatelessWidget {
   const SaveButton({
     super.key,
     required this.onPressed,
+    required this.title,
   });
 
   final void Function()? onPressed;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class SaveButton extends StatelessWidget {
         ),
       ),
       child: Text(
-        'Kaydet',
+        title,
         style: context.textTheme.labelSmall?.copyWith(
           color: Colors.white,
         ),

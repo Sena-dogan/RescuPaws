@@ -207,6 +207,7 @@ class _NewPawInformationScreenState
                             ),
                             const Spacer(),
                             SaveButton(
+                              title: 'Kaydet',
                               onPressed: () {
                                 context.push(SGRoute.vaccineNewPaw.route);
                               },

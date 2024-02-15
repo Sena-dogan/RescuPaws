@@ -188,6 +188,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                       ),
                       const Spacer(),
                       SaveButton(
+                        title: 'Kaydet',
                         onPressed: () {
                           if (newPawLogic.address == null ||
                               newPawLogic.address!.isEmpty ||

@@ -19,7 +19,7 @@ class GetCategoriesResponse with _$GetCategoriesResponse {
 class Category with _$Category {
   factory Category({
     /// Bruh why parent_id is String when id is int
-    @Default(null) String? parent_id,
+    @Default(0) String? parent_id,
     required int id,
     required String name,
     required String? description,
