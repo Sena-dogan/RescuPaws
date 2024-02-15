@@ -8,6 +8,7 @@ import '../../../../data/enums/new_paw_enums.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/new_paw_logic.dart';
 import '../model/new_paw_ui_model.dart';
+import '../widgets/save_button.dart';
 
 class VaccinesNewPaw extends ConsumerWidget {
   const VaccinesNewPaw({super.key});
@@ -67,7 +68,6 @@ class VaccineCreateBody extends ConsumerStatefulWidget {
 class _VaccineCreateBodyState extends ConsumerState<VaccineCreateBody> {
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final NewPawUiModel newPawUiModel = ref.watch(newPawLogicProvider);
     final NewPawLogic newPawLogic = ref.read(newPawLogicProvider.notifier);
     return SingleChildScrollView(
@@ -135,27 +135,11 @@ class _VaccineCreateBodyState extends ConsumerState<VaccineCreateBody> {
                       .togglePawVaccine(Vaccines.HERPESVIRUSandCALICIVIRUS);
                 },
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all<Size>(
-                      Size(
-                        context.width * 0.8,
-                        context.height * 0.06,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      context.push(SGRoute.weight.route);
-                    }
-                  },
-                  child: Text(
-                    'Kaydet',
-                    style: context.textTheme.labelMedium,
-                  ),
-                ),
+              const SizedBox(height: 20),
+              SaveButton(
+                onPressed: () {
+                  context.push(SGRoute.weight.route);
+                },
               ),
             ],
           ),
@@ -189,8 +173,8 @@ class NewPawHaveVaccineWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
             color: isVaccineSelected
-                ? Colors.green.withOpacity(0.4)
-                : Colors.red.withOpacity(0.4),
+                ? Colors.green.withOpacity(0.5)
+                : Colors.red.withOpacity(0.5),
             width: 2,
           ),
         ),

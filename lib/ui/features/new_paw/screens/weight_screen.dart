@@ -8,6 +8,7 @@ import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/new_paw_logic.dart';
+import '../widgets/save_button.dart';
 import '../widgets/wheel_box.dart';
 
 class WeightScreen extends ConsumerStatefulWidget {
@@ -100,7 +101,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                   ),
                 ),
               ),
-              ElevatedButton(
+              SaveButton(
                 onPressed: () {
                   if (currentValue > 0) {
                     context.push(SGRoute.address.route);
@@ -109,25 +110,6 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                         message: 'Lütfen kilo bilgisini giriniz.');
                   }
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      context.colorScheme.primary),
-                  padding: MaterialStateProperty.all<EdgeInsets>(
-                    EdgeInsets.symmetric(
-                        horizontal: size.width * 0.3, vertical: 15.0),
-                  ),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
-                child: Text(
-                  'Devam et',
-                  style: context.textTheme.labelSmall?.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
               ),
             ],
           )),
