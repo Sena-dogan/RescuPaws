@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../di/components/service_locator.dart';
-import '../../../models/token_request.dart';
-import '../../../models/token_response.dart';
+import '../../../models/token/token_request.dart';
+import '../../../models/token/token_response.dart';
 import '../auth_api.dart';
 
 part 'auth_repository.g.dart';

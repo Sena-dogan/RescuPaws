@@ -2,8 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../constants/endpoints.dart';
-import '../../../models/token_request.dart';
-import '../../../models/token_response.dart';
+import '../../../models/token/token_request.dart';
+import '../../../models/token/token_response.dart';
+
 
 part 'auth_rest_client.g.dart';
 
