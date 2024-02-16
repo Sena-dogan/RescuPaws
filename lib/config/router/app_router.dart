@@ -23,7 +23,6 @@ import '../../ui/features/new_paw/screens/weight_screen.dart';
 import '../../ui/features/notification/no_notif_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
-import 'fade_extension.dart';
 
 GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
