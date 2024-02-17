@@ -95,11 +95,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 duration: const Duration(milliseconds: 300),
                 controller: controller,
                 onSwipe: (int oldIndex, int? newIndex,
-                    CardSwiperDirection direction) {
+                    CardSwiperDirection direction) async {
+                  //TODO: Handle swipe in the logic
                   if (newIndex != null) {
                     ref
                         .read(swipeCardLogicProvider.notifier)
                         .setId(pawEntries[newIndex].id);
+                    ref
+                        .read(homeScreenLogicProvider.notifier)
+                        .setFavorite(pawEntries[newIndex].id, direction == CardSwiperDirection.right);
                   }
                   return true;
                 },
