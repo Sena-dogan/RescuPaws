@@ -14,14 +14,14 @@ part 'favorite_rest_client.g.dart';
 abstract class FavoriteRestClient {
   factory FavoriteRestClient(Dio dio) = _FavoriteRestClient;
 
-  @GET('/favorite')
+  @GET('/favorites')
   Future<List<Favorite>> getFavoriteList(@Path('uid') String uid);
 
-  @POST('/favorite')
+  @POST('/favorites')
   Future<CreateFavoriteResponse> createFavorite(
       @Body() CreateFavoriteRequest request);
 
-  @DELETE('/favorite/{id}')
+  @DELETE('/favorites')
   Future<DeleteFavoriteResponse> deleteFavorite(
       @Body() DeleteFavoriteRequest request);
 }
