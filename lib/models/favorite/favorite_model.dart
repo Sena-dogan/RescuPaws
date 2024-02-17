@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../paw_entry.dart';
+
 part 'favorite_model.freezed.dart';
 part 'favorite_model.g.dart';
 
@@ -23,6 +25,7 @@ class Favorite with _$Favorite {
     required int? is_favorite,
     String? created_at,
     String? updated_at,
+    PawEntry? classfield,
   }) = _Favorite;
 
   factory Favorite.fromJson(Map<String, dynamic> json) =>
