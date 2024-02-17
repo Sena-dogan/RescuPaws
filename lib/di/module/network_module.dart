@@ -10,6 +10,7 @@ import '../../constants/endpoints.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../data/network/auth/auth_rest_client.dart';
 import '../../data/network/category/category_rest_client.dart';
+import '../../data/network/favorite/favorite_rest_client.dart';
 import '../../data/network/location/location_rest_client.dart';
 import '../../data/network/paw_entry/paw_entry_rest_client.dart';
 import '../../data/network/utils/utils_rest_client.dart';
@@ -87,5 +88,10 @@ abstract class NetworkModule {
   @preResolve
   Future<AuthRestClient> provideAuthRestClient(Dio dio) {
     return Future.value(AuthRestClient(dio));
+  }
+
+  @preResolve
+  Future<FavoriteRestClient> provideFavoriteRestClient(Dio dio) {
+    return Future.value(FavoriteRestClient(dio));
   }
 }
