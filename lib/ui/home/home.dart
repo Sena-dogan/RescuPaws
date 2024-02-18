@@ -162,7 +162,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: IconButton(
             onPressed: () {
-              context.go(SGRoute.noNotif.route);
+              context.push(SGRoute.noNotif.route);
             },
             icon: Icon(
               Icons.notifications_none_rounded,
