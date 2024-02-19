@@ -22,6 +22,7 @@ class Category with _$Category {
     required String? parent_id,
     required int id,
     required String name,
+    required String? image,
     required String? description,
     required int status,
   }) = _Category;
