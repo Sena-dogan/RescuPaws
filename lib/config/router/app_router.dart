@@ -11,7 +11,7 @@ import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
-import '../../ui/features/favorite/favorite_page.dart';
+import '../../ui/features/favorite/favorite_screen.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
 import '../../ui/features/new_paw/screens/information_screen.dart';
