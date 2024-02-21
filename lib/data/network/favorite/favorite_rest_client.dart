@@ -14,7 +14,7 @@ part 'favorite_rest_client.g.dart';
 abstract class FavoriteRestClient {
   factory FavoriteRestClient(Dio dio) = _FavoriteRestClient;
 
-  @GET('/favorites')
+  @GET('/favorites/{uid}')
   Future<List<Favorite>> getFavoriteList(@Path('uid') String uid);
 
   @POST('/favorites')
