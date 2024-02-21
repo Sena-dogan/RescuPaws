@@ -13,8 +13,8 @@ class FavoriteApi {
   FavoriteApi(this._favoriteRestClient);
   final FavoriteRestClient _favoriteRestClient;
 
-  Future<List<Favorite>> getFavoriteList() async {
-    final List<Favorite> favoriteList =
+  Future<List<Favorite>?> getFavoriteList() async {
+    final List<Favorite>? favoriteList =
         await _favoriteRestClient.getFavoriteList(currentUserUid);
     return favoriteList;
   }

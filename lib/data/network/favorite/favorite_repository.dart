@@ -14,8 +14,8 @@ class FavoriteRepository {
   FavoriteRepository(this._favoriteApi);
   final FavoriteApi _favoriteApi;
 
-  Future<List<Favorite>> getFavoriteList() async {
-    final List<Favorite> favoriteList = await _favoriteApi.getFavoriteList();
+  Future<List<Favorite>?> getFavoriteList() async {
+    final List<Favorite>? favoriteList = await _favoriteApi.getFavoriteList();
     return favoriteList;
   }
 

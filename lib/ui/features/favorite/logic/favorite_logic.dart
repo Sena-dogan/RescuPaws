@@ -14,8 +14,7 @@ part 'favorite_logic.g.dart';
 Future<List<Favorite>?> fetchFavoriteList(FetchFavoriteListRef ref) async {
   final FavoriteRepository favoriteRepository =
       ref.watch(getFavoriteRepositoryProvider);
-  ref.cacheFor(const Duration(minutes: 5));
-  final List<Favorite> favoriteList =
+  final List<Favorite>? favoriteList =
       await favoriteRepository.getFavoriteList();
   return favoriteList;
 }

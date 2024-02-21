@@ -15,7 +15,7 @@ abstract class FavoriteRestClient {
   factory FavoriteRestClient(Dio dio) = _FavoriteRestClient;
 
   @GET('/favorites/{uid}')
-  Future<List<Favorite>> getFavoriteList(@Path('uid') String uid);
+  Future<List<Favorite>?> getFavoriteList(@Path('uid') String uid);
 
   @POST('/favorites')
   Future<CreateFavoriteResponse> createFavorite(
