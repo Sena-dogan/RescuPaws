@@ -39,9 +39,8 @@ abstract class NetworkModule {
         'Authorization': 'Bearer $token',
       }
       ..interceptors.add(LogInterceptor(
-        request: false,
         responseBody: true,
-        requestHeader: false,
+        requestBody: true,
       ))
       ..interceptors.add(DioNetworkLogger())
       ..interceptors.add(
