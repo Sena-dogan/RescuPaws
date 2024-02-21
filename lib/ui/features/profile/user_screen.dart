@@ -182,6 +182,14 @@ class ProfileScreen extends ConsumerWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          ListTile(
+                            leading: const Icon(Icons.favorite_outline),
+                            title: const Text('Favorilerim'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              context.push(SGRoute.favorite.route);
+                            },
+                          ),
                           const Padding(
                             padding: EdgeInsets.only(left: 8.0),
                             child: Text(
