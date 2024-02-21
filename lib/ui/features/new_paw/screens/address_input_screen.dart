@@ -11,6 +11,7 @@ import '../../../../models/location_response.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/new_paw_logic.dart';
 import '../model/new_paw_ui_model.dart';
+import '../widgets/save_button.dart';
 
 class AddressInputScreen extends ConsumerStatefulWidget {
   const AddressInputScreen({super.key});
@@ -49,7 +50,6 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
           backgroundColor: Colors.transparent,
           body: locations.when(
               data: (GetLocationsResponse? data) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const Divider(color: Colors.grey),
                       const Gap(10),
@@ -187,33 +187,19 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                         ),
                       ),
                       const Spacer(),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all<Size>(
-                              Size(
-                                context.width * 0.8,
-                                context.height * 0.06,
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
-                            if (newPawLogic.address == null ||
-                                newPawLogic.address!.isEmpty ||
-                                newPawLogic.city == null ||
-                                newPawLogic.district == null) {
-                              context.showErrorSnackBar(
-                                  message: 'Lütfen adres bilgilerini giriniz.');
-                              return;
-                            }
-                            context.push(SGRoute.pawimage.route);
-                          },
-                          child: Text(
-                            'Devam Et',
-                            style: context.textTheme.labelMedium,
-                          ),
-                        ),
+                      SaveButton(
+                        title: 'Kaydet',
+                        onPressed: () {
+                          if (newPawLogic.address == null ||
+                              newPawLogic.address!.isEmpty ||
+                              newPawLogic.city == null ||
+                              newPawLogic.district == null) {
+                            context.showErrorSnackBar(
+                                message: 'Lütfen adres bilgilerini giriniz.');
+                            return;
+                          }
+                          context.push(SGRoute.pawimage.route);
+                        },
                       ),
                       const Gap(20),
                     ],

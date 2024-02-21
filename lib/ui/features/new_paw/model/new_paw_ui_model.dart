@@ -28,6 +28,14 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     String? age,
     num? weight,
     int? education,
+    @Default(false) bool rabies_vaccine,
+    @Default(false) bool distemper_vaccine,
+    @Default(false) bool hepatitis_vaccine,
+    @Default(false) bool parvovirus_vaccine,
+    @Default(false) bool bordotella_vaccine,
+    @Default(false) bool leptospirosis_vaccine,
+    @Default(false) bool panleukopenia_vaccine,
+    @Default(false) bool herpesvirus_and_calicivirus_vaccine,
     String? address,
   }) = _NewPawUiModel;
 }
@@ -57,6 +65,14 @@ extension NewPawExtension on NewPawUiModel {
       image: imageBytes,
       user_id: user_id,
       weight: weight,
+      rabies_vaccine: rabies_vaccine ? 1 : 0,
+      distemper_vaccine: distemper_vaccine ? 1 : 0,
+      hepatitis_vaccine: hepatitis_vaccine ? 1 : 0,
+      parvovirus_vaccine: parvovirus_vaccine ? 1 : 0,
+      bordotella_vaccine: bordotella_vaccine ? 1 : 0,
+      leptospirosis_vaccine: leptospirosis_vaccine ? 1 : 0,
+      panleukopenia_vaccine: panleukopenia_vaccine ? 1 : 0,
+      herpesvirus_and_calicivirus_vaccine: herpesvirus_and_calicivirus_vaccine ? 1 : 0,
     );
   }
 }
