@@ -38,12 +38,10 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
 @riverpod
 Future<CreateFavoriteResponse> createFavorite(
     CreateFavoriteRef ref, CreateFavoriteRequest request) async {
-  debugPrint('createFavorite');
   final FavoriteRepository favoriteRepository =
       ref.watch(getFavoriteRepositoryProvider);
   final CreateFavoriteResponse createFavoriteResponse =
       await favoriteRepository.createFavorite(request);
-  debugPrint('createFavoriteResponse: $createFavoriteResponse');
   return createFavoriteResponse;
 }
 
@@ -88,9 +86,13 @@ class HomeScreenLogic extends _$HomeScreenLogic {
   }
 
   void setFavorite(int id, bool isFavorite) {
-    ref.read(createFavoriteProvider(CreateFavoriteRequest(
-        uid: currentUserUid,
-        class_field_id: id,
-        is_favorite: isFavorite ? 1 : 0)));
+    ref.read(
+      createFavoriteProvider(
+        CreateFavoriteRequest(
+            uid: currentUserUid,
+            class_field_id: id,
+            is_favorite: isFavorite ? 1 : 0),
+      ),
+    );
   }
 }
