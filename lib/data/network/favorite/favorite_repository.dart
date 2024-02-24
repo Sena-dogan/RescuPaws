@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../di/components/service_locator.dart';
@@ -14,8 +15,9 @@ class FavoriteRepository {
   FavoriteRepository(this._favoriteApi);
   final FavoriteApi _favoriteApi;
 
-  Future<List<Favorite>?> getFavoriteList() async {
-    final List<Favorite>? favoriteList = await _favoriteApi.getFavoriteList();
+  Future<GetFavoriteListResponse> getFavoriteList() async {
+    final GetFavoriteListResponse favoriteList = await _favoriteApi.getFavoriteList();
+    Logger().i('favoriteList hi mom: $favoriteList');
     return favoriteList;
   }
 
