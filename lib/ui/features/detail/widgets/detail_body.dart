@@ -70,6 +70,7 @@ class DetailBody extends ConsumerWidget {
                     pawEntryDetailResponse!.pawEntryDetail?.name ?? '');
               },
             ),
+            //TODO: Add favorite functionality to the detail page
             const FavButton(),
           ],
           expandedHeight: MediaQuery.of(context).size.height * 0.5,
