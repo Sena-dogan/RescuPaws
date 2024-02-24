@@ -34,7 +34,7 @@ class PawEntry with _$PawEntry {
     dynamic deleted_at,
     String? created_at,
     String? updated_at,
-    required User user,
+    User? user,
     List<ImagesUploads>? images_uploads,
     @Default(0) int selectedImageIndex, // Add this line
   }) = _PawEntry;
