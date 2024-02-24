@@ -11,6 +11,7 @@ import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
+import '../../ui/features/favorite/favorite_screen.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
 import '../../ui/features/new_paw/screens/information_screen.dart';
@@ -31,6 +32,7 @@ enum SGRoute {
   home,
   profile,
   newpaw,
+  favorite,
   breed,
   subbreed,
   information,
@@ -170,6 +172,12 @@ class SGGoRouter {
         path: SGRoute.vaccineNewPaw.route,
         builder: (BuildContext context, GoRouterState state) =>
             const VaccinesNewPaw(),
+        redirect: _authGuard,
+      ),
+      GoRoute(
+        path: SGRoute.favorite.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const FavoritesScreen(),
         redirect: _authGuard,
       ),
     ],

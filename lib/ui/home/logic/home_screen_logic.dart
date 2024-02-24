@@ -1,9 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/getstore/get_store_helper.dart';
+import '../../../data/network/favorite/favorite_repository.dart';
 import '../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../di/components/service_locator.dart';
+import '../../../models/favorite/create_favorite_request.dart';
+import '../../../models/favorite/create_favorite_response.dart';
 import '../../../models/paw_entry.dart';
+import '../../../utils/firebase_utils.dart';
 import '../../../utils/riverpod_extensions.dart';
 import '../../features/auth/login_logic.dart';
 import '../swipe_card/swipe_card_logic.dart';
@@ -15,7 +20,7 @@ part 'home_screen_logic.g.dart';
 Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
   ref.cacheFor(const Duration(minutes: 5));
-  GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+  final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
   if (getStoreHelper.getToken() == null) {
     await ref.read(fetchTokenProvider.future);
   }
@@ -26,7 +31,18 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   ref
       .read(swipeCardLogicProvider.notifier)
       .setId(pawEntries.data.firstOrNull?.id ?? 0);
+  ref.read(homeScreenLogicProvider.notifier).setPawEntries(pawEntries.data);
   return pawEntries;
+}
+
+@riverpod
+Future<CreateFavoriteResponse> createFavorite(
+    CreateFavoriteRef ref, CreateFavoriteRequest request) async {
+  final FavoriteRepository favoriteRepository =
+      ref.watch(getFavoriteRepositoryProvider);
+  final CreateFavoriteResponse createFavoriteResponse =
+      await favoriteRepository.createFavorite(request);
+  return createFavoriteResponse;
 }
 
 @riverpod
@@ -67,5 +83,16 @@ class HomeScreenLogic extends _$HomeScreenLogic {
     final PawEntry pawEntry = pawEntries[cardIndex];
     pawEntries[cardIndex] = pawEntry.copyWith(selectedImageIndex: imageIndex);
     state = state.copyWith(pawEntries: pawEntries);
+  }
+
+  void setFavorite(int id, bool isFavorite) {
+    ref.read(
+      createFavoriteProvider(
+        CreateFavoriteRequest(
+            uid: currentUserUid,
+            class_field_id: id,
+            is_favorite: isFavorite ? 1 : 0),
+      ),
+    );
   }
 }
