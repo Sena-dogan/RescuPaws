@@ -31,3 +31,13 @@ class Favorite with _$Favorite {
   factory Favorite.fromJson(Map<String, dynamic> json) =>
       _$FavoriteFromJson(json);
 }
+
+@freezed
+class GetFavoriteListResponse with _$GetFavoriteListResponse {
+  const factory GetFavoriteListResponse({
+    required List<Favorite> data,
+  }) = _GetFavoriteListResponse;
+
+  factory GetFavoriteListResponse.fromJson(Map<String, dynamic> json) =>
+      _$GetFavoriteListResponseFromJson(json);
+}
