@@ -50,6 +50,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                   ? const Center(child: Text('Henüz favori ilanınız yok'))
                   : RefreshIndicator(
                       onRefresh: () async {
+                        // ignore: unused_result
                         ref.refresh(fetchFavoriteListProvider);
                       },
                       child: _buildBody(valueOrNull, context)),
