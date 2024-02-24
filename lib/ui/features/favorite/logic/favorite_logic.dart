@@ -1,5 +1,4 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/network/favorite/favorite_repository.dart';
