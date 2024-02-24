@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
-import '../../../models/favorite/delete_favorite_response.dart';
 import '../../../models/favorite/favorite_model.dart';
 import '../../../utils/context_extensions.dart';
 import '../../home/widgets/loading_paw_widget.dart';
@@ -46,34 +46,83 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
             AsyncValue<GetFavoriteListResponse>(
               :final GetFavoriteListResponse valueOrNull?
             ) =>
-              (valueOrNull == null || valueOrNull.data.isEmpty) 
+              (valueOrNull == null || valueOrNull.data.isEmpty)
                   ? const Center(child: Text('Henüz favori ilanınız yok'))
                   : RefreshIndicator(
                       onRefresh: () async {
                         ref.refresh(fetchFavoriteListProvider);
                       },
-                      child: _buildBody(valueOrNull, context),
-                    ),
+                      child: _buildBody(valueOrNull, context)),
             AsyncValue<Object>(:final Object error?) => ErrorWidget(error),
             _ => const Center(child: LoadingPawWidget()),
           }),
     );
   }
 
-  Padding _buildBody(
-      GetFavoriteListResponse valueOrNull, BuildContext context) {
-    
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GridView(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.75),
-          children: valueOrNull.data
-              .map((Favorite favorite) => _buildFavoriteCard(context, favorite))
-              .toList()),
+  Widget _buildBody(GetFavoriteListResponse valueOrNull, BuildContext context) {
+    final bool showFav = ref.watch(favoriteLogicProvider).showFavorite;
+    debugPrint('showFav: $showFav');
+    final List<Favorite> favoriteList =
+        valueOrNull.data.where((Favorite favorite) {
+      final int fav = showFav ? 1 : 0;
+      return favorite.is_favorite == fav;
+    }).toList();
+    debugPrint('valueOrNull: $valueOrNull');
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Align(
+            child: CustomSlidingSegmentedControl<int>(
+              initialValue: showFav ? 1 : 0,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              thumbDecoration: BoxDecoration(
+                color: context.colorScheme.primary,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              children: <int, Widget>{
+                1: SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.35,
+                  child: Text(
+                    'Favoriler',
+                    style: context.textTheme.titleMedium
+                        ?.copyWith(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                0: SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.35,
+                  child: Text('Diğerleri',
+                      style: context.textTheme.titleMedium
+                          ?.copyWith(color: Colors.white),
+                      textAlign: TextAlign.center),
+                ),
+              },
+              onValueChanged: (int value) {
+                ref.read(favoriteLogicProvider.notifier).showFavorite();
+              },
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.8,
+            child: GridView(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.75),
+                children: favoriteList
+                    .map((Favorite favorite) =>
+                        _buildFavoriteCard(context, favorite))
+                    .toList()),
+          ),
+        ),
+      ],
     );
   }
 
@@ -82,13 +131,18 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
         elevation: 2,
         color: context.colorScheme.background,
         surfaceTintColor: context.colorScheme.surface,
-        child: Column(children: <Widget>[
-          _buildImage(favorite),
-          const Gap(20),
-          _buildNameAndPopUp(favorite, context),
-          _buildLocation(context, favorite),
-          const Gap(10),
-        ]));
+        child: InkWell(
+          onTap: () {
+            context.push(SGRoute.detail.route, extra: favorite.classfield?.id);
+          },
+          child: Column(children: <Widget>[
+            _buildImage(favorite),
+            const Gap(20),
+            _buildNameAndPopUp(favorite, context),
+            _buildLocation(context, favorite),
+            const Gap(10),
+          ]),
+        ));
   }
 
   Row _buildLocation(BuildContext context, Favorite favorite) {
