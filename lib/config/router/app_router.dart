@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constants/assets.dart';
+import '../../data/enums/router_enums.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
