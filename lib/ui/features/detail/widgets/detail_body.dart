@@ -48,7 +48,7 @@ class DetailBody extends ConsumerWidget {
                 color: Colors.white,
               ),
             ),
-            onPressed: () => context.go(SGRoute.home.route),
+            onPressed: () => context.pop(),
           ),
           actions: <Widget>[
             IconButton(
