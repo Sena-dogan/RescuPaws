@@ -3,10 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-enum SlideDirection {
-  leftToRight,
-  rightToLeft,
-}
+import '../../data/enums/router_enums.dart';
 
 class SlideTransitionPage extends CustomTransitionPage {
   SlideTransitionPage({
