@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
 
@@ -24,14 +22,6 @@ class NoNotifScreen extends ConsumerWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: 30,
-              color: context.colorScheme.scrim,
-            ),
-            onPressed: () => context.go(SGRoute.home.route),
-          ),
           backgroundColor: Colors.transparent,
         ),
         backgroundColor: Colors.transparent,

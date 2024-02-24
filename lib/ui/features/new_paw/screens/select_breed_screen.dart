@@ -68,9 +68,31 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
                             },
                             child: Card(
                               elevation: 2,
-                              child: Center(
-                                child: Text(data[index].name,
-                                    style: context.textTheme.bodyLarge),
+                              child: Stack(
+                                children: <Widget>[
+                                  Image.network(data[index].image ?? '',
+                                      fit: BoxFit.cover, errorBuilder:
+                                          (BuildContext context, Object error,
+                                              StackTrace? stackTrace) {
+                                    return Center(
+                                      child: Container(
+                                        color: Colors.transparent,
+                                      ),
+                                    );
+                                  }),
+                                  Container(
+                                    color: Colors.black.withOpacity(0.5),
+                                    child: Center(
+                                      child: Text(
+                                        data[index].name,
+                                        style: context.textTheme.labelSmall
+                                            ?.copyWith(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );

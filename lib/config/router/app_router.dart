@@ -23,7 +23,7 @@ import '../../ui/features/new_paw/screens/weight_screen.dart';
 import '../../ui/features/notification/no_notif_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
-import 'fade_extension.dart';
+import 'slide_extension.dart';
 
 GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
@@ -80,7 +80,7 @@ class SGGoRouter {
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),
         redirect: _authGuard,
-      ),
+      ).slide(),
       GoRoute(
         path: SGRoute.intro.route,
         builder: (BuildContext context, GoRouterState state) =>
@@ -101,6 +101,8 @@ class SGGoRouter {
         builder: (BuildContext context, GoRouterState state) =>
             const ProfileScreen(),
         redirect: _authGuard,
+      ).slide(
+        direction: SlideDirection.rightToLeft,
       ),
       GoRoute(
         path: SGRoute.detail.route,
