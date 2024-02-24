@@ -15,13 +15,13 @@ abstract class FavoriteRestClient {
   factory FavoriteRestClient(Dio dio) = _FavoriteRestClient;
 
   @GET('/favorites/{uid}')
-  Future<List<Favorite>?> getFavoriteList(@Path('uid') String uid);
+  Future<GetFavoriteListResponse> getFavoriteList(@Path('uid') String uid);
 
   @POST('/favorites')
   Future<CreateFavoriteResponse> createFavorite(
       @Body() CreateFavoriteRequest request);
 
-  @DELETE('/favorites')
+  @POST('/favorites/delete')
   Future<DeleteFavoriteResponse> deleteFavorite(
       @Body() DeleteFavoriteRequest request);
 }
