@@ -1,4 +1,3 @@
-import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/network/favorite/favorite_repository.dart';
@@ -17,11 +16,8 @@ Future<GetFavoriteListResponse> fetchFavoriteList(
       ref.watch(getFavoriteRepositoryProvider);
   final GetFavoriteListResponse favoriteList =
       await favoriteRepository.getFavoriteList();
-  final int favFilter = ref.read(favoriteLogicProvider).showFavorite ? 1 : 0;
-  final List<Favorite> filteredFavoriteList = favoriteList.data
-      .where((Favorite fav) => fav.is_favorite == favFilter)
-      .toList();
-  return favoriteList.copyWith(data: filteredFavoriteList);
+  ref.read(favoriteLogicProvider.notifier).setFavoriteList(favoriteList.data);
+  return favoriteList;
 }
 
 @riverpod
@@ -60,9 +56,8 @@ class FavoriteLogic extends _$FavoriteLogic {
       );
 
   void showFavorite({bool showFavorite = true}) => state = state.copyWith(
-      showFavorite: showFavorite,
-      favoriteList: List<Favorite>.from(state.favoriteList.filter(
-          (Favorite fav) => fav.is_favorite == (showFavorite ? 1 : 0))));
+        showFavorite: !state.showFavorite,
+      );
 
   Future<void> deleteFavorite(Favorite favorite) async {
     setLoading();
