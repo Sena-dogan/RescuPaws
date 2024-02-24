@@ -13,20 +13,23 @@ class FavoriteApi {
   FavoriteApi(this._favoriteRestClient);
   final FavoriteRestClient _favoriteRestClient;
 
-  Future<List<Favorite>?> getFavoriteList() async {
-    final List<Favorite>? favoriteList =
+  Future<GetFavoriteListResponse> getFavoriteList() async {
+    final GetFavoriteListResponse favoriteList =
         await _favoriteRestClient.getFavoriteList(currentUserUid);
     return favoriteList;
   }
 
-  Future<CreateFavoriteResponse> addFavorite(CreateFavoriteRequest request) async {
-    final CreateFavoriteResponse response = await _favoriteRestClient.createFavorite(request);
+  Future<CreateFavoriteResponse> addFavorite(
+      CreateFavoriteRequest request) async {
+    final CreateFavoriteResponse response =
+        await _favoriteRestClient.createFavorite(request);
     return response;
   }
 
   Future<DeleteFavoriteResponse> removeFavorite(
       DeleteFavoriteRequest request) async {
-    final DeleteFavoriteResponse response = await _favoriteRestClient.deleteFavorite(request);
+    final DeleteFavoriteResponse response =
+        await _favoriteRestClient.deleteFavorite(request);
     return response;
   }
 }
