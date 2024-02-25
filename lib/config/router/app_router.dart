@@ -83,7 +83,7 @@ class SGGoRouter {
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),
         redirect: _authGuard,
-      ).slide(),
+      ),
       GoRoute(
         path: SGRoute.intro.route,
         builder: (BuildContext context, GoRouterState state) =>
