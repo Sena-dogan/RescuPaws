@@ -50,6 +50,8 @@ extension GoRouteExtension on GoRoute {
           direction: direction, // Pass the direction to the SlideTransitionPage
         );
       },
+      redirect: redirect,
+      
     );
   }
 }
