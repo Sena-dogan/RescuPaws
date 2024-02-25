@@ -28,8 +28,18 @@ platform :android do
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+    upload_to_play_store(     
+      package_name:               'app.patipati',      
+      track:                      'alpha', #beta, production   
+      json_key_data:              ENV['googlePlayJsonKey'],      
+      aab:                        '../build/app/outputs/bundle/release/app-release.aab',      
+      skip_upload_apk:            'false',      
+      skip_upload_metadata:       'true',      
+      skip_upload_images:         'true',      
+      skip_upload_screenshots:    'true',      
+      validate_only:              'false',      
+      check_superseded_tracks:    'false',    
+    )
   end
 end
 
