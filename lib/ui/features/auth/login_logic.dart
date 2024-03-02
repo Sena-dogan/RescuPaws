@@ -21,6 +21,9 @@ part 'login_logic.g.dart';
 @riverpod
 Future<TokenResponse?> fetchToken(FetchTokenRef ref) async {
   final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+  if (getStoreHelper.getToken() != null) {
+    return null;
+  }
   final AuthRepository authRepository = ref.watch(getAuthRepositoryProvider);
   final TokenResponse getTokenResponse =
       await authRepository.getToken(TokenRequest()).then((TokenResponse value) {
@@ -37,7 +40,9 @@ Future<TokenResponse?> fetchToken(FetchTokenRef ref) async {
 class LoginLogic extends _$LoginLogic {
   @override
   LoginUiModel build() {
-    return const LoginUiModel();
+    return LoginUiModel(
+      numberController: TextEditingController(),
+    );
   }
 
   void setLogin({bool isLoading = false}) {
@@ -97,7 +102,9 @@ class LoginLogic extends _$LoginLogic {
       );
       setLogin(isLoading: true);
       await ref.read(fetchTokenProvider.future);
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((UserCredential value) => debugPrint('User: ${value.user}'));
       return true;
     } catch (e) {
       Logger().e(e.toString());

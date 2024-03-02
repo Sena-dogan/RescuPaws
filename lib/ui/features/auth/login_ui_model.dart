@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'login_ui_model.freezed.dart';
@@ -13,7 +14,9 @@ abstract class LoginUiModel with _$LoginUiModel {
     @Default(null) String? password,
     @Default(null) String? confirmPassword,
     @Default(true) bool isObscure,
+    @JsonKey(ignore: true) TextEditingController? numberController,
   }) = _LoginUiModel;
 
-  factory LoginUiModel.fromJson(Map<String, dynamic> json) => _$LoginUiModelFromJson(json);
+  factory LoginUiModel.fromJson(Map<String, dynamic> json) =>
+      _$LoginUiModelFromJson(json);
 }
