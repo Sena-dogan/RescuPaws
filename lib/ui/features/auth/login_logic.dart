@@ -68,7 +68,6 @@ class LoginLogic extends _$LoginLogic {
         idToken: googleAuth?.idToken,
       );
       setLogin(isLoading: true);
-      await ref.read(fetchTokenProvider.future);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {
