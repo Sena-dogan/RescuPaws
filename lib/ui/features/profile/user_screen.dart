@@ -175,6 +175,47 @@ class ProfileScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
+                      // Phone verification
+                      Visibility(
+                        visible:
+                            FirebaseAuth.instance.currentUser?.phoneNumber ==
+                                null,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            tileColor: context.colorScheme.background,
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 4),
+                            leading: Icon(
+                              Icons.info,
+                              color: context.colorScheme.primary,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(
+                                color:
+                                    context.colorScheme.shadow.withOpacity(0.1),
+                              ),
+                            ),
+                            title: Text(
+                              'Telefon numarani henüz doğrulamadın.',
+                              style: context.textTheme.bodySmall,
+                            ),
+                            trailing: GestureDetector(
+                              onTap: () {
+                                context.push(SGRoute.phone.route);
+                              },
+                              child: Text(
+                                'Şimdi doğrula',
+                                style: context.textTheme.bodySmall?.copyWith(
+                                  color: context.colorScheme.primary,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       const Gap(20),
                       // Security section with full widht  and with a leading icon
                       // Help and support section with full widht  and with a leading icon
