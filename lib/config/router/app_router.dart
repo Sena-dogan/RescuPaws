@@ -9,6 +9,7 @@ import '../../data/enums/router_enums.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
+import '../../ui/features/auth/number_input_screen.dart';
 import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
@@ -51,6 +52,7 @@ enum SGRoute {
   noNotif,
   vaccine,
   vaccineNewPaw,
+  phone,
   detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
@@ -70,10 +72,10 @@ class SGGoRouter {
           repeat: true,
           height: 300,
         ),
-        Center(child: Text('Page not found: ${state.path}')),
+        Center(child: Text('Sayfa Bulunamadı: ${state.path}')),
         ElevatedButton(
           onPressed: () => context.go(SGRoute.home.route),
-          child: const Text('Go Back'),
+          child: const Text('Geri Dön'),
         ),
       ],
     )),
@@ -181,6 +183,11 @@ class SGGoRouter {
             const FavoritesScreen(),
         redirect: _authGuard,
       ),
+      GoRoute(
+          path: SGRoute.phone.route,
+          builder: (BuildContext context, GoRouterState state) =>
+              const NumberInputScreen(),
+          redirect: _authGuard),
     ],
   );
   GoRouter get getGoRouter => goRoute;
