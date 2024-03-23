@@ -18,54 +18,43 @@ class BottomNavBar extends ConsumerWidget {
     var nav = ref.watch(bottomNavBarLogicProvider);
 
     return AnimatedBottomNavigationBar.builder(
-        itemCount: 2,
+        itemCount: 4,
         tabBuilder: (int index, bool isActive) {
-          return index == 0
-              ? Column(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      AppIcons.home,
-                      color: isActive
-                          ? context.colorScheme.primary
-                          : context.colorScheme.tertiary,
-                      height: 40,
-                    ),
-                    Text(
-                      'Ana Sayfa',
-                      style: TextStyle(
-                        color: isActive
-                            ? context.colorScheme.primary
-                            : context.colorScheme.tertiary,
-                      ),
-                    ),
-                  ],
-                )
-              : Column(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      AppIcons.profile,
-                      color: isActive
-                          ? context.colorScheme.primary
-                          : context.colorScheme.tertiary,
-                      height: 40,
-                    ),
-                    Text(
-                      'Profil',
-                      style: TextStyle(
-                        color: isActive
-                            ? context.colorScheme.primary
-                            : context.colorScheme.tertiary,
-                      ),
-                    ),
-                  ],
-                );
+          switch (index) {
+            case 0:
+              return NavBarIcon(
+                isActive: isActive,
+                text: 'Home',
+                icon: AppIcons.home,
+              );
+            case 1:
+              return NavBarIcon(
+                isActive: isActive,
+                text: 'Kay',
+                icon: AppIcons.like,
+              );
+            case 2:
+              return NavBarIcon(
+                isActive: isActive,
+                text: 'Mesajlar',
+                icon: AppIcons.message,
+              );
+            case 3:
+              return NavBarIcon(
+                isActive: isActive,
+                text: 'Profil',
+                icon: AppIcons.profile,
+              );
+            default:
+              return const SizedBox();
+          }
         },
         activeIndex: nav.navIndex,
         onTap: (int index) {
           ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(index);
           debugPrint('Current Index is $index');
           debugPrint('Current Route is ${SGRoute.values[index].route}');
-          context.go(SGRoute.values[index].route);
+          context.push(SGRoute.values[index].route);
         },
         gapLocation: GapLocation.none,
         //borderColor: Colors.grey.withOpacity(0.5),
@@ -79,5 +68,41 @@ class BottomNavBar extends ConsumerWidget {
           color: Colors.grey.withOpacity(0.2),
           blurRadius: 10,
         ));
+  }
+}
+
+class NavBarIcon extends StatelessWidget {
+  const NavBarIcon({
+    super.key,
+    required this.isActive,
+    required this.text,
+    required this.icon,
+  });
+
+  final bool isActive;
+  final String text;
+  final String icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SvgPicture.asset(
+          icon,
+          color: isActive
+              ? context.colorScheme.primary
+              : context.colorScheme.tertiary,
+          height: 40,
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            color: isActive
+                ? context.colorScheme.primary
+                : context.colorScheme.tertiary,
+          ),
+        ),
+      ],
+    );
   }
 }
