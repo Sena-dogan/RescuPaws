@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/getstore/get_store_helper.dart';
@@ -22,8 +23,11 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   ref.cacheFor(const Duration(minutes: 5));
   final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
   if (getStoreHelper.getToken() == null) {
+    Logger().i('Token is null');
     await ref.read(fetchTokenProvider.future);
   }
+  Logger(
+  ).i('Token is not null, fetching paw entries from the server.');
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
   GetPawEntryResponse pawEntries = await pawEntryRepository.getPawEntry();
