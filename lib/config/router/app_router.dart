@@ -10,6 +10,7 @@ import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/auth/register_screen.dart';
+import '../../ui/features/chat/screens/conversation_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
 import '../../ui/features/favorite/favorite_screen.dart';
@@ -51,6 +52,7 @@ enum SGRoute {
   weight,
   vaccine,
   vaccineNewPaw,
+  conversation,
   detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
@@ -179,6 +181,12 @@ class SGGoRouter {
         path: SGRoute.favorite.route,
         builder: (BuildContext context, GoRouterState state) =>
             const FavoritesScreen(),
+        redirect: _authGuard,
+      ),
+      GoRoute(
+        path: SGRoute.conversation.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const ConversationScreen(),
         redirect: _authGuard,
       ),
     ],
