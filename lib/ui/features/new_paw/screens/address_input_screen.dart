@@ -105,7 +105,6 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                                   height: context.height * 0.8,
                                                   child: SearchableList<City>(
                                                     initialList: data!.cities,
-                                                    autoFocusOnSearch: false,
                                                     filter: (String query) => data
                                                         .cities
                                                         .where((City city) => city
@@ -267,7 +266,6 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                             height: context.height * 0.8,
                             child: SearchableList<District>(
                               initialList: data!.districts,
-                              autoFocusOnSearch: false,
                               filter: (String query) => data.districts
                                   .where((District district) => district.name
                                       .toLowerCase()
