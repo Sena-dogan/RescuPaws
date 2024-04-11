@@ -75,7 +75,10 @@ class ChatScreen extends ConsumerWidget {
     return UserTile(
       text: userData['email'] as String,
       onTap: () {
-        context.push(SGRoute.conversation.route);
+        context.push(
+          SGRoute.conversation.route,
+          extra: userData['email'],
+        );
       },
     );
   }

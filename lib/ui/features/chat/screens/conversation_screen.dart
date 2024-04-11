@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ConversationScreen extends ConsumerWidget {
   const ConversationScreen({
     super.key,
+    required this.receiverEmail,
   });
+  final String receiverEmail;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

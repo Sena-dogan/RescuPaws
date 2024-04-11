@@ -188,7 +188,9 @@ class SGGoRouter {
       GoRoute(
         path: SGRoute.conversation.route,
         builder: (BuildContext context, GoRouterState state) =>
-            const ConversationScreen(),
+            ConversationScreen(
+          receiverEmail: state.extra! as String,
+        ),
         redirect: _authGuard,
       ),
       GoRoute(
