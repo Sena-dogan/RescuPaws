@@ -216,7 +216,6 @@ class SocialLoginButton extends StatelessWidget {
 
 class _LoginButton extends StatelessWidget {
   const _LoginButton({
-    super.key,
     required this.imagePath,
     required this.isNetworkImage,
     required this.text,

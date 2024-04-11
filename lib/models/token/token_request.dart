@@ -13,4 +13,3 @@ class TokenRequest with _$TokenRequest {
   factory TokenRequest.fromJson(Map<String, dynamic> json) =>
       _$TokenRequestFromJson(json);
 }
-

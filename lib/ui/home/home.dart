@@ -101,14 +101,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ref
                         .read(swipeCardLogicProvider.notifier)
                         .setId(pawEntries[newIndex].id);
-                    ref
-                        .read(homeScreenLogicProvider.notifier)
-                        .setFavorite(pawEntries[newIndex].id, direction == CardSwiperDirection.right);
+                    ref.read(homeScreenLogicProvider.notifier).setFavorite(
+                        pawEntries[newIndex].id,
+                        direction == CardSwiperDirection.right);
                   }
                   return true;
                 },
                 allowedSwipeDirection:
-                    AllowedSwipeDirection.only(right: true, left: true),
+                    const AllowedSwipeDirection.only(right: true, left: true),
                 cardBuilder: (BuildContext context, int index,
                     int percentThresholdX, int percentThresholdY) {
                   return SwipeCard(
