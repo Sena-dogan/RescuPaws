@@ -10,8 +10,8 @@ import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/auth/register_screen.dart';
-import '../../ui/features/chat/screens/chat_screen.dart';
-import '../../ui/features/chat/screens/conversation_screen.dart';
+import '../../ui/features/chat/screens/chats_screen.dart';
+import '../../ui/features/chat/screens/message_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
 import '../../ui/features/favorite/favorite_screen.dart';
@@ -53,8 +53,8 @@ enum SGRoute {
   weight,
   vaccine,
   vaccineNewPaw,
-  conversation,
-  chat,
+  message,
+  chats,
   detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
@@ -186,16 +186,16 @@ class SGGoRouter {
         redirect: _authGuard,
       ),
       GoRoute(
-        path: SGRoute.conversation.route,
-        builder: (BuildContext context, GoRouterState state) =>
-            ConversationScreen(
+        path: SGRoute.message.route,
+        builder: (BuildContext context, GoRouterState state) => MessageScreen(
           receiverEmail: state.extra! as String,
+          receiverId: state.extra! as String,
         ),
         redirect: _authGuard,
       ),
       GoRoute(
-        path: SGRoute.chat.route,
-        builder: (BuildContext context, GoRouterState state) => ChatScreen(),
+        path: SGRoute.chats.route,
+        builder: (BuildContext context, GoRouterState state) => ChatsScreen(),
         redirect: _authGuard,
       ),
     ],

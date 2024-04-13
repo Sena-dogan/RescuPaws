@@ -5,16 +5,16 @@ part 'message.freezed.dart';
 part 'message.g.dart';
 
 @freezed
-class Message with _$Message {
-  factory Message({
+class MessageModel with _$MessageModel {
+  factory MessageModel({
     required String senderID,
     required String senderEmail,
     required String receiverID,
     required String message,
     @TimestampConverter() required Timestamp timestamp,
-  }) = _Message;
+  }) = _MessageModel;
 
-  factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
+  factory MessageModel.fromJson(Map<String, dynamic> json) => _$MessageModelFromJson(json);
 }
 
 class TimestampConverter implements JsonConverter<Timestamp, Object> {

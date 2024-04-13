@@ -29,15 +29,14 @@ class ChatService {
   /// This method is responsible for sending a message to the chat service.
   /// It takes no parameters and returns a [Future] that completes when the
   /// message has been sent successfully.
-  Future<void> sendMessage(
-      String message, String senderId, String receiverId) async {
+  Future<void> sendMessage(String receiverId, String message) async {
     // Get current user's information.
     final String currentUserId = _auth.currentUser!.uid;
     final String curretUserEmail = _auth.currentUser!.email!;
     final Timestamp timeStamp = Timestamp.now();
 
     // Create a new message.
-    final Message newMessage = Message(
+    final MessageModel newMessage = MessageModel(
       senderID: currentUserId,
       senderEmail: curretUserEmail,
       receiverID: receiverId,
@@ -56,8 +55,8 @@ class ChatService {
   /// Retrieves a stream of messages for a given receiver ID.
   ///
   /// The [receiverId] parameter specifies the ID of the message receiver.
-  /// Returns a [Stream] that emits a list of [Message] objects.
-  Stream<List<Message>> getMessages(String receiverId) {
+  /// Returns a [Stream] that emits a list of [MessageModel] objects.
+  Stream<List<MessageModel>> getMessages(String receiverId) {
     // Get current user's information.
     final String currentUserId = _auth.currentUser!.uid;
 
@@ -73,7 +72,7 @@ class ChatService {
         return snapshot.docs.map(
           (QueryDocumentSnapshot<Map<String, dynamic>> doc) {
             final Map<String, dynamic> data = doc.data();
-            return Message.fromJson(data);
+            return MessageModel.fromJson(data);
           },
         ).toList();
       },

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../../../utils/firebase_utils.dart';
 import '../../../home/widgets/loading_paw_widget.dart';
 import '../../../widgets/bottom_nav_bar.dart';
 import '../service/chat_service.dart';
 import '../widgets/user_tile.dart';
+import 'message_screen.dart';
 
-class ChatScreen extends ConsumerWidget {
-  ChatScreen({super.key});
+class ChatsScreen extends ConsumerWidget {
+  ChatsScreen({super.key});
 
   final ChatService _chatService = ChatService();
 
@@ -72,14 +72,21 @@ class ChatScreen extends ConsumerWidget {
 
   Widget _buildUserListItem(
       Map<String, dynamic> userData, BuildContext context) {
-    return UserTile(
-      text: userData['email'] as String,
-      onTap: () {
-        context.push(
-          SGRoute.conversation.route,
-          extra: userData['email'],
-        );
-      },
-    );
+    if (userData['email'] as String != currentUserEmail) {
+      return UserTile(
+        text: userData['email'] as String,
+        onTap: () {
+          Navigator.push(context,
+              // ignore: always_specify_types
+              MaterialPageRoute(builder: (BuildContext context) {
+            return MessageScreen(
+                receiverEmail: userData['email'] as String,
+                receiverId: userData['uid'] as String);
+          }));
+        },
+      );
+    } else {
+      return Container();
+    }
   }
 }
