@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../chat/screens/message_screen.dart';
 import '../logic/detail_logic.dart';
 import 'advertiser_info.dart';
 import 'characteristics.dart';
@@ -121,7 +122,21 @@ class DetailBody extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                              // ignore: always_specify_types
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return MessageScreen(
+                              receiverEmail: pawEntryDetailResponse!
+                                      .pawEntryDetail?.user?.email ??
+                                  '',
+                              receiverId: pawEntryDetailResponse!
+                                      .pawEntryDetail?.user?.uid ??
+                                  '',
+                            );
+                          }));
+                        },
                         child: Text('Mesaj Gönder',
                             style: context.textTheme.labelSmall?.copyWith(
                               color: Colors.white,

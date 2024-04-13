@@ -45,6 +45,7 @@ class MessageScreen extends ConsumerWidget {
             Expanded(child: _buildMessagesList()),
 
             // user input
+            _buildUserInput(),
           ],
         ));
   }
