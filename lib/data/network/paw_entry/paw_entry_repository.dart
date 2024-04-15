@@ -1,3 +1,4 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../di/components/service_locator.dart';
@@ -12,8 +13,8 @@ class PawEntryRepository {
   PawEntryRepository(this._pawApi);
   final PawApi _pawApi;
 
-  Future<GetPawEntryResponse> getPawEntry() async {
-    final GetPawEntryResponse pawEntry = await _pawApi.getPawEntry();
+  Future<Either<PawEntryError, GetPawEntryResponse>> getPawEntry() async {
+    final Either<PawEntryError, GetPawEntryResponse> pawEntry = await _pawApi.getPawEntry();
     return pawEntry;
   }
 
