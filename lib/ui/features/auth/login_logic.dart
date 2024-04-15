@@ -14,6 +14,7 @@ import '../../../di/components/service_locator.dart';
 
 import '../../../models/token/token_request.dart';
 import '../../../models/token/token_response.dart';
+import '../../../utils/riverpod_extensions.dart';
 import 'login_ui_model.dart';
 
 part 'login_logic.g.dart';
@@ -21,15 +22,14 @@ part 'login_logic.g.dart';
 @riverpod
 Future<TokenResponse?> fetchToken(FetchTokenRef ref) async {
   final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
-  if (getStoreHelper.getToken() != null) {
-    return null;
-  }
+
   final AuthRepository authRepository = ref.watch(getAuthRepositoryProvider);
   final TokenResponse getTokenResponse =
       await authRepository.getToken(TokenRequest()).then((TokenResponse value) {
-    if (value.token != null)
+    if (value.token != null) {
       getStoreHelper.saveToken(value.token!);
-    else
+      ref.cacheFor(const Duration(days: 3));
+    } else
       throw Exception('Token is null');
     return value;
   });
