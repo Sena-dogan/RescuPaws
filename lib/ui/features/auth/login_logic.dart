@@ -28,7 +28,7 @@ Future<TokenResponse?> fetchToken(FetchTokenRef ref) async {
       await authRepository.getToken(TokenRequest()).then((TokenResponse value) {
     if (value.token != null) {
       getStoreHelper.saveToken(value.token!);
-      ref.cacheFor(const Duration(days: 1));
+      ref.cacheFor(const Duration(days: 3));
     } else
       throw Exception('Token is null');
     return value;
