@@ -27,8 +27,6 @@ abstract class NetworkModule {
     final Dio dio = Dio();
     final String? token = getStoreHelper.getToken();
 
-
-
     dio
       ..options.baseUrl = Endpoints.baseUrl
       ..options.connectTimeout =
