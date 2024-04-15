@@ -1,4 +1,5 @@
 /// All Restclients that communicate with the Paw requests are defined here.
+import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../models/new_paw_model.dart';
@@ -12,10 +13,13 @@ class PawApi {
   PawApi(this._pawEntryRestClient);
   final PawEntryRestClient _pawEntryRestClient;
 
-  Future<GetPawEntryResponse> getPawEntry() async {
-    final GetPawEntryResponse pawEntry =
-        await _pawEntryRestClient.getPawEntry();
-    return pawEntry;
+  Future<Either<PawEntryError, GetPawEntryResponse>> getPawEntry() async {
+    try {
+      final GetPawEntryResponse pawEntry = await _pawEntryRestClient.getPawEntry();
+      return right(pawEntry);
+    } on PawEntryError catch (e) {
+      return left(e);
+    }
   }
 
   Future<GetPawEntryResponse> getPawEntryById() async {
