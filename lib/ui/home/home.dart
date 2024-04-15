@@ -80,72 +80,80 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Column _buildBody(BuildContext context, List<PawEntry> pawEntries) {
-    return Column(
-      children: <Widget>[
-        Divider(
-          color: context.colorScheme.tertiary.withOpacity(0.15),
-        ),
-        Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.85,
-            height: MediaQuery.of(context).size.height * 0.55,
-            child: CardSwiper(
-                cardsCount: pawEntries.length,
-                numberOfCardsDisplayed: pawEntries.length > 1 ? 2 : 1,
-                duration: const Duration(milliseconds: 300),
-                controller: controller,
-                onSwipe: (int oldIndex, int? newIndex,
-                    CardSwiperDirection direction) async {
-                  //TODO: Handle swipe in the logic
-                  if (newIndex != null) {
-                    ref
-                        .read(swipeCardLogicProvider.notifier)
-                        .setId(pawEntries[newIndex].id);
-                    ref
-                        .read(homeScreenLogicProvider.notifier)
-                        .setFavorite(pawEntries[newIndex].id, direction == CardSwiperDirection.right);
-                  }
-                  return true;
-                },
-                allowedSwipeDirection:
-                    AllowedSwipeDirection.only(right: true, left: true),
-                cardBuilder: (BuildContext context, int index,
-                    int percentThresholdX, int percentThresholdY) {
-                  return SwipeCard(
-                      pawEntry: pawEntries[index],
-                      size: Size(MediaQuery.of(context).size.width * 0.85,
-                          MediaQuery.of(context).size.height * 0.55));
-                }),
-          ),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            GestureDetector(
-              onPanUpdate: (DragUpdateDetails details) {
-                // Check if the user is trying to swipe the card
-                if (details.delta.dx.abs() > details.delta.dy.abs()) {
-                  // Prevent the CardSwiper from receiving the swipe gesture
-                  return;
-                }
-              },
-              child: LeftButton(controller: controller),
-            ),
-            GestureDetector(
-              onPanUpdate: (DragUpdateDetails details) {
-                // Check if the user is trying to swipe the card
-                if (details.delta.dx.abs() > details.delta.dy.abs()) {
-                  // Prevent the CardSwiper from receiving the swipe gesture
-                  return;
-                }
-              },
-              child: RightButton(controller: controller),
-            )
-          ],
-        )
-      ],
-    );
+    return pawEntries.isEmpty
+        ? const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Henüz ilan yok'),
+            ],
+          )
+        : Column(
+            children: <Widget>[
+              Divider(
+                color: context.colorScheme.tertiary.withOpacity(0.15),
+              ),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  height: MediaQuery.of(context).size.height * 0.55,
+                  child: CardSwiper(
+                      cardsCount: pawEntries.length,
+                      numberOfCardsDisplayed: pawEntries.length > 1 ? 2 : 1,
+                      duration: const Duration(milliseconds: 300),
+                      controller: controller,
+                      onSwipe: (int oldIndex, int? newIndex,
+                          CardSwiperDirection direction) async {
+                        //TODO: Handle swipe in the logic
+                        if (newIndex != null) {
+                          ref
+                              .read(swipeCardLogicProvider.notifier)
+                              .setId(pawEntries[newIndex].id);
+                          ref
+                              .read(homeScreenLogicProvider.notifier)
+                              .setFavorite(pawEntries[newIndex].id,
+                                  direction == CardSwiperDirection.right);
+                        }
+                        return true;
+                      },
+                      allowedSwipeDirection:
+                          AllowedSwipeDirection.only(right: true, left: true),
+                      cardBuilder: (BuildContext context, int index,
+                          int percentThresholdX, int percentThresholdY) {
+                        return SwipeCard(
+                            pawEntry: pawEntries[index],
+                            size: Size(MediaQuery.of(context).size.width * 0.85,
+                                MediaQuery.of(context).size.height * 0.55));
+                      }),
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GestureDetector(
+                    onPanUpdate: (DragUpdateDetails details) {
+                      // Check if the user is trying to swipe the card
+                      if (details.delta.dx.abs() > details.delta.dy.abs()) {
+                        // Prevent the CardSwiper from receiving the swipe gesture
+                        return;
+                      }
+                    },
+                    child: LeftButton(controller: controller),
+                  ),
+                  GestureDetector(
+                    onPanUpdate: (DragUpdateDetails details) {
+                      // Check if the user is trying to swipe the card
+                      if (details.delta.dx.abs() > details.delta.dy.abs()) {
+                        // Prevent the CardSwiper from receiving the swipe gesture
+                        return;
+                      }
+                    },
+                    child: RightButton(controller: controller),
+                  )
+                ],
+              )
+            ],
+          );
   }
 
   AppBar _buildAppBar() {
