@@ -79,12 +79,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Column _buildBody(BuildContext context, List<PawEntry> pawEntries) {
+  Widget _buildBody(BuildContext context, List<PawEntry> pawEntries) {
     return pawEntries.isEmpty
-        ? const Column(
+        ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('Henüz ilan yok'),
+              SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Center(child: Text('Henüz ilan yok'))),
             ],
           )
         : Column(
