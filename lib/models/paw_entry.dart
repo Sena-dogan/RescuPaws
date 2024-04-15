@@ -19,6 +19,16 @@ class GetPawEntryResponse with _$GetPawEntryResponse {
 }
 
 @freezed
+class PawEntryError with _$PawEntryError {
+  factory PawEntryError({
+    required String error,
+  }) = _PawEntryError;
+
+  factory PawEntryError.fromJson(Map<String, dynamic> json) =>
+      _$PawEntryErrorFromJson(json);
+}
+
+@freezed
 class PawEntry with _$PawEntry {
   factory PawEntry({
     required int id,
