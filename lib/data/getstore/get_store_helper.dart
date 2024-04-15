@@ -29,6 +29,11 @@ class GetStoreHelper {
     return getStorage.read(tokenKey);
   }
 
+  // clear auth token
+  void removeToken() {
+    getStorage.remove(tokenKey);
+  }
+
   void clear() {
     getStorage.erase();
   }
