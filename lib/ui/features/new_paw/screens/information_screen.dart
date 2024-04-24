@@ -209,7 +209,9 @@ class _NewPawInformationScreenState
                             SaveButton(
                               title: 'Kaydet',
                               onPressed: () {
-                                context.push(SGRoute.vaccineNewPaw.route);
+                                if (formKey.currentState!.validate()) {
+                                  context.push(SGRoute.vaccineNewPaw.route);
+                                }
                               },
                             ),
                           ].seperate(2),

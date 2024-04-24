@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../utils/context_extensions.dart';
@@ -123,17 +124,28 @@ class DetailBody extends ConsumerWidget {
                           ),
                         ),
                         onPressed: () {
+                          final String receiverId =
+                              pawEntryDetailResponse!.userData?.uid ??
+                                  'User Not Found';
+                          final String receiverEmail =
+                              pawEntryDetailResponse!.userData?.email ?? '';
+                          if (receiverId.isEmpty) {
+                            Logger().e('Receiver id is empty');
+                            throw Exception(
+                                'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
+                          }
+                          if (receiverEmail.isEmpty) {
+                            Logger().e('Receiver email is empty');
+                            throw Exception(
+                                'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
+                          }
                           Navigator.push(context,
                               // ignore: always_specify_types
                               MaterialPageRoute(
                                   builder: (BuildContext context) {
                             return MessageScreen(
-                              receiverEmail: pawEntryDetailResponse!
-                                      .pawEntryDetail?.user?.email ??
-                                  '',
-                              receiverId: pawEntryDetailResponse!
-                                      .pawEntryDetail?.user?.uid ??
-                                  '',
+                              receiverEmail: receiverEmail,
+                              receiverId: receiverId,
                             );
                           }));
                         },
