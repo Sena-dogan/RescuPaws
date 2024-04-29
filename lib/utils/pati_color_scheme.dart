@@ -31,6 +31,9 @@ ColorScheme lightColorScheme() {
     /// unlike polygon stroke
     outlineVariant: Color(0xFFD1D3D4),
 
+    /// chat receiver bubble
+    onTertiaryContainer: Color(0xFFFBD99F),
+
     /// text color
     scrim: Color(0xFF050405),
 
@@ -66,6 +69,9 @@ ColorScheme darkColorScheme() {
 
     /// unlike polygon stroke
     outlineVariant: Color(0xFFD1D3D4),
+
+    /// chat receiver bubble
+    onTertiaryContainer: Color(0xFFFBD99F),
 
     /// text color
     scrim: Color(0xFFD4D4D4),

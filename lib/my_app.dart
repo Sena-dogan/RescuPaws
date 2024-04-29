@@ -108,6 +108,12 @@ final TextTheme textTheme = TextTheme(
     fontWeight: FontWeight.w300,
     fontSize: 11,
   ),
+
+  /// chat bubble text
+  titleSmall: GoogleFonts.poppins(
+    fontWeight: FontWeight.w300,
+    fontSize: 14,
+  ),
 );
 
 Future<void> setPreferredOrientations() {

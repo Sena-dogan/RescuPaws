@@ -1,11 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../constants/assets.dart';
 import '../../../../models/chat/message.dart';
+import '../../../../models/user_data.dart';
+import '../../../../utils/context_extensions.dart';
 import '../../../home/widgets/loading_paw_widget.dart';
+import '../../detail/widgets/advertiser_info.dart';
+import '../logic/chat_logic.dart';
 import '../service/chat_service.dart';
+import '../widgets/chat_bubble.dart';
 
 class MessageScreen extends ConsumerWidget {
   MessageScreen({
@@ -19,6 +26,7 @@ class MessageScreen extends ConsumerWidget {
   final TextEditingController _messageController = TextEditingController();
 
   final ChatService _chatService = ChatService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // send message
   Future<void> _sendMessage() async {
@@ -35,72 +43,158 @@ class MessageScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Message'),
+    final Size size = MediaQuery.of(context).size;
+    final UserData? user = ref.watch(chatLogicProvider).user;
+    Logger().i('User is bro $user');
+    return Container(
+      decoration: BoxDecoration(
+        color: context.colorScheme.background,
+        image: const DecorationImage(
+          image: AssetImage(Assets.HomeBg),
+          fit: BoxFit.cover,
         ),
-        body: Column(
-          children: <Widget>[
-            // display messages
-            Expanded(child: _buildMessagesList()),
+      ),
+      child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            title: SizedBox(
+              width: size.width * 0.5,
+              child: AdvertiserInfo(
+                user: user,
+                imageSize: size.width * 0.1,
+                textStyle: context.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ),
+          body: Column(
+            children: <Widget>[
+              Divider(
+                color: context.colorScheme.tertiary.withOpacity(0.15),
+              ),
+              // display messages
+              _buildMessageList(),
 
-            // user input
-            _buildUserInput(),
-          ],
-        ));
+              // user input
+              _buildUserInput(context),
+            ],
+          )),
+    );
   }
 
   // build messages list
-  Widget _buildMessagesList() {
-    return StreamBuilder<List<MessageModel>>(
-        stream: _chatService.getMessages(receiverId),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<MessageModel>> snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Lottie.asset(
-                Assets.Error,
-                repeat: true,
-                height: 200,
-              ),
-            );
-          }
+  Expanded _buildMessageList() {
+    return Expanded(
+        child: StreamBuilder<List<MessageModel>>(
+            stream: _chatService.getMessages(receiverId),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<MessageModel>> snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Lottie.asset(
+                    Assets.Error,
+                    repeat: true,
+                    height: 200,
+                  ),
+                );
+              }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LoadingPawWidget();
-          }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const LoadingPawWidget();
+              }
 
-          final List<MessageModel> messages = snapshot.data!;
-          return ListView.builder(
-            itemCount: messages.length,
-            itemBuilder: (BuildContext context, int index) {
-              final MessageModel message = messages[index];
-              return ListTile(
-                title: Text(message.message),
-                subtitle: Text(message.senderEmail),
+              final List<MessageModel> messages = snapshot.data!;
+              return ListView.builder(
+                itemCount: messages.length,
+                reverse: true,
+                itemBuilder: (BuildContext context, int index) {
+                  final MessageModel message = messages[index];
+                  return _buildMessageItem(message);
+                },
               );
-            },
-          );
-        });
+            }));
+  }
+
+  // build message item
+  Widget _buildMessageItem(MessageModel message) {
+    final bool isCurrentUser = message.senderID == _auth.currentUser!.uid;
+    final Alignment alignment =
+        isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+    return Container(
+      alignment: alignment,
+      child: Column(
+        crossAxisAlignment:
+            isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: <Widget>[
+          ChatBubble(
+            message: message,
+            isCurrentUser: isCurrentUser,
+          ),
+        ],
+      ),
+    );
   }
 
   // build user input
-  Widget _buildUserInput() {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: TextField(
-            controller: _messageController,
-            decoration: const InputDecoration(
-              hintText: 'Type a message...',
+  Widget _buildUserInput(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: size.height * 0.05,
+        left: size.width * 0.05,
+        right: size.width * 0.05,
+      ),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+            height: 55,
+            width: size.width * 0.75,
+            child: TextField(
+              controller: _messageController,
+              decoration: InputDecoration(
+                hoverColor: context.colorScheme.primary,
+                border: _messageFieldBorder(context),
+                enabledBorder: _messageFieldBorder(context),
+                focusedBorder: _messageFieldBorder(context),
+                hintText: 'Bir mesaj yazın...',
+              ),
             ),
           ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.send),
-          onPressed: _sendMessage,
-        ),
-      ],
+          Container(
+            height: 40,
+            width: 40,
+            decoration: ShapeDecoration(
+              color: context.colorScheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            margin: EdgeInsets.only(left: size.width * 0.05),
+            child: IconButton(
+              icon: const Icon(
+                Icons.send,
+                size: 20,
+                color: Colors.white,
+              ),
+              onPressed: _sendMessage,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  OutlineInputBorder _messageFieldBorder(BuildContext context) {
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        color: context.colorScheme.secondary,
+        width: 0.7,
+      ),
+      borderRadius: BorderRadius.circular(20),
     );
   }
 }

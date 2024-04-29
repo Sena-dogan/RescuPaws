@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/paw_entry_detail.dart';
+import '../../../../models/user_data.dart';
 import '../../../../utils/riverpod_extensions.dart';
 import 'detail_ui_model.dart';
 
@@ -17,11 +19,20 @@ Future<GetPawEntryDetailResponse?> fetchPawEntryDetail(
       ref.watch(getPawEntryRepositoryProvider);
   ref.cacheFor(const Duration(minutes: 5));
   final GetPawEntryDetailResponse pawEntryDetailResponse =
-      await pawEntryRepository.getPawEntryDetail(classfieldsId);
+      await pawEntryRepository
+          .getPawEntryDetail(classfieldsId)
+          // ignore: body_might_complete_normally_catch_error
+          .catchError((Object error) {
+    Logger().e(error);
+    ref.read(detailLogicProvider.notifier).setError(error.toString());
+  });
+  ref
+      .read(detailLogicProvider.notifier)
+      .setDetailUser(pawEntryDetailResponse.userData);
   return pawEntryDetailResponse;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DetailLogic extends _$DetailLogic {
   DetailUiModel _detailUiModel = DetailUiModel();
 
@@ -34,6 +45,13 @@ class DetailLogic extends _$DetailLogic {
         errorMessage: errorMessage,
         isLoading: false,
       );
+
+  void setDetailUser(UserData? user) {
+    Logger().i('User is $user');
+    state = state.copyWith(
+      user: user,
+    );
+  }
 
   void setPawEntryDetails(List<PawEntryDetail> pawEntryDetails) =>
       state = state.copyWith(
