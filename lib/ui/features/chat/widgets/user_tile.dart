@@ -8,9 +8,11 @@ class UserTile extends ConsumerWidget {
     super.key,
     required this.text,
     this.onTap,
+    required this.user,
   });
   final String text;
   final void Function()? onTap;
+  final Map<String, dynamic> user;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

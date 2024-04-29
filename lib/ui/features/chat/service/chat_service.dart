@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../models/chat/message.dart';
 
@@ -77,5 +78,16 @@ class ChatService {
         ).toList();
       },
     );
+  }
+
+  /// get messaged users list from firestore
+  Stream<QuerySnapshot> getMessagedUsers() {
+    final String currentUserId = _auth.currentUser!.uid;
+    debugPrint('Current User ID: $currentUserId');
+    final Query<Map<String, dynamic>> receiversGroup =
+        FirebaseFirestore.instance.collectionGroup(currentUserId);
+    debugPrint('Receivers Group: $receiversGroup');
+
+    return receiversGroup.snapshots();
   }
 }

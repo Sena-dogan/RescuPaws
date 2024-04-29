@@ -34,8 +34,9 @@ GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 enum SGRoute {
   home,
   favorite,
-  noNotif,
+  chats,
   profile,
+  noNotif,
   intro,
   breed,
   subbreed,
@@ -54,7 +55,6 @@ enum SGRoute {
   vaccine,
   vaccineNewPaw,
   message,
-  chats,
   detail;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
