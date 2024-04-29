@@ -1,11 +1,10 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:otp_timer_button/otp_timer_button.dart';
 
 import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
@@ -69,42 +68,68 @@ class OtpScreen extends ConsumerWidget {
                 ),
                 const Gap(20),
                 Center(
-                  child: RichText(
-                      text: TextSpan(
-                    text: 'Kod eline ulaşmadı mı? ',
-                    style: context.textTheme.bodySmall,
-                    children: <InlineSpan>[
-                      TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            ref
-                                .read(loginLogicProvider.notifier)
-                                .resendSmsCode()
-                                .then((bool value) {
-                              if (value) {
-                                context.showAwesomeMaterialBanner(
-                                  title: 'Başarılı',
-                                  message: 'Sms tekrar gönderildi',
-                                );
-                              }
-                            });
-                          },
-                        text: 'Yeniden gönder.',
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text('Kod eline ulaşmadı mı? '),
+                    OtpTimerButton(
+                      duration: 60,
+                      backgroundColor: Colors.transparent,
+                      buttonType: ButtonType.text_button,
+                      text: Text(
+                        'Yeniden Gönder',
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.primary,
                         ),
                       ),
-                    ],
-                  )),
-                ),
+                      onPressed: () {
+                        ref
+                            .read(loginLogicProvider.notifier)
+                            .resendSmsCode()
+                            .then((bool value) {
+                          if (value) {
+                            context.showAwesomeMaterialBanner(
+                              title: 'Başarılı',
+                              message: 'Sms tekrar gönderildi',
+                            );
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                )
+                    // child: RichText(
+                    //     text: TextSpan(
+                    //   text: 'Kod eline ulaşmadı mı? ',
+                    //   style: context.textTheme.bodySmall,
+                    //   children: <InlineSpan>[
+                    //     TextSpan(
+                    //       recognizer: TapGestureRecognizer()
+                    //         ..onTap = () {
+                    //           ref
+                    //               .read(loginLogicProvider.notifier)
+                    //               .resendSmsCode()
+                    //               .then((bool value) {
+                    //             if (value) {
+                    //               context.showAwesomeMaterialBanner(
+                    //                 title: 'Başarılı',
+                    //                 message: 'Sms tekrar gönderildi',
+                    //               );
+                    //             }
+                    //           });
+                    //         },
+                    //       text: 'Yeniden gönder.',
+                    //       style: context.textTheme.bodySmall?.copyWith(
+                    //         color: context.colorScheme.primary,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // )),
+                    ),
                 const Spacer(
                   flex: 2,
                 ),
-                SaveButton(
-                    onPressed: () {
-                      
-                    },
-                    title: 'Devam Et'),
+                SaveButton(onPressed: () {}, title: 'Devam Et'),
                 const Spacer(),
               ],
             ),
