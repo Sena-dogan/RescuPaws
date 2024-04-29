@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/services/text_formatter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import '../../../config/router/app_router.dart';
 import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
 import '../../widgets/app_bar_gone.dart';
@@ -24,6 +26,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: Initialize the controller in better way. Maybe in initState
     final TextEditingController? numberController =
         ref.watch(loginLogicProvider).numberController;
 
@@ -58,28 +61,29 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
                 key: formKey,
                 child: TextFormField(
                   controller: numberController,
+                  inputFormatters: <TextInputFormatter>[
+                    MaskTextInputFormatter(
+                      initialText: '+90',
+                      mask: '+__ ___ ___ ____',
+                      filter: <String, RegExp>{'_': RegExp(r'[0-9]')},
+                    ),
+                  ],
                   validator: (String? value) {
                     if (value!.isEmpty) {
                       return 'Lütfen telefon numaranızı giriniz';
                     } else {
-                      FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: value,
-                        autoRetrievedSmsCodeForTesting: '123456',
-                        forceResendingToken: 1,
-                        verificationCompleted:
-                            (PhoneAuthCredential credential) {
-                          debugPrint('verificationCompleted');
-                        },
-                        verificationFailed: (FirebaseAuthException e) {
-                          debugPrint('verificationFailed');
-                        },
-                        codeSent: (String verificationId, int? resendToken) {
-                          debugPrint('codeSent');
-                        },
-                        codeAutoRetrievalTimeout: (String verificationId) {
-                          debugPrint('codeAutoRetrievalTimeout');
-                        },
-                      );
+                      ///TODO: Implement error handling
+                      ref
+                          .read(loginLogicProvider.notifier)
+                          .verifyPhoneNumber(value)
+                          .catchError((Object e) {
+                        debugPrint(e.toString());
+                        return false;
+                      }).then((bool value) {
+                        if (value) {
+                          context.push(SGRoute.otp.route);
+                        }
+                      });
                     }
                     return null;
                   },
