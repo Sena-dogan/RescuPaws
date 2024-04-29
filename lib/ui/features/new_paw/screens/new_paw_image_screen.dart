@@ -47,8 +47,9 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
               return const Center(child: CircularProgressIndicator());
             //TODO: Fix InstaAssetPicker reappering after image selection
             if (mounted &&
-                newPaw.isImageLoading == false &&
-                ps == PermissionState.authorized)
+                    newPaw.isImageLoading == false &&
+                    ps == PermissionState.authorized ||
+                ps == PermissionState.limited)
               InstaAssetPicker.pickAssets(context,
                   maxAssets: 5, closeOnComplete: true,
                   onCompleted: (Stream<InstaAssetsExportDetails> assetStream) {
