@@ -65,7 +65,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: _buildBody(context, valueOrNull.data)),
               // An error is available, so we render it.
-              AsyncValue(:final Object error?) => ErrorWidgett(
+              AsyncValue(:final Object error?) => PawErrorWidget(
                   error: error,
                   onRefresh: () async =>
                       ref.refresh(fetchPawEntriesProvider.future),

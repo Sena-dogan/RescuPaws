@@ -4,8 +4,8 @@ import 'package:gap/gap.dart';
 import '../constants/assets.dart';
 import 'context_extensions.dart';
 
-class ErrorWidgett extends StatelessWidget {
-  const ErrorWidgett({
+class PawErrorWidget extends StatelessWidget {
+  const PawErrorWidget({
     this.error,
     required this.onRefresh,
     super.key,

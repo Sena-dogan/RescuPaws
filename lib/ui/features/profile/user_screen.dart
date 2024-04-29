@@ -105,8 +105,6 @@ class ProfileScreen extends ConsumerWidget {
                                                               Object error,
                                                               StackTrace?
                                                                   stackTrace) {
-                                                        debugPrint(
-                                                            'AAAAAAAAAAAAAAAAAAAAA');
                                                         return Image.network(
                                                             //TODO: Add an placeholder image to Assets
                                                             'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');

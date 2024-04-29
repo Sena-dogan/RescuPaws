@@ -47,7 +47,7 @@ class DetailScreen extends ConsumerWidget {
               pawEntryDetailResponse: value,
               size: size,
             ),
-          AsyncValue<Object?>(:final Object error?) => ErrorWidgett(
+          AsyncValue<Object?>(:final Object error?) => PawErrorWidget(
               error: error,
               onRefresh: () async => ref
                   .refresh(fetchPawEntryDetailProvider(id.toString()).future),
