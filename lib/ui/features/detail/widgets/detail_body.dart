@@ -82,6 +82,7 @@ class DetailBody extends ConsumerWidget {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
+              final Size size = MediaQuery.of(context).size;
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
@@ -110,7 +111,12 @@ class DetailBody extends ConsumerWidget {
                     ),
                     const Gap(30),
                     AdvertiserInfo(
-                      pawEntryDetailResponse: pawEntryDetailResponse,
+                      user: pawEntryDetailResponse?.userData,
+                      imageSize: size.width * 0.2,
+                      textStyle: context.textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30),

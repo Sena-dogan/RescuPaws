@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../models/paw_entry_detail.dart';
-import '../../../../utils/context_extensions.dart';
+import '../../../../models/user_data.dart';
 
 class AdvertiserInfo extends StatelessWidget {
   const AdvertiserInfo({
     super.key,
-    required this.pawEntryDetailResponse,
+    required this.user,
+    required this.imageSize,
+    required this.textStyle,
   });
 
-  final GetPawEntryDetailResponse? pawEntryDetailResponse;
+  final UserData? user;
+  final double imageSize;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Container(
-          height: 80,
-          width: 80,
+          height: imageSize,
+          width: imageSize,
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.4),
             shape: BoxShape.circle,
           ),
           child: ClipOval(
-            child: Image.network(
-                pawEntryDetailResponse!.userData?.photoUrl ?? '',
+            child: Image.network(user?.photoUrl ?? '',
                 fit: BoxFit.cover,
                 errorBuilder: (BuildContext context, Object error,
                         StackTrace? stackTrace) =>
@@ -36,16 +38,12 @@ class AdvertiserInfo extends StatelessWidget {
           ),
         ),
         const Gap(20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              pawEntryDetailResponse!.userData?.displayName ?? 'User Not Found',
-              style: context.textTheme.labelSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        Expanded(
+          flex: 2,
+          child: Text(
+            user?.displayName ?? 'Kullanıcı',
+            style: textStyle,
+          ),
         ),
       ],
     );
