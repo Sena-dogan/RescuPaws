@@ -20,8 +20,8 @@ class SaveButton extends StatelessWidget {
       style: ButtonStyle(
         backgroundColor:
             MaterialStateProperty.all<Color>(context.colorScheme.primary),
-        padding: MaterialStateProperty.all<EdgeInsets>(
-          EdgeInsets.symmetric(horizontal: size.width * 0.35, vertical: 15.0),
+        fixedSize: MaterialStateProperty.all<Size>(
+          Size(size.width, 50),
         ),
         shape: MaterialStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(
