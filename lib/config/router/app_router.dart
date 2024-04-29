@@ -10,6 +10,7 @@ import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/auth/number_input_screen.dart';
+import '../../ui/features/auth/otp_screen.dart';
 import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
@@ -53,7 +54,8 @@ enum SGRoute {
   vaccine,
   vaccineNewPaw,
   phone,
-  detail;
+  detail,
+  otp;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
   String get name => toString().replaceAll('SGRoute.', '');
@@ -188,6 +190,12 @@ class SGGoRouter {
           builder: (BuildContext context, GoRouterState state) =>
               const NumberInputScreen(),
           redirect: _authGuard),
+      GoRoute(
+        path: SGRoute.otp.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const OtpScreen(),
+        redirect: _authGuard,
+      ),
     ],
   );
   GoRouter get getGoRouter => goRoute;
