@@ -14,6 +14,7 @@ import '../../../di/components/service_locator.dart';
 
 import '../../../models/token/token_request.dart';
 import '../../../models/token/token_response.dart';
+import '../../../utils/firebase_utils.dart';
 import '../../../utils/riverpod_extensions.dart';
 import 'login_ui_model.dart';
 
@@ -106,7 +107,7 @@ class LoginLogic extends _$LoginLogic {
         smsCode: smsCode,
       );
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      await currentUser.linkWithCredential(credential);
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -200,9 +201,7 @@ class LoginLogic extends _$LoginLogic {
       );
       setLogin(isLoading: true);
       await ref.read(fetchTokenProvider.future);
-      await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((UserCredential value) => debugPrint('User: ${value.user}'));
+      await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
       Logger().e(e.toString());
