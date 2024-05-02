@@ -6,8 +6,6 @@ part 'chat_user.g.dart';
 @freezed
 class ChatUserModel with _$ChatUserModel {
   factory ChatUserModel({
-    required String senderID,
-    required String senderEmail,
     required String receiverID,
     required String receiverEmail,
   }) = _ChatUserModel;
