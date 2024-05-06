@@ -78,9 +78,9 @@ class LoginLogic extends _$LoginLogic {
           Logger().e(e.toString());
           setError(e.toString());
         },
-        codeSent: (String verificationId, int? resendToken) {
-          Logger().i('Code sent: $verificationId - $resendToken');
-          setVertificationId(verificationId);
+        codeSent: (String vertificationId, int? resendToken) {
+          Logger().i('Code sent: $vertificationId - $resendToken');
+          setVertificationId(vertificationId);
           setResendToken(resendToken);
         },
         codeAutoRetrievalTimeout: (String verificationId) {
