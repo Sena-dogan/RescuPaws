@@ -79,8 +79,8 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
                           .catchError((Object e) {
                         debugPrint(e.toString());
                         return false;
-                      }).then((bool value) {
-                        if (value) {
+                      }).then((bool result) {
+                        if (result) {
                           context.push(SGRoute.otp.route);
                         }
                       });
