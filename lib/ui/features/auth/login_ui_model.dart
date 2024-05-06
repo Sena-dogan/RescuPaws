@@ -15,6 +15,7 @@ abstract class LoginUiModel with _$LoginUiModel {
     @Default(null) String? confirmPassword,
     @Default(true) bool isObscure,
     @JsonKey(ignore: true) TextEditingController? numberController,
+    @JsonKey(ignore: true) TextEditingController? otpController,
     String? vertificationId,
     int? resendToken,
   }) = _LoginUiModel;
