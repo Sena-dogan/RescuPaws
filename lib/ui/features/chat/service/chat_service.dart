@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../models/chat/message.dart';
+import '../../../../models/meta_data.dart';
+import '../../../../models/user_data.dart';
 
 class ChatService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /// Returns a stream of users as a list of maps.
@@ -13,7 +15,7 @@ class ChatService {
   /// The stream emits a new list of users whenever there is a change in the data.
   /// Each user is represented as a map with string keys and dynamic values.
   Stream<List<Map<String, dynamic>>> getUsersStream() {
-    return _firestore.collection('Users').snapshots().map(
+    return _db.collection('Users').snapshots().map(
       (QuerySnapshot<Map<String, dynamic>> snapshot) {
         return snapshot.docs.map(
           (QueryDocumentSnapshot<Map<String, dynamic>> doc) {
@@ -25,12 +27,31 @@ class ChatService {
     );
   }
 
+  Future<void> addOrUpdateUser(UserData userData) async {
+    userData = userData.minify();
+    await _db.collection('Users').doc(userData.uid).set(userData.minify().toJson());
+  }
+
+  Future<UserData> getUserById(String userId) async {
+    final DocumentSnapshot docSnapshot =
+        await _db.collection('Users').doc(userId).get();
+    if (docSnapshot.exists) {
+      return UserData.fromJson(docSnapshot.data()! as Map<String, dynamic>);
+    } else {
+      throw Exception('User not found');
+    }
+  }
+
   /// Sends a message.
   ///
   /// This method is responsible for sending a message to the chat service.
   /// It takes no parameters and returns a [Future] that completes when the
   /// message has been sent successfully.
-  Future<void> sendMessage(String receiverId, String message) async {
+  Future<void> sendMessage(
+      String receiverId, String message, UserData? receiverUser) async {
+    if (receiverUser == null) {
+      throw Exception('Receiver user not found');
+    }
     // Get current user's information.
     final String currentUserId = _auth.currentUser!.uid;
     final String curretUserEmail = _auth.currentUser!.email!;
@@ -45,12 +66,17 @@ class ChatService {
       timestamp: timeStamp,
     );
 
+    final UserData currentUser = _auth.currentUser!.toUserData();
+
     // Add the message to the database.
-    await _firestore
+    await _db
         .collection('Messages')
         .doc(currentUserId)
         .collection(receiverId)
         .add(newMessage.toJson());
+
+    await addOrUpdateUser(currentUser);
+    await addOrUpdateUser(receiverUser);
   }
 
   /// Retrieves a stream of messages for a given receiver ID.
@@ -62,7 +88,7 @@ class ChatService {
     final String currentUserId = _auth.currentUser!.uid;
 
     // Get messages from the database.
-    return _firestore
+    return _db
         .collection('Messages')
         .doc(currentUserId)
         .collection(receiverId)
@@ -80,14 +106,51 @@ class ChatService {
     );
   }
 
-  /// get messaged users list from firestore
-  Stream<QuerySnapshot> getMessagedUsers() {
+  Stream<QuerySnapshot> getMessagesStream() {
     final String currentUserId = _auth.currentUser!.uid;
-    debugPrint('Current User ID: $currentUserId');
-    final Query<Map<String, dynamic>> receiversGroup =
-        FirebaseFirestore.instance.collectionGroup(currentUserId);
-    debugPrint('Receivers Group: $receiversGroup');
+    return _db
+        .collection('Messages')
+        .doc(currentUserId)
+        .collection(currentUserId)
+        .snapshots();
+  }
 
-    return receiversGroup.snapshots();
+  Stream<Set<String>> getMessagedUsersStream() {
+    return getMessagesStream().map((QuerySnapshot<Object?> snapshot) {
+      final Set<String> receiverIds = <String>{};
+      for (final QueryDocumentSnapshot<Object?> doc in snapshot.docs) {
+        receiverIds.add(doc.id); // Assuming doc.id is the receiver's ID
+      }
+      return receiverIds;
+    });
+  }
+}
+
+extension on User {
+  UserData toUserData() {
+    return UserData(
+      uid: uid,
+      email: email,
+      displayName: displayName,
+      disabled: false,
+      emailVerified: emailVerified,
+      photoUrl: photoURL,
+      phoneNumber: phoneNumber,
+    );
+  }
+}
+
+
+extension on UserData {
+  UserData minify() {
+    return UserData(
+      uid: uid,
+      email: email,
+      emailVerified: emailVerified,
+      displayName: displayName,
+      phoneNumber: phoneNumber,
+      photoUrl: photoUrl,
+      disabled: disabled,
+    );
   }
 }

@@ -21,4 +21,6 @@ class UserData with _$UserData {
 
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
+
 }
+

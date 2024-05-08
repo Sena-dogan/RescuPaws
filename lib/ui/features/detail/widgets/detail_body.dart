@@ -152,6 +152,7 @@ class DetailBody extends ConsumerWidget {
                             return MessageScreen(
                               receiverEmail: receiverEmail,
                               receiverId: receiverId,
+                              receiverUser: pawEntryDetailResponse?.userData,
                             );
                           }));
                         },

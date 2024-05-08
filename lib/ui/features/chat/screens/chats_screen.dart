@@ -49,51 +49,33 @@ class ChatsScreen extends ConsumerWidget {
   ///  Also this method uses [MessageModel] and [getMessagedUsers()] function from [ChatService].
   /// The [MessageModel] is used to represent a message and the [getMessagedUsers()] function is used to get the list of users that have been messaged.
   Widget _buildMessagedUserList() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _chatService.getMessagedUsers(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const LoadingPawWidget();
-        } else if (snapshot.hasError) {
-          debugPrint('Error: ${snapshot.error}');
-          return Center(
-            child: Lottie.asset(
-              Assets.Error,
-              width: 200,
-              height: 200,
-            ),
-          );
-        } else {
-          if (snapshot.data == null) {
-            return const Center(
-              child: Text('Henüz mesajlaştığınız bir kullanıcı yok. ero'),
-            );
-          }
-          final List<String?> users =
-              snapshot.data!.docs.map((QueryDocumentSnapshot<Object?> doc) {
-            debugPrint('doc: $doc');
-            return doc.id;
-          }).toList();
+    return StreamBuilder<Set<String>>(
+      stream: _chatService.getMessagedUsersStream(),
+      builder: (BuildContext context, AsyncSnapshot<Set<String>> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
 
-          if (users.isEmpty) {
-            return const Center(
-              child: Text('Henüz mesajlaştığınız bir kullanıcı yok.'),
-            );
-          }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+
+        if (snapshot.hasData) {
           return ListView.builder(
-            itemCount: users.length,
+            itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
-              final String? receiverId = users[index];
-              if (receiverId == null) {
-                return const SizedBox();
-              }
+              final String receiverId = snapshot.data!.elementAt(index);
+              // Here you can build your UI for each messaged user.
+              // For example, you might want to display the receiver's name or profile picture.
               return ListTile(
-                title: Text(receiverId),
-                onTap: () {},
+                title: Text('User ID: $receiverId'),
+                // Add more UI elements as needed
               );
             },
           );
         }
+
+        return const Text('No messaged users found');
       },
     );
   }

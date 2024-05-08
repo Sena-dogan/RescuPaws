@@ -19,9 +19,11 @@ class MessageScreen extends ConsumerWidget {
     super.key,
     required this.receiverEmail,
     required this.receiverId,
+    this.receiverUser,
   });
   final String receiverEmail;
   final String receiverId;
+  final UserData? receiverUser;
 
   final TextEditingController _messageController = TextEditingController();
 
@@ -33,11 +35,13 @@ class MessageScreen extends ConsumerWidget {
     final String message = _messageController.text;
     // if there is something inside the text field
     if (message.isNotEmpty) {
-      // send the message
-      await _chatService.sendMessage(receiverId, message);
-
       // clear the text field
+
       _messageController.clear();
+
+      // send the message
+      await _chatService.sendMessage(receiverId, message, receiverUser);
+
     }
   }
 
