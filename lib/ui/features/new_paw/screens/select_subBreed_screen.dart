@@ -52,7 +52,6 @@ class SelectSubBreedWidget extends ConsumerWidget {
                         child: SearchableList<Category>(
                       initialList: data,
                       style: context.textTheme.bodyMedium,
-                      autoFocusOnSearch: false,
                       emptyWidget: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

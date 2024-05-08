@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/getstore/get_store_helper.dart';
@@ -21,18 +22,37 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
   ref.cacheFor(const Duration(minutes: 5));
   final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+
   if (getStoreHelper.getToken() == null) {
+    Logger().i('Token is null fetching token from the server.');
+
     await ref.read(fetchTokenProvider.future);
   }
+  Logger().i('Token is not null, fetching paw entries from the server.');
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
-  GetPawEntryResponse pawEntries = await pawEntryRepository.getPawEntry();
-  pawEntries = pawEntries.randomize();
-  ref
-      .read(swipeCardLogicProvider.notifier)
-      .setId(pawEntries.data.firstOrNull?.id ?? 0);
-  ref.read(homeScreenLogicProvider.notifier).setPawEntries(pawEntries.data);
-  return pawEntries;
+  final Either<PawEntryError, GetPawEntryResponse> pawEntries =
+      await pawEntryRepository.getPawEntry();
+  pawEntries.fold((PawEntryError l) {
+    if (l.error == 'Unauthorized') {
+      Logger().i('Token is expired, removing token and fetching a new one.');
+      getStoreHelper.removeToken();
+      ref.invalidateSelf();
+    } else {
+      ref.read(homeScreenLogicProvider.notifier).setError(l.error);
+    }
+    return GetPawEntryResponse(data: <PawEntry>[]);
+  }, (GetPawEntryResponse pawEntries) {
+    pawEntries = pawEntries.randomize();
+    ref
+        .read(swipeCardLogicProvider.notifier)
+        .setId(pawEntries.data.firstOrNull?.id ?? 0);
+    ref.read(homeScreenLogicProvider.notifier).setPawEntries(pawEntries.data);
+    Logger().i('Paw entries fetched successfully.');
+    return pawEntries;
+  });
+  return pawEntries
+      .getOrElse((PawEntryError l) => GetPawEntryResponse(data: <PawEntry>[]));
 }
 
 @riverpod

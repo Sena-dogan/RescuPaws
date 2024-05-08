@@ -5,15 +5,17 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
+import 'package:pinput/pinput.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../data/getstore/get_store_helper.dart';
 import '../../../data/network/auth/auth_repository.dart';
 import '../../../di/components/service_locator.dart';
-
 import '../../../models/token/token_request.dart';
 import '../../../models/token/token_response.dart';
+import '../../../utils/firebase_utils.dart';
+import '../../../utils/riverpod_extensions.dart';
 import 'login_ui_model.dart';
 
 part 'login_logic.g.dart';
@@ -21,12 +23,14 @@ part 'login_logic.g.dart';
 @riverpod
 Future<TokenResponse?> fetchToken(FetchTokenRef ref) async {
   final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
+
   final AuthRepository authRepository = ref.watch(getAuthRepositoryProvider);
   final TokenResponse getTokenResponse =
       await authRepository.getToken(TokenRequest()).then((TokenResponse value) {
-    if (value.token != null)
+    if (value.token != null) {
       getStoreHelper.saveToken(value.token!);
-    else
+      ref.cacheFor(const Duration(days: 3));
+    } else
       throw Exception('Token is null');
     return value;
   });
@@ -37,7 +41,13 @@ Future<TokenResponse?> fetchToken(FetchTokenRef ref) async {
 class LoginLogic extends _$LoginLogic {
   @override
   LoginUiModel build() {
-    return const LoginUiModel();
+    ref.cacheFor(const Duration(minutes: 10));
+    return LoginUiModel(
+      numberController: TextEditingController(
+        text: '+90',
+      ),
+      otpController: TextEditingController(),
+    );
   }
 
   void setLogin({bool isLoading = false}) {
@@ -46,6 +56,106 @@ class LoginLogic extends _$LoginLogic {
 
   void clear() {
     state = state.copyWith(error: null, isLoading: false);
+  }
+
+  void setVertificationId(String? vertificationId) {
+    state = state.copyWith(vertificationId: vertificationId);
+  }
+
+  void setResendToken(int? resendToken) {
+    debugPrint('Resend token: $resendToken');
+    state = state.copyWith(resendToken: resendToken);
+  }
+
+  Future<bool> verifyPhoneNumber(String phoneNumber) async {
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          final TextEditingController? controller = state.otpController;
+          controller?.setText(credential.smsCode ?? '');
+          state = state.copyWith(otpController: controller);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          Logger().e(e.toString());
+          setError(e.toString());
+        },
+        codeSent: (String vertificationId, int? resendToken) {
+          Logger().i('Code sent: $vertificationId - $resendToken');
+          setVertificationId(vertificationId);
+          setResendToken(resendToken);
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          setVertificationId(verificationId);
+        },
+      );
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      setError(e.toString());
+      return false;
+    } finally {
+      setLogin();
+    }
+  }
+
+  Future<bool> verifySmsCode(String smsCode) async {
+    if (state.vertificationId == null) {
+      throw const FormatException('Verification id is required');
+    }
+    try {
+      final AuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: state.vertificationId!,
+        smsCode: smsCode,
+      );
+      setLogin(isLoading: true);
+      await currentUser.linkWithCredential(credential);
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      setError(e.toString());
+      return false;
+    } finally {
+      setLogin();
+    }
+  }
+
+  Future<bool> resendSmsCode() async {
+    if (state.resendToken == null) {
+      throw const FormatException('Resend token is required');
+    }
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: state.numberController?.text,
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          final TextEditingController? controller = state.otpController;
+          controller?.setText(credential.smsCode ?? '');
+          state = state.copyWith(otpController: controller);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          Logger().e(e.toString());
+          setError(e.toString());
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          Logger().i('Code sent');
+          setVertificationId(verificationId);
+          setResendToken(resendToken);
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          setVertificationId(verificationId);
+        },
+        forceResendingToken: state.resendToken,
+      );
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      setError(e.toString());
+      return false;
+    } finally {
+      setLogin();
+    }
   }
 
   Future<bool> signInWithGoogle() async {
@@ -63,7 +173,6 @@ class LoginLogic extends _$LoginLogic {
         idToken: googleAuth?.idToken,
       );
       setLogin(isLoading: true);
-      await ref.read(fetchTokenProvider.future);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e, stackTrace) {

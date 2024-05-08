@@ -9,6 +9,8 @@ import '../../data/enums/router_enums.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
 import '../../ui/features/auth/login_screen.dart';
+import '../../ui/features/auth/number_input_screen.dart';
+import '../../ui/features/auth/otp_screen.dart';
 import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
@@ -51,7 +53,9 @@ enum SGRoute {
   noNotif,
   vaccine,
   vaccineNewPaw,
-  detail;
+  phone,
+  detail,
+  otp;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
   String get name => toString().replaceAll('SGRoute.', '');
@@ -70,10 +74,10 @@ class SGGoRouter {
           repeat: true,
           height: 300,
         ),
-        Center(child: Text('Page not found: ${state.path}')),
+        Center(child: Text('Sayfa Bulunamadı: ${state.path}')),
         ElevatedButton(
           onPressed: () => context.go(SGRoute.home.route),
-          child: const Text('Go Back'),
+          child: const Text('Geri Dön'),
         ),
       ],
     )),
@@ -83,7 +87,7 @@ class SGGoRouter {
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),
         redirect: _authGuard,
-      ),
+      ).slide(),
       GoRoute(
         path: SGRoute.intro.route,
         builder: (BuildContext context, GoRouterState state) =>
@@ -179,6 +183,17 @@ class SGGoRouter {
         path: SGRoute.favorite.route,
         builder: (BuildContext context, GoRouterState state) =>
             const FavoritesScreen(),
+        redirect: _authGuard,
+      ),
+      GoRoute(
+          path: SGRoute.phone.route,
+          builder: (BuildContext context, GoRouterState state) =>
+              const NumberInputScreen(),
+          redirect: _authGuard),
+      GoRoute(
+        path: SGRoute.otp.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const OtpScreen(),
         redirect: _authGuard,
       ),
     ],
