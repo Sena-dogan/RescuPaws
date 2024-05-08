@@ -1,9 +1,6 @@
 targets:
   $default:
     builders:
-      your_builder:
+      freezed|freezed:
         generate_for:
           - lib/**/*.dart
-      mockito:mockBuilder:
-        enabled: false
-      
