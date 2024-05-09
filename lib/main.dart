@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -17,6 +18,16 @@ import 'data/hive/hive.dart';
 import 'di/components/service_locator.dart';
 import 'firebase_options.dart';
 import 'my_app.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
+
 
 /// Try using const constructors as much as possible!
 
@@ -42,6 +53,29 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+final NotificationSettings settings = await messaging.requestPermission(
+  
+);
+
+print('User granted permission: ${settings.authorizationStatus}');
+
+
+FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  print('Got a message whilst in the foreground!');
+  print('Message data: ${message.data}');
+
+  if (message.notification != null) {
+    print('Message also contained a notification: ${message.notification}');
+  }
+});
+
+
+
+
   //getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
     if (Platform.isAndroid) {
