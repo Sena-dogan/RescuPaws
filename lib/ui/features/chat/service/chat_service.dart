@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../models/chat/message.dart';
-import '../../../../models/meta_data.dart';
 import '../../../../models/user_data.dart';
 
 class ChatService {
@@ -29,7 +27,10 @@ class ChatService {
 
   Future<void> addOrUpdateUser(UserData userData) async {
     userData = userData.minify();
-    await _db.collection('Users').doc(userData.uid).set(userData.minify().toJson());
+    await _db
+        .collection('Users')
+        .doc(userData.uid)
+        .set(userData.minify().toJson());
   }
 
   Future<UserData> getUserById(String userId) async {
@@ -139,7 +140,6 @@ extension on User {
     );
   }
 }
-
 
 extension on UserData {
   UserData minify() {

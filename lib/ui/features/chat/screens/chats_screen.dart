@@ -1,16 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
-import '../../../../utils/firebase_utils.dart';
-import '../../../home/widgets/loading_paw_widget.dart';
 import '../../../widgets/bottom_nav_bar.dart';
 import '../service/chat_service.dart';
-import '../widgets/user_tile.dart';
-import 'message_screen.dart';
 
 class ChatsScreen extends ConsumerWidget {
   ChatsScreen({super.key});
