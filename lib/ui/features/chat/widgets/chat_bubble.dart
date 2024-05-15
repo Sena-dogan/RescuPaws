@@ -30,11 +30,9 @@ class ChatBubble extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       child: Text(
-        message.message,
+        message.lastMessage,
         style: context.textTheme.titleSmall?.copyWith(
-          color: isCurrentUser
-              ? Colors.white
-              : Colors.black.withOpacity(0.7),
+          color: isCurrentUser ? Colors.white : Colors.black.withOpacity(0.7),
         ),
       ),
     );

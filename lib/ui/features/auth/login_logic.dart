@@ -199,12 +199,21 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> forgotPassword() async {
     if (state.email == null || state.email!.isEmpty) {
-      throw const FormatException('Email is required');
+      throw const FormatException('Lütfen email adresinizi giriniz.');
     }
     await FirebaseAuth.instance
         .sendPasswordResetEmail(email: state.email!)
         .then((void value) {
       Logger().i('Password reset email sent');
+    }).catchError((Object e) {
+      switch (e.toString()) {
+        case 'user-not-found':
+          throw const FormatException('Kullanıcı bulunamadı');
+        case 'invalid-email':
+          throw const FormatException('Geçersiz email adresi');
+        default:
+          throw const FormatException('Bir hata oluştu');
+      }
     });
     return true;
   }

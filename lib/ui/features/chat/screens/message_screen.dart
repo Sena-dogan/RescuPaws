@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../constants/assets.dart';
@@ -11,7 +10,6 @@ import '../../../../utils/context_extensions.dart';
 import '../../../home/widgets/loading_paw_widget.dart';
 import '../../detail/widgets/advertiser_info.dart';
 import '../logic/chat_logic.dart';
-import '../service/chat_service.dart';
 import '../widgets/chat_bubble.dart';
 
 class MessageScreen extends ConsumerWidget {
@@ -26,30 +24,17 @@ class MessageScreen extends ConsumerWidget {
   final UserData? receiverUser;
 
   final TextEditingController _messageController = TextEditingController();
-
-  final ChatService _chatService = ChatService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // send message
-  Future<void> _sendMessage() async {
-    final String message = _messageController.text;
-    // if there is something inside the text field
-    if (message.isNotEmpty) {
-      // clear the text field
-
-      _messageController.clear();
-
-      // send the message
-      await _chatService.sendMessage(receiverId, message, receiverUser);
-
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     final UserData? user = ref.watch(chatLogicProvider).user;
-    Logger().i('User is bro $user');
+    final Future<void> sendTextMessage =
+        ref.watch(chatLogicProvider.notifier).sendTextMessage(
+              lastMessage: _messageController.text,
+              receiverUserId: receiverId,
+            );
     return Container(
       decoration: BoxDecoration(
         color: context.colorScheme.background,
@@ -81,47 +66,65 @@ class MessageScreen extends ConsumerWidget {
                 color: context.colorScheme.tertiary.withOpacity(0.15),
               ),
               // display messages
-              _buildMessageList(),
+              Expanded(
+                  child: StreamBuilder<List<MessageModel>>(
+                      stream: ref
+                          .watch(chatLogicProvider.notifier)
+                          .getMessagesList(receiverId),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<MessageModel>> snapshot) {
+                        if (snapshot.hasError) {
+                          debugPrint('Error: ${snapshot.error}');
+                          return Center(
+                            child: Lottie.asset(
+                              Assets.Error,
+                              repeat: true,
+                              height: 200,
+                            ),
+                          );
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const LoadingPawWidget();
+                        }
+
+                        if (snapshot.hasData) {
+                          final List<MessageModel> messages = snapshot.data!;
+                          if (messages.isEmpty) {
+                            return Center(
+                              child: Lottie.asset(
+                                Assets.Error,
+                                repeat: true,
+                                height: 200,
+                              ),
+                            );
+                          }
+                          return ListView.builder(
+                            itemCount: messages.length,
+                            reverse: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              final MessageModel message = messages[index];
+                              return _buildMessageItem(message);
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      })),
 
               // user input
-              _buildUserInput(context),
+              _buildUserInput(
+                context,
+                sendTextMessage,
+              ), // send message button and text field
             ],
           )),
     );
   }
 
   // build messages list
-  Expanded _buildMessageList() {
-    return Expanded(
-        child: StreamBuilder<List<MessageModel>>(
-            stream: _chatService.getMessages(receiverId),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<MessageModel>> snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Lottie.asset(
-                    Assets.Error,
-                    repeat: true,
-                    height: 200,
-                  ),
-                );
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const LoadingPawWidget();
-              }
-
-              final List<MessageModel> messages = snapshot.data!;
-              return ListView.builder(
-                itemCount: messages.length,
-                reverse: true,
-                itemBuilder: (BuildContext context, int index) {
-                  final MessageModel message = messages[index];
-                  return _buildMessageItem(message);
-                },
-              );
-            }));
-  }
 
   // build message item
   Widget _buildMessageItem(MessageModel message) {
@@ -144,7 +147,10 @@ class MessageScreen extends ConsumerWidget {
   }
 
   // build user input
-  Widget _buildUserInput(BuildContext context) {
+  Widget _buildUserInput(
+    BuildContext context,
+    Future<void> sendTextMessage,
+  ) {
     final Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(
@@ -184,7 +190,10 @@ class MessageScreen extends ConsumerWidget {
                 size: 20,
                 color: Colors.white,
               ),
-              onPressed: _sendMessage,
+              onPressed: () async {
+                await sendTextMessage;
+                _messageController.clear();
+              },
             ),
           ),
         ],

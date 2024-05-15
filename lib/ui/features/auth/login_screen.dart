@@ -138,15 +138,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             .forgotPassword()
             .catchError((Object? err) {
           debugPrint('Error caught: $err');
-          if (err is FormatException) {
-            context.showErrorSnackBar(
-                message: 'Lütfen e-posta adresinizi giriniz.');
+          context.showErrorSnackBar(
+                message: err.toString());
             return false;
-          } else {
-            context.showErrorSnackBar(
-                message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
-            return false;
-          }
+          
         }).then((bool value) {
           if (value) {
             context.showAwesomeMaterialBanner(
