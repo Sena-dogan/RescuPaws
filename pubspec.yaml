@@ -95,8 +95,6 @@ dependencies:
   pinput: ^4.0.0
   firebase_messaging: ^14.9.2
   rxdart: ^0.27.7
-  firebase_analytics: ^10.10.5
-
 
 dev_dependencies:
   flutter_test:
