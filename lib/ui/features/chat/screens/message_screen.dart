@@ -74,7 +74,6 @@ class MessageScreen extends ConsumerWidget {
                       builder: (BuildContext context,
                           AsyncSnapshot<List<MessageModel>> snapshot) {
                         if (snapshot.hasError) {
-                          debugPrint('Error: ${snapshot.error}');
                           return Center(
                             child: Lottie.asset(
                               Assets.Error,
@@ -192,6 +191,7 @@ class MessageScreen extends ConsumerWidget {
               ),
               onPressed: () async {
                 await sendTextMessage;
+                debugPrint('Message sent ${_messageController.text}');
                 _messageController.clear();
               },
             ),

@@ -1,34 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../constants/string_constants.dart';
 import '../../../../data/enums/message_type.dart';
 import '../../../../models/chat/chat_model.dart';
+import '../../../../models/chat/chat_ui_model.dart';
 import '../../../../models/chat/message.dart';
 import '../../../../models/user_data.dart';
 
-final Provider<ChatRepository> chatRepositoryProvider =
-    Provider<ChatRepository>((ProviderRef<ChatRepository> ref) {
-  return ChatRepository(
-    firestore: FirebaseFirestore.instance,
-  );
-});
+part 'chat_repository.g.dart';
 
-class ChatRepository {
-  ChatRepository({
-    required FirebaseFirestore firestore,
-  }) : _firestore = firestore;
+@riverpod
+class ChatRepository extends _$ChatRepository {
 
-  final FirebaseFirestore _firestore;
-  //final FirebaseAuth _auth = FirebaseAuth.instance;
+  @override
+  ChatUiModel build() {
+    return ChatUiModel();
+  }
 
   /// invoke to get single chat (messages)
   Stream<List<MessageModel>> getMessagesList({
     required String senderUserId,
     required String receiverUserId,
   }) {
-    return _firestore
+    return FirebaseFirestore.instance
         .collection(StringsConsts.usersCollection)
         .doc(senderUserId)
         .collection(StringsConsts.chatsCollection)
@@ -37,13 +33,13 @@ class ChatRepository {
         .orderBy('time')
         .snapshots()
         .map(
-      (QuerySnapshot<Map<String, dynamic>> messagesMap) {
-        final List<MessageModel> messagesList = <MessageModel>[];
-        for (final QueryDocumentSnapshot<Map<String, dynamic>> messageMap
-            in messagesMap.docs) {
-          messagesList.add(MessageModel.fromJson(messageMap.data()));
-        }
-        return messagesList;
+      (QuerySnapshot<Map<String, dynamic>> snapshot) {
+        return snapshot.docs.map(
+          (QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+            final Map<String, dynamic> data = doc.data();
+            return MessageModel.fromJson(data);
+          },
+        ).toList();
       },
     );
   }
@@ -52,7 +48,7 @@ class ChatRepository {
   Stream<List<Chat>> getChatsList({
     required String senderUserId,
   }) {
-    return _firestore
+    return FirebaseFirestore.instance
         .collection(StringsConsts.usersCollection)
         .doc(senderUserId)
         .collection(StringsConsts.chatsCollection)
@@ -124,7 +120,7 @@ class ChatRepository {
       message: lastMessage,
     );
     // saving chat to firestore
-    await _firestore
+    await FirebaseFirestore.instance
         .collection(StringsConsts.usersCollection)
         .doc(senderUser.uid)
         .collection(StringsConsts.chatsCollection)
@@ -140,7 +136,7 @@ class ChatRepository {
       message: lastMessage,
     );
     // saving chat to firestore
-    await _firestore
+    await FirebaseFirestore.instance
         .collection(StringsConsts.usersCollection)
         .doc(receiverUser.uid)
         .collection(StringsConsts.chatsCollection)
@@ -170,7 +166,7 @@ class ChatRepository {
     );
 
     // saving message data for sender
-    await _firestore
+    await FirebaseFirestore.instance
         .collection(StringsConsts.usersCollection)
         .doc(senderUserId)
         .collection(StringsConsts.chatsCollection)
@@ -180,7 +176,7 @@ class ChatRepository {
         .set(messageModel.toJson());
 
     // saving message data for receiver
-    await _firestore
+    await FirebaseFirestore.instance
         .collection(StringsConsts.usersCollection)
         .doc(receiverUserId)
         .collection(StringsConsts.chatsCollection)
@@ -196,7 +192,7 @@ class ChatRepository {
     required String messageId,
   }) async {
     // updating seen message to sender user doc
-    await _firestore
+    await FirebaseFirestore.instance
         .collection(StringsConsts.usersCollection)
         .doc(senderUserId)
         .collection(StringsConsts.chatsCollection)
@@ -206,7 +202,7 @@ class ChatRepository {
         .update(<Object, Object?>{'isSeen': true});
 
     // updating seen message to receiver user doc
-    await _firestore
+    await FirebaseFirestore.instance
         .collection(StringsConsts.usersCollection)
         .doc(receiverUserId)
         .collection(StringsConsts.chatsCollection)

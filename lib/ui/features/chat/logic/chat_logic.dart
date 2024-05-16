@@ -32,7 +32,8 @@ class ChatLogic extends _$ChatLogic {
     required String lastMessage,
     required String receiverUserId,
   }) async {
-    final ChatRepository chatRepository = ref.watch(chatRepositoryProvider);
+    final ChatRepository chatRepository =
+        ref.watch(chatRepositoryProvider.notifier);
 
     await chatRepository
         .sendTextMessage(
@@ -48,14 +49,16 @@ class ChatLogic extends _$ChatLogic {
 
   // get chats list function
   Stream<List<Chat>> getChatsList() {
-    final ChatRepository chatRepository = ref.watch(chatRepositoryProvider);
+    final ChatRepository chatRepository =
+        ref.watch(chatRepositoryProvider.notifier);
     final UserData senderUser = ref.watch(currentUserProvider);
     return chatRepository.getChatsList(senderUserId: senderUser.uid!);
   }
 
   // get messages list function
   Stream<List<MessageModel>> getMessagesList(String receiverUserId) {
-    final ChatRepository chatRepository = ref.watch(chatRepositoryProvider);
+    final ChatRepository chatRepository =
+        ref.watch(chatRepositoryProvider.notifier);
     final UserData senderUser = ref.watch(currentUserProvider);
     return chatRepository.getMessagesList(
       senderUserId: senderUser.uid!,
@@ -68,7 +71,8 @@ class ChatLogic extends _$ChatLogic {
     required String receiverUserId,
     required String messageId,
   }) async {
-    final ChatRepository chatRepository = ref.watch(chatRepositoryProvider);
+    final ChatRepository chatRepository =
+        ref.watch(chatRepositoryProvider.notifier);
     final UserData user = ref.watch(currentUserProvider);
     await chatRepository.setChatMessageSeen(
       messageId: messageId,
