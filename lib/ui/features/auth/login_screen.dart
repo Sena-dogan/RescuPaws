@@ -427,7 +427,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 textColor: context.colorScheme.scrim,
                 onPressed: () async {
                   await ref
-                      .read(loginLogicProvider.notifier)
+                      .watch(loginLogicProvider.notifier)
                       .signInWithGoogle()
                       .then((bool value) => value
                           ? context.go(SGRoute.home.route)
@@ -447,7 +447,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 buttonType: SocialLoginButtonType.apple,
                 text: 'Apple ile devam et',
                 onPressed: () {
-                  ref.read(loginLogicProvider.notifier).signInWithApple().then(
+                  ref.watch(loginLogicProvider.notifier).signInWithApple().then(
                       (bool value) => value
                           ? context.go(SGRoute.home.route)
                           : context.showErrorSnackBar(

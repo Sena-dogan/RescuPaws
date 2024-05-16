@@ -7,6 +7,7 @@ import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../../../utils/error_widgett.dart';
 import '../../../home/widgets/loading_paw_widget.dart';
 import '../logic/new_paw_logic.dart';
 
@@ -107,9 +108,11 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
 								),
 							);
 						},
-						error: (Object error, StackTrace stackTrace) => Center(
-							child: Text(error.toString()),
-						),
+						error: (Object error, StackTrace stackTrace) => PawErrorWidget(
+              error: error,
+              onRefresh: () async =>
+                  ref.refresh(fetchCategoriesProvider.future),
+            ),
 						loading: () => const Center(
 							child: LoadingPawWidget(),
 						),

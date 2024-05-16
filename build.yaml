@@ -4,4 +4,3 @@ targets:
       freezed|freezed:
         generate_for:
           - lib/**/*.dart
-      
