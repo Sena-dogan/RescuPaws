@@ -69,5 +69,4 @@ class DefaultFirebaseOptions {
     iosClientId: '247383540944-54t2l4u1tllu0cgtkjak447ng7at35ef.apps.googleusercontent.com',
     iosBundleId: 'app.patipati',
   );
-
 }
