@@ -30,11 +30,10 @@ class MessageScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     final UserData? user = ref.watch(chatLogicProvider).user;
-    final Future<void> sendTextMessage =
-        ref.watch(chatLogicProvider.notifier).sendTextMessage(
-              lastMessage: _messageController.text,
-              receiverUserId: receiverId,
-            );
+
+    final AsyncValue<List<MessageModel>> messagesStream =
+        ref.watch(getMessagesListProvider(receiverId));
+
     return Container(
       decoration: BoxDecoration(
         color: context.colorScheme.background,
@@ -67,56 +66,66 @@ class MessageScreen extends ConsumerWidget {
               ),
               // display messages
               Expanded(
-                  child: StreamBuilder<List<MessageModel>>(
-                      stream: ref
-                          .watch(chatLogicProvider.notifier)
-                          .getMessagesList(receiverId),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<MessageModel>> snapshot) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Lottie.asset(
-                              Assets.Error,
-                              repeat: true,
-                              height: 200,
-                            ),
-                          );
-                        }
+                  // child: StreamBuilder<List<MessageModel>>(
+                  //     stream: messagesStream,
+                  //     builder: (BuildContext context,
+                  //         AsyncSnapshot<List<MessageModel>> snapshot) {
+                  //       if (snapshot.hasError) {
+                  //         return Center(
+                  //           child: Lottie.asset(
+                  //             Assets.Error,
+                  //             repeat: true,
+                  //             height: 200,
+                  //           ),
+                  //         );
+                  //       }
 
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const LoadingPawWidget();
-                        }
+                  //       if (snapshot.connectionState ==
+                  //           ConnectionState.waiting) {
+                  //         return const LoadingPawWidget();
+                  //       }
 
-                        if (snapshot.hasData) {
-                          final List<MessageModel> messages = snapshot.data!;
-                          if (messages.isEmpty) {
-                            return Center(
-                              child: Lottie.asset(
-                                Assets.Error,
-                                repeat: true,
-                                height: 200,
-                              ),
-                            );
-                          }
-                          return ListView.builder(
-                            itemCount: messages.length,
-                            reverse: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              final MessageModel message = messages[index];
-                              return _buildMessageItem(message);
-                            },
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      })),
-
+                  //       if (snapshot.hasData) {
+                  //         debugPrint('Messages found');
+                  //         final List<MessageModel> messages = snapshot.data!;
+                  //         if (messages.isEmpty) {
+                  //           debugPrint('No messages found');
+                  //           return Center(
+                  //             child: Lottie.asset(
+                  //               Assets.Error,
+                  //               repeat: true,
+                  //               height: 200,
+                  //             ),
+                  //           );
+                  //         }
+                  //         return ListView.builder(
+                  //           itemCount: messages.length,
+                  //           reverse: true,
+                  //           itemBuilder: (BuildContext context, int index) {
+                  //             final MessageModel message = messages[index];
+                  //             return _buildMessageItem(message);
+                  //           },
+                  //         );
+                  //       }
+                  //       return const Center(
+                  //         child: CircularProgressIndicator(),
+                  //       );
+                  //     })),
+                  child: switch (messagesStream) {
+                AsyncValue(:final Object error?) => Text('Error: $error'),
+                AsyncValue(:final List<MessageModel> valueOrNull?) =>
+                  Text('$valueOrNull'),
+                _ => const CircularProgressIndicator(),
+              }),
               // user input
               _buildUserInput(
                 context,
-                sendTextMessage,
+                onSendMessage: (String message) async {
+                  await ref.read(chatLogicProvider.notifier).sendTextMessage(
+                        lastMessage: _messageController.text,
+                        receiverUserId: receiverId,
+                      );
+                },
               ), // send message button and text field
             ],
           )),
@@ -146,10 +155,8 @@ class MessageScreen extends ConsumerWidget {
   }
 
   // build user input
-  Widget _buildUserInput(
-    BuildContext context,
-    Future<void> sendTextMessage,
-  ) {
+  Widget _buildUserInput(BuildContext context,
+      {required Function(String) onSendMessage}) {
     final Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(
@@ -189,10 +196,10 @@ class MessageScreen extends ConsumerWidget {
                 size: 20,
                 color: Colors.white,
               ),
-              onPressed: () async {
-                await sendTextMessage;
+              onPressed: () {
                 debugPrint('Message sent ${_messageController.text}');
                 _messageController.clear();
+                onSendMessage(_messageController.text);
               },
             ),
           ),

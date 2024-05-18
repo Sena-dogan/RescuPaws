@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,6 +18,31 @@ final Provider<UserData> currentUserProvider =
 });
 
 @riverpod
+Stream<List<MessageModel>> getMessagesList(
+    GetMessagesListRef ref, String receiverUserId) {
+  debugPrint('Receiver user id is $receiverUserId');
+  final ChatRepository chatRepository =
+      ref.read(chatRepositoryProvider.notifier);
+  debugPrint('Chat repository is $chatRepository');
+  final UserData senderUser = ref.read(currentUserProvider);
+  debugPrint('Sender user is $senderUser');
+  return chatRepository.getMessagesList(
+    senderUserId: senderUser.uid!,
+    receiverUserId: receiverUserId,
+  );
+ 
+  // final socket = await Socket.connect('my-api', 4242);
+  // ref.onDispose(socket.close);
+
+  // var allMessages = const <String>[];
+  // await for (final message in socket.map(utf8.decode)) {
+  //   // A new message has been received. Let's add it to the list of all messages.
+  //   allMessages = [...allMessages, message];
+  //   yield allMessages;
+  // }
+}
+
+@riverpod
 class ChatLogic extends _$ChatLogic {
   @override
   ChatUiModel build() {
@@ -33,15 +59,19 @@ class ChatLogic extends _$ChatLogic {
     required String receiverUserId,
   }) async {
     final ChatRepository chatRepository =
-        ref.watch(chatRepositoryProvider.notifier);
+        ref.read(chatRepositoryProvider.notifier);
+    
+    final UserData? receiverUser = state.user;
 
     await chatRepository
         .sendTextMessage(
       lastMessage: lastMessage,
       receiverUserId: receiverUserId,
-      senderUser: ref.watch(currentUserProvider),
+      senderUser: ref.read(currentUserProvider),
+      receiverUser: receiverUser,
     )
         .catchError((Object error) {
+          Logger().e(error);
       setError(error.toString());
     });
     return true;
@@ -55,16 +85,29 @@ class ChatLogic extends _$ChatLogic {
     return chatRepository.getChatsList(senderUserId: senderUser.uid!);
   }
 
-  // get messages list function
-  Stream<List<MessageModel>> getMessagesList(String receiverUserId) {
-    final ChatRepository chatRepository =
-        ref.watch(chatRepositoryProvider.notifier);
-    final UserData senderUser = ref.watch(currentUserProvider);
-    return chatRepository.getMessagesList(
-      senderUserId: senderUser.uid!,
-      receiverUserId: receiverUserId,
-    );
-  }
+  // // get messages list function
+  // Stream<MessageModel> getMessagesList(String receiverUserId) async* {
+  //   final ChatRepository chatRepository =
+  //       ref.read(chatRepositoryProvider.notifier);
+  //   final UserData senderUser = ref.read(currentUserProvider);
+  //   final Stream<QuerySnapshot<Map<String, dynamic>>> snapshot =
+  //       chatRepository.getMessagesList(
+  //     senderUserId: senderUser.uid!,
+  //     receiverUserId: receiverUserId,
+  //   );
+
+  //   snapshot.map((QuerySnapshot<Map<String, dynamic>> event) {
+  //     if (event.docs.isEmpty) {
+  //       debugPrint('No messages found');
+  //       return null;
+  //     }
+  //     return event.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) async* {
+  //         final Map<String, dynamic> data = e.data();
+  //         yield MessageModel.fromJson(data);
+  //       });
+
+  //   });
+  // }
 
   // set chat message seen function
   Future<bool> setChatMessageSeen({

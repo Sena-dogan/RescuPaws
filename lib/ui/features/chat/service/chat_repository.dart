@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,7 +15,6 @@ part 'chat_repository.g.dart';
 
 @riverpod
 class ChatRepository extends _$ChatRepository {
-
   @override
   ChatUiModel build() {
     return ChatUiModel();
@@ -33,13 +34,13 @@ class ChatRepository extends _$ChatRepository {
         .orderBy('time')
         .snapshots()
         .map(
-      (QuerySnapshot<Map<String, dynamic>> snapshot) {
-        return snapshot.docs.map(
-          (QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-            final Map<String, dynamic> data = doc.data();
-            return MessageModel.fromJson(data);
-          },
-        ).toList();
+      (QuerySnapshot<Map<String, dynamic>> messagesMap) {
+        final List<MessageModel> messagesList = <MessageModel>[];
+        for (final QueryDocumentSnapshot<Map<String, dynamic>> messageMap
+            in messagesMap.docs) {
+          messagesList.add(MessageModel.fromJson(messageMap.data()));
+        }
+        return messagesList;
       },
     );
   }
@@ -66,14 +67,15 @@ class ChatRepository extends _$ChatRepository {
   }
 
   /// invoke to send text message.
-  Future<void> sendTextMessage({
+  Future<void> sendTextMessage(
+    {
     required String lastMessage,
     required String receiverUserId,
     required UserData senderUser,
+    required UserData? receiverUser,
   }) async {
     final DateTime time = DateTime.now();
     final String messageId = const Uuid().v1();
-    UserData? receiverUser;
 
     if (receiverUser == null) {
       throw Exception('Alıcı kullanıcı bulunamadı');
