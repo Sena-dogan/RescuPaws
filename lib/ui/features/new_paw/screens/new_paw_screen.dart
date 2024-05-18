@@ -1,4 +1,3 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -54,7 +53,6 @@ class NewPawScreen extends ConsumerWidget {
             ref.invalidate(newPawLogicProvider);
             context.go(SGRoute.home.route);
           });
-          FirebaseCrashlytics.instance.recordError(error, stackTrace);
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
