@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../../../constants/assets.dart';
 import '../../../../models/chat/message.dart';
 import '../../../../models/user_data.dart';
 import '../../../../utils/context_extensions.dart';
-import '../../../home/widgets/loading_paw_widget.dart';
 import '../../detail/widgets/advertiser_info.dart';
 import '../logic/chat_logic.dart';
 import '../widgets/chat_bubble.dart';
@@ -112,7 +110,9 @@ class MessageScreen extends ConsumerWidget {
                   //       );
                   //     })),
                   child: switch (messagesStream) {
+                // ignore: always_specify_types
                 AsyncValue(:final Object error?) => Text('Error: $error'),
+                // ignore: always_specify_types
                 AsyncValue(:final List<MessageModel> valueOrNull?) =>
                   Text('$valueOrNull'),
                 _ => const CircularProgressIndicator(),
