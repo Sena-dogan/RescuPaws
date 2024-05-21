@@ -1,5 +1,6 @@
 // ignore_for_file: always_specify_types, unused_local_variable
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,11 +29,28 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late CardSwiperController controller;
+  int messageCount = 0;
+
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    final RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      messageCount++;
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      messageCount++;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     controller = CardSwiperController();
+    setupInteractedMessage();
   }
 
   @override

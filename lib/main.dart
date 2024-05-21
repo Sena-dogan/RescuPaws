@@ -24,7 +24,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
 
-  print("Handling a background message: ${message.messageId}");
+  print('Handling a background message: ${message.messageId}');
 }
 
 
@@ -64,8 +64,7 @@ FirebaseMessaging.onMessage.listen((RemoteMessage message) {
   }
 });
 
-
-
+await FirebaseMessaging.instance.subscribeToTopic('all');
 
   //getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
