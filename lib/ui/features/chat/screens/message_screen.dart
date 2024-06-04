@@ -6,6 +6,7 @@ import '../../../../constants/assets.dart';
 import '../../../../models/chat/message.dart';
 import '../../../../models/user_data.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../../home/widgets/loading_paw_widget.dart';
 import '../../detail/widgets/advertiser_info.dart';
 import '../logic/chat_logic.dart';
 import '../widgets/chat_bubble.dart';
@@ -111,7 +112,7 @@ class MessageScreen extends ConsumerWidget {
                 // ignore: always_specify_types
                 AsyncValue(:final List<MessageModel> valueOrNull?) =>
                   Text('$valueOrNull'),
-                _ => const CircularProgressIndicator(),
+                _ => const Center(child: LoadingPawWidget()),
               }),
               // user input
               _buildUserInput(
