@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/assets.dart';
-import '../../../../constants/string_constants.dart';
 import '../../../../models/chat/chat_model.dart';
 import '../../../../utils/context_extensions.dart';
 import '../../../widgets/bottom_nav_bar.dart';
 import '../logic/chat_logic.dart';
+import 'message_screen.dart';
 
 class ChatsScreen extends ConsumerWidget {
   const ChatsScreen({super.key});
@@ -66,15 +66,19 @@ class ChatsScreen extends ConsumerWidget {
     final Size size = MediaQuery.of(context).size;
 
     return ListTile(
-      onTap: () => Navigator.pushNamed(
-        context,
-        '/message',
-        arguments: <String, Object>{
-          StringsConsts.username: chat.name,
-          StringsConsts.userId: chat.userId,
-          StringsConsts.profilePic: chat.profilePic,
-        },
-      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          // ignore: always_specify_types
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return MessageScreen(
+                receiverId: chat.userId,
+              );
+            },
+          ),
+        );
+      },
       title: Text(
         chat.name,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(

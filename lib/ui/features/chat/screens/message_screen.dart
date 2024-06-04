@@ -13,13 +13,9 @@ import '../widgets/chat_bubble.dart';
 class MessageScreen extends ConsumerWidget {
   MessageScreen({
     super.key,
-    required this.receiverEmail,
     required this.receiverId,
-    this.receiverUser,
   });
-  final String receiverEmail;
   final String receiverId;
-  final UserData? receiverUser;
 
   final TextEditingController _messageController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;

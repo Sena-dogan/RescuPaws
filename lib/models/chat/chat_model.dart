@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../user_data.dart';
+
 part 'chat_model.freezed.dart';
 part 'chat_model.g.dart';
 
@@ -14,4 +16,15 @@ class Chat with _$Chat {
   }) = _Chat;
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
+}
+
+extension ChatExtension on Chat {
+  UserData toUserData() {
+    return UserData(
+      uid: userId,
+      email: '', // Provide email if available
+      displayName: name,
+      photoUrl: profilePic,
+    );
+  }
 }

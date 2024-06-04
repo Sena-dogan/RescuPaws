@@ -145,16 +145,17 @@ class DetailBody extends ConsumerWidget {
                             throw Exception(
                                 'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
                           }
-                          Navigator.push(context,
-                              // ignore: always_specify_types
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                            return MessageScreen(
-                              receiverEmail: receiverEmail,
-                              receiverId: receiverId,
-                              receiverUser: pawEntryDetailResponse?.userData,
-                            );
-                          }));
+                          Navigator.push(
+                            context,
+                            // ignore: always_specify_types
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return MessageScreen(
+                                  receiverId: receiverId,
+                                );
+                              },
+                            ),
+                          );
                         },
                         child: Text('Mesaj Gönder',
                             style: context.textTheme.labelSmall?.copyWith(

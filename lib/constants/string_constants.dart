@@ -12,5 +12,6 @@ class StringsConsts {
   static const String username = 'username';
   static const String profilePic = 'profilePic';
   static const String isGroupChat = 'isGroupChat';
+  static const String userData = 'userData';
 
 }

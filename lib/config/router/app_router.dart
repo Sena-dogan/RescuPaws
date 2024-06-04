@@ -5,9 +5,11 @@ import 'package:injectable/injectable.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constants/assets.dart';
+import '../../constants/string_constants.dart';
 import '../../data/enums/router_enums.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
+import '../../models/user_data.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/auth/number_input_screen.dart';
 import '../../ui/features/auth/otp_screen.dart';
@@ -202,15 +204,18 @@ class SGGoRouter {
       ),
       GoRoute(
         path: SGRoute.message.route,
-        builder: (BuildContext context, GoRouterState state) => MessageScreen(
-          receiverEmail: state.extra! as String,
-          receiverId: state.extra! as String,
-        ),
+        builder: (BuildContext context, GoRouterState state) {
+          final Map<String, Object> args = state.extra! as Map<String, Object>;
+          return MessageScreen(
+            receiverId: args[StringsConsts.userId]! as String,
+          );
+        },
         redirect: _authGuard,
       ),
       GoRoute(
         path: SGRoute.chats.route,
-        builder: (BuildContext context, GoRouterState state) => ChatsScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const ChatsScreen(),
         redirect: _authGuard,
       ),
     ],
