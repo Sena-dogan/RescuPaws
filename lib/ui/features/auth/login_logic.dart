@@ -203,7 +203,9 @@ class LoginLogic extends _$LoginLogic {
         accessToken: appleCredential.authorizationCode,
       );
       setLogin(isLoading: true);
-      await ref.read(fetchTokenProvider.future);
+      await ref.read(fetchTokenProvider.future).catchError((Object e, StackTrace stackTrace) {
+        Logger().e(e.toString());
+      });
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
