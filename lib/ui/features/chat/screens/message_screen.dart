@@ -61,51 +61,6 @@ class MessageScreen extends ConsumerWidget {
               ),
               // display messages
               Expanded(
-                  // child: StreamBuilder<List<MessageModel>>(
-                  //     stream: messagesStream,
-                  //     builder: (BuildContext context,
-                  //         AsyncSnapshot<List<MessageModel>> snapshot) {
-                  //       if (snapshot.hasError) {
-                  //         return Center(
-                  //           child: Lottie.asset(
-                  //             Assets.Error,
-                  //             repeat: true,
-                  //             height: 200,
-                  //           ),
-                  //         );
-                  //       }
-
-                  //       if (snapshot.connectionState ==
-                  //           ConnectionState.waiting) {
-                  //         return const LoadingPawWidget();
-                  //       }
-
-                  //       if (snapshot.hasData) {
-                  //         debugPrint('Messages found');
-                  //         final List<MessageModel> messages = snapshot.data!;
-                  //         if (messages.isEmpty) {
-                  //           debugPrint('No messages found');
-                  //           return Center(
-                  //             child: Lottie.asset(
-                  //               Assets.Error,
-                  //               repeat: true,
-                  //               height: 200,
-                  //             ),
-                  //           );
-                  //         }
-                  //         return ListView.builder(
-                  //           itemCount: messages.length,
-                  //           reverse: true,
-                  //           itemBuilder: (BuildContext context, int index) {
-                  //             final MessageModel message = messages[index];
-                  //             return _buildMessageItem(message);
-                  //           },
-                  //         );
-                  //       }
-                  //       return const Center(
-                  //         child: CircularProgressIndicator(),
-                  //       );
-                  //     })),
                   child: switch (messagesStream) {
                 // ignore: always_specify_types
                 AsyncValue(:final Object error?) => Text('Error: $error'),
