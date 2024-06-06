@@ -62,10 +62,12 @@ class BottomNavBar extends ConsumerWidget {
         },
         activeIndex: nav.navIndex,
         onTap: (int index) {
+          context.go(SGRoute.values[index].route);
+          debugPrint('Current Index is $index - ero');
+          Future<void>.delayed(const Duration(milliseconds: 10000));
           ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(index);
           debugPrint('Current Index is $index');
           debugPrint('Current Route is ${SGRoute.values[index].route}');
-          context.go(SGRoute.values[index].route);
         },
         gapLocation: GapLocation.none,
         //borderColor: Colors.grey.withOpacity(0.5),
