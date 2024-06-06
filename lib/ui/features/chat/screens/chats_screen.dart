@@ -25,6 +25,7 @@ class ChatsScreen extends ConsumerWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
@@ -32,7 +33,7 @@ class ChatsScreen extends ConsumerWidget {
             style: context.textTheme.labelSmall,
           ),
         ),
-        bottomNavigationBar: const BottomNavBar(),
+        bottomNavigationBar: const PawBottomNavBar(),
         backgroundColor: Colors.transparent,
         body: StreamBuilder<List<Chat>>(
           stream: ref.watch(chatLogicProvider.notifier).getChatsList(),

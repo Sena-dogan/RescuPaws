@@ -59,7 +59,7 @@ class DetailScreen extends ConsumerWidget {
         floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: const BottomNavBar(),
+        bottomNavigationBar: const PawBottomNavBar(),
       ),
     );
   }

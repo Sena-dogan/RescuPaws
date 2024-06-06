@@ -49,7 +49,7 @@ class ProfileScreen extends ConsumerWidget {
         appBar: const EmptyAppBar(),
         floatingActionButton: const AddNavButton(),
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: const BottomNavBar(),
+        bottomNavigationBar: const PawBottomNavBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: userLogic.isLoading
             ? const Center(

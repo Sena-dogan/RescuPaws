@@ -9,8 +9,8 @@ import '../../constants/icons.dart';
 import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../../utils/context_extensions.dart';
 
-class BottomNavBar extends ConsumerWidget {
-  const BottomNavBar({super.key});
+class PawBottomNavBar extends ConsumerWidget {
+  const PawBottomNavBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,7 +54,7 @@ class BottomNavBar extends ConsumerWidget {
           ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(index);
           debugPrint('Current Index is $index');
           debugPrint('Current Route is ${SGRoute.values[index].route}');
-          context.push(SGRoute.values[index].route);
+          context.go(SGRoute.values[index].route);
         },
         gapLocation: GapLocation.none,
         //borderColor: Colors.grey.withOpacity(0.5),

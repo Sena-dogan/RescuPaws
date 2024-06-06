@@ -54,7 +54,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: const BottomNavBar(),
+        bottomNavigationBar: const PawBottomNavBar(),
         body: RefreshIndicator(
             onRefresh: () async => ref.refresh(fetchPawEntriesProvider.future),
             child: switch (pawEntryLogic) {
