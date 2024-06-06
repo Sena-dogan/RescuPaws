@@ -48,7 +48,7 @@ LocationRepository getLocationRepository(GetLocationRepositoryRef ref) {
 
 @riverpod
 Future<GetLocationsResponse> fetchLocations(FetchLocationsRef ref,
-    {int countryId = 1, int cityId = 1}) async {
+    {int countryId = 1, int cityId = 34}) async {
   final LocationRepository locationRepository =
       ref.read(getLocationRepositoryProvider);
   final GetLocationsResponse locations = await locationRepository.getLocations(
