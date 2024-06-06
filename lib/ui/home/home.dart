@@ -74,13 +74,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         backgroundColor: Colors.transparent,
         bottomNavigationBar: const BottomNavBar(),
         body: RefreshIndicator(
+            triggerMode: RefreshIndicatorTriggerMode.anywhere,
             onRefresh: () async => ref.refresh(fetchPawEntriesProvider.future),
             child: switch (pawEntryLogic) {
               AsyncValue<GetPawEntryResponse>(
                 :final GetPawEntryResponse valueOrNull?
               ) =>
                 SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(
+                        parent: ClampingScrollPhysics(),
+                    ),
                     child: _buildBody(context, valueOrNull.data)),
               // An error is available, so we render it.
               AsyncValue(:final Object error?) => ErrorWidgett(
