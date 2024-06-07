@@ -30,16 +30,6 @@ Stream<List<MessageModel>> getMessagesList(
     senderUserId: senderUser.uid!,
     receiverUserId: receiverUserId,
   );
- 
-  // final socket = await Socket.connect('my-api', 4242);
-  // ref.onDispose(socket.close);
-
-  // var allMessages = const <String>[];
-  // await for (final message in socket.map(utf8.decode)) {
-  //   // A new message has been received. Let's add it to the list of all messages.
-  //   allMessages = [...allMessages, message];
-  //   yield allMessages;
-  // }
 }
 
 @riverpod
@@ -60,8 +50,10 @@ class ChatLogic extends _$ChatLogic {
   }) async {
     final ChatRepository chatRepository =
         ref.read(chatRepositoryProvider.notifier);
-    
+
     final UserData? receiverUser = state.user;
+
+    debugPrint('Message sent: $lastMessage');
 
     await chatRepository
         .sendTextMessage(
@@ -71,7 +63,7 @@ class ChatLogic extends _$ChatLogic {
       receiverUser: receiverUser,
     )
         .catchError((Object error) {
-          Logger().e(error);
+      Logger().e(error);
       setError(error.toString());
     });
     return true;
@@ -84,30 +76,6 @@ class ChatLogic extends _$ChatLogic {
     final UserData senderUser = ref.watch(currentUserProvider);
     return chatRepository.getChatsList(senderUserId: senderUser.uid!);
   }
-
-  // // get messages list function
-  // Stream<MessageModel> getMessagesList(String receiverUserId) async* {
-  //   final ChatRepository chatRepository =
-  //       ref.read(chatRepositoryProvider.notifier);
-  //   final UserData senderUser = ref.read(currentUserProvider);
-  //   final Stream<QuerySnapshot<Map<String, dynamic>>> snapshot =
-  //       chatRepository.getMessagesList(
-  //     senderUserId: senderUser.uid!,
-  //     receiverUserId: receiverUserId,
-  //   );
-
-  //   snapshot.map((QuerySnapshot<Map<String, dynamic>> event) {
-  //     if (event.docs.isEmpty) {
-  //       debugPrint('No messages found');
-  //       return null;
-  //     }
-  //     return event.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) async* {
-  //         final Map<String, dynamic> data = e.data();
-  //         yield MessageModel.fromJson(data);
-  //       });
-
-  //   });
-  // }
 
   // set chat message seen function
   Future<bool> setChatMessageSeen({

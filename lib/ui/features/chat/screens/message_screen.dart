@@ -25,6 +25,7 @@ class MessageScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     final UserData? user = ref.watch(chatLogicProvider).user;
+    debugPrint('advertiser User is $user');
 
     final AsyncValue<List<MessageModel>> messagesStream =
         ref.watch(getMessagesListProvider(receiverId));
@@ -74,7 +75,7 @@ class MessageScreen extends ConsumerWidget {
                 context,
                 onSendMessage: (String message) async {
                   await ref.read(chatLogicProvider.notifier).sendTextMessage(
-                        lastMessage: _messageController.text,
+                        lastMessage: message,
                         receiverUserId: receiverId,
                       );
                 },
@@ -150,8 +151,9 @@ class MessageScreen extends ConsumerWidget {
               ),
               onPressed: () {
                 debugPrint('Message sent ${_messageController.text}');
+                final String message = _messageController.text;
                 _messageController.clear();
-                onSendMessage(_messageController.text);
+                onSendMessage(message);
               },
             ),
           ),

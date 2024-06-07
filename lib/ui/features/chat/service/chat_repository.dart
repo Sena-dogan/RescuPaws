@@ -65,8 +65,7 @@ class ChatRepository extends _$ChatRepository {
   }
 
   /// invoke to send text message.
-  Future<void> sendTextMessage(
-    {
+  Future<void> sendTextMessage({
     required String lastMessage,
     required String receiverUserId,
     required UserData senderUser,
@@ -79,7 +78,6 @@ class ChatRepository extends _$ChatRepository {
       throw Exception('Alıcı kullanıcı bulunamadı');
     }
 
-    // saving chat data to chats sub-collection.
     await _saveChatDataToUsersSubCollection(
       senderUser: senderUser,
       receiverUser: receiverUser,
@@ -89,7 +87,6 @@ class ChatRepository extends _$ChatRepository {
       throw Exception(error.toString());
     });
 
-    // saving message data to message sub collection.
     await _saveMessageDataToMessagesSubCollection(
       receiverUserId: receiverUserId,
       senderUserId: senderUser.uid ?? 'sender uid is null',
