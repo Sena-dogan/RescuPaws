@@ -111,7 +111,10 @@ class DetailBody extends ConsumerWidget {
                     ),
                     const Gap(30),
                     AdvertiserInfo(
-                      user: pawEntryDetailResponse?.userData,
+                      receiverName:
+                          pawEntryDetailResponse!.userData?.displayName ?? '',
+                      receiverProfilePic:
+                          pawEntryDetailResponse!.userData?.photoUrl,
                       imageSize: size.width * 0.2,
                       textStyle: context.textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.bold,
@@ -152,6 +155,12 @@ class DetailBody extends ConsumerWidget {
                               builder: (BuildContext context) {
                                 return MessageScreen(
                                   receiverId: receiverId,
+                                  receiverName: pawEntryDetailResponse!
+                                          .userData?.displayName ??
+                                      '',
+                                  receiverProfilePic: pawEntryDetailResponse!
+                                          .userData?.photoUrl ??
+                                      '',
                                 );
                               },
                             ),

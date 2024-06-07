@@ -75,6 +75,8 @@ class ChatsScreen extends ConsumerWidget {
             builder: (BuildContext context) {
               return MessageScreen(
                 receiverId: chat.userId,
+                receiverName: chat.name,
+                receiverProfilePic: chat.profilePic,
               );
             },
           ),

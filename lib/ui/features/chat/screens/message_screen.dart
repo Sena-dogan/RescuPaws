@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/assets.dart';
 import '../../../../models/chat/message.dart';
-import '../../../../models/user_data.dart';
 import '../../../../utils/context_extensions.dart';
 import '../../../home/widgets/loading_paw_widget.dart';
 import '../../detail/widgets/advertiser_info.dart';
@@ -15,8 +14,12 @@ class MessageScreen extends ConsumerWidget {
   MessageScreen({
     super.key,
     required this.receiverId,
+    required this.receiverName,
+    required this.receiverProfilePic,
   });
   final String receiverId;
+  final String? receiverName;
+  final String? receiverProfilePic;
 
   final TextEditingController _messageController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,8 +27,6 @@ class MessageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
-    final UserData? user = ref.watch(chatLogicProvider).user;
-    debugPrint('advertiser User is $user');
 
     final AsyncValue<List<MessageModel>> messagesStream =
         ref.watch(getMessagesListProvider(receiverId));
@@ -39,49 +40,60 @@ class MessageScreen extends ConsumerWidget {
         ),
       ),
       child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            title: SizedBox(
-              width: size.width * 0.5,
-              child: AdvertiserInfo(
-                user: user,
-                imageSize: size.width * 0.1,
-                textStyle: context.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  overflow: TextOverflow.ellipsis,
-                ),
+          centerTitle: true,
+          title: SizedBox(
+            width: size.width * 0.5,
+            child: AdvertiserInfo(
+              receiverName: receiverName,
+              receiverProfilePic: receiverProfilePic,
+              imageSize: size.width * 0.1,
+              textStyle: context.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
-          body: Column(
-            children: <Widget>[
-              Divider(
-                color: context.colorScheme.tertiary.withOpacity(0.15),
-              ),
-              // display messages
-              Expanded(
-                  child: switch (messagesStream) {
-                // ignore: always_specify_types
-                AsyncValue(:final Object error?) => Text('Error: $error'),
-                // ignore: always_specify_types
-                AsyncValue(:final List<MessageModel> valueOrNull?) =>
-                  Text('$valueOrNull'),
+        ),
+        body: Column(
+          children: <Widget>[
+            Divider(
+              color: context.colorScheme.tertiary.withOpacity(0.15),
+            ),
+            // display messages
+            Expanded(
+              child: switch (messagesStream) {
+                AsyncValue<Object>(:final Object error?) =>
+                  Text('Error: $error'),
+                AsyncValue<List<MessageModel>>(
+                  :final List<MessageModel> valueOrNull?
+                ) =>
+                  valueOrNull != null
+                      ? ListView.builder(
+                          itemCount: valueOrNull.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _buildMessageItem(valueOrNull[index]);
+                          },
+                        )
+                      : const Center(child: Text('No messages')),
                 _ => const Center(child: LoadingPawWidget()),
-              }),
-              // user input
-              _buildUserInput(
-                context,
-                onSendMessage: (String message) async {
-                  await ref.read(chatLogicProvider.notifier).sendTextMessage(
-                        lastMessage: message,
-                        receiverUserId: receiverId,
-                      );
-                },
-              ), // send message button and text field
-            ],
-          )),
+              },
+            ),
+            // user input
+            _buildUserInput(
+              context,
+              onSendMessage: (String message) async {
+                await ref.read(chatLogicProvider.notifier).sendTextMessage(
+                      lastMessage: message,
+                      receiverUserId: receiverId,
+                    );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -150,10 +162,19 @@ class MessageScreen extends ConsumerWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                debugPrint('Message sent ${_messageController.text}');
                 final String message = _messageController.text;
                 _messageController.clear();
-                onSendMessage(message);
+                if (message.isNotEmpty) {
+                  onSendMessage(message);
+                } else {
+                  // show snackbar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Lütfen bir mesaj yazın'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
               },
             ),
           ),

@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constants/assets.dart';
-import '../../constants/string_constants.dart';
 import '../../data/enums/router_enums.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
@@ -14,7 +13,6 @@ import '../../ui/features/auth/number_input_screen.dart';
 import '../../ui/features/auth/otp_screen.dart';
 import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/chat/screens/chats_screen.dart';
-import '../../ui/features/chat/screens/message_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
 import '../../ui/features/favorite/favorite_screen.dart';
@@ -57,7 +55,6 @@ enum SGRoute {
   weight,
   vaccine,
   vaccineNewPaw,
-  message,
   phone,
   detail,
   otp;
@@ -199,16 +196,6 @@ class SGGoRouter {
         path: SGRoute.otp.route,
         builder: (BuildContext context, GoRouterState state) =>
             const OtpScreen(),
-        redirect: _authGuard,
-      ),
-      GoRoute(
-        path: SGRoute.message.route,
-        builder: (BuildContext context, GoRouterState state) {
-          final Map<String, Object> args = state.extra! as Map<String, Object>;
-          return MessageScreen(
-            receiverId: args[StringsConsts.userId]! as String,
-          );
-        },
         redirect: _authGuard,
       ),
       GoRoute(

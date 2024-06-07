@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../models/user_data.dart';
-
 class AdvertiserInfo extends StatelessWidget {
   const AdvertiserInfo({
     super.key,
-    required this.user,
     required this.imageSize,
     required this.textStyle,
+    required this.receiverName,
+    required this.receiverProfilePic,
   });
 
-  final UserData? user;
   final double imageSize;
   final TextStyle? textStyle;
+  final String? receiverName;
+  final String? receiverProfilePic;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class AdvertiserInfo extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: ClipOval(
-            child: Image.network(user?.photoUrl ?? '',
+            child: Image.network(receiverProfilePic ?? '',
                 fit: BoxFit.cover,
                 errorBuilder: (BuildContext context, Object error,
                         StackTrace? stackTrace) =>
@@ -41,7 +41,7 @@ class AdvertiserInfo extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            user?.displayName ?? 'Kullanıcı',
+            receiverName ?? 'Kullanıcı',
             style: textStyle,
           ),
         ),
