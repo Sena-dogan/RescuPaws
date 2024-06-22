@@ -73,11 +73,16 @@ class ChatsScreen extends ConsumerWidget {
           // ignore: always_specify_types
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return MessageScreen(
-                receiverId: chat.userId,
-                receiverName: chat.name,
-                receiverProfilePic: chat.profilePic,
-              );
+              if (chat.userId != null) {
+                debugPrint('Chat User ID: ${chat.userId} (ChatsScreen)');
+                return MessageScreen(
+                  receiverId: chat.userId,
+                  receiverName: chat.name,
+                  receiverProfilePic: chat.profilePic,
+                );
+              } else {
+                throw Exception('Receiver User id is null (ChatsScreen)');
+              }
             },
           ),
         );
