@@ -8,7 +8,6 @@ import '../../../../models/chat/chat_model.dart';
 import '../../../../models/chat/chat_ui_model.dart';
 import '../../../../models/chat/firestore_user_data.dart';
 import '../../../../models/chat/message.dart';
-import '../../../../models/user.dart';
 import '../../../../models/user_data.dart';
 
 part 'chat_repository.g.dart';

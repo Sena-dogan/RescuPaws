@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../constants/string_constants.dart';
 import '../../../../models/chat/chat_model.dart';
 import '../../../../models/chat/chat_ui_model.dart';
 import '../../../../models/chat/message.dart';

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../models/paw_entry_detail.dart';
-import '../../../../models/user_data.dart';
 import '../../../../utils/context_extensions.dart';
 import '../../chat/logic/chat_logic.dart';
 import '../../chat/screens/message_screen.dart';
