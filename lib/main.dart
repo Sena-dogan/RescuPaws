@@ -25,6 +25,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
   print('Handling a background message: ${message.messageId}');
+  print('Handling a background message: ${message.messageId}');
 }
 
 /// Try using const constructors as much as possible!
@@ -56,10 +57,12 @@ void main() async {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
 
-    if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
-    }
-  });
+  if (message.notification != null) {
+    print('Message also contained a notification: ${message.notification}');
+  }
+});
+
+await FirebaseMessaging.instance.subscribeToTopic('all');
 
   //getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
