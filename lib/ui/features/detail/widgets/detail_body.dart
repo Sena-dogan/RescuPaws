@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../models/paw_entry_detail.dart';
+import '../../../../models/user_data.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../chat/logic/chat_logic.dart';
 import '../../chat/screens/message_screen.dart';
 import '../logic/detail_logic.dart';
 import 'advertiser_info.dart';
@@ -148,6 +150,12 @@ class DetailBody extends ConsumerWidget {
                             throw Exception(
                                 'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
                           }
+                          ref
+                              .read(chatLogicProvider.notifier)
+                              .addReceiverUserToFirestore(
+                                receiverUser: pawEntryDetailResponse!.userData!,
+                              );
+
                           Navigator.push(
                             context,
                             // ignore: always_specify_types

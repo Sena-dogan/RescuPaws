@@ -6,7 +6,9 @@ import '../../../../constants/string_constants.dart';
 import '../../../../data/enums/message_type.dart';
 import '../../../../models/chat/chat_model.dart';
 import '../../../../models/chat/chat_ui_model.dart';
+import '../../../../models/chat/firestore_user_data.dart';
 import '../../../../models/chat/message.dart';
+import '../../../../models/user.dart';
 import '../../../../models/user_data.dart';
 
 part 'chat_repository.g.dart';
@@ -16,6 +18,54 @@ class ChatRepository extends _$ChatRepository {
   @override
   ChatUiModel build() {
     return ChatUiModel();
+  }
+
+  /// add receiver user to firestore
+  /// control if user already exists in firestore dont add again
+  Future<void> addReceiverUserToFirestore({
+    required UserData receiverUser,
+  }) async {
+    final DocumentSnapshot<Map<String, dynamic>> userDoc =
+        await FirebaseFirestore.instance
+            .collection(StringsConsts.appUsersCollection)
+            .doc(receiverUser.uid)
+            .get();
+
+    if (!userDoc.exists) {
+      await _saveUserDataToAppUsersSubCollection(receiverUser: receiverUser);
+    }
+  }
+
+  Future<void> _saveUserDataToAppUsersSubCollection({
+    required UserData receiverUser,
+  }) async {
+    final FirestoreUserData userData = FirestoreUserData(
+      uid: receiverUser.uid,
+      email: receiverUser.email,
+      displayName: receiverUser.displayName,
+      phoneNumber: receiverUser.phoneNumber,
+      photoUrl: receiverUser.photoUrl,
+    );
+    // saving user to firestore
+    await FirebaseFirestore.instance
+        .collection(StringsConsts.appUsersCollection)
+        .doc(receiverUser.uid)
+        .set(userData.toJson());
+  }
+
+  /// invoke to get user data by id
+  Future<UserData?> getUserDataById(String userId) async {
+    final DocumentSnapshot<Map<String, dynamic>> userDoc =
+        await FirebaseFirestore.instance
+            .collection(StringsConsts.appUsersCollection)
+            .doc(userId)
+            .get();
+
+    if (userDoc.exists) {
+      return UserData.fromJson(userDoc.data()!);
+    } else {
+      return null;
+    }
   }
 
   /// invoke to get single chat (messages)
@@ -71,12 +121,12 @@ class ChatRepository extends _$ChatRepository {
     required UserData senderUser,
     required UserData? receiverUser,
   }) async {
-    final DateTime time = DateTime.now();
-    final String messageId = const Uuid().v1();
-
     if (receiverUser == null) {
       throw Exception('Alıcı kullanıcı bulunamadı');
     }
+
+    final DateTime time = DateTime.now();
+    final String messageId = const Uuid().v1();
 
     await _saveChatDataToUsersSubCollection(
       senderUser: senderUser,

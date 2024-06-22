@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../constants/string_constants.dart';
 import '../../../../models/chat/chat_model.dart';
 import '../../../../models/chat/chat_ui_model.dart';
 import '../../../../models/chat/message.dart';
@@ -43,30 +45,65 @@ class ChatLogic extends _$ChatLogic {
     );
   }
 
-  // send text message function
+  // add receiver user to firestore function
+  Future<bool> addReceiverUserToFirestore({
+    required UserData receiverUser,
+  }) async {
+    final ChatRepository chatRepository =
+        ref.read(chatRepositoryProvider.notifier);
+    try {
+      await chatRepository.addReceiverUserToFirestore(
+          receiverUser: receiverUser);
+      debugPrint('Receiver user added to Firestore successfully');
+    } catch (error) {
+      Logger().e('Error in addReceiverUserToFirestore: $error');
+      setError(error.toString());
+      return false;
+    }
+    return true;
+  }
+
+  // Send text message function
   Future<bool> sendTextMessage({
     required String lastMessage,
     required String receiverUserId,
   }) async {
     final ChatRepository chatRepository =
         ref.read(chatRepositoryProvider.notifier);
+    final UserData senderUser = ref.read(currentUserProvider);
 
-    final UserData? receiverUser = state.user;
+    // Alıcı kullanıcı bilgisini Firestore'dan alma
+    debugPrint('Getting receiver user data for ID: $receiverUserId');
+    final UserData? receiverUser = await getUserDataById(receiverUserId);
 
-    debugPrint('Message sent: $lastMessage');
+    if (receiverUser == null) {
+      debugPrint('Receiver user not found for ID: $receiverUserId');
+      throw Exception('Alıcı kullanıcı bulunamadı');
+    }
 
-    await chatRepository
-        .sendTextMessage(
-      lastMessage: lastMessage,
-      receiverUserId: receiverUserId,
-      senderUser: ref.read(currentUserProvider),
-      receiverUser: receiverUser,
-    )
-        .catchError((Object error) {
-      Logger().e(error);
+    debugPrint('Receiver user found: ${receiverUser.displayName}');
+
+    try {
+      await chatRepository.sendTextMessage(
+        lastMessage: lastMessage,
+        receiverUserId: receiverUserId,
+        senderUser: senderUser,
+        receiverUser: receiverUser,
+      );
+      debugPrint('Message sent successfully');
+    } catch (error) {
+      Logger().e('Error in sendTextMessage: $error');
       setError(error.toString());
-    });
+      return false;
+    }
     return true;
+  }
+
+  // get user data by id function
+  Future<UserData?> getUserDataById(String userId) async {
+    final ChatRepository chatRepository =
+        ref.read(chatRepositoryProvider.notifier);
+    return chatRepository.getUserDataById(userId);
   }
 
   // get chats list function

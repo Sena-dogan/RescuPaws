@@ -1,6 +1,7 @@
 class StringsConsts {
   // firestore
   static const String usersCollection = 'users';
+  static const String appUsersCollection = 'appUsers';
   static const String groupsCollection = 'groups';
   static const String statusCollection = 'status';
   static const String chatsCollection = 'chats';
