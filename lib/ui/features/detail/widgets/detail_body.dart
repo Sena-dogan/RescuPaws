@@ -75,7 +75,7 @@ class DetailBody extends ConsumerWidget {
             //TODO: Add favorite functionality to the detail page
             const FavButton(),
           ],
-          expandedHeight: MediaQuery.of(context).size.height * 0.5,
+          expandedHeight: MediaQuery.sizeOf(context).height * 0.5,
           flexibleSpace: PawImageandName(
             pawEntryDetailResponse: pawEntryDetailResponse,
           ),
@@ -83,7 +83,7 @@ class DetailBody extends ConsumerWidget {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              final Size size = MediaQuery.of(context).size;
+              final Size size = MediaQuery.sizeOf(context);
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 30),

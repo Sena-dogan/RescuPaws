@@ -26,7 +26,7 @@ class MessageScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.sizeOf(context);
 
     final AsyncValue<List<MessageModel>> messagesStream =
         ref.watch(getMessagesListProvider(receiverId));
@@ -122,7 +122,7 @@ class MessageScreen extends ConsumerWidget {
   // build user input
   Widget _buildUserInput(BuildContext context,
       {required Function(String) onSendMessage}) {
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.sizeOf(context);
     return Padding(
       padding: EdgeInsets.only(
         bottom: size.height * 0.05,

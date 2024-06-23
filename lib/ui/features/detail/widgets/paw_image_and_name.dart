@@ -29,7 +29,7 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
       titlePadding: EdgeInsets.zero,
       title: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
             color: context.colorScheme.background.withOpacity(0.4),
             borderRadius: const BorderRadius.only(
@@ -56,7 +56,7 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
                   .images_uploads?.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   margin: EdgeInsets.zero,
                   child: Image.network(
                     widget.pawEntryDetailResponse?.pawEntryDetail!
