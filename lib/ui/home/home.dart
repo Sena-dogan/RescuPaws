@@ -103,8 +103,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.sizeOf(context).height * 0.7,
+                  width: MediaQuery.sizeOf(context).width,
                   child: const Center(child: Text('Henüz ilan yok'))),
             ],
           )
@@ -115,8 +115,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               Center(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  height: MediaQuery.of(context).size.height * 0.55,
+                  width: MediaQuery.sizeOf(context).width * 0.85,
+                  height: MediaQuery.sizeOf(context).height * 0.55,
                   child: CardSwiper(
                       cardsCount: pawEntries.length,
                       numberOfCardsDisplayed: pawEntries.length > 1 ? 2 : 1,
@@ -142,8 +142,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           int percentThresholdX, int percentThresholdY) {
                         return SwipeCard(
                             pawEntry: pawEntries[index],
-                            size: Size(MediaQuery.of(context).size.width * 0.85,
-                                MediaQuery.of(context).size.height * 0.55));
+                            size: Size(MediaQuery.sizeOf(context).width * 0.85,
+                                MediaQuery.sizeOf(context).height * 0.55));
                       }),
                 ),
               ),

@@ -64,7 +64,7 @@ class ChatsScreen extends ConsumerWidget {
   }
 
   Widget _buildChatListItem(BuildContext context, int index, Chat chat) {
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.sizeOf(context);
 
     return ListTile(
       onTap: () {
