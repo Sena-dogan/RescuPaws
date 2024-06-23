@@ -30,13 +30,14 @@ class PawBottomNavBar extends ConsumerWidget {
             case 1:
               return NavBarIcon(
                 isActive: isActive,
-                text: 'Kay',
+                text: 'Favoriler',
                 icon: AppIcons.like,
               );
             case 2:
               return NavBarIcon(
                 isActive: isActive,
                 text: 'Mesajlar',
+                //TODO: Find a better icon for messages
                 icon: AppIcons.message,
               );
             case 3:
@@ -58,9 +59,10 @@ class PawBottomNavBar extends ConsumerWidget {
           debugPrint('Current Index is $index');
           debugPrint('Current Route is ${SGRoute.values[index].route}');
         },
-        gapLocation: GapLocation.none,
+        gapLocation: GapLocation.center,
         //borderColor: Colors.grey.withOpacity(0.5),
         notchSmoothness: NotchSmoothness.softEdge,
+        hideAnimationCurve: Curves.easeInOut,
         leftCornerRadius: 20,
         rightCornerRadius: 20,
         splashColor: context.colorScheme.primary,
@@ -102,6 +104,8 @@ class NavBarIcon extends StatelessWidget {
             color: isActive
                 ? context.colorScheme.primary
                 : context.colorScheme.tertiary,
+            overflow: TextOverflow.ellipsis,
+
           ),
         ),
       ],
