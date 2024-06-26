@@ -28,7 +28,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late CardSwiperController controller;
+  late final CardSwiperController controller;
   int messageCount = 0;
 
   Future<void> setupInteractedMessage() async {
