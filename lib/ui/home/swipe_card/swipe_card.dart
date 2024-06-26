@@ -140,11 +140,11 @@ class SwipeCard extends ConsumerWidget {
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                         ),
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Gap(5),
+                    const Gap(10),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
@@ -165,7 +165,7 @@ class SwipeCard extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const Gap(20),
+                    const Gap(10),
                   ],
                 ),
               ),
