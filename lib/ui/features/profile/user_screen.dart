@@ -141,9 +141,24 @@ class ProfileScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        title: Text(
-                          userLogic.user?.displayName ?? 'Kullanici',
-                          style: context.textTheme.labelMedium,
+                        title: Row(
+                          children: <Widget>[
+                            Text(
+                              userLogic.user?.displayName ?? 'Kullanici',
+                              style: context.textTheme.labelMedium,
+                            ),
+                            const Gap(5),
+                            Visibility(
+                              visible: FirebaseAuth
+                                      .instance.currentUser?.phoneNumber !=
+                                  null,
+                              child: const Icon(
+                                Icons.verified,
+                                color: Colors.blue,
+                                size: 15,
+                              ),
+                            ),
+                          ],
                         ),
                         subtitle: Text(userLogic.user?.email ?? '',
                             style: context.textTheme.bodyMedium),
