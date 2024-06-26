@@ -54,6 +54,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final AsyncValue<GetPawEntryResponse> pawEntryLogic =
         ref.watch(fetchPawEntriesProvider);
