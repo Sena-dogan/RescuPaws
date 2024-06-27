@@ -49,7 +49,10 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                         // ignore: unused_result
                         ref.refresh(fetchFavoriteListProvider);
                       },
-                      child: _buildBody(valueOrNull, context)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _buildBody(valueOrNull, context),
+                      )),
             AsyncValue<Object>(:final Object error?) => ErrorWidget(error),
             _ => const Center(child: LoadingPawWidget()),
           }),
