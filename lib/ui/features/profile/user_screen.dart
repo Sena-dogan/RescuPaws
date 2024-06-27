@@ -237,6 +237,14 @@ class ProfileScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           ListTile(
+                            leading: const Icon(Icons.list_alt_outlined),
+                            title: const Text('İlanlarım'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              context.push(SGRoute.myEntries.route);
+                            },
+                          ),
+                          ListTile(
                             leading: const Icon(Icons.favorite_outline),
                             title: const Text('Favorilerim'),
                             trailing: const Icon(Icons.arrow_forward_ios),

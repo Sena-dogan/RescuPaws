@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -49,6 +50,23 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
         .setId(pawEntries.data.firstOrNull?.id ?? 0);
     ref.read(homeScreenLogicProvider.notifier).setPawEntries(pawEntries.data);
     Logger().i('Paw entries fetched successfully.');
+    return pawEntries;
+  });
+  return pawEntries
+      .getOrElse((PawEntryError l) => GetPawEntryResponse(data: <PawEntry>[]));
+}
+
+@riverpod
+/// Fetches the paw entries of the current user.
+Future<GetPawEntryResponse> fetchUserPawEntries(FetchPawEntriesRef ref) async {
+  final PawEntryRepository pawEntryRepository =
+      ref.watch(getPawEntryRepositoryProvider);
+  final Either<PawEntryError, GetPawEntryResponse> pawEntries =
+      await pawEntryRepository.getPawEntryById();
+  pawEntries.fold((PawEntryError l) {
+    return GetPawEntryResponse(data: <PawEntry>[]);
+  }, (GetPawEntryResponse pawEntries) {
+    debugPrint('Paw entries fetched successfully.');
     return pawEntries;
   });
   return pawEntries

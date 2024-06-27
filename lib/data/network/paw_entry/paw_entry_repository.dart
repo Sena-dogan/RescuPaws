@@ -18,8 +18,8 @@ class PawEntryRepository {
     return pawEntry;
   }
 
-  Future<GetPawEntryResponse> getPawEntryById() async {
-    final GetPawEntryResponse pawEntry = await _pawApi.getPawEntryById();
+  Future<Either<PawEntryError, GetPawEntryResponse>> getPawEntryById() async {
+    final Either<PawEntryError, GetPawEntryResponse> pawEntry = await _pawApi.getPawEntryById();
     return pawEntry;
   }
 

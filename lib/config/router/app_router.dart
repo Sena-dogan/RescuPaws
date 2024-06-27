@@ -16,6 +16,7 @@ import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/chat/screens/chats_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
+import '../../ui/features/entries/my_entries_screen.dart';
 import '../../ui/features/favorite/favorite_screen.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
@@ -60,7 +61,7 @@ enum SGRoute {
   vaccineNewPaw,
   phone,
   detail,
-  otp;
+  otp, myEntries;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
   String get name => toString().replaceAll('SGRoute.', '');
@@ -216,6 +217,12 @@ GoRouter goRoute(GoRouteRef ref) {
         path: SGRoute.chats.route,
         builder: (BuildContext context, GoRouterState state) =>
             const ChatsScreen(),
+        redirect: _authGuard,
+      ),
+      GoRoute(
+        path: SGRoute.myEntries.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const MyEntriesScreen(),
         redirect: _authGuard,
       ),
     ],
