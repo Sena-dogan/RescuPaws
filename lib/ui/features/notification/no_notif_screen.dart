@@ -86,7 +86,7 @@ class NoNotificationScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Text(
-              'No Notifications...',
+              'Henüz bildirim yok..',
               style: context.textTheme.labelMedium,
               textAlign: TextAlign.center,
             ),
