@@ -18,7 +18,7 @@ class MyEntriesScreen extends ConsumerWidget {
     return Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
-          color: context.colorScheme.background,
+          color: context.colorScheme.surface,
           image: const DecorationImage(
             image: AssetImage(Assets.LoginBg),
             fit: BoxFit.cover,
@@ -30,11 +30,11 @@ class MyEntriesScreen extends ConsumerWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: const Text('İlanlarım'),
-            actions: [
+            actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  context.go(SGRoute.newpaw.route);
+                  context.push(SGRoute.breed.route);
                 },
               ),
             ],
@@ -49,11 +49,27 @@ class MyEntriesScreen extends ConsumerWidget {
                     return ListTile(
                       title: Text(pawEntry.name ?? ''),
                       subtitle: Text(pawEntry.description ?? ''),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          
+                        },
+                      ),
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage(pawEntry
-                                .images_uploads![pawEntry.selectedImageIndex]
-                                .image_url ??
-                            ''),
+                        child: 
+                        (pawEntry.images_uploads != null && pawEntry.images_uploads!.isNotEmpty) ?
+                          ClipOval(
+                            child: Image.network(
+                            pawEntry.images_uploads?[pawEntry.selectedImageIndex]
+                                    .image_url ??
+                                '',
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, Object error, __) {
+                              debugPrint('Error: $error');
+                              return const Icon(Icons.error);
+                            },
+                                                    ),
+                          ) : const Icon(Icons.error),
                       ),
                     );
                   },
