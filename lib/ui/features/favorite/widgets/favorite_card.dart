@@ -87,6 +87,13 @@ class FavoriteCard extends StatelessWidget {
   }
 
   Widget _buildImage(Favorite favorite) {
+    if (favorite.classfield?.images_uploads == null ||
+        favorite.classfield!.images_uploads!.isEmpty) {
+      return const Image(
+        image: AssetImage(Assets.PawPaw),
+        fit: BoxFit.contain,
+      );
+    }
     return Expanded(
       child: Image.network(
         favorite.classfield?.images_uploads?[0].image_url ?? '',
