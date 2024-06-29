@@ -8,7 +8,8 @@ import '../../../../utils/context_extensions.dart';
 import '../../../home/widgets/loading_paw_widget.dart';
 import '../../detail/widgets/advertiser_info.dart';
 import '../logic/chat_logic.dart';
-import '../widgets/chat_bubble.dart';
+import '../widgets/message_item.dart';
+import '../widgets/user_input.dart';
 
 class MessageScreen extends ConsumerWidget {
   MessageScreen({
@@ -21,7 +22,6 @@ class MessageScreen extends ConsumerWidget {
   final String? receiverName;
   final String? receiverProfilePic;
 
-  final TextEditingController _messageController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -74,7 +74,10 @@ class MessageScreen extends ConsumerWidget {
                       ? ListView.builder(
                           itemCount: valueOrNull.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return _buildMessageItem(valueOrNull[index]);
+                            return MessageItem(
+                              auth: _auth,
+                              message: valueOrNull[index],
+                            );
                           },
                         )
                       : const Center(child: Text('No messages')),
@@ -82,8 +85,7 @@ class MessageScreen extends ConsumerWidget {
               },
             ),
             // user input
-            _buildUserInput(
-              context,
+            UserInput(
               onSendMessage: (String message) async {
                 await ref.read(chatLogicProvider.notifier).sendTextMessage(
                       lastMessage: message,
@@ -94,102 +96,6 @@ class MessageScreen extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-
-  // build messages list
-
-  // build message item
-  Widget _buildMessageItem(MessageModel message) {
-    final bool isCurrentUser = message.senderID == _auth.currentUser!.uid;
-    final Alignment alignment =
-        isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
-    return Container(
-      alignment: alignment,
-      child: Column(
-        crossAxisAlignment:
-            isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: <Widget>[
-          ChatBubble(
-            message: message,
-            isCurrentUser: isCurrentUser,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // build user input
-  Widget _buildUserInput(BuildContext context,
-      {required Function(String) onSendMessage}) {
-    final Size size = MediaQuery.sizeOf(context);
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: size.height * 0.05,
-        left: size.width * 0.05,
-        right: size.width * 0.05,
-      ),
-      child: Row(
-        children: <Widget>[
-          SizedBox(
-            height: 55,
-            width: size.width * 0.75,
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(
-                hoverColor: context.colorScheme.primary,
-                border: _messageFieldBorder(context),
-                enabledBorder: _messageFieldBorder(context),
-                focusedBorder: _messageFieldBorder(context),
-                hintText: 'Bir mesaj yazın...',
-              ),
-            ),
-          ),
-          Container(
-            height: 40,
-            width: 40,
-            decoration: ShapeDecoration(
-              color: context.colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-            margin: EdgeInsets.only(left: size.width * 0.05),
-            child: IconButton(
-              icon: const Icon(
-                Icons.send,
-                size: 20,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                final String message = _messageController.text;
-                _messageController.clear();
-                if (message.isNotEmpty) {
-                  onSendMessage(message);
-                } else {
-                  // show snackbar
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Lütfen bir mesaj yazın'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  OutlineInputBorder _messageFieldBorder(BuildContext context) {
-    return OutlineInputBorder(
-      borderSide: BorderSide(
-        color: context.colorScheme.secondary,
-        width: 0.7,
-      ),
-      borderRadius: BorderRadius.circular(20),
     );
   }
 }

@@ -1,13 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../constants/assets.dart';
 import '../../../../models/chat/chat_model.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../../../utils/error_widgett.dart';
 import '../../../widgets/bottom_nav_bar.dart';
 import '../logic/chat_logic.dart';
-import 'message_screen.dart';
+import '../widgets/chat_list_item.dart';
 
 class ChatsScreen extends ConsumerWidget {
   const ChatsScreen({super.key});
@@ -39,7 +40,11 @@ class ChatsScreen extends ConsumerWidget {
           stream: ref.watch(chatLogicProvider.notifier).getChatsList(),
           builder: (BuildContext context, AsyncSnapshot<List<Chat>> snapshot) {
             if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
+              Logger().e('Error: ${snapshot.error}');
+              return PawErrorWidget(onRefresh: () async {
+                // ignore: unused_result
+                ref.refresh(chatLogicProvider);
+              });
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -51,7 +56,7 @@ class ChatsScreen extends ConsumerWidget {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
                   final Chat chat = snapshot.data![index];
-                  return _buildChatListItem(context, index, chat);
+                  return ChatListItem(chat: chat);
                 },
               );
             }
@@ -59,58 +64,6 @@ class ChatsScreen extends ConsumerWidget {
             return const Text('No messaged users found');
           },
         ),
-      ),
-    );
-  }
-
-  Widget _buildChatListItem(BuildContext context, int index, Chat chat) {
-    final Size size = MediaQuery.sizeOf(context);
-
-    return ListTile(
-      onTap: () {
-        Navigator.push(
-          context,
-          // ignore: always_specify_types
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              if (chat.userId != null) {
-                debugPrint('Chat User ID: ${chat.userId} (ChatsScreen)');
-                return MessageScreen(
-                  receiverId: chat.userId,
-                  receiverName: chat.name,
-                  receiverProfilePic: chat.profilePic,
-                );
-              } else {
-                throw Exception('Receiver User id is null (ChatsScreen)');
-              }
-            },
-          ),
-        );
-      },
-      title: Text(
-        chat.name,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontSize: size.width * 0.045,
-            ),
-      ),
-      subtitle: Text(
-        chat.message,
-        maxLines: 1,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontSize: size.width * 0.035,
-            ),
-      ),
-      leading: CircleAvatar(
-        radius: 30.0,
-        backgroundImage: NetworkImage(
-          chat.profilePic,
-        ),
-      ),
-      trailing: Text(
-        DateFormat.Hm().format(chat.time),
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              fontSize: size.width * 0.030,
-            ),
       ),
     );
   }
