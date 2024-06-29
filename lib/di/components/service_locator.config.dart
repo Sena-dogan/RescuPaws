@@ -15,17 +15,17 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../data/getstore/get_store_helper.dart' as _i4;
 import '../../data/network/auth/auth_rest_client.dart' as _i10;
-import '../../data/network/auth_api.dart' as _i16;
-import '../../data/network/category/category_rest_client.dart' as _i11;
-import '../../data/network/category_api.dart' as _i17;
-import '../../data/network/favorite/favorite_rest_client.dart' as _i6;
-import '../../data/network/favorite_api.dart' as _i12;
-import '../../data/network/location/location_rest_client.dart' as _i7;
-import '../../data/network/location_api.dart' as _i13;
+import '../../data/network/auth_api.dart' as _i15;
+import '../../data/network/category/category_rest_client.dart' as _i7;
+import '../../data/network/category_api.dart' as _i12;
+import '../../data/network/favorite/favorite_rest_client.dart' as _i11;
+import '../../data/network/favorite_api.dart' as _i16;
+import '../../data/network/location/location_rest_client.dart' as _i9;
+import '../../data/network/location_api.dart' as _i17;
 import '../../data/network/paw_api.dart' as _i14;
-import '../../data/network/paw_entry/paw_entry_rest_client.dart' as _i8;
-import '../../data/network/utils/utils_rest_client.dart' as _i9;
-import '../../data/network/utils_api.dart' as _i15;
+import '../../data/network/paw_entry/paw_entry_rest_client.dart' as _i6;
+import '../../data/network/utils/utils_rest_client.dart' as _i8;
+import '../../data/network/utils_api.dart' as _i13;
 import '../module/network_module.dart' as _i18;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -50,39 +50,39 @@ extension GetItInjectableX on _i1.GetIt {
       () => networkModule.provideDio(gh<_i4.GetStoreHelper>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i6.FavoriteRestClient>(
-      () => networkModule.provideFavoriteRestClient(gh<_i5.Dio>()),
-      preResolve: true,
-    );
-    await gh.factoryAsync<_i7.LocationRestClient>(
-      () => networkModule.provideLocationRestClient(gh<_i5.Dio>()),
-      preResolve: true,
-    );
-    await gh.factoryAsync<_i8.PawEntryRestClient>(
+    await gh.factoryAsync<_i6.PawEntryRestClient>(
       () => networkModule.providePawEntryRestClient(gh<_i5.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i9.UtilsRestClient>(
+    await gh.factoryAsync<_i7.CategoryRestClient>(
+      () => networkModule.provideCategoryRestClient(gh<_i5.Dio>()),
+      preResolve: true,
+    );
+    await gh.factoryAsync<_i8.UtilsRestClient>(
       () => networkModule.provideUtilsRestClient(gh<_i5.Dio>()),
+      preResolve: true,
+    );
+    await gh.factoryAsync<_i9.LocationRestClient>(
+      () => networkModule.provideLocationRestClient(gh<_i5.Dio>()),
       preResolve: true,
     );
     await gh.factoryAsync<_i10.AuthRestClient>(
       () => networkModule.provideAuthRestClient(gh<_i5.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i11.CategoryRestClient>(
-      () => networkModule.provideCategoryRestClient(gh<_i5.Dio>()),
+    await gh.factoryAsync<_i11.FavoriteRestClient>(
+      () => networkModule.provideFavoriteRestClient(gh<_i5.Dio>()),
       preResolve: true,
     );
-    gh.factory<_i12.FavoriteApi>(
-        () => _i12.FavoriteApi(gh<_i6.FavoriteRestClient>()));
-    gh.factory<_i13.LocationApi>(
-        () => _i13.LocationApi(gh<_i7.LocationRestClient>()));
-    gh.factory<_i14.PawApi>(() => _i14.PawApi(gh<_i8.PawEntryRestClient>()));
-    gh.factory<_i15.UtilsApi>(() => _i15.UtilsApi(gh<_i9.UtilsRestClient>()));
-    gh.factory<_i16.AuthApi>(() => _i16.AuthApi(gh<_i10.AuthRestClient>()));
-    gh.factory<_i17.CategoryApi>(
-        () => _i17.CategoryApi(gh<_i11.CategoryRestClient>()));
+    gh.factory<_i12.CategoryApi>(
+        () => _i12.CategoryApi(gh<_i7.CategoryRestClient>()));
+    gh.factory<_i13.UtilsApi>(() => _i13.UtilsApi(gh<_i8.UtilsRestClient>()));
+    gh.factory<_i14.PawApi>(() => _i14.PawApi(gh<_i6.PawEntryRestClient>()));
+    gh.factory<_i15.AuthApi>(() => _i15.AuthApi(gh<_i10.AuthRestClient>()));
+    gh.factory<_i16.FavoriteApi>(
+        () => _i16.FavoriteApi(gh<_i11.FavoriteRestClient>()));
+    gh.factory<_i17.LocationApi>(
+        () => _i17.LocationApi(gh<_i9.LocationRestClient>()));
     return this;
   }
 }
