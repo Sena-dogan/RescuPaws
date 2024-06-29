@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:injectable/injectable.dart';
 import 'package:lottie/lottie.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../constants/assets.dart';
 import '../../data/enums/router_enums.dart';
 import '../../data/getstore/get_store_helper.dart';
 import '../../di/components/service_locator.dart';
+import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../../ui/features/auth/login_screen.dart';
 import '../../ui/features/auth/number_input_screen.dart';
 import '../../ui/features/auth/otp_screen.dart';
@@ -15,6 +16,7 @@ import '../../ui/features/auth/register_screen.dart';
 import '../../ui/features/chat/screens/chats_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
+import '../../ui/features/entries/my_entries_screen.dart';
 import '../../ui/features/favorite/favorite_screen.dart';
 import '../../ui/features/intro/intro_screen.dart';
 import '../../ui/features/new_paw/screens/address_input_screen.dart';
@@ -29,6 +31,8 @@ import '../../ui/features/notification/no_notif_screen.dart';
 import '../../ui/features/profile/user_screen.dart';
 import '../../ui/home/home.dart';
 import 'slide_extension.dart';
+
+part 'app_router.g.dart';
 
 GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
@@ -57,15 +61,15 @@ enum SGRoute {
   vaccineNewPaw,
   phone,
   detail,
-  otp;
+  otp, myEntries;
 
   String get route => '/${toString().replaceAll('SGRoute.', '')}';
   String get name => toString().replaceAll('SGRoute.', '');
 }
 
-@Singleton()
-class SGGoRouter {
-  final GoRouter goRoute = GoRouter(
+@riverpod
+GoRouter goRoute(GoRouteRef ref) {
+  return GoRouter(
     initialLocation: SGRoute.intro.route,
     errorBuilder: (BuildContext context, GoRouterState state) => Scaffold(
         body: Column(
@@ -83,6 +87,17 @@ class SGGoRouter {
         ),
       ],
     )),
+    redirect: (_, GoRouterState state) {
+      if (state.matchedLocation == SGRoute.home.route) {
+        debugPrint('home route');
+        ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(0);
+      }
+      if (state.matchedLocation == SGRoute.profile.route) {
+        debugPrint('profile route');
+        ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(1);
+      }
+      return null;
+    },
     routes: <GoRoute>[
       GoRoute(
         path: SGRoute.home.route,
@@ -204,9 +219,14 @@ class SGGoRouter {
             const ChatsScreen(),
         redirect: _authGuard,
       ),
+      GoRoute(
+        path: SGRoute.myEntries.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const MyEntriesScreen(),
+        redirect: _authGuard,
+      ),
     ],
   );
-  GoRouter get getGoRouter => goRoute;
 }
 
 // ignore: unused_element, prefer_function_declarations_over_variables

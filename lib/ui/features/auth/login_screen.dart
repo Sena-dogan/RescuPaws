@@ -437,24 +437,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 },
                 borderRadius: 30),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: SocialLoginButton(
-                elevation: const MaterialStatePropertyAll<double>(0.0),
-                strokeColor: context.colorScheme.primary,
-                backgroundColor: Colors.transparent,
-                textColor: context.colorScheme.scrim,
-                buttonType: SocialLoginButtonType.apple,
-                text: 'Apple ile devam et',
-                onPressed: () {
-                  ref.watch(loginLogicProvider.notifier).signInWithApple().then(
-                      (bool value) => value
-                          ? context.go(SGRoute.home.route)
-                          : context.showErrorSnackBar(
-                              message:
-                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
-                },
-                borderRadius: 30),
+          Visibility(
+            visible: context.isIOS,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: SocialLoginButton(
+                  elevation: const MaterialStatePropertyAll<double>(0.0),
+                  strokeColor: context.colorScheme.primary,
+                  backgroundColor: Colors.transparent,
+                  textColor: context.colorScheme.scrim,
+                  buttonType: SocialLoginButtonType.apple,
+                  text: 'Apple ile devam et',
+                  onPressed: () {
+                    ref.watch(loginLogicProvider.notifier).signInWithApple().then(
+                        (bool value) => value
+                            ? context.go(SGRoute.home.route)
+                            : context.showErrorSnackBar(
+                                message:
+                                    'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
+                  },
+                  borderRadius: 30),
+            ),
           ),
         ],
       ),

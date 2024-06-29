@@ -32,7 +32,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
     return Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
-          color: context.colorScheme.background,
+          color: context.colorScheme.surface,
           image: const DecorationImage(
             image: AssetImage(Assets.LoginBg),
             fit: BoxFit.cover,
@@ -58,13 +58,13 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                         subtitle: Text('$city, $district'),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () async {
+                          debugPrint('Konum');
                           await showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
                               showDragHandle: true,
-                              enableDrag: true,
                               barrierColor: Colors.black,
-                              backgroundColor: context.colorScheme.background,
+                              backgroundColor: context.colorScheme.surface,
                               builder: (BuildContext context) {
                                 return DraggableScrollableSheet(
                                     expand: false,
@@ -77,8 +77,8 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                           child: Container(
                                             padding: const EdgeInsets.all(16),
                                             decoration: BoxDecoration(
-                                              color: context
-                                                  .colorScheme.background,
+                                              color:
+                                                  context.colorScheme.surface,
                                               borderRadius:
                                                   const BorderRadius.only(
                                                 topLeft: Radius.circular(8),
@@ -135,14 +135,20 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                                       return ListTile(
                                                         title: Text(city.name),
                                                         onTap: () async {
-                                                          ref
-                                                              .read(
-                                                                  newPawLogicProvider
+                                                          final GetLocationsResponse
+                                                              response =
+                                                              await ref
+                                                                  .read(newPawLogicProvider
                                                                       .notifier)
-                                                              .setCity(city);
-
-                                                          await _showDistrictsDialog(
-                                                              context, data);
+                                                                  .setCity(
+                                                                      city);
+                                                          if (context.mounted) {
+                                                            Navigator.pop(
+                                                                context);
+                                                            await _showDistrictsDialog(
+                                                                context,
+                                                                response);
+                                                          }
                                                         },
                                                       );
                                                     },
@@ -221,7 +227,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
           ),
         ),
         barrierColor: Colors.black,
-        backgroundColor: context.colorScheme.background,
+        backgroundColor: context.colorScheme.surface,
         builder: (BuildContext context) {
           return DraggableScrollableSheet(
               expand: false,
@@ -234,7 +240,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: context.colorScheme.background,
+                        color: context.colorScheme.surface,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8),
                           topRight: Radius.circular(8),
@@ -292,7 +298,6 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                         .read(newPawLogicProvider.notifier)
                                         .setDistrict(district);
 
-                                    Navigator.pop(context);
                                     Navigator.pop(context);
                                   },
                                 );

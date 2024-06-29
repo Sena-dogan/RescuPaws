@@ -15,6 +15,9 @@ abstract class PawEntryRestClient {
   @GET('/classfields')
   Future<GetPawEntryResponse> getPawEntry();
 
+  @GET('/show/user-classfields/{uid}')
+  Future<GetPawEntryResponse> getUserPawEntries(@Path('uid') String uid);
+
   // Endpoint: "/classfields/{classfields_id}/show"
   @GET('/classfields/{classfields_id}/show')
   Future<GetPawEntryDetailResponse> getPawEntryDetail(

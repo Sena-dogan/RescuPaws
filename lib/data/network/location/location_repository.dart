@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../di/components/service_locator.dart';
@@ -18,6 +19,7 @@ class LocationRepository {
     // If the request succeeds, we return a PawEntry.
     final GetLocationsResponse locations =
         await _locationApi.getLocations(countryId, cityId);
+    Logger().i('locations: ${locations.districts}');
     return locations;
   }
 
@@ -30,6 +32,12 @@ class LocationRepository {
     final GetLocationsResponse cities = await _locationApi.getCities(countryId);
     return cities;
   }
+
+  Future<GetLocationsResponse> getDistricts({int countryId = 1, required int cityId}) async {
+    final GetLocationsResponse districts =
+        await _locationApi.getDistricts(countryId, cityId);
+    return districts;
+  }
 }
 
 @riverpod
@@ -40,7 +48,7 @@ LocationRepository getLocationRepository(GetLocationRepositoryRef ref) {
 
 @riverpod
 Future<GetLocationsResponse> fetchLocations(FetchLocationsRef ref,
-    {int countryId = 1, int cityId = 1}) async {
+    {int countryId = 1, int cityId = 34}) async {
   final LocationRepository locationRepository =
       ref.read(getLocationRepositoryProvider);
   final GetLocationsResponse locations = await locationRepository.getLocations(

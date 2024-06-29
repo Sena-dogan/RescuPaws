@@ -15,18 +15,23 @@ class PawApi {
 
   Future<Either<PawEntryError, GetPawEntryResponse>> getPawEntry() async {
     try {
-      final GetPawEntryResponse pawEntry = await _pawEntryRestClient.getPawEntry();
+      final GetPawEntryResponse pawEntry =
+          await _pawEntryRestClient.getPawEntry();
       return right(pawEntry);
     } on PawEntryError catch (e) {
       return left(e);
     }
-  }
+  } 
 
-  Future<GetPawEntryResponse> getPawEntryById() async {
+  Future<Either<PawEntryError, GetPawEntryResponse>> getPawEntryById() async {
     final String id = currentUserUid;
-    final GetPawEntryResponse pawEntry =
-        await _pawEntryRestClient.getPawEntryById(id);
-    return pawEntry;
+    try {
+      final GetPawEntryResponse pawEntry =
+          await _pawEntryRestClient.getUserPawEntries(id);
+      return right(pawEntry);
+    } on PawEntryError catch (e) {
+      return left(e);
+    }
   }
 
   Future<NewPawResponse> createPawEntry(NewPawModel newPawModel) async {

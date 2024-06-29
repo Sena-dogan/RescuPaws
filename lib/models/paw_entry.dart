@@ -2,6 +2,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../data/enums/paw_entry_status.dart';
 import 'images_upload.dart';
 import 'user.dart';
 
@@ -72,6 +73,8 @@ extension PawEntryX on PawEntry {
         '${createdAt.day}/${createdAt.month}/${createdAt.year}';
     return formattedDate;
   }
+
+  PawEntryStatus get statusEnum => PawEntryStatus.fromValue(status!);
 }
 
 extension GetPawEntryResponseX on GetPawEntryResponse {

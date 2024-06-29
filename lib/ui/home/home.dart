@@ -28,7 +28,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late CardSwiperController controller;
+  late final CardSwiperController controller;
   int messageCount = 0;
 
   Future<void> setupInteractedMessage() async {
@@ -54,6 +54,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final AsyncValue<GetPawEntryResponse> pawEntryLogic =
         ref.watch(fetchPawEntriesProvider);
@@ -74,13 +80,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         backgroundColor: Colors.transparent,
         bottomNavigationBar: const PawBottomNavBar(),
         body: RefreshIndicator(
+            triggerMode: RefreshIndicatorTriggerMode.anywhere,
             onRefresh: () async => ref.refresh(fetchPawEntriesProvider.future),
             child: switch (pawEntryLogic) {
               AsyncValue<GetPawEntryResponse>(
                 :final GetPawEntryResponse valueOrNull?
               ) =>
                 SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(
+                        parent: ClampingScrollPhysics(),
+                    ),
                     child: _buildBody(context, valueOrNull.data)),
               // An error is available, so we render it.
               AsyncValue(:final Object error?) => PawErrorWidget(

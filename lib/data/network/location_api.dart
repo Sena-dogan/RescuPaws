@@ -25,5 +25,11 @@ class LocationApi {
         await _locationyRestClient.getCities(countryId);
     return cities;
   }
+
+  Future<GetLocationsResponse> getDistricts(int countryId, int cityId) async {
+    final GetLocationsResponse districts =
+        await _locationyRestClient.getLocations(countryId, cityId);
+    return districts;
+  }
   
 }

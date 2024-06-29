@@ -10,6 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/enums/new_paw_enums.dart';
 import '../../../../data/network/category/category_repository.dart';
+import '../../../../data/network/location/location_repository.dart';
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../models/location_response.dart';
@@ -103,7 +104,6 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(age: age);
   }
 
-
   void togglePawVaccine(Vaccines vaccines) {
     switch (vaccines) {
       case Vaccines.RABIES:
@@ -120,15 +120,19 @@ class NewPawLogic extends _$NewPawLogic {
         break;
       case Vaccines.BORDETELLA:
         state = state.copyWith(bordotella_vaccine: !state.bordotella_vaccine);
-        break; 
+        break;
       case Vaccines.LEPTOSPIROSIS:
-        state = state.copyWith(leptospirosis_vaccine: !state.leptospirosis_vaccine);
+        state =
+            state.copyWith(leptospirosis_vaccine: !state.leptospirosis_vaccine);
         break;
       case Vaccines.PANLEUKOPENIA:
-        state = state.copyWith(panleukopenia_vaccine: !state.panleukopenia_vaccine);
+        state =
+            state.copyWith(panleukopenia_vaccine: !state.panleukopenia_vaccine);
         break;
       case Vaccines.HERPESVIRUSandCALICIVIRUS:
-        state = state.copyWith(herpesvirus_and_calicivirus_vaccine: !state.herpesvirus_and_calicivirus_vaccine);
+        state = state.copyWith(
+            herpesvirus_and_calicivirus_vaccine:
+                !state.herpesvirus_and_calicivirus_vaccine);
         break;
     }
   }
@@ -243,8 +247,11 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(country: country);
   }
 
-  void setCity(City? city) {
+   Future<GetLocationsResponse> setCity(City city) {
     state = state.copyWith(city: city);
+    final LocationRepository locationRepository =
+        ref.read(getLocationRepositoryProvider);
+    return locationRepository.getDistricts(cityId: city.id);
   }
 
   void setDistrict(District? district) {

@@ -141,9 +141,24 @@ class ProfileScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        title: Text(
-                          userLogic.user?.displayName ?? 'Kullanici',
-                          style: context.textTheme.labelMedium,
+                        title: Row(
+                          children: <Widget>[
+                            Text(
+                              userLogic.user?.displayName ?? 'Kullanici',
+                              style: context.textTheme.labelMedium,
+                            ),
+                            const Gap(5),
+                            Visibility(
+                              visible: FirebaseAuth
+                                      .instance.currentUser?.phoneNumber !=
+                                  null,
+                              child: const Icon(
+                                Icons.verified,
+                                color: Colors.blue,
+                                size: 15,
+                              ),
+                            ),
+                          ],
                         ),
                         subtitle: Text(userLogic.user?.email ?? '',
                             style: context.textTheme.bodyMedium),
@@ -221,6 +236,14 @@ class ProfileScreen extends ConsumerWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          ListTile(
+                            leading: const Icon(Icons.list_alt_outlined),
+                            title: const Text('İlanlarım'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              context.push(SGRoute.myEntries.route);
+                            },
+                          ),
                           ListTile(
                             leading: const Icon(Icons.favorite_outline),
                             title: const Text('Favorilerim'),
