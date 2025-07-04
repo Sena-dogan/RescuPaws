@@ -41,7 +41,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.LoginBg),
           fit: BoxFit.cover,
@@ -50,7 +50,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: context.colorScheme.background,
+          backgroundColor: context.colorScheme.surface,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(16),
@@ -218,7 +218,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         child: Text(
           'Giriş Yap',
           style: context.textTheme.bodyMedium!.copyWith(
-            color: context.colorScheme.background,
+            color: context.colorScheme.surface,
           ),
         ),
       ),
@@ -275,7 +275,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       errorStyle: context.textTheme.bodyMedium?.copyWith(
         color: context.colorScheme.error,
       ),
-      fillColor: context.colorScheme.background,
+      fillColor: context.colorScheme.surface,
       filled: true,
       contentPadding: const EdgeInsets.all(15),
       enabledBorder: OutlineInputBorder(
@@ -357,7 +357,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       errorStyle: context.textTheme.bodyMedium?.copyWith(
         color: context.colorScheme.error,
       ),
-      fillColor: context.colorScheme.background,
+      fillColor: context.colorScheme.surface,
       filled: true,
       contentPadding: const EdgeInsets.all(15),
       disabledBorder: OutlineInputBorder(
@@ -424,7 +424,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             color: Colors.transparent,
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SocialLoginButton(
-                elevation: const MaterialStatePropertyAll<double>(0.0),
+                elevation: const WidgetStatePropertyAll<double>(0.0),
                 strokeColor: context.colorScheme.primary,
                 buttonType: SocialLoginButtonType.google,
                 backgroundColor: Colors.transparent,
@@ -445,7 +445,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SocialLoginButton(
-                elevation: const MaterialStatePropertyAll<double>(0.0),
+                elevation: const WidgetStatePropertyAll<double>(0.0),
                 strokeColor: context.colorScheme.primary,
                 backgroundColor: Colors.transparent,
                 textColor: context.colorScheme.scrim,

@@ -19,11 +19,11 @@ class SaveButton extends StatelessWidget {
       onPressed: onPressed,
       style: ButtonStyle(
         backgroundColor:
-            MaterialStateProperty.all<Color>(context.colorScheme.primary),
-        fixedSize: MaterialStateProperty.all<Size>(
+            WidgetStateProperty.all<Color>(context.colorScheme.primary),
+        fixedSize: WidgetStateProperty.all<Size>(
           Size(size.width, 50),
         ),
-        shape: MaterialStateProperty.all<OutlinedBorder>(
+        shape: WidgetStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),

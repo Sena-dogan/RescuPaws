@@ -32,7 +32,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
     return Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
-          color: context.colorScheme.background,
+          color: context.colorScheme.surface,
           image: const DecorationImage(
             image: AssetImage(Assets.LoginBg),
             fit: BoxFit.cover,
@@ -62,9 +62,8 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                               context: context,
                               isScrollControlled: true,
                               showDragHandle: true,
-                              enableDrag: true,
                               barrierColor: Colors.black,
-                              backgroundColor: context.colorScheme.background,
+                              backgroundColor: context.colorScheme.surface,
                               builder: (BuildContext context) {
                                 return DraggableScrollableSheet(
                                     expand: false,
@@ -78,7 +77,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                             padding: const EdgeInsets.all(16),
                                             decoration: BoxDecoration(
                                               color: context
-                                                  .colorScheme.background,
+                                                  .colorScheme.surface,
                                               borderRadius:
                                                   const BorderRadius.only(
                                                 topLeft: Radius.circular(8),
@@ -216,7 +215,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
           ),
         ),
         barrierColor: Colors.black,
-        backgroundColor: context.colorScheme.background,
+        backgroundColor: context.colorScheme.surface,
         builder: (BuildContext context) {
           return DraggableScrollableSheet(
               expand: false,
@@ -229,7 +228,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: context.colorScheme.background,
+                        color: context.colorScheme.surface,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8),
                           topRight: Radius.circular(8),

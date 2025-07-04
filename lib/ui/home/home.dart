@@ -61,7 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.HomeBg),
           fit: BoxFit.cover,
@@ -137,7 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         return true;
                       },
                       allowedSwipeDirection:
-                          AllowedSwipeDirection.only(right: true, left: true),
+                          const AllowedSwipeDirection.only(right: true, left: true),
                       cardBuilder: (BuildContext context, int index,
                           int percentThresholdX, int percentThresholdY) {
                         return SwipeCard(

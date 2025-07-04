@@ -27,7 +27,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.LoginBg),
           fit: BoxFit.cover,
@@ -154,7 +154,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
   Widget _buildFavoriteCard(BuildContext context, Favorite favorite) {
     return Card(
       elevation: 2,
-      color: context.colorScheme.background,
+      color: context.colorScheme.surface,
       surfaceTintColor: context.colorScheme.surface,
       child: InkWell(
         onTap: () {

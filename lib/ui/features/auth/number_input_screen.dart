@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/services/text_formatter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +32,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.LoginBg),
           fit: BoxFit.cover,
@@ -89,7 +88,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
                   },
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: context.colorScheme.background,
+                    fillColor: context.colorScheme.surface,
                     hintText: '+90__   __.  __.  ___',
                     hintStyle: context.textTheme.bodyMedium,
                     labelStyle: context.textTheme.bodyMedium,

@@ -31,7 +31,7 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: context.colorScheme.background.withOpacity(0.4),
+            color: context.colorScheme.surface.withOpacity(0.4),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),

@@ -174,7 +174,7 @@ class LoginLogic extends _$LoginLogic {
       setLogin(isLoading: true);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
-    } catch (e, stackTrace) {
+    } catch (e) {
       Logger().e(e.toString());
       setError(e.toString());
       setLogin();
