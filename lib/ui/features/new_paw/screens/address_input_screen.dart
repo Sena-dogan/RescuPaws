@@ -105,6 +105,20 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                                   height: context.height * 0.8,
                                                   child: SearchableList<City>(
                                                     initialList: data!.cities,
+                                                    itemBuilder: (City city) {
+                                                      return ListTile(
+                                                        title: Text(city.name),
+                                                        onTap: () async {
+                                                          ref
+                                                              .read(
+                                                                  newPawLogicProvider
+                                                                      .notifier)
+                                                              .setCity(city);
+                                                          await _showDistrictsDialog(
+                                                              context, data);
+                                                        },
+                                                      );
+                                                    },
                                                     filter: (String query) => data
                                                         .cities
                                                         .where((City city) => city
@@ -127,25 +141,6 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                    builder: (List<City>
-                                                            displayedList,
-                                                        int itemIndex,
-                                                        City item) {
-                                                      final City city = item;
-                                                      return ListTile(
-                                                        title: Text(city.name),
-                                                        onTap: () async {
-                                                          ref
-                                                              .read(
-                                                                  newPawLogicProvider
-                                                                      .notifier)
-                                                              .setCity(city);
-
-                                                          await _showDistrictsDialog(
-                                                              context, data);
-                                                        },
-                                                      );
-                                                    },
                                                   ),
                                                 ),
                                               ],
@@ -266,6 +261,19 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                             height: context.height * 0.8,
                             child: SearchableList<District>(
                               initialList: data!.districts,
+                              itemBuilder: (District district) {
+                                return ListTile(
+                                  title: Text(district.name),
+                                  onTap: () async {
+                                    ref
+                                        .read(newPawLogicProvider.notifier)
+                                        .setDistrict(district);
+
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              },
                               filter: (String query) => data.districts
                                   .where((District district) => district.name
                                       .toLowerCase()
@@ -282,21 +290,6 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                   ),
                                 ),
                               ),
-                              builder: (List<District> displayedList,
-                                  int itemIndex, District item) {
-                                final District district = item;
-                                return ListTile(
-                                  title: Text(district.name),
-                                  onTap: () async {
-                                    ref
-                                        .read(newPawLogicProvider.notifier)
-                                        .setDistrict(district);
-
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  },
-                                );
-                              },
                             ),
                           )
                         ],

@@ -51,7 +51,26 @@ class SelectSubBreedWidget extends ConsumerWidget {
                     Expanded(
                         child: SearchableList<Category>(
                       initialList: data,
-                      style: context.textTheme.bodyMedium,
+                      itemBuilder: (Category item) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: ListTile(
+                              leading: const Icon(Icons.pets),
+                              title: Text(item.name),
+                              onTap: () {
+                                ref
+                                    .read(newPawLogicProvider.notifier)
+                                    .setSubCategoryId(item.id);
+                                Navigator.pop(context, item.name);
+                              },
+                            ),
+                          ),
+                        );
+                      },
                       emptyWidget: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -91,48 +110,6 @@ class SelectSubBreedWidget extends ConsumerWidget {
                             .toList();
                       },
                       errorWidget: const SizedBox(),
-                      builder: (List<Category> displayedList, int itemIndex,
-                          Category item) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(
-                                color: context.colorScheme.primary,
-                              ),
-                            ),
-                            elevation: 5,
-                            shadowColor: context.colorScheme.shadow,
-                            child: ListTile(
-                              onTap: () {
-                                ref
-                                    .read(newPawLogicProvider.notifier)
-                                    .setSubCategoryId(item.id);
-                                context.push(SGRoute.information.route);
-                              },
-                              minVerticalPadding: 15,
-                              title: Text(item.name,
-                                  style: context.textTheme.labelSmall),
-                              trailing: const Icon(Icons.arrow_forward_ios),
-                              leading: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                child: CircleAvatar(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      Assets.paw,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              style: ListTileStyle.list,
-                            ),
-                          ),
-                        );
-                      },
                     )),
                   ],
                 ),
