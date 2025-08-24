@@ -24,7 +24,7 @@ class SelectSubBreedWidget extends ConsumerWidget {
     return Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
-          color: context.colorScheme.background,
+          color: context.colorScheme.surface,
           image: const DecorationImage(
             image: AssetImage(Assets.LoginBg),
             fit: BoxFit.cover,
@@ -49,91 +49,80 @@ class SelectSubBreedWidget extends ConsumerWidget {
                   children: <Widget>[
                     const Gap(16),
                     Expanded(
-                        child: SearchableList<Category>(
-                      initialList: data,
-                      style: context.textTheme.bodyMedium,
-                      emptyWidget: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Lottie.asset(
-                                  Assets.NotFound,
-                                  repeat: true,
-                                  height: 200,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'Aradığınız kategori bulunamadı.',
-                              style: context.textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      inputDecoration: InputDecoration(
-                        hintText: 'Bir kategori arayın..',
-                        hintStyle: context.textTheme.bodyMedium,
-                        constraints: BoxConstraints.tight(
-                          const Size.fromHeight(60),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      filter: (String query) {
-                        return data
-                            .where((Category element) => element.name
+                      child: SearchableList<Category>(
+                        initialList: data,
+                        // 🔽 ARAMA
+                        filter: (String query) => data
+                            .where((Category c) => c.name
                                 .toLowerCase()
                                 .contains(query.toLowerCase()))
-                            .toList();
-                      },
-                      errorWidget: const SizedBox(),
-                      builder: (List<Category> displayedList, int itemIndex,
-                          Category item) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(
-                                color: context.colorScheme.primary,
+                            .toList(),
+                        // 🔽 LİSTE ÖGESİ OLUŞTURMA
+                        itemBuilder: (Category item) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3.0),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                side: BorderSide(
+                                    color: context.colorScheme.primary),
                               ),
-                            ),
-                            elevation: 5,
-                            shadowColor: context.colorScheme.shadow,
-                            child: ListTile(
-                              onTap: () {
-                                ref
-                                    .read(newPawLogicProvider.notifier)
-                                    .setSubCategoryId(item.id);
-                                context.push(SGRoute.information.route);
-                              },
-                              minVerticalPadding: 15,
-                              title: Text(item.name,
-                                  style: context.textTheme.labelSmall),
-                              trailing: const Icon(Icons.arrow_forward_ios),
-                              leading: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                child: CircleAvatar(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      Assets.paw,
-                                      fit: BoxFit.cover,
+                              elevation: 5,
+                              shadowColor: context.colorScheme.shadow,
+                              child: ListTile(
+                                onTap: () {
+                                  ref
+                                      .read(newPawLogicProvider.notifier)
+                                      .setSubCategoryId(item.id);
+                                  context.push(SGRoute.information.route);
+                                },
+                                minVerticalPadding: 15,
+                                title: Text(item.name,
+                                    style: context.textTheme.labelSmall),
+                                trailing: const Icon(Icons.arrow_forward_ios),
+                                leading: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4.0),
+                                  child: CircleAvatar(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(Assets.paw,
+                                          fit: BoxFit.cover),
                                     ),
                                   ),
                                 ),
+                                style: ListTileStyle.list,
                               ),
-                              style: ListTileStyle.list,
                             ),
+                          );
+                        },
+                        // opsiyoneller
+                        emptyWidget: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Lottie.asset(Assets.NotFound,
+                                    repeat: true, height: 200),
+                              ),
+                              Text('Aradığınız kategori bulunamadı.',
+                                  style: context.textTheme.bodyMedium),
+                            ],
                           ),
-                        );
-                      },
-                    )),
+                        ),
+                        inputDecoration: InputDecoration(
+                          hintText: 'Bir kategori arayın..',
+                          hintStyle: context.textTheme.bodyMedium,
+                          constraints:
+                              BoxConstraints.tight(const Size.fromHeight(60)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                        ),
+                        textStyle: context.textTheme
+                            .bodyMedium, // paket örneklerinde 'style' da kabul ediliyor
+                      ),
+                    )
                   ],
                 ),
               );

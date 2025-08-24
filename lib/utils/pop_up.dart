@@ -32,7 +32,7 @@ Future<dynamic> popUp(BuildContext context,
               TextButton(
                 onPressed: onPressed,
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
+                  backgroundColor: WidgetStateProperty.all<Color>(
                       context.colorScheme.error),
                 ),
                 child: Text(

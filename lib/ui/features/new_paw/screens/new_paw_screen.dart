@@ -21,7 +21,7 @@ class NewPawScreen extends ConsumerWidget {
         ref.watch(createPawEntryProvider(newPawUiModel.toNewPawModel()));
     return Container(
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.LoginBg),
           fit: BoxFit.cover,

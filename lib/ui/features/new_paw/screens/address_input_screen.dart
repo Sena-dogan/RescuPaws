@@ -102,58 +102,60 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                                     color: Colors.grey),
                                                 const Gap(10),
                                                 SizedBox(
-                                                  height: context.height * 0.8,
-                                                  child: SearchableList<City>(
-                                                    initialList: data!.cities,
-                                                    filter: (String query) => data
-                                                        .cities
-                                                        .where((City city) => city
-                                                            .name
-                                                            .toLowerCase()
-                                                            .contains(query
-                                                                .toLowerCase()))
-                                                        .toList(),
-                                                    inputDecoration:
-                                                        const InputDecoration(
-                                                      hintText: 'İl Ara',
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: Colors.grey,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(10),
+                                                    height:
+                                                        context.height * 0.8,
+                                                    child: SearchableList<City>(
+                                                      initialList: data!.cities,
+                                                      filter: (String query) => data
+                                                          .cities
+                                                          .where((City c) => c
+                                                              .name
+                                                              .toLowerCase()
+                                                              .contains(query
+                                                                  .toLowerCase()))
+                                                          .toList(),
+                                                      inputDecoration:
+                                                          const InputDecoration(
+                                                        hintText: 'İl Ara',
+                                                        enabledBorder:
+                                                            UnderlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .grey),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
                                                         ),
                                                       ),
-                                                    ),
-                                                    builder: (List<City>
-                                                            displayedList,
-                                                        int itemIndex,
-                                                        City item) {
-                                                      final City city = item;
-                                                      return ListTile(
-                                                        title: Text(city.name),
-                                                        onTap: () async {
-                                                          final GetLocationsResponse
-                                                              response =
-                                                              await ref
-                                                                  .read(newPawLogicProvider
-                                                                      .notifier)
-                                                                  .setCity(
-                                                                      city);
-                                                          if (context.mounted) {
-                                                            Navigator.pop(
-                                                                context);
-                                                            await _showDistrictsDialog(
-                                                                context,
-                                                                response);
-                                                          }
-                                                        },
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
+                                                      // ❌ builder: (displayedList, index, item) { ... }
+                                                      // ✅ itemBuilder:
+                                                      itemBuilder: (City item) {
+                                                        return ListTile(
+                                                          title:
+                                                              Text(item.name),
+                                                          onTap: () async {
+                                                            final GetLocationsResponse
+                                                                response =
+                                                                await ref
+                                                                    .read(newPawLogicProvider
+                                                                        .notifier)
+                                                                    .setCity(
+                                                                        item);
+                                                            if (context
+                                                                .mounted) {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              await _showDistrictsDialog(
+                                                                  context,
+                                                                  response);
+                                                            }
+                                                          },
+                                                        );
+                                                      },
+                                                    )),
                                               ],
                                             ),
                                           ));
@@ -269,41 +271,36 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                           const Divider(color: Colors.grey),
                           const Gap(10),
                           SizedBox(
-                            height: context.height * 0.8,
-                            child: SearchableList<District>(
-                              initialList: data!.districts,
-                              filter: (String query) => data.districts
-                                  .where((District district) => district.name
-                                      .toLowerCase()
-                                      .contains(query.toLowerCase()))
-                                  .toList(),
-                              inputDecoration: const InputDecoration(
-                                hintText: 'İlçe Ara',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                              height: context.height * 0.8,
+                              child: SearchableList<District>(
+                                initialList: data!.districts,
+                                filter: (String query) => data.districts
+                                    .where((District d) => d.name
+                                        .toLowerCase()
+                                        .contains(query.toLowerCase()))
+                                    .toList(),
+                                inputDecoration: const InputDecoration(
+                                  hintText: 'İlçe Ara',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
                                   ),
                                 ),
-                              ),
-                              builder: (List<District> displayedList,
-                                  int itemIndex, District item) {
-                                final District district = item;
-                                return ListTile(
-                                  title: Text(district.name),
-                                  onTap: () async {
-                                    ref
-                                        .read(newPawLogicProvider.notifier)
-                                        .setDistrict(district);
-
-                                    Navigator.pop(context);
-                                  },
-                                );
-                              },
-                            ),
-                          )
+                                // ❌ builder: (displayedList, index, item) { ... }
+                                // ✅ itemBuilder:
+                                itemBuilder: (District item) {
+                                  return ListTile(
+                                    title: Text(item.name),
+                                    onTap: () async {
+                                      ref
+                                          .read(newPawLogicProvider.notifier)
+                                          .setDistrict(item);
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
+                              ))
                         ],
                       ),
                     ));

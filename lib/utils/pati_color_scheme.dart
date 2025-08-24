@@ -11,7 +11,7 @@ ColorScheme lightColorScheme() {
     secondary: Color(0xFFF7B327),
 
     /// scaffold background
-    background: Colors.white,
+    surface: Colors.white,
 
     /// like polygon gradient 1
     primaryContainer: Color(0xFFF0860B),
@@ -50,7 +50,7 @@ ColorScheme darkColorScheme() {
     secondary: Color(0xFFF7B327),
 
     /// scaffold background
-    background: Color(0xFF050405),
+    surface: Color(0xFF050405),
 
     /// like polygon gradient 1
     primaryContainer: Color(0xFFAE5D07),

@@ -115,7 +115,7 @@ class SocialLoginButton extends StatelessWidget {
   SocialLoginButtonMode? mode;
 
   /// Elevation, an optional param, can be used to create single style button.
-  final MaterialStateProperty<double?>? elevation;
+  final WidgetStateProperty<double?>? elevation;
 
   final String _defaultImagePath = 'lib/assets/';
   bool _isLocal = true;
@@ -249,7 +249,7 @@ class _LoginButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final SocialLoginButtonMode mode;
   final bool isLocal;
-  final MaterialStateProperty<double?>? elevation;
+  final WidgetStateProperty<double?>? elevation;
 
   @override
   Widget build(BuildContext context) {
@@ -260,7 +260,7 @@ class _LoginButton extends StatelessWidget {
         child: ElevatedButton(
           style: ButtonStyle(
             elevation: elevation,
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 side: BorderSide(
                   color: strokeColor ?? const Color(0xFF000000),
@@ -270,9 +270,9 @@ class _LoginButton extends StatelessWidget {
                 ),
               ),
             ),
-            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.disabled)) {
+            backgroundColor: WidgetStateProperty.resolveWith<Color>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.disabled)) {
                   return disabledBackgroundColor ?? backgroundColor!;
                 }
                 return backgroundColor!;

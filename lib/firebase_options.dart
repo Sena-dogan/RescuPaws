@@ -42,6 +42,7 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for linux - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      // ignore: no_default_cases
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -65,8 +66,10 @@ class DefaultFirebaseOptions {
     projectId: 'pati-app-d08c6',
     databaseURL: 'https://pati-app-d08c6-default-rtdb.firebaseio.com',
     storageBucket: 'pati-app-d08c6.appspot.com',
-    androidClientId: '247383540944-571urb90m8o7lneiudra2vmq43eo4io2.apps.googleusercontent.com',
-    iosClientId: '247383540944-54t2l4u1tllu0cgtkjak447ng7at35ef.apps.googleusercontent.com',
+    androidClientId:
+        '247383540944-571urb90m8o7lneiudra2vmq43eo4io2.apps.googleusercontent.com',
+    iosClientId:
+        '247383540944-54t2l4u1tllu0cgtkjak447ng7at35ef.apps.googleusercontent.com',
     iosBundleId: 'app.patipati',
   );
 }

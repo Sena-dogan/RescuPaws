@@ -33,7 +33,7 @@ class MessageScreen extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.HomeBg),
           fit: BoxFit.cover,

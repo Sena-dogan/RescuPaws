@@ -21,7 +21,7 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          color: context.colorScheme.background,
+          color: context.colorScheme.surface,
           image: const DecorationImage(
             image: AssetImage(Assets.LoginBg),
             fit: BoxFit.cover,

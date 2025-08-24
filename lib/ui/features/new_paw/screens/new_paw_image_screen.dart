@@ -29,7 +29,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
         ref.watch(fetchPermissionStateProvider);
     return Container(
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.LoginBg),
           fit: BoxFit.cover,
@@ -76,7 +76,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
   Container _handleError(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.LoginBg),
           fit: BoxFit.cover,

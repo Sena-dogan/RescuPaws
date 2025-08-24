@@ -32,7 +32,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.LoginBg),
           fit: BoxFit.cover,
@@ -88,7 +88,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
                   },
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: context.colorScheme.background,
+                    fillColor: context.colorScheme.surface,
                     hintText: '+90__   __.  __.  ___',
                     hintStyle: context.textTheme.bodyMedium,
                     labelStyle: context.textTheme.bodyMedium,

@@ -174,7 +174,7 @@ class LoginLogic extends _$LoginLogic {
       setLogin(isLoading: true);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
-    } catch (e, stackTrace) {
+    } catch (e) {
       Logger().e(e.toString());
       setError(e.toString());
       setLogin();
@@ -205,6 +205,7 @@ class LoginLogic extends _$LoginLogic {
       setLogin(isLoading: true);
       await ref.read(fetchTokenProvider.future).catchError((Object e, StackTrace stackTrace) {
         Logger().e(e.toString());
+        return null;
       });
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;

@@ -34,7 +34,7 @@ class NoNotifScreen extends ConsumerWidget {
     return Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
-          color: context.colorScheme.background,
+          color: context.colorScheme.surface,
           image: const DecorationImage(
             image: AssetImage(Assets.HomeBg),
             fit: BoxFit.cover,
@@ -63,7 +63,8 @@ class NoNotifScreen extends ConsumerWidget {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (Object error, StackTrace stackTrace) => Center(
               child: PawErrorWidget(onRefresh: () async {
-                await ref.refresh(getMessagesProvider.future);
+                // Optionally, you can use the result if needed:
+                // await ref.refresh(getMessagesProvider.future);
               }),
             ),
           ),

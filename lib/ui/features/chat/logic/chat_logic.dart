@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,8 +13,7 @@ import '../../detail/logic/detail_logic.dart';
 import '../service/chat_repository.dart';
 part 'chat_logic.g.dart';
 
-final Provider<UserData> currentUserProvider =
-    Provider<UserData>((ProviderRef<Object?> ref) {
+final Provider<UserData> currentUserProvider = Provider<UserData>((Ref ref) {
   return FirebaseAuth.instance.currentUser!.toUserData();
 });
 

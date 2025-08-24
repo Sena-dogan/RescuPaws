@@ -93,9 +93,12 @@ class NavBarIcon extends StatelessWidget {
       children: <Widget>[
         SvgPicture.asset(
           icon,
-          color: isActive
-              ? context.colorScheme.primary
-              : context.colorScheme.tertiary,
+          colorFilter: ColorFilter.mode(
+            isActive
+                ? context.colorScheme.primary
+                : context.colorScheme.tertiary,
+            BlendMode.srcIn,
+          ),
           height: 40,
         ),
         Text(
@@ -105,7 +108,6 @@ class NavBarIcon extends StatelessWidget {
                 ? context.colorScheme.primary
                 : context.colorScheme.tertiary,
             overflow: TextOverflow.ellipsis,
-
           ),
         ),
       ],

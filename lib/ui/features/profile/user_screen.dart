@@ -39,7 +39,7 @@ class ProfileScreen extends ConsumerWidget {
       width: context.width,
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         image: const DecorationImage(
           image: AssetImage(Assets.LoginBg),
           fit: BoxFit.cover,
@@ -196,7 +196,7 @@ class ProfileScreen extends ConsumerWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ListTile(
-                            tileColor: context.colorScheme.background,
+                            tileColor: context.colorScheme.surface,
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 4),
                             leading: Icon(

@@ -21,7 +21,7 @@ class OtpScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
         decoration: BoxDecoration(
-          color: context.colorScheme.background,
+          color: context.colorScheme.surface,
           image: const DecorationImage(
             image: AssetImage(Assets.LoginBg),
             fit: BoxFit.cover,
@@ -80,7 +80,7 @@ class OtpScreen extends ConsumerWidget {
                         maxWidth: context.width,
                       ),
                         decoration: BoxDecoration(
-                      color: context.colorScheme.background,
+                      color: context.colorScheme.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: context.colorScheme.primary),
                     )),
