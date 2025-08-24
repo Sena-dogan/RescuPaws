@@ -44,26 +44,26 @@ dependencies:
   retrofit: ^4.0.1
   logger: ^2.0.2+1
   injectable: ^2.1.2
-  get_it: ^7.6.0
+  get_it: ^8.2.0
   hive_flutter: ^1.1.0
   get_storage: ^2.1.1
   gap: ^3.0.1
   json_annotation: ^4.8.1
-  go_router: ^13.0.0
+  go_router: ^15.1.2
   fpdart: ^1.1.0
   responsive_builder: ^0.7.0
-  flex_color_scheme: ^7.1.2
+  flex_color_scheme: ^8.0.2
   url_launcher: ^6.1.11
   intl: ^0.19.0
   stack_trace: ^1.11.0
   google_fonts: ^6.1.0
   social_login_buttons: ^1.0.7
   flutter_native_splash: ^2.3.9
-  firebase_core: ^2.31.0
-  firebase_auth: ^4.19.5
-  sign_in_with_apple: ^6.0.0
+  firebase_core: ^4.0.0
+  firebase_auth: ^6.0.1
+  sign_in_with_apple: ^7.0.1
   google_sign_in: ^6.2.1
-  flutter_card_swiper: ^6.0.0
+  flutter_card_swiper: ^7.0.2
   animated_bottom_navigation_bar: ^1.3.3
   awesome_snackbar_content: ^0.1.3
   in_app_review: ^2.0.8
@@ -72,28 +72,28 @@ dependencies:
   sliver_app_bar_builder: ^1.1.0
   cached_network_image: ^3.3.0
   searchable_listview: ^2.9.1
-  multi_image_picker_view: ^1.0.0
-  file_picker: ^6.1.1
+  multi_image_picker_view: ^3.0.0
+  file_picker: ^10.3.2
   photo_manager: ^3.0.0
-  insta_assets_picker: ^2.3.0
+  insta_assets_picker: ^3.1.0
   photo_manager_image_provider: ^2.1.1
-  phone_form_field: ^9.2.3
-  share_plus: ^7.2.1
-  carousel_slider: ^4.2.1
+  phone_form_field: ^10.0.8
+  share_plus: ^11.1.0
+  carousel_slider: ^5.1.1
   smooth_page_indicator: ^1.1.0
   lottie: ^3.0.0
   wheel_slider: ^1.2.1
   flutter_svg: ^2.0.9
   analyzer: ^6.4.1
   custom_sliding_segmented_control: ^1.8.1
-  cloud_firestore: ^4.17.3
+  cloud_firestore: ^6.0.0
   uuid: ^4.4.0
   otp_text_field: ^1.1.3
   mask_text_input_formatter: ^2.9.0
   otp_timer_button: ^1.1.1
-  pinput: ^4.0.0
-  firebase_messaging: ^14.9.2
-  rxdart: ^0.27.7
+  pinput: ^5.0.1
+  firebase_messaging: ^16.0.0
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:
@@ -104,18 +104,18 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^5.0.0
   # The "build_runner" package provides a way to generate files using Dart code
   build_runner: ^2.4.8
   json_serializable: ^6.7.0
   riverpod_generator: ^2.2.3
   riverpod_lint: ^2.3.2
-  retrofit_generator: ^8.0.2
+  retrofit_generator: ^9.1.5
   injectable_generator: ^2.1.6
   hive_generator: ^2.0.0
   freezed: ^2.4.7
-  flutter_launcher_icons: "^0.13.1"
-  dependency_validator: ^3.2.3
+  flutter_launcher_icons: ^0.14.4
+  dependency_validator: ^4.1.3
 
 
 # For information on the generic Dart part of this file, see the
