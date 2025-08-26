@@ -50,11 +50,18 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
                     newPaw.isImageLoading == false &&
                     ps == PermissionState.authorized ||
                 ps == PermissionState.limited)
-              InstaAssetPicker.pickAssets(context,
-                  maxAssets: 5, closeOnComplete: true,
-                  onCompleted: (Stream<InstaAssetsExportDetails> assetStream) {
-                if (!mounted) return;
-              }).then((List<AssetEntity>? selectedAssets) async {
+              InstaAssetPicker.pickAssets(
+                context,
+                maxAssets: 5,
+                pickerConfig: const InstaAssetPickerConfig(
+                  // Eskiden closeOnComplete vardı; şimdi böyle çalışıyor:
+                  skipCropOnComplete: true, // isteğe göre crop'u otomatik atlar
+                  // Ayrıca gridThumbnailSize & requestType gibi config vars`
+                ),
+                onCompleted: (Stream<InstaAssetsExportDetails> assetStream) {
+                  if (!mounted) return;
+                },
+              ).then((List<AssetEntity>? selectedAssets) async {
                 if (selectedAssets == null) return;
                 final List<AssetEntity> assets = selectedAssets;
                 await ref

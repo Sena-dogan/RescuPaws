@@ -44,7 +44,7 @@ class RightButton extends StatelessWidget {
       child: InkWell(
         onTap: () {
           debugPrint('Tapped right');
-          controller.swipeRight();
+          controller.swipe(CardSwiperDirection.right);
         },
         customBorder: StarBorder.polygon(
           side: BorderSide(
