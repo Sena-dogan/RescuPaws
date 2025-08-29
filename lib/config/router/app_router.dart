@@ -103,7 +103,7 @@ GoRouter goRoute(Ref ref) {
         path: SGRoute.home.route,
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),
-        redirect: _authGuard,
+        // redirect: _authGuard,
       ).slide(),
       GoRoute(
         path: SGRoute.intro.route,
