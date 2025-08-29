@@ -2,7 +2,6 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../constants/assets.dart';
 import '../../../models/favorite/favorite_model.dart';
 import '../../../utils/context_extensions.dart';
 import '../../home/widgets/loading_paw_widget.dart';

@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../config/router/app_router.dart';
-import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/new_paw_logic.dart';
 import '../widgets/save_button.dart';

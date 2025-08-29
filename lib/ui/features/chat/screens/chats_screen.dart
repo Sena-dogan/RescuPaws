@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../constants/assets.dart';
 import '../../../../models/chat/chat_model.dart';
 import '../../../../utils/context_extensions.dart';
 import '../../../../utils/error_widgett.dart';
