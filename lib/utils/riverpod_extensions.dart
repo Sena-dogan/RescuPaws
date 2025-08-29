@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-extension CacheForExtension on Ref<Object?> {
+import 'package:riverpod/src/framework.dart';
+
+extension CacheForExtension on Ref {
   /// Keeps the provider alive for [duration].
   void cacheFor(Duration duration) {
     // Immediately prevent the state from getting destroyed.
