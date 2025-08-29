@@ -1,4 +1,4 @@
-name: pati_pati
+name: rescupaws
 description: Very cool project for our tailed friends
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -112,6 +112,7 @@ dev_dependencies:
   freezed: ^3.2.0
   flutter_launcher_icons: ^0.14.4
   hive_ce_generator: ^1.9.3
+  rider: ^0.0.1
 
 
 # For information on the generic Dart part of this file, see the
