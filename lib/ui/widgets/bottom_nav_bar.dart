@@ -67,7 +67,7 @@ class PawBottomNavBar extends ConsumerWidget {
         rightCornerRadius: 20,
         splashColor: context.colorScheme.primary,
         height: 70,
-        backgroundColor: context.colorScheme.tertiaryContainer,
+        backgroundColor: context.colorScheme.surface,
         shadow: Shadow(
           color: Colors.grey.withOpacity(0.2),
           blurRadius: 10,
@@ -96,7 +96,7 @@ class NavBarIcon extends StatelessWidget {
           colorFilter: ColorFilter.mode(
             isActive
                 ? context.colorScheme.primary
-                : context.colorScheme.tertiary,
+                : context.colorScheme.onSurfaceVariant,
             BlendMode.srcIn,
           ),
           height: 40,
@@ -106,7 +106,7 @@ class NavBarIcon extends StatelessWidget {
           style: TextStyle(
             color: isActive
                 ? context.colorScheme.primary
-                : context.colorScheme.tertiary,
+                : context.colorScheme.onSurfaceVariant,
             overflow: TextOverflow.ellipsis,
           ),
         ),

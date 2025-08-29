@@ -53,7 +53,6 @@ class MyApp extends ConsumerWidget {
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           swapLegacyOnMaterial3: true,
           textTheme: textTheme,
-          colorScheme: darkColorScheme(),
           fontFamily: GoogleFonts.poppins().fontFamily
           ),
       themeMode: currentTheme.themeMode,

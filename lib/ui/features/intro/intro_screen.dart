@@ -54,15 +54,11 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     text: 'Sahiplen, kalbindeki boşluğu doldur!\n',
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: context.colorScheme.scrim,
-                    ),
+                    style: context.textTheme.bodyMedium,
                     children: <TextSpan>[
                       TextSpan(
                         text: 'Minik patilerle tanışmaya hazır mısınız?',
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: context.colorScheme.scrim,
-                        ),
+                        style: context.textTheme.bodyMedium,
                       ),
                     ],
                   ),
