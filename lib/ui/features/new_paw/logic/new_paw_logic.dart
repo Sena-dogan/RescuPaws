@@ -211,11 +211,11 @@ class NewPawLogic extends _$NewPawLogic {
     if (file == null) {
       return null;
     }
-    final AssetEntity? asset = await PhotoManager.editor.saveImageWithPath(
+    final AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
       file.path,
       title: 'paw',
     );
-    addImage(asset!);
+    addImage(asset);
     return asset;
   }
 
