@@ -30,7 +30,7 @@ class CategoryRepository
 }
 
 @riverpod
-CategoryRepository getCategoryRepository(GetCategoryRepositoryRef ref) {
+CategoryRepository getCategoryRepository(Ref ref) {
   final CategoryApi categoryApi = getIt<CategoryApi>();
   return CategoryRepository(categoryApi);
 }

@@ -34,7 +34,7 @@ class FavoriteRepository {
 }
 
 @riverpod
-FavoriteRepository getFavoriteRepository(GetFavoriteRepositoryRef ref) {
+FavoriteRepository getFavoriteRepository(Ref ref) {
   final FavoriteApi favoriteApi = getIt<FavoriteApi>();
   return FavoriteRepository(favoriteApi);
 }

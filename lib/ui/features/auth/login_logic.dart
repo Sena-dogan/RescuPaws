@@ -20,7 +20,7 @@ import 'login_ui_model.dart';
 part 'login_logic.g.dart';
 
 @riverpod
-Future<TokenResponse?> fetchToken(FetchTokenRef ref) async {
+Future<TokenResponse?> fetchToken(Ref ref) async {
   final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
   final AuthRepository authRepository = ref.watch(getAuthRepositoryProvider);

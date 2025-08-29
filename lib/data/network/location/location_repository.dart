@@ -41,13 +41,13 @@ class LocationRepository {
 }
 
 @riverpod
-LocationRepository getLocationRepository(GetLocationRepositoryRef ref) {
+LocationRepository getLocationRepository(Ref ref) {
   final LocationApi locationApi = getIt<LocationApi>();
   return LocationRepository(locationApi);
 }
 
 @riverpod
-Future<GetLocationsResponse> fetchLocations(FetchLocationsRef ref,
+Future<GetLocationsResponse> fetchLocations(Ref ref,
     {int countryId = 1, int cityId = 34}) async {
   final LocationRepository locationRepository =
       ref.read(getLocationRepositoryProvider);
@@ -57,7 +57,7 @@ Future<GetLocationsResponse> fetchLocations(FetchLocationsRef ref,
 }
 
 @riverpod
-Future<GetLocationsResponse> fetchCountries(FetchCountriesRef ref) async {
+Future<GetLocationsResponse> fetchCountries(Ref ref) async {
   final LocationRepository locationRepository =
       ref.read(getLocationRepositoryProvider);
   final GetLocationsResponse countries =
@@ -67,7 +67,7 @@ Future<GetLocationsResponse> fetchCountries(FetchCountriesRef ref) async {
 
 @riverpod
 Future<GetLocationsResponse> fetchCities(
-    FetchCitiesRef ref, int countryId) async {
+    Ref ref, int countryId) async {
   final LocationRepository locationRepository =
       ref.read(getLocationRepositoryProvider);
   final GetLocationsResponse cities =

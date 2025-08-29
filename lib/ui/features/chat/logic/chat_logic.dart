@@ -19,7 +19,7 @@ final Provider<UserData> currentUserProvider = Provider<UserData>((Ref ref) {
 
 @riverpod
 Stream<List<MessageModel>> getMessagesList(
-    GetMessagesListRef ref, String receiverUserId) {
+    Ref ref, String receiverUserId) {
   debugPrint('Receiver user id is $receiverUserId');
   final ChatRepository chatRepository =
       ref.read(chatRepositoryProvider.notifier);

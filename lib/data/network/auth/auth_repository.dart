@@ -18,7 +18,7 @@ class AuthRepository {
 }
 
 @riverpod
-AuthRepository getAuthRepository(GetAuthRepositoryRef ref) {
+AuthRepository getAuthRepository(Ref ref) {
   final AuthApi authApi = getIt<AuthApi>();
   return AuthRepository(authApi);
 }

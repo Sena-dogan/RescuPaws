@@ -21,7 +21,7 @@ import '../model/new_paw_ui_model.dart';
 part 'new_paw_logic.g.dart';
 
 @riverpod
-Future<List<Category>> fetchCategories(FetchCategoriesRef ref) async {
+Future<List<Category>> fetchCategories(Ref ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
   ref.keepAlive();
   final CategoryRepository categoryRepository =
@@ -33,7 +33,7 @@ Future<List<Category>> fetchCategories(FetchCategoriesRef ref) async {
 
 @riverpod
 Future<List<Category>> fetchSubCategories(
-    FetchSubCategoriesRef ref, int categoryId) async {
+    Ref ref, int categoryId) async {
   ref.keepAlive();
   final CategoryRepository categoryRepository =
       ref.watch(getCategoryRepositoryProvider);
@@ -44,7 +44,7 @@ Future<List<Category>> fetchSubCategories(
 
 @riverpod
 Future<NewPawResponse> createPawEntry(
-    CreatePawEntryRef ref, NewPawModel newPawModel) async {
+    Ref ref, NewPawModel newPawModel) async {
   if (newPawModel.name == null) {
     Logger().e('new paw model name is null');
     throw Exception('new paw model name is null');
@@ -59,7 +59,7 @@ Future<NewPawResponse> createPawEntry(
 
 @riverpod
 Future<PermissionState> fetchPermissionState(
-    FetchPermissionStateRef ref) async {
+    Ref ref) async {
   ref.keepAlive();
   final PermissionState ps = await PhotoManager.requestPermissionExtend();
   debugPrint('permission state: $ps');
@@ -67,7 +67,7 @@ Future<PermissionState> fetchPermissionState(
 }
 
 @riverpod
-Future<List<AssetEntity>> fetchImages(FetchImagesRef ref) async {
+Future<List<AssetEntity>> fetchImages(Ref ref) async {
   ref.cacheFor(const Duration(minutes: 10));
   final List<AssetEntity> assets = await PhotoManager.getAssetListRange(
     start: 0,

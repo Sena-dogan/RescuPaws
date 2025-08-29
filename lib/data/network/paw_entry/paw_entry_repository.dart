@@ -38,13 +38,13 @@ class PawEntryRepository {
 }
 
 // This is the Riverpod way of injecting dependencies.
-/// Returns an instance of [PawEntryRepository] using the provided [GetPawEntryRepositoryRef].
+/// Returns an instance of [PawEntryRepository] using the provided [Ref].
 ///
 /// The [PawEntryRepository] is initialized with an instance of [PawApi] obtained from [getIt].
 /// Simply what getIt does is that it returns an instance of [PawApi] that is already initialized with [PawEntryRestClient].
 /// [PawEntryRestClient] is initialized with [Dio] and [Endpoints.baseUrl].
 @riverpod
-PawEntryRepository getPawEntryRepository(GetPawEntryRepositoryRef ref) {
+PawEntryRepository getPawEntryRepository(Ref ref) {
   final PawApi pawApi = getIt<PawApi>();
   return PawEntryRepository(pawApi);
 }

@@ -68,7 +68,7 @@ enum SGRoute {
 }
 
 @riverpod
-GoRouter goRoute(GoRouteRef ref) {
+GoRouter goRoute(Ref ref) {
   return GoRouter(
     initialLocation: SGRoute.intro.route,
     errorBuilder: (BuildContext context, GoRouterState state) => Scaffold(

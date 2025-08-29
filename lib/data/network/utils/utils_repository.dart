@@ -18,7 +18,7 @@ class UtilsRepository {
 }
 
 @riverpod
-UtilsRepository getUtilsRepository(GetUtilsRepositoryRef ref) {
+UtilsRepository getUtilsRepository(Ref ref) {
   final UtilsApi utilsApi = getIt<UtilsApi>();
   return UtilsRepository(utilsApi);
 }

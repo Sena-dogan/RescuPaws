@@ -11,7 +11,7 @@ import '../../../utils/error_widgett.dart';
 part 'no_notif_screen.g.dart';
 
 @riverpod
-Future<List<RemoteMessage>> getMessages(GetMessagesRef ref) async {
+Future<List<RemoteMessage>> getMessages(Ref ref) async {
   final List<RemoteMessage> messages = <RemoteMessage>[];
   final RemoteMessage? initialMessage =
       await FirebaseMessaging.instance.getInitialMessage();

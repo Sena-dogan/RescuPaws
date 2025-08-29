@@ -13,7 +13,7 @@ part 'detail_logic.g.dart';
 
 @riverpod
 Future<GetPawEntryDetailResponse?> fetchPawEntryDetail(
-    FetchPawEntryDetailRef ref, String classfieldsId) async {
+    Ref ref, String classfieldsId) async {
   debugPrint('Id is $classfieldsId');
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);

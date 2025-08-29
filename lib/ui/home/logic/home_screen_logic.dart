@@ -19,7 +19,7 @@ import 'home_screen_ui_model.dart';
 part 'home_screen_logic.g.dart';
 
 @riverpod
-Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
+Future<GetPawEntryResponse> fetchPawEntries(Ref ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
   ref.cacheFor(const Duration(minutes: 5));
   final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
@@ -58,7 +58,7 @@ Future<GetPawEntryResponse> fetchPawEntries(FetchPawEntriesRef ref) async {
 
 @riverpod
 /// Fetches the paw entries of the current user.
-Future<GetPawEntryResponse> fetchUserPawEntries(FetchPawEntriesRef ref) async {
+Future<GetPawEntryResponse> fetchUserPawEntries(Ref ref) async {
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
   final Either<PawEntryError, GetPawEntryResponse> pawEntries =
@@ -75,7 +75,7 @@ Future<GetPawEntryResponse> fetchUserPawEntries(FetchPawEntriesRef ref) async {
 
 @riverpod
 Future<CreateFavoriteResponse> createFavorite(
-    CreateFavoriteRef ref, CreateFavoriteRequest request) async {
+    Ref ref, CreateFavoriteRequest request) async {
   final FavoriteRepository favoriteRepository =
       ref.watch(getFavoriteRepositoryProvider);
   final CreateFavoriteResponse createFavoriteResponse =
