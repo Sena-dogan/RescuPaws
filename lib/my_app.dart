@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'config/router/app_router.dart';
 import 'config/theme/theme_logic.dart';
 import 'config/theme/theme_ui_model.dart';
-import 'utils/pati_color_scheme.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});

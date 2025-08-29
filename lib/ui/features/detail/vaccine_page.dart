@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../constants/assets.dart';
 import '../../../models/paw_entry_detail.dart';
 import '../../../utils/context_extensions.dart';
 import '../../../utils/error_widgett.dart';

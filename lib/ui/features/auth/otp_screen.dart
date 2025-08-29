@@ -8,7 +8,6 @@ import 'package:otp_timer_button/otp_timer_button.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../config/router/app_router.dart';
-import '../../../constants/assets.dart';
 import '../../../utils/context_extensions.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../new_paw/widgets/save_button.dart';

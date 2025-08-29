@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
 import '../../../../config/router/app_router.dart';
-import '../../../../constants/assets.dart';
 import '../../../../data/network/location/location_repository.dart';
 import '../../../../models/location_response.dart';
 import '../../../../utils/context_extensions.dart';
