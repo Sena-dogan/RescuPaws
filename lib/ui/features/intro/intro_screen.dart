@@ -78,11 +78,19 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
                   },
                 ),
                 const Spacer(),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Image.asset(
-                    Assets.Dog,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    const Gap(10),
+                    Image.asset(
+                      Assets.Hearts,
+                      width: 100,
+                    ),
+                    Image.asset(
+                      Assets.Dog,
+                    ),
+                  ],
                 ),
               ],
             ),
