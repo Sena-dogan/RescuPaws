@@ -22,18 +22,6 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
     return Container(
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
-          // image: const DecorationImage(
-          //   image: AssetImage(Assets.LoginBg),
-          //   fit: BoxFit.cover,
-          // ),
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: <Color>[
-              context.colorScheme.surface,
-              context.colorScheme.primaryContainer,
-            ],
-          ),
         ),
         child: Scaffold(
           appBar: const EmptyAppBar(),

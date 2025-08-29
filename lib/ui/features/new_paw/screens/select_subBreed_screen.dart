@@ -25,10 +25,6 @@ class SelectSubBreedWidget extends ConsumerWidget {
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
-          image: const DecorationImage(
-            image: AssetImage(Assets.LoginBg),
-            fit: BoxFit.cover,
-          ),
         ),
         child: Scaffold(
           appBar: AppBar(

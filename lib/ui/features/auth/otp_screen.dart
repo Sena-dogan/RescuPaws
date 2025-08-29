@@ -22,10 +22,6 @@ class OtpScreen extends ConsumerWidget {
     return Container(
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
-          image: const DecorationImage(
-            image: AssetImage(Assets.LoginBg),
-            fit: BoxFit.cover,
-          ),
         ),
         child: Scaffold(
           appBar: const EmptyAppBar(),
