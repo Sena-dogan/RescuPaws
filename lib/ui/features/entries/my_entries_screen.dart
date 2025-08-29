@@ -132,7 +132,7 @@ class MyEntriesScreen extends ConsumerWidget {
                                           },
                                         )
                                       : Image.asset(
-                                          Assets.PawPaw,
+                                          Assets.Hearts,
                                           fit: BoxFit.cover,
                                           frameBuilder: (BuildContext context,
                                               Widget child,

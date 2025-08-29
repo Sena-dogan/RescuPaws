@@ -370,7 +370,7 @@ class ProfileScreen extends ConsumerWidget {
                                   width: 150,
                                   height: 150,
                                   child: Image(
-                                    image: AssetImage(Assets.PatiApp),
+                                    image: AssetImage(Assets.RescuPaws),
                                   ),
                                 ),
                               );

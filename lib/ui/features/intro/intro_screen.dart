@@ -43,24 +43,20 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
               children: <Widget>[
                 const Gap(25),
                 Image.asset(
-                  Assets.PatiApp,
-                  width: 126,
-                  height: 32,
+                  Assets.RescuPaws,
+                  width: 200,
+                  color: context.colorScheme.primary,
                 ),
                 const Gap(39),
                 RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     text: 'Minik Bir Dost,\n',
-                    style: context.textTheme.labelLarge?.copyWith(
-                      color: context.colorScheme.scrim,
-                    ),
+                    style: context.textTheme.labelLarge,
                     children: <TextSpan>[
                       TextSpan(
                         text: 'Sonsuz Bir Sevgi',
-                        style: context.textTheme.labelLarge?.copyWith(
-                          color: context.colorScheme.scrim,
-                        ),
+                        style: context.textTheme.labelLarge,
                       ),
                     ],
                   ),

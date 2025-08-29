@@ -90,7 +90,7 @@ class FavoriteCard extends StatelessWidget {
     if (favorite.classfield?.images_uploads == null ||
         favorite.classfield!.images_uploads!.isEmpty) {
       return const Image(
-        image: AssetImage(Assets.PawPaw),
+        image: AssetImage(Assets.Hearts),
         fit: BoxFit.contain,
       );
     }
@@ -101,7 +101,7 @@ class FavoriteCard extends StatelessWidget {
         errorBuilder:
             (BuildContext context, Object error, StackTrace? stackTrace) {
           return const Image(
-            image: AssetImage(Assets.PawPaw),
+            image: AssetImage(Assets.Hearts),
             fit: BoxFit.contain,
           );
         },

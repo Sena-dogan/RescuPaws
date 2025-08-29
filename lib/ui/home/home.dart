@@ -200,7 +200,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       leading: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Image.asset(
-          Assets.PatiApp,
+          Assets.RescuPaws,
           height: 32,
           width: 128,
         ),
