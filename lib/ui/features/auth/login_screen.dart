@@ -42,9 +42,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-        image: const DecorationImage(
-          image: AssetImage(Assets.LoginBg),
-          fit: BoxFit.cover,
+        // image: const DecorationImage(
+        //   image: AssetImage(Assets.LoginBg),
+        //   fit: BoxFit.cover,
+        // ),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[
+            context.colorScheme.surface,
+            context.colorScheme.primaryContainer,
+          ],
         ),
       ),
       child: Scaffold(

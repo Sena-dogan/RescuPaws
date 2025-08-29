@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'config/router/app_router.dart';
 import 'config/theme/theme_logic.dart';
 import 'config/theme/theme_ui_model.dart';
@@ -28,40 +29,33 @@ class MyApp extends ConsumerWidget {
       // use a lower package version, some properties may not be supported.
       // In that case remove them after copying this theme to your app.
       theme: FlexThemeData.light(
+          scheme: FlexScheme.deepPurple,
           surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
           blendLevel: 13,
           subThemesData: const FlexSubThemesData(
             blendOnLevel: 10,
-            blendOnColors: false,
-            useTextTheme: true,
+            useMaterial3Typography: true,
             useM2StyleDividerInM3: true,
           ),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          useMaterial3: true,
           swapLegacyOnMaterial3: true,
           textTheme: textTheme,
-          colorScheme: lightColorScheme(),
           fontFamily: GoogleFonts.poppins().fontFamily
-
-          // To use the Playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
           ),
       darkTheme: FlexThemeData.dark(
+          scheme: FlexScheme.deepPurple,
           surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
           blendLevel: 13,
           subThemesData: const FlexSubThemesData(
             blendOnLevel: 20,
-            useTextTheme: true,
+            useMaterial3Typography: true,
             useM2StyleDividerInM3: true,
           ),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          useMaterial3: true,
           swapLegacyOnMaterial3: true,
           textTheme: textTheme,
           colorScheme: darkColorScheme(),
           fontFamily: GoogleFonts.poppins().fontFamily
-          // To use the Playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
           ),
       themeMode: currentTheme.themeMode,
       localizationsDelegates: context.localizationDelegates,
