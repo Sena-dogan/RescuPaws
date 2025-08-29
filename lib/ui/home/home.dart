@@ -84,13 +84,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             onRefresh: () async => ref.refresh(fetchPawEntriesProvider.future),
             child: switch (pawEntryLogic) {
               AsyncValue<GetPawEntryResponse>(
-                :final GetPawEntryResponse valueOrNull?
+                :final GetPawEntryResponse value?
               ) =>
                 SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(
                       parent: ClampingScrollPhysics(),
                     ),
-                    child: _buildBody(context, valueOrNull.data)),
+                    child: _buildBody(context, value.data)),
               // An error is available, so we render it.
               AsyncValue(:final Object error?) => PawErrorWidget(
                   error: error,

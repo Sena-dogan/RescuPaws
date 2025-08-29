@@ -51,7 +51,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
                     ps == PermissionState.authorized ||
                 ps == PermissionState.limited)
               InstaAssetPicker.pickAssets(context,
-                  maxAssets: 5, closeOnComplete: true,
+                  maxAssets: 5,
                   onCompleted: (Stream<InstaAssetsExportDetails> assetStream) {
                 if (!mounted) return;
               }).then((List<AssetEntity>? selectedAssets) async {

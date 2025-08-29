@@ -38,7 +38,7 @@ class LeftButton extends StatelessWidget {
       child: InkWell(
         onTap: () {
           debugPrint('Tapped left');
-          controller.swipeLeft();
+          controller.swipe(CardSwiperDirection.left);
         },
         customBorder: StarBorder.polygon(
           side: BorderSide(

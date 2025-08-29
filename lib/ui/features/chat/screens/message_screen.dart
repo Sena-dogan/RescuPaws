@@ -68,15 +68,15 @@ class MessageScreen extends ConsumerWidget {
                 AsyncValue<Object>(:final Object error?) =>
                   Text('Error: $error'),
                 AsyncValue<List<MessageModel>>(
-                  :final List<MessageModel> valueOrNull?
+                  :final List<MessageModel> value?
                 ) =>
-                  valueOrNull != null
+                  value != null
                       ? ListView.builder(
-                          itemCount: valueOrNull.length,
+                          itemCount: value.length,
                           itemBuilder: (BuildContext context, int index) {
                             return MessageItem(
                               auth: _auth,
-                              message: valueOrNull[index],
+                              message: value[index],
                             );
                           },
                         )

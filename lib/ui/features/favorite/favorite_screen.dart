@@ -38,9 +38,9 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
           bottomNavigationBar: const PawBottomNavBar(),
           body: switch (favoriteList) {
             AsyncValue<GetFavoriteListResponse>(
-              :final GetFavoriteListResponse valueOrNull?
+              :final GetFavoriteListResponse value
             ) =>
-              (valueOrNull == null || valueOrNull.data.isEmpty)
+              (value.data.isEmpty)
                   ? const Center(child: Text('Henüz favori ilanınız yok'))
                   : RefreshIndicator(
                       onRefresh: () async {
@@ -49,7 +49,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: _buildBody(valueOrNull, context),
+                        child: _buildBody(value, context),
                       )),
             AsyncValue<Object>(:final Object error?) => ErrorWidget(error),
             _ => const Center(child: LoadingPawWidget()),
