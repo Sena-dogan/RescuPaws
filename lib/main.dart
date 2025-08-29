@@ -39,35 +39,33 @@ void main() async {
   await setPreferredOrientations();
 
   await Firebase.initializeApp(
-    name: 'PatiPatiApp',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  if (kReleaseMode)
-  {
+  if (kReleaseMode) {
     debugPrint = (String? message, {int? wrapWidth}) {};
   }
 
-  final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  final NotificationSettings settings = await messaging.requestPermission();
+  // final NotificationSettings settings = await messaging.requestPermission();
 
-  print('User granted permission: ${settings.authorizationStatus}');
-debugPrint('User granted permission: ${settings.authorizationStatus}');
+  // print('User granted permission: ${settings.authorizationStatus}');
+  // debugPrint('User granted permission: ${settings.authorizationStatus}');
 
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   debugPrint('Got a message whilst in the foreground!');
+  //   debugPrint('Message data: ${message.data}');
 
-FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  debugPrint('Got a message whilst in the foreground!');
-  debugPrint('Message data: ${message.data}');
+  //   if (message.notification != null) {
+  //     debugPrint(
+  //         'Message also contained a notification: ${message.notification}');
+  //   }
+  // });
 
-  if (message.notification != null) {
-    debugPrint('Message also contained a notification: ${message.notification}');
-  }
-});
-
-await FirebaseMessaging.instance.subscribeToTopic('all');
+  // await FirebaseMessaging.instance.subscribeToTopic('all');
 
   //getIt<HiveHelper>().initHive();
   if (!kIsWeb) {
