@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -12,21 +13,24 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:get_storage/get_storage.dart' as _i792;
 import 'package:injectable/injectable.dart' as _i526;
-
-import '../../data/getstore/get_store_helper.dart' as _i478;
-import '../../data/network/auth/auth_rest_client.dart' as _i553;
-import '../../data/network/auth_api.dart' as _i1054;
-import '../../data/network/category/category_rest_client.dart' as _i425;
-import '../../data/network/category_api.dart' as _i601;
-import '../../data/network/favorite/favorite_rest_client.dart' as _i962;
-import '../../data/network/favorite_api.dart' as _i602;
-import '../../data/network/location/location_rest_client.dart' as _i42;
-import '../../data/network/location_api.dart' as _i392;
-import '../../data/network/paw_api.dart' as _i867;
-import '../../data/network/paw_entry/paw_entry_rest_client.dart' as _i996;
-import '../../data/network/utils/utils_rest_client.dart' as _i667;
-import '../../data/network/utils_api.dart' as _i710;
-import '../module/network_module.dart' as _i1000;
+import 'package:pati_pati/data/getstore/get_store_helper.dart' as _i467;
+import 'package:pati_pati/data/network/auth/auth_rest_client.dart' as _i371;
+import 'package:pati_pati/data/network/auth_api.dart' as _i404;
+import 'package:pati_pati/data/network/category/category_rest_client.dart'
+    as _i378;
+import 'package:pati_pati/data/network/category_api.dart' as _i707;
+import 'package:pati_pati/data/network/favorite/favorite_rest_client.dart'
+    as _i698;
+import 'package:pati_pati/data/network/favorite_api.dart' as _i952;
+import 'package:pati_pati/data/network/location/location_rest_client.dart'
+    as _i585;
+import 'package:pati_pati/data/network/location_api.dart' as _i663;
+import 'package:pati_pati/data/network/paw_api.dart' as _i207;
+import 'package:pati_pati/data/network/paw_entry/paw_entry_rest_client.dart'
+    as _i784;
+import 'package:pati_pati/data/network/utils/utils_rest_client.dart' as _i139;
+import 'package:pati_pati/data/network/utils_api.dart' as _i374;
+import 'package:pati_pati/di/module/network_module.dart' as _i69;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -44,50 +48,49 @@ extension GetItInjectableX on _i174.GetIt {
       () => networkModule.provideGetStorage(),
       preResolve: true,
     );
-    gh.factory<_i478.GetStoreHelper>(
-        () => _i478.GetStoreHelper(gh<_i792.GetStorage>()));
+    gh.factory<_i467.GetStoreHelper>(
+        () => _i467.GetStoreHelper(gh<_i792.GetStorage>()));
     await gh.factoryAsync<_i361.Dio>(
-      () => networkModule.provideDio(gh<_i478.GetStoreHelper>()),
+      () => networkModule.provideDio(gh<_i467.GetStoreHelper>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i996.PawEntryRestClient>(
+    await gh.factoryAsync<_i784.PawEntryRestClient>(
       () => networkModule.providePawEntryRestClient(gh<_i361.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i425.CategoryRestClient>(
+    await gh.factoryAsync<_i378.CategoryRestClient>(
       () => networkModule.provideCategoryRestClient(gh<_i361.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i667.UtilsRestClient>(
+    await gh.factoryAsync<_i139.UtilsRestClient>(
       () => networkModule.provideUtilsRestClient(gh<_i361.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i42.LocationRestClient>(
+    await gh.factoryAsync<_i585.LocationRestClient>(
       () => networkModule.provideLocationRestClient(gh<_i361.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i553.AuthRestClient>(
+    await gh.factoryAsync<_i371.AuthRestClient>(
       () => networkModule.provideAuthRestClient(gh<_i361.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i962.FavoriteRestClient>(
+    await gh.factoryAsync<_i698.FavoriteRestClient>(
       () => networkModule.provideFavoriteRestClient(gh<_i361.Dio>()),
       preResolve: true,
     );
-    gh.factory<_i601.CategoryApi>(
-        () => _i601.CategoryApi(gh<_i425.CategoryRestClient>()));
-    gh.factory<_i710.UtilsApi>(
-        () => _i710.UtilsApi(gh<_i667.UtilsRestClient>()));
-    gh.factory<_i867.PawApi>(
-        () => _i867.PawApi(gh<_i996.PawEntryRestClient>()));
-    gh.factory<_i1054.AuthApi>(
-        () => _i1054.AuthApi(gh<_i553.AuthRestClient>()));
-    gh.factory<_i602.FavoriteApi>(
-        () => _i602.FavoriteApi(gh<_i962.FavoriteRestClient>()));
-    gh.factory<_i392.LocationApi>(
-        () => _i392.LocationApi(gh<_i42.LocationRestClient>()));
+    gh.factory<_i707.CategoryApi>(
+        () => _i707.CategoryApi(gh<_i378.CategoryRestClient>()));
+    gh.factory<_i374.UtilsApi>(
+        () => _i374.UtilsApi(gh<_i139.UtilsRestClient>()));
+    gh.factory<_i207.PawApi>(
+        () => _i207.PawApi(gh<_i784.PawEntryRestClient>()));
+    gh.factory<_i404.AuthApi>(() => _i404.AuthApi(gh<_i371.AuthRestClient>()));
+    gh.factory<_i952.FavoriteApi>(
+        () => _i952.FavoriteApi(gh<_i698.FavoriteRestClient>()));
+    gh.factory<_i663.LocationApi>(
+        () => _i663.LocationApi(gh<_i585.LocationRestClient>()));
     return this;
   }
 }
 
-class _$NetworkModule extends _i1000.NetworkModule {}
+class _$NetworkModule extends _i69.NetworkModule {}
