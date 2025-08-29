@@ -4,7 +4,7 @@ part 'provider_data.freezed.dart';
 part 'provider_data.g.dart';
 
 @freezed
-class ProviderData with _$ProviderData {
+abstract class ProviderData with _$ProviderData {
   factory ProviderData({
     String? uid,
     String? providerId,

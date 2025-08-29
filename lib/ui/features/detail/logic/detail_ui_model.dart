@@ -6,7 +6,7 @@ import '../../../../models/user_data.dart';
 part 'detail_ui_model.freezed.dart';
 
 @freezed
-class DetailUiModel with _$DetailUiModel {
+abstract class DetailUiModel with _$DetailUiModel {
   factory DetailUiModel({
     @Default(<PawEntryDetail>[]) List<PawEntryDetail> pawEntryDetails,
     @Default(null) String? errorMessage,

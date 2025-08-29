@@ -6,7 +6,7 @@ part 'categories_response.freezed.dart';
 part 'categories_response.g.dart';
 
 @freezed
-class GetCategoriesResponse with _$GetCategoriesResponse {
+abstract class GetCategoriesResponse with _$GetCategoriesResponse {
   factory GetCategoriesResponse({
     required List<Category> data,
   }) = _CategoriesResponse;
@@ -16,7 +16,7 @@ class GetCategoriesResponse with _$GetCategoriesResponse {
 }
 
 @freezed
-class Category with _$Category {
+abstract class Category with _$Category {
   factory Category({
     /// Bruh why parent_id is String when id is int
     required String? parent_id,

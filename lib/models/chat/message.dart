@@ -6,7 +6,7 @@ part 'message.freezed.dart';
 part 'message.g.dart';
 
 @freezed
-class MessageModel with _$MessageModel {
+abstract class MessageModel with _$MessageModel {
   factory MessageModel({
     required String senderID,
     required String receiverID,

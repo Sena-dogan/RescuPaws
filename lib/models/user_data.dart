@@ -7,7 +7,7 @@ part 'user_data.freezed.dart';
 part 'user_data.g.dart';
 
 @freezed
-class UserData with _$UserData {
+abstract class UserData with _$UserData {
   factory UserData({
     String? uid,
     String? email,

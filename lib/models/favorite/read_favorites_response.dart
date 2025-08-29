@@ -6,7 +6,7 @@ part 'read_favorites_response.freezed.dart';
 part 'read_favorites_response.g.dart';
 
 @freezed
-class ReadFavoritesResponse with _$ReadFavoritesResponse {
+abstract class ReadFavoritesResponse with _$ReadFavoritesResponse {
   const factory ReadFavoritesResponse({
     required List<Favorite>? data,
   }) = _ReadFavoritesResponse;

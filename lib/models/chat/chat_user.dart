@@ -4,7 +4,7 @@ part 'chat_user.freezed.dart';
 part 'chat_user.g.dart';
 
 @freezed
-class ChatUserModel with _$ChatUserModel {
+abstract class ChatUserModel with _$ChatUserModel {
   factory ChatUserModel({
     required String receiverID,
     required String receiverEmail,

@@ -10,7 +10,7 @@ part 'paw_entry.freezed.dart';
 part 'paw_entry.g.dart';
 
 @freezed
-class GetPawEntryResponse with _$GetPawEntryResponse {
+abstract class GetPawEntryResponse with _$GetPawEntryResponse {
   factory GetPawEntryResponse({
     required List<PawEntry> data,
   }) = _GetPawEntryResponse;
@@ -20,7 +20,7 @@ class GetPawEntryResponse with _$GetPawEntryResponse {
 }
 
 @freezed
-class PawEntryError with _$PawEntryError {
+abstract class PawEntryError with _$PawEntryError {
   factory PawEntryError({
     required String error,
   }) = _PawEntryError;
@@ -30,7 +30,7 @@ class PawEntryError with _$PawEntryError {
 }
 
 @freezed
-class PawEntry with _$PawEntry {
+abstract class PawEntry with _$PawEntry {
   factory PawEntry({
     required int id,
     String? user_id,

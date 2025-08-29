@@ -4,7 +4,7 @@ part 'firestore_user_data.freezed.dart';
 part 'firestore_user_data.g.dart';
 
 @freezed
-class FirestoreUserData with _$FirestoreUserData {
+abstract class FirestoreUserData with _$FirestoreUserData {
   factory FirestoreUserData({
     String? uid,
     String? email,

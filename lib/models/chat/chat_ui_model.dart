@@ -5,7 +5,7 @@ import '../../../../models/user_data.dart';
 part 'chat_ui_model.freezed.dart';
 
 @freezed
-class ChatUiModel with _$ChatUiModel {
+abstract class ChatUiModel with _$ChatUiModel {
   factory ChatUiModel({
     @Default(null) String? errorMessage,
     @Default(false) bool isLoading,

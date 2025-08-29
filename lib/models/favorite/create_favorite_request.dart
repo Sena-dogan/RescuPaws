@@ -4,7 +4,7 @@ part 'create_favorite_request.freezed.dart';
 part 'create_favorite_request.g.dart';
 
 @freezed
-class CreateFavoriteRequest with _$CreateFavoriteRequest {
+abstract class CreateFavoriteRequest with _$CreateFavoriteRequest {
   const factory CreateFavoriteRequest({
     required String? uid,
     required int class_field_id,

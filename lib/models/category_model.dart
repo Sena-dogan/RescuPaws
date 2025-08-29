@@ -4,7 +4,7 @@ part 'category_model.freezed.dart';
 part 'category_model.g.dart';
 
 @freezed
-class CategoryResponse with _$CategoryResponse {
+abstract class CategoryResponse with _$CategoryResponse {
   factory CategoryResponse({
     required String? parent_id,
     required int id,

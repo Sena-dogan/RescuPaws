@@ -17,7 +17,7 @@ part 'favorite_model.g.dart';
 */
 
 @freezed
-class Favorite with _$Favorite {
+abstract class Favorite with _$Favorite {
   const factory Favorite({
     required int? id,
     required String? uid,
@@ -33,7 +33,7 @@ class Favorite with _$Favorite {
 }
 
 @freezed
-class GetFavoriteListResponse with _$GetFavoriteListResponse {
+abstract class GetFavoriteListResponse with _$GetFavoriteListResponse {
   const factory GetFavoriteListResponse({
     required List<Favorite> data,
   }) = _GetFavoriteListResponse;

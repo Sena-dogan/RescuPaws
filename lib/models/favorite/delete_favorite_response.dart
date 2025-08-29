@@ -4,7 +4,7 @@ part 'delete_favorite_response.freezed.dart';
 part 'delete_favorite_response.g.dart';
 
 @freezed
-class DeleteFavoriteResponse with _$DeleteFavoriteResponse {
+abstract class DeleteFavoriteResponse with _$DeleteFavoriteResponse {
   const factory DeleteFavoriteResponse({
     required String? status,
     required String? message,

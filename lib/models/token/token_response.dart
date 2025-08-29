@@ -4,7 +4,7 @@ part 'token_response.freezed.dart';
 part 'token_response.g.dart';
 
 @freezed
-class TokenResponse with _$TokenResponse {
+abstract class TokenResponse with _$TokenResponse {
   factory TokenResponse({
     required String? token,
   }) = _TokenResponse;

@@ -158,7 +158,7 @@ part 'theme_ui_model.freezed.dart';
 part 'theme_ui_model.g.dart';
 
 @freezed
-class ThemeUiModel with _$ThemeUiModel {
+abstract class ThemeUiModel with _$ThemeUiModel {
   const factory ThemeUiModel({
     /// We use the @Default annotation to set the default value. In this case it will be the device theme.
     @Default(ThemeMode.system) ThemeMode themeMode,

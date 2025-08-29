@@ -2,11 +2,11 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'convert_images.g.dart';
 part 'convert_images.freezed.dart';
+part 'convert_images.g.dart';
 
 @freezed
-class ConvertImagesRequest with _$ConvertImagesRequest {
+abstract class ConvertImagesRequest with _$ConvertImagesRequest {
   factory ConvertImagesRequest({
     required List<String> base64,
     @Default(0) int isPrivate,
@@ -17,7 +17,7 @@ class ConvertImagesRequest with _$ConvertImagesRequest {
 }
 
 @freezed
-class ConvertImagesResponse with _$ConvertImagesResponse {
+abstract class ConvertImagesResponse with _$ConvertImagesResponse {
   factory ConvertImagesResponse({
     required List<String> url,
   }) = _ConvertImagesResponse;

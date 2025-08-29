@@ -6,7 +6,7 @@ part 'new_paw_model.freezed.dart';
 part 'new_paw_model.g.dart';
 
 @freezed
-class NewPawModel with _$NewPawModel {
+abstract class NewPawModel with _$NewPawModel {
   factory NewPawModel({
     List<String>? image,
     String? user_id,
@@ -47,7 +47,7 @@ class NewPawModel with _$NewPawModel {
 }
 */
 @freezed
-class NewPawResponse with _$NewPawResponse {
+abstract class NewPawResponse with _$NewPawResponse {
   factory NewPawResponse({
     required String? status,
     required String message,

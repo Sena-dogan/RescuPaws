@@ -9,7 +9,7 @@ part 'user.freezed.dart';
 part 'user.g.dart';
 
 @freezed
-class User with _$User {
+abstract class User with _$User {
   factory User({
     required String uid,
     String? email,

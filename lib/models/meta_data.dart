@@ -6,7 +6,7 @@ part 'meta_data.freezed.dart';
 part 'meta_data.g.dart';
 
 @freezed
-class Metadata with _$Metadata {
+abstract class Metadata with _$Metadata {
   factory Metadata({
     CreatedAt? createdAt,
     LastLoginAt? lastLoginAt,

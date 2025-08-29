@@ -12,7 +12,7 @@ part 'paw_entry_detail.freezed.dart';
 part 'paw_entry_detail.g.dart';
 
 @freezed
-class GetPawEntryDetailResponse with _$GetPawEntryDetailResponse {
+abstract class GetPawEntryDetailResponse with _$GetPawEntryDetailResponse {
   factory GetPawEntryDetailResponse({
     required PawEntryDetail? data,
     UserData? userData,
@@ -24,7 +24,7 @@ class GetPawEntryDetailResponse with _$GetPawEntryDetailResponse {
 }
 
 @freezed
-class PawEntryDetail with _$PawEntryDetail {
+abstract class PawEntryDetail with _$PawEntryDetail {
   factory PawEntryDetail({
     required int id,
     String? user_id,
