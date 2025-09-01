@@ -41,7 +41,7 @@ class DetailBody extends ConsumerWidget {
               height: 50,
               width: 60,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withValues(alpha:0.4),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -58,7 +58,7 @@ class DetailBody extends ConsumerWidget {
                 height: 50,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha:0.4),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -201,7 +201,7 @@ class FavButton extends ConsumerWidget {
         height: 50,
         width: 40,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.4),
+          color: Colors.black.withValues(alpha:0.4),
           shape: BoxShape.circle,
         ),
         child: ref.watch(detailLogicProvider).isFavorite

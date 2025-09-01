@@ -68,7 +68,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                         .read(newPawLogicProvider.notifier)
                         .setPawWeight(val as num);
                   },
-                  pointerColor: context.colorScheme.scrim.withOpacity(0.9),
+                  pointerColor: context.colorScheme.scrim.withValues(alpha:0.9),
                   itemSize: 20,
                   perspective: 0.0035,
                   customPointer: Stack(
@@ -79,7 +79,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                           width: 45,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: context.colorScheme.scrim.withOpacity(0.9),
+                              color: context.colorScheme.scrim.withValues(alpha:0.9),
                               width: 1.5,
                             ),
                             color: context.colorScheme.primary,
@@ -101,7 +101,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                 valueText: Text(
                   currentValue.toStringAsFixed(1),
                   style: context.textTheme.displayMedium?.copyWith(
-                    color: context.colorScheme.scrim.withOpacity(0.8),
+                    color: context.colorScheme.scrim.withValues(alpha:0.8),
                     fontWeight: FontWeight.bold,
                   ),
                 ),

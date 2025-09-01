@@ -82,7 +82,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Gap(size.height * 0.05),
                       LoginText(context: context),
                       const Gap(25),
-                      LoginButtons(context: context, ref: ref, size: Size(size.width, size.height * 0.12)),
+                      LoginButtons(
+                          context: context,
+                          ref: ref,
+                          size: Size(size.width, size.height * 0.12)),
                       const Gap(25),
                       OrDivider(size: size, context: context),
                       const Gap(25),
@@ -130,12 +133,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             .forgotPassword()
             .catchError((Object? err) {
           debugPrint('Error caught: $err');
-          context.showErrorSnackBar(
-                message: err.toString());
-            return false;
-          
+          if (!context.mounted) return false;
+          context.showErrorSnackBar(message: err.toString());
+          return false;
         }).then((bool value) {
-          if (value) {
+          if (value && context.mounted) {
             context.showAwesomeMaterialBanner(
                 title: 'Başarılı',
                 message:
@@ -182,10 +184,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           onEditingComplete: () => ref
               .read(loginLogicProvider.notifier)
               .signInWithEmailAndPassword()
-              .then((bool value) => value
-                  ? context.go(SGRoute.home.route)
-                  : context.showErrorSnackBar(
-                      message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.')),
+              .then((bool value) {
+            if (!context.mounted) return;
+            value
+                ? context.go(SGRoute.home.route)
+                : context.showErrorSnackBar(
+                    message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
+          }),
           decoration: _passDecoration(context, loginModel),
         ),
       ),
@@ -232,7 +237,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           loginModel.isObscure
               ? Icons.visibility_outlined
               : Icons.visibility_off_outlined,
-          color: context.colorScheme.scrim.withOpacity(0.5),
+          color: context.colorScheme.scrim.withValues(alpha: 0.5),
         ),
       ),
     );
@@ -427,11 +432,15 @@ class LoginButtons extends StatelessWidget {
                   await ref
                       .watch(loginLogicProvider.notifier)
                       .signInWithGoogle()
-                      .then((bool value) => value
-                          ? context.go(SGRoute.home.route)
-                          : context.showErrorSnackBar(
-                              message:
-                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
+                      .then((bool value) {
+                    if (!context.mounted) return false;
+
+                    value
+                        ? context.go(SGRoute.home.route)
+                        : context.showErrorSnackBar(
+                            message:
+                                'Bir hata oluştu. Lütfen tekrar deneyiniz.');
+                  });
                 },
                 borderRadius: 30),
           ),
@@ -447,12 +456,17 @@ class LoginButtons extends StatelessWidget {
                   buttonType: SocialLoginButtonType.apple,
                   text: 'Apple ile devam et',
                   onPressed: () {
-                    ref.watch(loginLogicProvider.notifier).signInWithApple().then(
-                        (bool value) => value
-                            ? context.go(SGRoute.home.route)
-                            : context.showErrorSnackBar(
-                                message:
-                                    'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
+                    ref
+                        .watch(loginLogicProvider.notifier)
+                        .signInWithApple()
+                        .then((bool value) {
+                      if (!context.mounted) return;
+                      value
+                          ? context.go(SGRoute.home.route)
+                          : context.showErrorSnackBar(
+                              message:
+                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.');
+                    });
                   },
                   borderRadius: 30),
             ),
@@ -481,7 +495,7 @@ class OrDivider extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Divider(
-              color: context.colorScheme.scrim.withOpacity(0.2),
+              color: context.colorScheme.scrim.withValues(alpha: 0.2),
               thickness: 1,
             ),
           ),
@@ -498,7 +512,7 @@ class OrDivider extends StatelessWidget {
           const Gap(10),
           Expanded(
             child: Divider(
-              color: context.colorScheme.scrim.withOpacity(0.2),
+              color: context.colorScheme.scrim.withValues(alpha: 0.2),
               thickness: 1,
             ),
           ),
@@ -529,6 +543,8 @@ class SignInButton extends StatelessWidget {
               .read(loginLogicProvider.notifier)
               .signInWithEmailAndPassword()
               .catchError((Object? err) {
+            if (!context.mounted) return false;
+
             if (err is FirebaseAuthException) {
               switch (err.code) {
                 case 'invalid-email':
@@ -557,7 +573,7 @@ class SignInButton extends StatelessWidget {
             }
             return false;
           }).then((bool value) {
-            if (value) {
+            if (value && context.mounted) {
               context.go(SGRoute.home.route);
             }
           });

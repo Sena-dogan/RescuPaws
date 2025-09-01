@@ -22,7 +22,7 @@ class NewPawScreen extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-         gradient: LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: <Color>[
@@ -36,6 +36,7 @@ class NewPawScreen extends ConsumerWidget {
         body: createPawEntry.when(data: (NewPawResponse data) {
           Future<void>.delayed(const Duration(seconds: 3), () {
             ref.invalidate(newPawLogicProvider);
+            if (!context.mounted) return;
             context.go(SGRoute.home.route);
           });
           return Column(
@@ -54,6 +55,7 @@ class NewPawScreen extends ConsumerWidget {
           );
         }, error: (Object error, StackTrace stackTrace) {
           Future<void>.delayed(const Duration(seconds: 3), () {
+            if (!context.mounted) return;
             ref.invalidate(newPawLogicProvider);
             context.go(SGRoute.home.route);
           });

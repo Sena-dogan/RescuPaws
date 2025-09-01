@@ -30,7 +30,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
     return Container(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-         gradient: LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: <Color>[
@@ -74,6 +74,8 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
                     .then((_) async {
                   debugPrint('assets added');
                   debugPrint('assets picked');
+                  if (!context.mounted) return false;
+
                   await context.push(SGRoute.newpaw.route);
                 });
               });
@@ -88,7 +90,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
     return Container(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-         gradient: LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: <Color>[
@@ -344,7 +346,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
 //                   top: 0,
 //                   right: 0,
 //                   child: Container(
-//                     color: Colors.black.withOpacity(0.5),
+//                     color: Colors.black.withValues(alpha:0.5),
 //                     child: Visibility(
 //                         visible: newPawUiModel.assets?.contains(asset) ?? false,
 //                         child: const Icon(Icons.check, color: Colors.white)),

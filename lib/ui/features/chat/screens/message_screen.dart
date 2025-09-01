@@ -63,7 +63,7 @@ class MessageScreen extends ConsumerWidget {
         body: Column(
           children: <Widget>[
             Divider(
-              color: context.colorScheme.tertiary.withOpacity(0.15),
+              color: context.colorScheme.tertiary.withValues(alpha:0.15),
             ),
             // display messages
             Expanded(

@@ -24,10 +24,10 @@ class HaveVaccineWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
             color: haveVaccine == 1
-                ? Colors.green.withOpacity(0.4)
+                ? Colors.green.withValues(alpha:0.4)
                 : haveVaccine == 0
-                    ? Colors.red.withOpacity(0.4)
-                    : Colors.grey.withOpacity(0.4),
+                    ? Colors.red.withValues(alpha:0.4)
+                    : Colors.grey.withValues(alpha:0.4),
             width: 2,
           ),
         ),

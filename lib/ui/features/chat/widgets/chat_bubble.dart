@@ -32,7 +32,7 @@ class ChatBubble extends StatelessWidget {
       child: Text(
         message.lastMessage,
         style: context.textTheme.titleSmall?.copyWith(
-          color: isCurrentUser ? Colors.white : Colors.black.withOpacity(0.7),
+          color: isCurrentUser ? Colors.white : Colors.black.withValues(alpha:0.7),
         ),
       ),
     );

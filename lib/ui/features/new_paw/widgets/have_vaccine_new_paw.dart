@@ -26,8 +26,8 @@ class NewPawHaveVaccineWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
             color: isVaccineSelected
-                ? Colors.green.withOpacity(0.5)
-                : Colors.red.withOpacity(0.5),
+                ? Colors.green.withValues(alpha:0.5)
+                : Colors.red.withValues(alpha:0.5),
             width: 2,
           ),
         ),

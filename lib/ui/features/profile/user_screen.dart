@@ -211,7 +211,7 @@ class ProfileScreen extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(10.0),
                               side: BorderSide(
                                 color:
-                                    context.colorScheme.shadow.withOpacity(0.1),
+                                    context.colorScheme.shadow.withValues(alpha:0.1),
                               ),
                             ),
                             title: Text(
@@ -432,9 +432,11 @@ class ProfileScreen extends ConsumerWidget {
                                   await ref
                                       .read(loginLogicProvider.notifier)
                                       .removeUser()
-                                      .then((bool value) => value
-                                          ? context.go(SGRoute.login.route)
-                                          : null)
+                                      .then((bool value) {
+                                        if (context.mounted && value) {
+                                          context.go(SGRoute.login.route);
+                                        }
+                                      })
                                       .catchError((Object? err) =>
                                           // ignore: invalid_return_type_for_catch_error
                                           debugPrint(err.toString()));
@@ -464,9 +466,11 @@ class ProfileScreen extends ConsumerWidget {
                                   await ref
                                       .read(loginLogicProvider.notifier)
                                       .signOut()
-                                      .then((bool value) => value
-                                          ? context.go(SGRoute.login.route)
-                                          : null)
+                                      .then((bool value) {
+                                        if (context.mounted && value) {
+                                          context.go(SGRoute.login.route);
+                                        }
+                                      })
                                       .catchError((Object? err) =>
                                           // ignore: invalid_return_type_for_catch_error
                                           debugPrint(err.toString()));

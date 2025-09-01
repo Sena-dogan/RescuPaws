@@ -70,7 +70,7 @@ class DetailLogic extends _$DetailLogic {
   }
 
   void shareContent(String content) {
-    Share.share(content);
+    SharePlus.instance.share(ShareParams(text: content));
   }
 
   void setCurrentImageIndex(int index) {
