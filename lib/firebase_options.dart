@@ -61,6 +61,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '867599713553',
     projectId: 'rescupaws',
     storageBucket: 'rescupaws.firebasestorage.app',
+    iosClientId: '867599713553-b9sjhdoqq23e1m3b75218cu1pannd9ap.apps.googleusercontent.com',
     iosBundleId: 'io.devopen.rescupaws',
   );
 
