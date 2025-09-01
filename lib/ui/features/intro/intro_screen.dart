@@ -35,7 +35,7 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
               const Gap(25),
               Image.asset(
                 Assets.RescuPaws,
-                width: screenWidth * 0.45, // cihaz genişliğinin %45'i
+                width: screenWidth * 0.45,
                 color: context.colorScheme.primary,
               ),
               const Gap(39),
@@ -81,12 +81,12 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
                   Gap(screenWidth * 0.10),
                   Image.asset(
                     Assets.Hearts,
-                    width: screenWidth * 0.25, // cihaz genişliğinin %25'i
+                    width: screenWidth * 0.25,
                   ),
                   const Spacer(),
                   Image.asset(
                     Assets.Dog,
-                    width: screenWidth * 0.65, // cihaz genişliğinin %35'i
+                    width: screenWidth * 0.65,
                   ),
                 ],
               ),
