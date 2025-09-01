@@ -14,8 +14,6 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:get_storage/get_storage.dart' as _i792;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:rescupaws/data/getstore/get_store_helper.dart' as _i489;
-import 'package:rescupaws/data/network/auth/auth_rest_client.dart' as _i140;
-import 'package:rescupaws/data/network/auth_api.dart' as _i770;
 import 'package:rescupaws/data/network/category/category_rest_client.dart'
     as _i742;
 import 'package:rescupaws/data/network/category_api.dart' as _i432;
@@ -70,10 +68,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => networkModule.provideLocationRestClient(gh<_i361.Dio>()),
       preResolve: true,
     );
-    await gh.factoryAsync<_i140.AuthRestClient>(
-      () => networkModule.provideAuthRestClient(gh<_i361.Dio>()),
-      preResolve: true,
-    );
     await gh.factoryAsync<_i968.FavoriteRestClient>(
       () => networkModule.provideFavoriteRestClient(gh<_i361.Dio>()),
       preResolve: true,
@@ -82,7 +76,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i849.PawApi(gh<_i1014.PawEntryRestClient>()));
     gh.factory<_i432.CategoryApi>(
         () => _i432.CategoryApi(gh<_i742.CategoryRestClient>()));
-    gh.factory<_i770.AuthApi>(() => _i770.AuthApi(gh<_i140.AuthRestClient>()));
     gh.factory<_i88.FavoriteApi>(
         () => _i88.FavoriteApi(gh<_i968.FavoriteRestClient>()));
     gh.factory<_i990.LocationApi>(

@@ -8,7 +8,6 @@ import 'package:network_logger/network_logger.dart';
 
 import '../../constants/endpoints.dart';
 import '../../data/getstore/get_store_helper.dart';
-import '../../data/network/auth/auth_rest_client.dart';
 import '../../data/network/category/category_rest_client.dart';
 import '../../data/network/favorite/favorite_rest_client.dart';
 import '../../data/network/location/location_rest_client.dart';
@@ -42,16 +41,7 @@ abstract class NetworkModule {
         responseBody: true,
         requestBody: true,
       ))
-      ..interceptors.add(DioNetworkLogger())
-      ..interceptors.add(
-        InterceptorsWrapper(
-          onRequest: (RequestOptions options,
-              RequestInterceptorHandler handler) async {
-            return handler.next(options);
-          },
-        ),
-      );
-
+      ..interceptors.add(DioNetworkLogger());
     return Future.value(dio);
   }
 
@@ -82,11 +72,6 @@ abstract class NetworkModule {
   @preResolve
   Future<LocationRestClient> provideLocationRestClient(Dio dio) {
     return Future.value(LocationRestClient(dio));
-  }
-
-  @preResolve
-  Future<AuthRestClient> provideAuthRestClient(Dio dio) {
-    return Future.value(AuthRestClient(dio));
   }
 
   @preResolve
