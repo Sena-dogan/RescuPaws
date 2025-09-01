@@ -19,82 +19,81 @@ class IntroScreen extends ConsumerStatefulWidget {
 class _IntroScreenState extends ConsumerState<IntroScreen> {
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    //final double screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-        decoration: BoxDecoration(
-          color: context.colorScheme.surface,
-        ),
-        child: Scaffold(
-          appBar: const EmptyAppBar(),
-          backgroundColor: Colors.transparent,
-          body: Center(
-            child: Column(
-              children: <Widget>[
-                const Gap(25),
-                Image.asset(
-                  Assets.RescuPaws,
-                  width: 200,
-                  color: context.colorScheme.primary,
-                ),
-                const Gap(39),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    text: 'Minik Bir Dost,\n',
-                    style: context.textTheme.labelLarge,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Sonsuz Bir Sevgi',
-                        style: context.textTheme.labelLarge,
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(12),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    text: 'Sahiplen, kalbindeki boşluğu doldur!\n',
-                    style: context.textTheme.bodyMedium,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Minik patilerle tanışmaya hazır mısınız?',
-                        style: context.textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(25),
-                NextButton(
-                  onPressed: () {
-                    /// Uncomment this to save intro state
-                    /// For now, we are not saving intro state
-                    /// because we want to show intro screen every time
-                    /// user opens the app
-                    ///
-                    // final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
-                    // getStoreHelper.saveIntro(true);
-                    debugPrint('Intro button pressed');
-                    context.go(SGRoute.home.route);
-                  },
-                ),
-                const Spacer(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Gap(10),
-                    Image.asset(
-                      Assets.Hearts,
-                      width: 100,
-                    ),
-                    Image.asset(
-                      Assets.Dog,
+      decoration: BoxDecoration(
+        color: context.colorScheme.surface,
+      ),
+      child: Scaffold(
+        appBar: const EmptyAppBar(),
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              const Gap(25),
+              Image.asset(
+                Assets.RescuPaws,
+                width: screenWidth * 0.45, // cihaz genişliğinin %45'i
+                color: context.colorScheme.primary,
+              ),
+              const Gap(39),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Minik Bir Dost,\n',
+                  style: context.textTheme.labelLarge,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Sonsuz Bir Sevgi',
+                      style: context.textTheme.labelLarge,
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              const Gap(12),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Sahiplen, kalbindeki boşluğu doldur!\n',
+                  style: context.textTheme.bodyMedium,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Minik patilerle tanışmaya hazır mısınız?',
+                      style: context.textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(25),
+              NextButton(
+                onPressed: () {
+                  debugPrint('Intro button pressed');
+                  context.go(SGRoute.home.route);
+                },
+              ),
+              const Spacer(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Gap(screenWidth * 0.10),
+                  Image.asset(
+                    Assets.Hearts,
+                    width: screenWidth * 0.25, // cihaz genişliğinin %25'i
+                  ),
+                  const Spacer(),
+                  Image.asset(
+                    Assets.Dog,
+                    width: screenWidth * 0.65, // cihaz genişliğinin %35'i
+                  ),
+                ],
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

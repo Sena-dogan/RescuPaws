@@ -10,8 +10,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/getstore/get_store_helper.dart';
 import '../../../di/components/service_locator.dart';
 import '../../../firebase_options.dart';
-import '../../../models/token/token_request.dart';
-import '../../../models/token/token_response.dart';
 import '../../../utils/firebase_utils.dart';
 import '../../../utils/riverpod_extensions.dart';
 import 'login_ui_model.dart';
