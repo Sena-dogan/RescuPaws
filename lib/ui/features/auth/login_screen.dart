@@ -58,13 +58,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: context.colorScheme.surface,
-          shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.only(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(16),
               bottomRight: Radius.circular(16),
-            ),
-            side: BorderSide(
-              color: context.colorScheme.scrim.withOpacity(0.2),
             ),
           ),
           automaticallyImplyLeading: false,
@@ -83,13 +80,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 : Column(
                     children: <Widget>[
                       Gap(size.height * 0.05),
-                      _loginText(context),
+                      LoginText(context: context),
                       const Gap(25),
-                      _buildLoginButtons(Size(size.width, size.height * 0.12)),
+                      LoginButtons(context: context, ref: ref, size: Size(size.width, size.height * 0.12)),
                       const Gap(25),
-                      _buildOrDivider(size, context),
+                      OrDivider(size: size, context: context),
                       const Gap(25),
-                      _emailText(context),
+                      EmailText(context: context),
                       const Gap(25),
                       _buildEmail(size, context),
                       const Gap(16),
@@ -98,7 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       _buildTermsOfService(),
                       _buildPrivacyPolicy(),
                       const Gap(16),
-                      _buildSignInButton(context),
+                      SignInButton(ref: ref, context: context),
                       _forgotPasswordButton(context),
                       const Spacer(),
                     ],
@@ -122,18 +119,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ?.copyWith(color: context.colorScheme.primary, fontSize: 16),
         ),
       ),
-    );
-  }
-
-  Text _emailText(BuildContext context) {
-    return Text('E-posta ile devam edin', style: context.textTheme.labelSmall);
-  }
-
-  Text _loginText(BuildContext context) {
-    return Text(
-      'Giriş Yap',
-      style: context.textTheme.labelSmall
-          ?.copyWith(color: context.colorScheme.scrim),
     );
   }
 
@@ -162,66 +147,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         'Şifremi unuttum',
         style: context.textTheme.bodyMedium?.copyWith(
           color: context.colorScheme.primary,
-        ),
-      ),
-    );
-  }
-
-  SizedBox _buildSignInButton(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.sizeOf(context).width * 0.9,
-      height: 48,
-      child: ElevatedButton(
-        onPressed: () async {
-          await ref
-              .read(loginLogicProvider.notifier)
-              .signInWithEmailAndPassword()
-              .catchError((Object? err) {
-            if (err is FirebaseAuthException) {
-              switch (err.code) {
-                case 'invalid-email':
-                  context.showErrorSnackBar(
-                      message: 'Lütfen geçerli bir e-posta adresi giriniz.');
-                  break;
-                case 'user-not-found':
-                  context.showErrorSnackBar(
-                      message: 'Bu e-posta adresi ile bir hesap bulunamadı.');
-                  break;
-                case 'wrong-password':
-                  context.showErrorSnackBar(
-                      message: 'Şifreniz yanlış. Lütfen tekrar deneyiniz.');
-                  break;
-                default:
-                  context.showErrorSnackBar(
-                      message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
-              }
-            } else if (err is FormatException) {
-              context.showErrorSnackBar(
-                  message: 'Lütfen e-posta adresi ve şifrenizi giriniz.');
-            } else {
-              Logger().e(err);
-              context.showErrorSnackBar(
-                  message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
-            }
-            return false;
-          }).then((bool value) {
-            if (value) {
-              context.go(SGRoute.home.route);
-            }
-          });
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: context.colorScheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-        ),
-        child: Text(
-          'Giriş Yap',
-          style: context.textTheme.bodyMedium!.copyWith(
-            color: context.colorScheme.surface,
-          ),
         ),
       ),
     );
@@ -381,96 +306,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  SizedBox _buildOrDivider(Size size, BuildContext context) {
-    return SizedBox(
-      width: size.width * 0.9,
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Divider(
-              color: context.colorScheme.scrim.withOpacity(0.2),
-              thickness: 1,
-            ),
-          ),
-          const Gap(10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              'veya',
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: context.colorScheme.scrim,
-              ),
-            ),
-          ),
-          const Gap(10),
-          Expanded(
-            child: Divider(
-              color: context.colorScheme.scrim.withOpacity(0.2),
-              thickness: 1,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoginButtons(Size size) {
-    return Container(
-      color: Colors.transparent,
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      width: size.width * 0.9,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: SocialLoginButton(
-                elevation: const WidgetStatePropertyAll<double>(0.0),
-                strokeColor: context.colorScheme.primary,
-                buttonType: SocialLoginButtonType.google,
-                backgroundColor: Colors.transparent,
-                text: 'Google ile devam et',
-                textColor: context.colorScheme.scrim,
-                onPressed: () async {
-                  await ref
-                      .watch(loginLogicProvider.notifier)
-                      .signInWithGoogle()
-                      .then((bool value) => value
-                          ? context.go(SGRoute.home.route)
-                          : context.showErrorSnackBar(
-                              message:
-                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
-                },
-                borderRadius: 30),
-          ),
-          Visibility(
-            visible: context.isIOS,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: SocialLoginButton(
-                  elevation: const WidgetStatePropertyAll<double>(0.0),
-                  strokeColor: context.colorScheme.primary,
-                  backgroundColor: Colors.transparent,
-                  textColor: context.colorScheme.scrim,
-                  buttonType: SocialLoginButtonType.apple,
-                  text: 'Apple ile devam et',
-                  onPressed: () {
-                    ref.watch(loginLogicProvider.notifier).signInWithApple().then(
-                        (bool value) => value
-                            ? context.go(SGRoute.home.route)
-                            : context.showErrorSnackBar(
-                                message:
-                                    'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
-                  },
-                  borderRadius: 30),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Padding _buildPrivacyPolicy() {
     return Padding(
       padding: const EdgeInsets.all(3.0),
@@ -554,5 +389,225 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+}
+
+class LoginButtons extends StatelessWidget {
+  const LoginButtons({
+    super.key,
+    required this.context,
+    required this.ref,
+    required this.size,
+  });
+
+  final BuildContext context;
+  final WidgetRef ref;
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.transparent,
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      width: size.width * 0.9,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: SocialLoginButton(
+                elevation: const WidgetStatePropertyAll<double>(0.0),
+                strokeColor: context.colorScheme.primary,
+                buttonType: SocialLoginButtonType.google,
+                backgroundColor: Colors.transparent,
+                text: 'Google ile devam et',
+                textColor: context.colorScheme.scrim,
+                onPressed: () async {
+                  await ref
+                      .watch(loginLogicProvider.notifier)
+                      .signInWithGoogle()
+                      .then((bool value) => value
+                          ? context.go(SGRoute.home.route)
+                          : context.showErrorSnackBar(
+                              message:
+                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
+                },
+                borderRadius: 30),
+          ),
+          Visibility(
+            visible: context.isIOS,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: SocialLoginButton(
+                  elevation: const WidgetStatePropertyAll<double>(0.0),
+                  strokeColor: context.colorScheme.primary,
+                  backgroundColor: Colors.transparent,
+                  textColor: context.colorScheme.scrim,
+                  buttonType: SocialLoginButtonType.apple,
+                  text: 'Apple ile devam et',
+                  onPressed: () {
+                    ref.watch(loginLogicProvider.notifier).signInWithApple().then(
+                        (bool value) => value
+                            ? context.go(SGRoute.home.route)
+                            : context.showErrorSnackBar(
+                                message:
+                                    'Bir hata oluştu. Lütfen tekrar deneyiniz.'));
+                  },
+                  borderRadius: 30),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class OrDivider extends StatelessWidget {
+  const OrDivider({
+    super.key,
+    required this.size,
+    required this.context,
+  });
+
+  final Size size;
+  final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size.width * 0.9,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Divider(
+              color: context.colorScheme.scrim.withOpacity(0.2),
+              thickness: 1,
+            ),
+          ),
+          const Gap(10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              'veya',
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.colorScheme.scrim,
+              ),
+            ),
+          ),
+          const Gap(10),
+          Expanded(
+            child: Divider(
+              color: context.colorScheme.scrim.withOpacity(0.2),
+              thickness: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SignInButton extends StatelessWidget {
+  const SignInButton({
+    super.key,
+    required this.ref,
+    required this.context,
+  });
+
+  final WidgetRef ref;
+  final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width * 0.9,
+      height: 48,
+      child: ElevatedButton(
+        onPressed: () async {
+          await ref
+              .read(loginLogicProvider.notifier)
+              .signInWithEmailAndPassword()
+              .catchError((Object? err) {
+            if (err is FirebaseAuthException) {
+              switch (err.code) {
+                case 'invalid-email':
+                  context.showErrorSnackBar(
+                      message: 'Lütfen geçerli bir e-posta adresi giriniz.');
+                  break;
+                case 'user-not-found':
+                  context.showErrorSnackBar(
+                      message: 'Bu e-posta adresi ile bir hesap bulunamadı.');
+                  break;
+                case 'wrong-password':
+                  context.showErrorSnackBar(
+                      message: 'Şifreniz yanlış. Lütfen tekrar deneyiniz.');
+                  break;
+                default:
+                  context.showErrorSnackBar(
+                      message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
+              }
+            } else if (err is FormatException) {
+              context.showErrorSnackBar(
+                  message: 'Lütfen e-posta adresi ve şifrenizi giriniz.');
+            } else {
+              Logger().e(err);
+              context.showErrorSnackBar(
+                  message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
+            }
+            return false;
+          }).then((bool value) {
+            if (value) {
+              context.go(SGRoute.home.route);
+            }
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: context.colorScheme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+        ),
+        child: Text(
+          'Giriş Yap',
+          style: context.textTheme.bodyMedium!.copyWith(
+            color: context.colorScheme.surface,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EmailText extends StatelessWidget {
+  const EmailText({
+    super.key,
+    required this.context,
+  });
+
+  final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('E-posta ile devam edin', style: context.textTheme.labelSmall);
+  }
+}
+
+class LoginText extends StatelessWidget {
+  const LoginText({
+    super.key,
+    required this.context,
+  });
+
+  final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Giriş Yap',
+      style: context.textTheme.labelSmall
+          ?.copyWith(color: context.colorScheme.scrim),
+    );
   }
 }

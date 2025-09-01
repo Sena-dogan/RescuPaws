@@ -1,9 +1,4 @@
-library social_login_button;
-
 import 'package:flutter/material.dart';
-
-export 'package:social_login_buttons/social_login_buttons.dart'
-    show SocialLoginButton, SocialLoginButtonType, SocialLoginButtonMode;
 
 /// All Supported Button Types
 enum SocialLoginButtonType {
@@ -117,7 +112,7 @@ class SocialLoginButton extends StatelessWidget {
   /// Elevation, an optional param, can be used to create single style button.
   final WidgetStateProperty<double?>? elevation;
 
-  final String _defaultImagePath = 'lib/assets/';
+  final String _defaultImagePath = 'assets/images/';
   bool _isLocal = true;
 
   @override
@@ -140,7 +135,7 @@ class SocialLoginButton extends StatelessWidget {
         text = 'Sign In with Google';
         imageName = '${_defaultImagePath}google-logo.png';
         backgroundColor = Colors.white;
-        _isLocal = false;
+        _isLocal = true;
         break;
       case SocialLoginButtonType.twitter:
         color = Colors.white;
@@ -153,7 +148,7 @@ class SocialLoginButton extends StatelessWidget {
         color = Colors.black;
         text = 'Sign In with Apple';
         imageName = '${_defaultImagePath}apple-logo.png';
-        _isLocal = false;
+        _isLocal = true;
         backgroundColor = Colors.white;
         break;
       case SocialLoginButtonType.appleBlack:
