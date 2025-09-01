@@ -6,11 +6,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../data/getstore/get_store_helper.dart';
-import '../../../data/network/auth/auth_repository.dart';
 import '../../../di/components/service_locator.dart';
+import '../../../firebase_options.dart';
 import '../../../models/token/token_request.dart';
 import '../../../models/token/token_response.dart';
 import '../../../utils/firebase_utils.dart';
@@ -18,23 +17,6 @@ import '../../../utils/riverpod_extensions.dart';
 import 'login_ui_model.dart';
 
 part 'login_logic.g.dart';
-
-@riverpod
-Future<TokenResponse?> fetchToken(Ref ref) async {
-  final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
-
-  final AuthRepository authRepository = ref.watch(getAuthRepositoryProvider);
-  final TokenResponse getTokenResponse =
-      await authRepository.getToken(TokenRequest()).then((TokenResponse value) {
-    if (value.token != null) {
-      getStoreHelper.saveToken(value.token!);
-      ref.cacheFor(const Duration(days: 3));
-    } else
-      throw Exception('Token is null');
-    return value;
-  });
-  return getTokenResponse;
-}
 
 @riverpod
 class LoginLogic extends _$LoginLogic {
@@ -159,25 +141,13 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn(
-              clientId: Platform.isIOS
-                  //!TODO: Put this in an env file
-                  ? '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com'
-                  : null)
-          .signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
+      final AuthCredential credential = await googleAuthCredential;
       setLogin(isLoading: true);
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
       Logger().e(e.toString());
       setError(e.toString());
-      setLogin();
       return false;
     } finally {
       setLogin();
@@ -190,24 +160,12 @@ class LoginLogic extends _$LoginLogic {
     try {
       debugPrint(
           'AAAAAAAAAA my name is apple. i am 7 years old. i like to eat apples');
-      final AuthorizationCredentialAppleID appleCredential =
-          await SignInWithApple.getAppleIDCredential(
-        scopes: <AppleIDAuthorizationScopes>[
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-      );
-      final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
-      final AuthCredential credential = oAuthProvider.credential(
-        idToken: appleCredential.identityToken,
-        accessToken: appleCredential.authorizationCode,
-      );
+
+      final AppleAuthProvider appleProvider = AppleAuthProvider()
+        ..addScope('email')
+        ..addScope('full_name');
       setLogin(isLoading: true);
-      await ref.read(fetchTokenProvider.future).catchError((Object e, StackTrace stackTrace) {
-        Logger().e(e.toString());
-        return null;
-      });
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithProvider(appleProvider);
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -239,16 +197,27 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> removeUser() async {
     try {
-      await FirebaseAuth.instance.currentUser
-          ?.reauthenticateWithCredential(await platformAuthCredential)
-          .then((UserCredential value) async {
-        await FirebaseAuth.instance.currentUser?.delete();
-        if (await GoogleSignIn().isSignedIn()) {
-          await GoogleSignIn().disconnect();
-          await GoogleSignIn().signOut();
-        }
-        return true;
-      });
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final bool isGoogleSignedIn = await googleSignIn.isSignedIn();
+
+      if (isGoogleSignedIn) {
+        // Reauthenticate with Google credential
+        await FirebaseAuth.instance.currentUser
+            ?.reauthenticateWithCredential(await googleAuthCredential)
+            .then((UserCredential value) async {
+          await FirebaseAuth.instance.currentUser?.delete();
+          await googleSignIn.disconnect();
+          await googleSignIn.signOut();
+        });
+      } else {
+        // Reauthenticate with provider
+        final AppleAuthProvider appleProvider = AppleAuthProvider();
+        await FirebaseAuth.instance.currentUser
+            ?.reauthenticateWithProvider(appleProvider)
+            .then((UserCredential value) async {
+          await FirebaseAuth.instance.currentUser?.delete();
+        });
+      }
       return true;
     } catch (e) {
       debugPrint('Error: $e');
@@ -257,43 +226,26 @@ class LoginLogic extends _$LoginLogic {
     }
   }
 
-  Future<AuthCredential> get appleAuthCredential async {
-    // Construct an `OAuthCredential` from the credential returned by the
-    // request.
-    final AuthorizationCredentialAppleID appleCredential =
-        await SignInWithApple.getAppleIDCredential(
-      scopes: <AppleIDAuthorizationScopes>[
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-    );
-    final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
-    return oAuthProvider.credential(
-      idToken: appleCredential.identityToken,
-      accessToken: appleCredential.authorizationCode,
-    );
-  }
-
   Future<AuthCredential> get googleAuthCredential async {
-    // Obtain the auth details from the request
+    // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn(
-            clientId: Platform.isIOS
-                ? '247383540944-p3ji8erp1cscvs4hov7prbahfbqtpbrp.apps.googleusercontent.com'
-                : null)
-        .signIn();
+      /// Check the os
+      clientId: Platform.isIOS
+          ? DefaultFirebaseOptions.currentPlatform.iosClientId
+          : DefaultFirebaseOptions.currentPlatform.androidClientId,
+      scopes: <String>[
+        'email',
+        'profile',
+      ],
+    ).signIn();
+    // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
     // Create a new credential
-    return GoogleAuthProvider.credential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-  }
-
-  Future<AuthCredential> get platformAuthCredential async {
-    // Look at the platform and decide which credentials to use
-    final AuthCredential credential =
-        Platform.isIOS ? await appleAuthCredential : await googleAuthCredential;
     return credential;
   }
 
@@ -344,7 +296,6 @@ class LoginLogic extends _$LoginLogic {
     }
     try {
       setLogin(isLoading: true);
-      await ref.read(fetchTokenProvider.future);
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
         email: state.email!,
