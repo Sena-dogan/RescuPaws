@@ -3,16 +3,13 @@ import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/getstore/get_store_helper.dart';
 import '../../../data/network/favorite/favorite_repository.dart';
 import '../../../data/network/paw_entry/paw_entry_repository.dart';
-import '../../../di/components/service_locator.dart';
 import '../../../models/favorite/create_favorite_request.dart';
 import '../../../models/favorite/create_favorite_response.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/firebase_utils.dart';
 import '../../../utils/riverpod_extensions.dart';
-import '../../features/auth/login_logic.dart';
 import '../swipe_card/swipe_card_logic.dart';
 import 'home_screen_ui_model.dart';
 
@@ -22,26 +19,13 @@ part 'home_screen_logic.g.dart';
 Future<GetPawEntryResponse> fetchPawEntries(Ref ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
   ref.cacheFor(const Duration(minutes: 5));
-  final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
-  if (getStoreHelper.getToken() == null) {
-    Logger().i('Token is null fetching token from the server.');
-
-    await ref.read(fetchTokenProvider.future);
-  }
-  Logger().i('Token is not null, fetching paw entries from the server.');
   final PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
   final Either<PawEntryError, GetPawEntryResponse> pawEntries =
       await pawEntryRepository.getPawEntry();
   pawEntries.fold((PawEntryError l) {
-    if (l.error == 'Unauthorized') {
-      Logger().i('Token is expired, removing token and fetching a new one.');
-      getStoreHelper.removeToken();
-      ref.invalidateSelf();
-    } else {
-      ref.read(homeScreenLogicProvider.notifier).setError(l.error);
-    }
+    ref.read(homeScreenLogicProvider.notifier).setError(l.error);
     return GetPawEntryResponse(data: <PawEntry>[]);
   }, (GetPawEntryResponse pawEntries) {
     pawEntries = pawEntries.randomize();
@@ -57,6 +41,7 @@ Future<GetPawEntryResponse> fetchPawEntries(Ref ref) async {
 }
 
 @riverpod
+
 /// Fetches the paw entries of the current user.
 Future<GetPawEntryResponse> fetchUserPawEntries(Ref ref) async {
   final PawEntryRepository pawEntryRepository =
