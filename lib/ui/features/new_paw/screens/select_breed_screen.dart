@@ -81,7 +81,7 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
 																		}),
 																	),
 																	Container(
-																		color: Colors.black.withOpacity(0.5),
+																		color: Colors.black.withValues(alpha:0.5),
 																		child: Center(
 																			child: Text(
 																				data[index].name,

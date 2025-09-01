@@ -56,7 +56,7 @@ class OtpScreen extends ConsumerWidget {
                           .read(loginLogicProvider.notifier)
                           .verifySmsCode(value)
                           .then((bool value) {
-                        if (value) {
+                        if (value && context.mounted) {
                           context.showAwesomeMaterialBanner(
                             title: 'Başarılı',
                             message: 'Sms doğrulama başarılı',

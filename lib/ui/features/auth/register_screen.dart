@@ -59,7 +59,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               bottomRight: Radius.circular(16),
             ),
             side: BorderSide(
-              color: context.colorScheme.scrim.withOpacity(0.2),
+              color: context.colorScheme.scrim.withValues(alpha:0.2),
             ),
           ),
           automaticallyImplyLeading: false,
@@ -151,11 +151,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               .signUpWithEmailAndPassword()
               .catchError((Object? err) {
             debugPrint(err.toString());
+            if (!context.mounted) return false;
             context.showErrorSnackBar(
                 message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
             return false;
           }).then((bool value) {
-            if (value) {
+            if (value && context.mounted) {
               context.go(SGRoute.home.route);
             }
           });
@@ -340,7 +341,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 .read(loginLogicProvider.notifier)
                 .signUpWithEmailAndPassword()
                 .then((bool value) {
-              if (value) {
+              if (value && context.mounted) {
                 context.go(SGRoute.home.route);
               }
             });
@@ -403,7 +404,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           loginModel.isObscure
               ? Icons.visibility_outlined
               : Icons.visibility_off_outlined,
-          color: context.colorScheme.scrim.withOpacity(0.5),
+          color: context.colorScheme.scrim.withValues(alpha:0.5),
         ),
       ),
     );

@@ -48,7 +48,7 @@ class RightButton extends StatelessWidget {
         },
         customBorder: StarBorder.polygon(
           side: BorderSide(
-            color: Colors.black.withOpacity(0.17000000178813934),
+            color: Colors.black.withValues(alpha:0.17000000178813934),
           ),
           pointRounding: 0.3,
           sides: 3,

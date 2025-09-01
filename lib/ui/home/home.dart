@@ -116,7 +116,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         : Column(
             children: <Widget>[
               Divider(
-                color: context.colorScheme.tertiary.withOpacity(0.15),
+                color: context.colorScheme.tertiary.withValues(alpha:0.15),
               ),
               Center(
                 child: SizedBox(
@@ -205,7 +205,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             icon: Icon(
               Icons.notifications_none_rounded,
               size: 30,
-              color: context.colorScheme.scrim.withOpacity(0.8),
+              color: context.colorScheme.scrim.withValues(alpha:0.8),
             ),
           ),
         ),

@@ -73,5 +73,4 @@ class DefaultFirebaseOptions {
     authDomain: 'rescupaws.firebaseapp.com',
     storageBucket: 'rescupaws.firebasestorage.app',
   );
-
 }

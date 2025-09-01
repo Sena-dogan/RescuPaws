@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/services/text_formatter.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -82,7 +82,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
                         debugPrint(e.toString());
                         return false;
                       }).then((bool result) {
-                        if (result) {
+                        if (result && context.mounted) {
                           context.push(SGRoute.otp.route);
                         }
                       });

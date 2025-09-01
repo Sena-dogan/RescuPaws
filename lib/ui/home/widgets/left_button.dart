@@ -42,7 +42,7 @@ class LeftButton extends StatelessWidget {
         },
         customBorder: StarBorder.polygon(
           side: BorderSide(
-            color: Colors.black.withOpacity(0.17),
+            color: Colors.black.withValues(alpha:0.17),
           ),
           pointRounding: 0.3,
           sides: 3,

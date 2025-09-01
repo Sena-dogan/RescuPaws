@@ -23,7 +23,7 @@ class AdvertiserInfo extends StatelessWidget {
           height: imageSize,
           width: imageSize,
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.black.withValues(alpha:0.4),
             shape: BoxShape.circle,
           ),
           child: ClipOval(

@@ -60,7 +60,7 @@ class PawBottomNavBar extends ConsumerWidget {
           debugPrint('Current Route is ${SGRoute.values[index].route}');
         },
         gapLocation: GapLocation.center,
-        //borderColor: Colors.grey.withOpacity(0.5),
+        //borderColor: Colors.grey.withValues(alpha:0.5),
         notchSmoothness: NotchSmoothness.softEdge,
         hideAnimationCurve: Curves.easeInOut,
         leftCornerRadius: 20,
@@ -69,7 +69,7 @@ class PawBottomNavBar extends ConsumerWidget {
         height: 70,
         backgroundColor: context.colorScheme.surface,
         shadow: Shadow(
-          color: Colors.grey.withOpacity(0.2),
+          color: Colors.grey.withValues(alpha:0.2),
           blurRadius: 10,
         ));
   }
