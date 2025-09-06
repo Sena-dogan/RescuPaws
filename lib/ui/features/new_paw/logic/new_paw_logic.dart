@@ -9,13 +9,13 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/enums/new_paw_enums.dart';
-import '../../../../data/network/category/category_repository.dart';
 import '../../../../data/network/location/location_repository.dart';
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../models/location_response.dart';
 import '../../../../models/new_paw_model.dart';
 import '../../../../utils/riverpod_extensions.dart';
+import '../../category/data/category_repository.dart';
 import '../model/new_paw_ui_model.dart';
 
 part 'new_paw_logic.g.dart';
@@ -33,7 +33,7 @@ Future<List<Category>> fetchCategories(Ref ref) async {
 
 @riverpod
 Future<List<Category>> fetchSubCategories(
-    Ref ref, int categoryId) async {
+    Ref ref, String categoryId) async {
   ref.keepAlive();
   final CategoryRepository categoryRepository =
       ref.watch(getCategoryRepositoryProvider);
@@ -51,7 +51,7 @@ Future<NewPawResponse> createPawEntry(
   }
   Logger().i('new paw model: $newPawModel');
   final PawEntryRepository pawEntryRepository =
-      ref.watch(getPawEntryRepositoryProvider);
+      ref.read(getPawEntryRepositoryProvider);
   final NewPawResponse pawEntry =
       await pawEntryRepository.createPawEntry(newPawModel);
   return pawEntry;
@@ -235,11 +235,11 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(assets: images);
   }
 
-  void setCategoryId(int categoryId) {
+  void setCategoryId(String categoryId) {
     state = state.copyWith(category_id: categoryId);
   }
 
-  void setSubCategoryId(int subCategoryId) {
+  void setSubCategoryId(String subCategoryId) {
     state = state.copyWith(sub_category_id: subCategoryId);
   }
 

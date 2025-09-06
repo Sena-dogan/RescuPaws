@@ -9,6 +9,7 @@ import '../../../models/favorite/create_favorite_request.dart';
 import '../../../models/favorite/create_favorite_response.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/firebase_utils.dart';
+import '../../../utils/image_converter.dart';
 import '../../../utils/riverpod_extensions.dart';
 import '../swipe_card/swipe_card_logic.dart';
 import 'home_screen_ui_model.dart';
@@ -24,20 +25,26 @@ Future<GetPawEntryResponse> fetchPawEntries(Ref ref) async {
       ref.watch(getPawEntryRepositoryProvider);
   final Either<PawEntryError, GetPawEntryResponse> pawEntries =
       await pawEntryRepository.getPawEntry();
-  pawEntries.fold((PawEntryError l) {
+  
+  return await pawEntries.fold((PawEntryError l) async {
     ref.read(homeScreenLogicProvider.notifier).setError(l.error);
     return GetPawEntryResponse(data: <PawEntry>[]);
-  }, (GetPawEntryResponse pawEntries) {
-    pawEntries = pawEntries.randomize();
+  }, (GetPawEntryResponse pawEntries) async {
+    // Convert base64 images to data URIs for all entries
+    final List<PawEntry> convertedEntries = await ImageConverter.convertMultipleEntries(
+      pawEntries.data,
+    );
+    
+    final GetPawEntryResponse updatedResponse = GetPawEntryResponse(data: convertedEntries);
+    final GetPawEntryResponse randomizedResponse = updatedResponse.randomize();
+    
     ref
         .read(swipeCardLogicProvider.notifier)
-        .setId(pawEntries.data.firstOrNull?.id ?? 0);
-    ref.read(homeScreenLogicProvider.notifier).setPawEntries(pawEntries.data);
-    Logger().i('Paw entries fetched successfully.');
-    return pawEntries;
+        .setId(randomizedResponse.data.firstOrNull?.id ?? 0);
+    ref.read(homeScreenLogicProvider.notifier).setPawEntries(randomizedResponse.data);
+    Logger().i('Paw entries fetched and images converted successfully.');
+    return randomizedResponse;
   });
-  return pawEntries
-      .getOrElse((PawEntryError l) => GetPawEntryResponse(data: <PawEntry>[]));
 }
 
 @riverpod
@@ -48,14 +55,18 @@ Future<GetPawEntryResponse> fetchUserPawEntries(Ref ref) async {
       ref.watch(getPawEntryRepositoryProvider);
   final Either<PawEntryError, GetPawEntryResponse> pawEntries =
       await pawEntryRepository.getPawEntryById();
-  pawEntries.fold((PawEntryError l) {
+  
+  return await pawEntries.fold((PawEntryError l) async {
     return GetPawEntryResponse(data: <PawEntry>[]);
-  }, (GetPawEntryResponse pawEntries) {
-    debugPrint('Paw entries fetched successfully.');
-    return pawEntries;
+  }, (GetPawEntryResponse pawEntries) async {
+    // Convert base64 images to data URIs for user entries as well
+    final List<PawEntry> convertedEntries = await ImageConverter.convertMultipleEntries(
+      pawEntries.data,
+    );
+    
+    debugPrint('User paw entries fetched and images converted successfully.');
+    return GetPawEntryResponse(data: convertedEntries);
   });
-  return pawEntries
-      .getOrElse((PawEntryError l) => GetPawEntryResponse(data: <PawEntry>[]));
 }
 
 @riverpod
