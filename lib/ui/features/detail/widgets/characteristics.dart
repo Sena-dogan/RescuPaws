@@ -44,9 +44,9 @@ class Characteristics extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CharacteristicItem(
+            const CharacteristicItem(
               title: 'Breed',
-              value: pawEntryDetailResponse!.category?.name ?? '',
+              value: 'category',
             ),
             const Gap(30),
             CharacteristicItem(

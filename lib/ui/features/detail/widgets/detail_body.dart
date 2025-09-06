@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../models/paw_entry_detail.dart';
+import '../../../../models/user_data.dart';
 import '../../../../utils/context_extensions.dart';
 import '../../chat/logic/chat_logic.dart';
 import '../../chat/screens/message_screen.dart';
@@ -41,7 +42,7 @@ class DetailBody extends ConsumerWidget {
               height: 50,
               width: 60,
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha:0.4),
+                color: Colors.black.withValues(alpha: 0.4),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -58,7 +59,7 @@ class DetailBody extends ConsumerWidget {
                 height: 50,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha:0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -112,10 +113,8 @@ class DetailBody extends ConsumerWidget {
                     ),
                     const Gap(30),
                     AdvertiserInfo(
-                      receiverName:
-                          pawEntryDetailResponse!.userData?.displayName ?? '',
-                      receiverProfilePic:
-                          pawEntryDetailResponse!.userData?.photoUrl,
+                      receiverName: 'receiverName',
+                      receiverProfilePic: 'receiverProfilePic',
                       imageSize: size.width * 0.2,
                       textStyle: context.textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.bold,
@@ -134,11 +133,8 @@ class DetailBody extends ConsumerWidget {
                           ),
                         ),
                         onPressed: () {
-                          final String receiverId =
-                              pawEntryDetailResponse!.userData?.uid ??
-                                  'User Not Found';
-                          final String receiverEmail =
-                              pawEntryDetailResponse!.userData?.email ?? '';
+                          const String receiverId = 'User Not Found';
+                          const String receiverEmail = 'receiverEmail';
                           if (receiverId.isEmpty) {
                             Logger().e('Receiver id is empty');
                             throw Exception(
@@ -152,7 +148,7 @@ class DetailBody extends ConsumerWidget {
                           ref
                               .read(chatLogicProvider.notifier)
                               .addReceiverUserToFirestore(
-                                receiverUser: pawEntryDetailResponse!.userData!,
+                                receiverUser: UserData(),
                               );
 
                           Navigator.push(
@@ -162,12 +158,8 @@ class DetailBody extends ConsumerWidget {
                               builder: (BuildContext context) {
                                 return MessageScreen(
                                   receiverId: receiverId,
-                                  receiverName: pawEntryDetailResponse!
-                                          .userData?.displayName ??
-                                      '',
-                                  receiverProfilePic: pawEntryDetailResponse!
-                                          .userData?.photoUrl ??
-                                      '',
+                                  receiverName: 'Receiver Name',
+                                  receiverProfilePic: 'Receiver Profile Pic',
                                 );
                               },
                             ),
@@ -201,7 +193,7 @@ class FavButton extends ConsumerWidget {
         height: 50,
         width: 40,
         decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha:0.4),
+          color: Colors.black.withValues(alpha: 0.4),
           shape: BoxShape.circle,
         ),
         child: ref.watch(detailLogicProvider).isFavorite

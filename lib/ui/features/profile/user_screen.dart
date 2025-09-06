@@ -19,7 +19,7 @@ import '../../home/widgets/loading_paw_widget.dart';
 import '../../widgets/add_nav_button.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
-import '../auth/login_logic.dart';
+import '../auth/presentation/login_logic.dart';
 import 'user_logic.dart';
 import 'user_ui_model.dart';
 

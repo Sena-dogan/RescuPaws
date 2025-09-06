@@ -26,9 +26,6 @@ Future<GetPawEntryDetailResponse?> fetchPawEntryDetail(
     Logger().e(error);
     ref.read(detailLogicProvider.notifier).setError(error.toString());
   });
-  ref
-      .read(detailLogicProvider.notifier)
-      .setDetailUser(pawEntryDetailResponse.userData);
   return pawEntryDetailResponse;
 }
 
