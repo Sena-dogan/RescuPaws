@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -12,7 +10,7 @@ import '../../../../constants/assets.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../utils/context_extensions.dart';
 import '../../../home/widgets/loading_paw_widget.dart';
-import '../logic/new_paw_logic.dart';
+import '../../new_paw/logic/new_paw_logic.dart';
 
 class SelectSubBreedWidget extends ConsumerWidget {
   const SelectSubBreedWidget({super.key});

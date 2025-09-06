@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'categories_response.freezed.dart';
@@ -14,7 +16,7 @@ abstract class GetCategoriesResponse with _$GetCategoriesResponse {
 }
 
 @freezed
-sealed class Category with _$Category {
+abstract class Category with _$Category {
   factory Category({
     required String id, // Changed to String to match Firestore document IDs
     required String name,
@@ -23,6 +25,7 @@ sealed class Category with _$Category {
     String? parent_id, // Keep for compatibility, can represent species
     String? image,
     String? description,
+    @Default(1) int status, // Active by default
     Map<String, dynamic>? attributes, // Breed attributes
   }) = _Category;
 
