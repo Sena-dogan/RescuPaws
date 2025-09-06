@@ -22,7 +22,7 @@ abstract class Country with _$Country {
   const factory Country({
     required int id,
     required String name,
-    @JsonKey(name: 'phone_code') required String code,
+    required String code,
   }) = _Country;
 
   factory Country.fromJson(Map<String, dynamic> json) =>
@@ -34,7 +34,7 @@ abstract class City with _$City {
   const factory City({
     required int id,
     required String name,
-    @JsonKey(name: 'country_id') required int countryId,
+    required int countryId,
   }) = _City;
 
   factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);
@@ -45,7 +45,7 @@ abstract class District with _$District {
   const factory District({
     required int id,
     required String name,
-    @JsonKey(name: 'city_id') required int cityId,
+    required int cityId,
   }) = _District;
 
   factory District.fromJson(Map<String, dynamic> json) =>
