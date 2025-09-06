@@ -28,7 +28,7 @@ abstract class PawEntryError with _$PawEntryError {
   factory PawEntryError.fromJson(Map<String, dynamic> json) =>
       _$PawEntryErrorFromJson(json);
 }
-
+//TODO: Merge with NewPawModel
 @freezed
 abstract class PawEntry with _$PawEntry {
   factory PawEntry({
@@ -36,12 +36,26 @@ abstract class PawEntry with _$PawEntry {
     String? user_id,
     String? name,
     String? description,
-    int? category_id,
+    String? category_id,
+    String? sub_category_id,
     @Default(0) int? status,
     int? country_id,
     int? city_id,
     int? district_id,
     String? address,
+    int? gender,
+    String? age,
+    String? weight,
+    int? education,
+    int? rabies_vaccine,
+    int? distemper_vaccine,
+    int? hepatitis_vaccine,
+    int? parvovirus_vaccine,
+    int? bordotella_vaccine,
+    int? leptospirosis_vaccine,
+    int? panleukopenia_vaccine,
+    int? herpesvirus_and_calicivirus_vaccine,
+    List<String>? image,
     dynamic deleted_at,
     String? created_at,
     String? updated_at,

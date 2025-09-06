@@ -52,29 +52,8 @@ class PawEntryRepository {
     try {
       // Create a numeric ID (milliseconds) to satisfy model requirements
       final int id = DateTime.now().millisecondsSinceEpoch;
-      final Map<String, dynamic> data = <String, dynamic>{
-        'id': id,
-        'user_id': newPawModel.user_id ?? currentUserUid,
-        'name': newPawModel.name,
-        'description': newPawModel.description,
-        'category_id': newPawModel.category_id,
-        'country_id': newPawModel.country_id,
-        'city_id': newPawModel.city_id,
-        'district_id': newPawModel.district_id,
-        'gender': newPawModel.gender,
-        'age': newPawModel.age,
-        'education': newPawModel.education,
-        'weight': newPawModel.weight,
-        'address': newPawModel.address,
-        // Keep original images list; UI tolerates empty images_uploads
-        'image': newPawModel.image,
-        // backend fields typically present
-        'status': 0,
-        'created_at': DateTime.now().toIso8601String(),
-        'updated_at': DateTime.now().toIso8601String(),
-      };
 
-      await _firestore.collection('classfields').doc(id.toString()).set(data);
+      await _firestore.collection('classfields').doc(id.toString()).set(newPawModel.toJson());
       return NewPawResponse(status: 'success', message: 'Created', errors: null);
     } catch (e) {
       return NewPawResponse(status: 'error', message: e.toString(), errors: <String, dynamic>{});
@@ -116,10 +95,6 @@ class PawEntryRepository {
 
 // This is the Riverpod way of injecting dependencies.
 /// Returns an instance of [PawEntryRepository] using the provided [Ref].
-///
-/// The [PawEntryRepository] is initialized with an instance of [PawApi] obtained from [getIt].
-/// Simply what getIt does is that it returns an instance of [PawApi] that is already initialized with [PawEntryRestClient].
-/// [PawEntryRestClient] is initialized with [Dio] and [Endpoints.baseUrl].
 @riverpod
 PawEntryRepository getPawEntryRepository(Ref ref) {
   return PawEntryRepository();

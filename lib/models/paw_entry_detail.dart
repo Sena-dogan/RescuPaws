@@ -1,12 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../data/enums/detail_enums.dart';
-import 'category_model.dart';
 import 'images_upload.dart';
 import 'user.dart';
-import 'user_data.dart';
 
 part 'paw_entry_detail.freezed.dart';
 part 'paw_entry_detail.g.dart';
@@ -15,8 +14,6 @@ part 'paw_entry_detail.g.dart';
 abstract class GetPawEntryDetailResponse with _$GetPawEntryDetailResponse {
   factory GetPawEntryDetailResponse({
     required PawEntryDetail? data,
-    UserData? userData,
-    CategoryResponse? category,
   }) = _GetPawEntryDetailResponse;
 
   factory GetPawEntryDetailResponse.fromJson(Map<String, dynamic> json) =>
