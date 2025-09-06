@@ -6,6 +6,7 @@ import '../../../../config/router/app_router.dart';
 import '../../../../constants/assets.dart';
 import '../../../../models/favorite/favorite_model.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../../widgets/adaptive_image.dart';
 
 class FavoriteCard extends StatelessWidget {
   const FavoriteCard({super.key, required this.favorite, this.items = const <PopupMenuEntry<String>>[]});
@@ -96,11 +97,9 @@ class FavoriteCard extends StatelessWidget {
       );
     }
     return Expanded(
-      child: Image.network(
-        favorite.classfield?.images_uploads?[0].image_url ?? '',
-        fit: BoxFit.cover,
-        errorBuilder:
-            (BuildContext context, Object error, StackTrace? stackTrace) {
+      child: AdaptiveImage(
+        imageUrl: favorite.classfield?.images_uploads?[0].image_url ?? '',
+        errorWidget: (BuildContext context, String url, Object error) {
           return const Image(
             image: AssetImage(Assets.Hearts),
             fit: BoxFit.contain,
