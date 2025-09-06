@@ -21,11 +21,10 @@ class FavoriteRepository {
 
   Future<GetFavoriteListResponse> getFavoriteList() async {
     try {
+      // Query with only one where clause to avoid any index requirements
       final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection(StringsConsts.favoritesCollection)
           .where('uid', isEqualTo: currentUserUid)
-          .where('is_favorite', isEqualTo: 1)
-          .orderBy('created_at', descending: true)
           .get();
 
       final List<Favorite> favorites = <Favorite>[];
@@ -62,6 +61,18 @@ class FavoriteRepository {
         
         favorites.add(favorite);
       }
+
+      // Sort by created_at in memory to avoid composite index requirement
+      favorites.sort((Favorite a, Favorite b) {
+        final DateTime? aDate = a.created_at != null ? DateTime.tryParse(a.created_at!) : null;
+        final DateTime? bDate = b.created_at != null ? DateTime.tryParse(b.created_at!) : null;
+        
+        if (aDate == null && bDate == null) return 0;
+        if (aDate == null) return 1;
+        if (bDate == null) return -1;
+        
+        return bDate.compareTo(aDate); // Descending order (newest first)
+      });
 
       Logger().i('favoriteList retrieved from Firebase: ${favorites.length} items');
       return GetFavoriteListResponse(data: favorites);
