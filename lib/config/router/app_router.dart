@@ -6,13 +6,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../constants/assets.dart';
 import '../../data/enums/router_enums.dart';
-import '../../data/getstore/get_store_helper.dart';
-import '../../di/components/service_locator.dart';
-import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
-import '../../ui/features/auth/login_screen.dart';
-import '../../ui/features/auth/number_input_screen.dart';
-import '../../ui/features/auth/otp_screen.dart';
-import '../../ui/features/auth/register_screen.dart';
+import '../../ui/features/auth/presentation/login_screen.dart';
+import '../../ui/features/auth/presentation/number_input_screen.dart';
+import '../../ui/features/auth/presentation/otp_screen.dart';
+import '../../ui/features/auth/presentation/register_screen.dart';
+import '../../ui/features/category/presentation/select_breed_screen.dart';
+import '../../ui/features/category/presentation/select_sub_breed_screen.dart';
 import '../../ui/features/chat/screens/chats_screen.dart';
 import '../../ui/features/detail/detail_page.dart';
 import '../../ui/features/detail/vaccine_page.dart';
@@ -23,8 +22,6 @@ import '../../ui/features/new_paw/screens/address_input_screen.dart';
 import '../../ui/features/new_paw/screens/information_screen.dart';
 import '../../ui/features/new_paw/screens/new_paw_image_screen.dart';
 import '../../ui/features/new_paw/screens/new_paw_screen.dart';
-import '../../ui/features/new_paw/screens/select_breed_screen.dart';
-import '../../ui/features/new_paw/screens/select_subBreed_screen.dart';
 import '../../ui/features/new_paw/screens/vaccine_new_paw.dart';
 import '../../ui/features/new_paw/screens/weight_screen.dart';
 import '../../ui/features/notification/no_notif_screen.dart';
@@ -33,8 +30,6 @@ import '../../ui/home/home.dart';
 import 'slide_extension.dart';
 
 part 'app_router.g.dart';
-
-GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
 
 enum SGRoute {
   home,
@@ -87,17 +82,6 @@ GoRouter goRoute(Ref ref) {
         ),
       ],
     )),
-    redirect: (_, GoRouterState state) {
-      if (state.matchedLocation == SGRoute.home.route) {
-        debugPrint('home route');
-        ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(0);
-      }
-      if (state.matchedLocation == SGRoute.profile.route) {
-        debugPrint('profile route');
-        ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(1);
-      }
-      return null;
-    },
     routes: <GoRoute>[
       GoRoute(
         path: SGRoute.home.route,
@@ -228,16 +212,6 @@ GoRouter goRoute(Ref ref) {
     ],
   );
 }
-
-// ignore: unused_element, prefer_function_declarations_over_variables
-final String? Function(BuildContext context, GoRouterState state) _introGuard =
-    (BuildContext context, GoRouterState state) {
-  if (!(getStoreHelper.getIntro() == null ||
-      getStoreHelper.getIntro()! == true)) {
-    return SGRoute.intro.route;
-  }
-  return null;
-};
 
 /// Example: Auth guard for Route Protection. GetStoreHelper is used to get token.
 // ignore: prefer_function_declarations_over_variables

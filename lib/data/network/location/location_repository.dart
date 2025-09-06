@@ -56,7 +56,7 @@ Future<GetLocationsResponse> fetchLocations(Ref ref,
   return locations;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<GetLocationsResponse> fetchCountries(Ref ref) async {
   final LocationRepository locationRepository =
       ref.read(getLocationRepositoryProvider);
@@ -65,7 +65,7 @@ Future<GetLocationsResponse> fetchCountries(Ref ref) async {
   return countries;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<GetLocationsResponse> fetchCities(
     Ref ref, int countryId) async {
   final LocationRepository locationRepository =
