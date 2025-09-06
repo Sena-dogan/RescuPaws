@@ -69,8 +69,7 @@ dependencies:
   searchable_listview: ^2.9.1
   multi_image_picker_view: ^3.0.0
   file_picker: ^10.3.2
-  photo_manager: ^3.0.0
-  insta_assets_picker: ^3.1.0
+  photo_manager: ^3.7.1
   photo_manager_image_provider: ^2.1.1
   phone_form_field: ^10.0.8
   share_plus: ^11.1.0
@@ -125,11 +124,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/translations/
     - assets/images/
     - assets/gifs/
     - assets/animations/
     - assets/icons/
+    - assets/il-ilce.json
   fonts:
     - family: Nunito
       fonts:
