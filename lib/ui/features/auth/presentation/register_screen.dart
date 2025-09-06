@@ -6,11 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../config/router/app_router.dart';
-import '../../../utils/context_extensions.dart';
-import '../../home/widgets/loading_paw_widget.dart';
+import '../../../../config/router/app_router.dart';
+import '../../../../utils/context_extensions.dart';
+import '../../../home/widgets/loading_paw_widget.dart';
+import '../domain/login_ui_model.dart';
 import 'login_logic.dart';
-import 'login_ui_model.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});

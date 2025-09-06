@@ -2,17 +2,16 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/getstore/get_store_helper.dart';
-import '../../../di/components/service_locator.dart';
-import '../../../firebase_options.dart';
-import '../../../utils/firebase_utils.dart';
-import '../../../utils/riverpod_extensions.dart';
-import 'login_ui_model.dart';
+import '../../../../firebase_options.dart';
+import '../../../../utils/firebase_utils.dart';
+import '../../../../utils/riverpod_extensions.dart';
+import '../domain/login_ui_model.dart';
 
 part 'login_logic.g.dart';
 
@@ -20,13 +19,17 @@ part 'login_logic.g.dart';
 class LoginLogic extends _$LoginLogic {
   @override
   LoginUiModel build() {
-    ref.cacheFor(const Duration(minutes: 10));
+    ref..cacheFor(const Duration(minutes: 10))..onDispose(() {
+      state.numberController?.dispose();
+      state.otpController?.dispose();
+    });
     return LoginUiModel(
       numberController: TextEditingController(
         text: '+90',
       ),
       otpController: TextEditingController(),
     );
+   
   }
 
   void setLogin({bool isLoading = false}) {
@@ -144,6 +147,11 @@ class LoginLogic extends _$LoginLogic {
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
+      if (e is PlatformException && e.code == 'sign_in_canceled') {
+        // User cancelled the sign-in process
+        return false;
+      }
+
       Logger().e(e.toString());
       setError(e.toString());
       return false;
@@ -176,8 +184,6 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> signOut() async {
     try {
-      final GetStoreHelper getStoreHelper = getIt<GetStoreHelper>();
-      getStoreHelper.clear();
       await FirebaseAuth.instance.signOut();
       // Check google sign in
       final GoogleSignIn googleSignIn = GoogleSignIn();

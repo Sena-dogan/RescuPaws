@@ -8,11 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../config/router/app_router.dart';
-import '../../../utils/context_extensions.dart';
-import '../../home/widgets/loading_paw_widget.dart';
+import '../../../../config/router/app_router.dart';
+import '../../../../utils/context_extensions.dart';
+import '../../../home/widgets/loading_paw_widget.dart';
+import '../domain/login_ui_model.dart';
 import 'login_logic.dart';
-import 'login_ui_model.dart';
 import 'social_button.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -56,55 +56,55 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
+      appBar: AppBar(
           backgroundColor: context.colorScheme.surface,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(16),
-              bottomRight: Radius.circular(16),
-            ),
-          ),
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            _buildRegisterButton(context),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: SizedBox(
-            width: size.width,
-            height: size.height * 0.9,
-            child: loginModel.isLoading
-                ? const Center(
-                    child: LoadingPawWidget(),
-                  )
-                : Column(
-                    children: <Widget>[
-                      Gap(size.height * 0.05),
-                      LoginText(context: context),
-                      const Gap(25),
-                      LoginButtons(
-                          context: context,
-                          ref: ref,
-                          size: Size(size.width, size.height * 0.12)),
-                      const Gap(25),
-                      OrDivider(size: size, context: context),
-                      const Gap(25),
-                      EmailText(context: context),
-                      const Gap(25),
-                      _buildEmail(size, context),
-                      const Gap(16),
-                      _buildPass(size, loginModel, context),
-                      const Gap(16),
-                      _buildTermsOfService(),
-                      _buildPrivacyPolicy(),
-                      const Gap(16),
-                      SignInButton(ref: ref, context: context),
-                      _forgotPasswordButton(context),
-                      const Spacer(),
-                    ],
-                  ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
           ),
         ),
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          _buildRegisterButton(context),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: size.width,
+          height: size.height * 0.9,
+          child: loginModel.isLoading
+              ? const Center(
+                  child: LoadingPawWidget(),
+                )
+              : Column(
+                  children: <Widget>[
+                    Gap(size.height * 0.05),
+                    LoginText(context: context),
+                    const Gap(25),
+                    LoginButtons(
+                        context: context,
+                        ref: ref,
+                        size: Size(size.width, size.height * 0.12)),
+                    const Gap(25),
+                    OrDivider(size: size, context: context),
+                    const Gap(25),
+                    EmailText(context: context),
+                    const Gap(25),
+                    _buildEmail(size, context),
+                    const Gap(16),
+                    _buildPass(size, loginModel, context),
+                    const Gap(16),
+                    _buildTermsOfService(),
+                    _buildPrivacyPolicy(),
+                    const Gap(16),
+                    SignInButton(ref: ref, context: context),
+                    _forgotPasswordButton(context),
+                    const Spacer(),
+                  ],
+                ),
+        ),
+      ),
       ),
     );
   }
@@ -191,6 +191,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 : context.showErrorSnackBar(
                     message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
           }),
+          onTapOutside: (PointerDownEvent event) => FocusScope.of(context).unfocus(),
           decoration: _passDecoration(context, loginModel),
         ),
       ),
@@ -201,14 +202,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       BuildContext context, LoginUiModel loginModel) {
     return InputDecoration(
       hintText: 'Şifre',
-      hintStyle: context.textTheme.bodyMedium?.copyWith(
-        color: context.colorScheme.scrim,
-      ),
+      hintStyle: context.textTheme.bodyMedium,
       errorStyle: context.textTheme.bodyMedium?.copyWith(
         color: context.colorScheme.error,
       ),
-      fillColor: context.colorScheme.surface,
-      filled: true,
       contentPadding: const EdgeInsets.all(15),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: context.colorScheme.primary),
@@ -237,7 +234,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           loginModel.isObscure
               ? Icons.visibility_outlined
               : Icons.visibility_off_outlined,
-          color: context.colorScheme.scrim.withValues(alpha: 0.5),
         ),
       ),
     );
@@ -267,6 +263,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.deny(RegExp(r'\s')),
             ],
+            onEditingComplete: () => FocusScope.of(context).nextFocus(),
             decoration: _emailDecoration(context)),
       ),
     );
@@ -275,9 +272,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   InputDecoration _emailDecoration(BuildContext context) {
     return InputDecoration(
       hintText: 'E-posta',
-      hintStyle: context.textTheme.bodyMedium?.copyWith(
-        color: context.colorScheme.scrim,
-      ),
+      hintStyle: context.textTheme.bodyMedium,
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: context.colorScheme.error),
         borderRadius: BorderRadius.circular(16),
@@ -289,8 +284,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       errorStyle: context.textTheme.bodyMedium?.copyWith(
         color: context.colorScheme.error,
       ),
-      fillColor: context.colorScheme.surface,
-      filled: true,
       contentPadding: const EdgeInsets.all(15),
       disabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: context.colorScheme.primary),
@@ -339,7 +332,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             style: GoogleFonts.outfit(
               fontSize: 14,
               fontWeight: FontWeight.w400,
-              color: context.colorScheme.scrim,
             ),
           ),
         ],
@@ -360,7 +352,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               style: GoogleFonts.outfit(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: context.colorScheme.scrim,
               ),
             ),
             InkWell(
@@ -406,6 +397,7 @@ class LoginButtons extends StatelessWidget {
   });
 
   final BuildContext context;
+  //TODO: Remove ref pass here
   final WidgetRef ref;
   final Size size;
 
@@ -425,9 +417,9 @@ class LoginButtons extends StatelessWidget {
                 elevation: const WidgetStatePropertyAll<double>(0.0),
                 strokeColor: context.colorScheme.primary,
                 buttonType: SocialLoginButtonType.google,
+                textColor: context.colorScheme.onSurface,
                 backgroundColor: Colors.transparent,
                 text: 'Google ile devam et',
-                textColor: context.colorScheme.scrim,
                 onPressed: () async {
                   await ref
                       .watch(loginLogicProvider.notifier)
@@ -452,7 +444,7 @@ class LoginButtons extends StatelessWidget {
                   elevation: const WidgetStatePropertyAll<double>(0.0),
                   strokeColor: context.colorScheme.primary,
                   backgroundColor: Colors.transparent,
-                  textColor: context.colorScheme.scrim,
+                  textColor: context.colorScheme.onSurface,
                   buttonType: SocialLoginButtonType.apple,
                   text: 'Apple ile devam et',
                   onPressed: () {
@@ -493,9 +485,8 @@ class OrDivider extends StatelessWidget {
       width: size.width * 0.9,
       child: Row(
         children: <Widget>[
-          Expanded(
+          const Expanded(
             child: Divider(
-              color: context.colorScheme.scrim.withValues(alpha: 0.2),
               thickness: 1,
             ),
           ),
@@ -504,15 +495,12 @@ class OrDivider extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
               'veya',
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: context.colorScheme.scrim,
-              ),
+              style: context.textTheme.bodyMedium,
             ),
           ),
           const Gap(10),
-          Expanded(
+          const Expanded(
             child: Divider(
-              color: context.colorScheme.scrim.withValues(alpha: 0.2),
               thickness: 1,
             ),
           ),
@@ -622,8 +610,7 @@ class LoginText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Giriş Yap',
-      style: context.textTheme.labelSmall
-          ?.copyWith(color: context.colorScheme.scrim),
+      style: context.textTheme.labelSmall,
     );
   }
 }

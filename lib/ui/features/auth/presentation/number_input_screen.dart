@@ -5,10 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import '../../../config/router/app_router.dart';
-import '../../../utils/context_extensions.dart';
-import '../../widgets/app_bar_gone.dart';
-import '../new_paw/widgets/save_button.dart';
+import '../../../../config/router/app_router.dart';
+import '../../../../utils/context_extensions.dart';
+import '../../../widgets/app_bar_gone.dart';
+import '../../new_paw/widgets/save_button.dart';
 import 'login_logic.dart';
 
 class NumberInputScreen extends ConsumerStatefulWidget {

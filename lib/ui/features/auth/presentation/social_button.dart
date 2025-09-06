@@ -275,19 +275,24 @@ class _LoginButton extends StatelessWidget {
             ),
           ),
           onPressed: onPressed,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              createImageChildren(),
-              Text(
-                text,
-                style: TextStyle(color: color, fontSize: fontSize),
-              ),
-              Opacity(
-                opacity: 0.0,
-                child: createImageChildren(mode: mode),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                createImageChildren(),
+                const Spacer(),
+                Text(
+                  text,
+                  style: TextStyle(color: color, fontSize: fontSize),
+                ),
+                const Spacer(),
+                Opacity(
+                  opacity: 0.0,
+                  child: createImageChildren(mode: mode),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -312,6 +317,7 @@ class _LoginButton extends StatelessWidget {
                     package: isLocal ? null : 'social_login_buttons',
                   ),
                   width: imageWidth,
+                  fit: BoxFit.fitHeight,
                 );
     }
     return const Column();
