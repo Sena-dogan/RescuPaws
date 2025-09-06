@@ -38,7 +38,7 @@ final class BottomNavBarLogicProvider
   }
 }
 
-String _$bottomNavBarLogicHash() => r'5ed095e9eafeeafcdbf972056dcfbc91751417cd';
+String _$bottomNavBarLogicHash() => r'77f7fd30c7644640eb66c401d89447be16b90a2c';
 
 abstract class _$BottomNavBarLogic extends $Notifier<BottomNavBarUiModel> {
   BottomNavBarUiModel build();
