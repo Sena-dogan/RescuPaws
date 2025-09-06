@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -56,9 +55,6 @@ class MyApp extends ConsumerWidget {
           fontFamily: GoogleFonts.poppins().fontFamily
           ),
       themeMode: currentTheme.themeMode,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
       debugShowCheckedModeBanner: false,
     );
   }
