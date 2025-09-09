@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -9,6 +8,7 @@ import '../../../data/enums/detail_enums.dart';
 import '../../../models/images_upload.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
+import '../../widgets/adaptive_image.dart';
 import 'swipe_card_logic.dart';
 import 'widgets/image_line_indicator.dart';
 
@@ -86,7 +86,7 @@ class SwipeCard extends ConsumerWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(27),
-              child: CachedNetworkImage(
+              child: AdaptiveImage(
                 imageUrl: image ?? '',
                 errorWidget: (BuildContext context, String error, Object obj) {
                   debugPrint(
@@ -102,7 +102,6 @@ class SwipeCard extends ConsumerWidget {
                   return Image.network(
                       'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
                 },
-                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -140,11 +139,11 @@ class SwipeCard extends ConsumerWidget {
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                         ),
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Gap(5),
+                    const Gap(10),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
@@ -165,7 +164,7 @@ class SwipeCard extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const Gap(20),
+                    const Gap(10),
                   ],
                 ),
               ),

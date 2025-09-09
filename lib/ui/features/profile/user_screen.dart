@@ -19,7 +19,7 @@ import '../../home/widgets/loading_paw_widget.dart';
 import '../../widgets/add_nav_button.dart';
 import '../../widgets/app_bar_gone.dart';
 import '../../widgets/bottom_nav_bar.dart';
-import '../auth/login_logic.dart';
+import '../auth/presentation/login_logic.dart';
 import 'user_logic.dart';
 import 'user_ui_model.dart';
 
@@ -40,16 +40,20 @@ class ProfileScreen extends ConsumerWidget {
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-        image: const DecorationImage(
-          image: AssetImage(Assets.LoginBg),
-          fit: BoxFit.cover,
+         gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[
+            context.colorScheme.surface,
+            context.colorScheme.primaryContainer,
+          ],
         ),
       ),
       child: Scaffold(
         appBar: const EmptyAppBar(),
         floatingActionButton: const AddNavButton(),
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: const BottomNavBar(),
+        bottomNavigationBar: const PawBottomNavBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: userLogic.isLoading
             ? const Center(
@@ -105,8 +109,6 @@ class ProfileScreen extends ConsumerWidget {
                                                               Object error,
                                                               StackTrace?
                                                                   stackTrace) {
-                                                        debugPrint(
-                                                            'AAAAAAAAAAAAAAAAAAAAA');
                                                         return Image.network(
                                                             //TODO: Add an placeholder image to Assets
                                                             'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg');
@@ -143,9 +145,24 @@ class ProfileScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        title: Text(
-                          userLogic.user?.displayName ?? 'Kullanici',
-                          style: context.textTheme.labelMedium,
+                        title: Row(
+                          children: <Widget>[
+                            Text(
+                              userLogic.user?.displayName ?? 'Kullanici',
+                              style: context.textTheme.labelMedium,
+                            ),
+                            const Gap(5),
+                            Visibility(
+                              visible: FirebaseAuth
+                                      .instance.currentUser?.phoneNumber !=
+                                  null,
+                              child: const Icon(
+                                Icons.verified,
+                                color: Colors.blue,
+                                size: 15,
+                              ),
+                            ),
+                          ],
                         ),
                         subtitle: Text(userLogic.user?.email ?? '',
                             style: context.textTheme.bodyMedium),
@@ -194,7 +211,7 @@ class ProfileScreen extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(10.0),
                               side: BorderSide(
                                 color:
-                                    context.colorScheme.shadow.withOpacity(0.1),
+                                    context.colorScheme.shadow.withValues(alpha:0.1),
                               ),
                             ),
                             title: Text(
@@ -223,6 +240,14 @@ class ProfileScreen extends ConsumerWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          ListTile(
+                            leading: const Icon(Icons.list_alt_outlined),
+                            title: const Text('İlanlarım'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              context.push(SGRoute.myEntries.route);
+                            },
+                          ),
                           ListTile(
                             leading: const Icon(Icons.favorite_outline),
                             title: const Text('Favorilerim'),
@@ -345,7 +370,7 @@ class ProfileScreen extends ConsumerWidget {
                                   width: 150,
                                   height: 150,
                                   child: Image(
-                                    image: AssetImage(Assets.PatiApp),
+                                    image: AssetImage(Assets.RescuPaws),
                                   ),
                                 ),
                               );
@@ -407,9 +432,11 @@ class ProfileScreen extends ConsumerWidget {
                                   await ref
                                       .read(loginLogicProvider.notifier)
                                       .removeUser()
-                                      .then((bool value) => value
-                                          ? context.go(SGRoute.login.route)
-                                          : null)
+                                      .then((bool value) {
+                                        if (context.mounted && value) {
+                                          context.go(SGRoute.login.route);
+                                        }
+                                      })
                                       .catchError((Object? err) =>
                                           // ignore: invalid_return_type_for_catch_error
                                           debugPrint(err.toString()));
@@ -439,9 +466,11 @@ class ProfileScreen extends ConsumerWidget {
                                   await ref
                                       .read(loginLogicProvider.notifier)
                                       .signOut()
-                                      .then((bool value) => value
-                                          ? context.go(SGRoute.login.route)
-                                          : null)
+                                      .then((bool value) {
+                                        if (context.mounted && value) {
+                                          context.go(SGRoute.login.route);
+                                        }
+                                      })
                                       .catchError((Object? err) =>
                                           // ignore: invalid_return_type_for_catch_error
                                           debugPrint(err.toString()));

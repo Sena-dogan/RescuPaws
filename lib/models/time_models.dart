@@ -4,7 +4,7 @@ part 'time_models.freezed.dart';
 part 'time_models.g.dart';
 
 @freezed
-class CreatedAt with _$CreatedAt {
+abstract class CreatedAt with _$CreatedAt {
   factory CreatedAt({
     String? date,
     int? timezone_type,
@@ -17,7 +17,7 @@ class CreatedAt with _$CreatedAt {
 
 // Similar classes for LastLoginAt and LastRefreshAt
 @freezed
-class LastLoginAt with _$LastLoginAt {
+abstract class LastLoginAt with _$LastLoginAt {
   factory LastLoginAt({
     String? date,
     int? timezone_type,
@@ -29,7 +29,7 @@ class LastLoginAt with _$LastLoginAt {
 }
 
 @freezed
-class LastRefreshAt with _$LastRefreshAt {
+abstract class LastRefreshAt with _$LastRefreshAt {
   factory LastRefreshAt({
     String? date,
     int? timezone_type,

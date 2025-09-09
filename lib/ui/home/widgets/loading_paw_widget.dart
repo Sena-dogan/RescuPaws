@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/assets.dart';
+import '../../../utils/context_extensions.dart';
 
 class LoadingPawWidget extends StatelessWidget {
   const LoadingPawWidget({
@@ -15,6 +16,7 @@ class LoadingPawWidget extends StatelessWidget {
       height: size.height * 0.25,
       child: Image.asset(
         Assets.LoadingPaw,
+        color: context.colorScheme.primary,
       ),
     );
   }

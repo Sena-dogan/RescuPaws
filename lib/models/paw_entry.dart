@@ -2,6 +2,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../data/enums/paw_entry_status.dart';
 import 'images_upload.dart';
 import 'user.dart';
 
@@ -9,7 +10,7 @@ part 'paw_entry.freezed.dart';
 part 'paw_entry.g.dart';
 
 @freezed
-class GetPawEntryResponse with _$GetPawEntryResponse {
+abstract class GetPawEntryResponse with _$GetPawEntryResponse {
   factory GetPawEntryResponse({
     required List<PawEntry> data,
   }) = _GetPawEntryResponse;
@@ -19,7 +20,7 @@ class GetPawEntryResponse with _$GetPawEntryResponse {
 }
 
 @freezed
-class PawEntryError with _$PawEntryError {
+abstract class PawEntryError with _$PawEntryError {
   factory PawEntryError({
     required String error,
   }) = _PawEntryError;
@@ -27,20 +28,34 @@ class PawEntryError with _$PawEntryError {
   factory PawEntryError.fromJson(Map<String, dynamic> json) =>
       _$PawEntryErrorFromJson(json);
 }
-
+//TODO: Merge with NewPawModel
 @freezed
-class PawEntry with _$PawEntry {
+abstract class PawEntry with _$PawEntry {
   factory PawEntry({
     required int id,
     String? user_id,
     String? name,
     String? description,
-    int? category_id,
+    String? category_id,
+    String? sub_category_id,
     @Default(0) int? status,
     int? country_id,
     int? city_id,
     int? district_id,
     String? address,
+    int? gender,
+    String? age,
+    String? weight,
+    int? education,
+    int? rabies_vaccine,
+    int? distemper_vaccine,
+    int? hepatitis_vaccine,
+    int? parvovirus_vaccine,
+    int? bordotella_vaccine,
+    int? leptospirosis_vaccine,
+    int? panleukopenia_vaccine,
+    int? herpesvirus_and_calicivirus_vaccine,
+    List<String>? image,
     dynamic deleted_at,
     String? created_at,
     String? updated_at,
@@ -72,6 +87,8 @@ extension PawEntryX on PawEntry {
         '${createdAt.day}/${createdAt.month}/${createdAt.year}';
     return formattedDate;
   }
+
+  PawEntryStatus get statusEnum => PawEntryStatus.fromValue(status!);
 }
 
 extension GetPawEntryResponseX on GetPawEntryResponse {

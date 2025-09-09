@@ -1,14 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'config/router/app_router.dart';
 import 'config/theme/theme_logic.dart';
 import 'config/theme/theme_ui_model.dart';
-import 'di/components/service_locator.dart';
-import 'utils/pati_color_scheme.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -16,8 +15,9 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeUiModel currentTheme = ref.watch(themeLogicProvider);
+    final GoRouter goRouter = ref.watch(goRouteProvider);
     return MaterialApp.router(
-      routerConfig: getIt<SGGoRouter>().getGoRouter,
+      routerConfig: goRouter,
 
       /// Localization is not available for the title.
       title: 'Pati Pati App',
@@ -27,42 +27,34 @@ class MyApp extends ConsumerWidget {
       // use a lower package version, some properties may not be supported.
       // In that case remove them after copying this theme to your app.
       theme: FlexThemeData.light(
+          scheme: FlexScheme.deepPurple,
           surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
           blendLevel: 13,
           subThemesData: const FlexSubThemesData(
             blendOnLevel: 10,
-            useTextTheme: true,
+            useMaterial3Typography: true,
             useM2StyleDividerInM3: true,
           ),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           swapLegacyOnMaterial3: true,
           textTheme: textTheme,
-          colorScheme: lightColorScheme(),
           fontFamily: GoogleFonts.poppins().fontFamily
-
-          // To use the Playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
           ),
       darkTheme: FlexThemeData.dark(
+          scheme: FlexScheme.deepPurple,
           surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
           blendLevel: 13,
           subThemesData: const FlexSubThemesData(
             blendOnLevel: 20,
-            useTextTheme: true,
+            useMaterial3Typography: true,
             useM2StyleDividerInM3: true,
           ),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           swapLegacyOnMaterial3: true,
           textTheme: textTheme,
-          colorScheme: darkColorScheme(),
           fontFamily: GoogleFonts.poppins().fontFamily
-          // To use the Playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
           ),
       themeMode: currentTheme.themeMode,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
       debugShowCheckedModeBanner: false,
     );
   }
@@ -104,6 +96,12 @@ final TextTheme textTheme = TextTheme(
   bodySmall: GoogleFonts.poppins(
     fontWeight: FontWeight.w300,
     fontSize: 11,
+  ),
+
+  /// chat bubble text
+  titleSmall: GoogleFonts.poppins(
+    fontWeight: FontWeight.w300,
+    fontSize: 14,
   ),
 );
 

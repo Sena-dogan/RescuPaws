@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -42,6 +39,7 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for linux - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      // ignore: no_default_cases
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -50,23 +48,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDyuZBnOWa--ahjIi3YAopHbX6A3sU6X88',
-    appId: '1:247383540944:android:66b522d5b1af1ba2e54ad5',
-    messagingSenderId: '247383540944',
-    projectId: 'pati-app-d08c6',
-    databaseURL: 'https://pati-app-d08c6-default-rtdb.firebaseio.com',
-    storageBucket: 'pati-app-d08c6.appspot.com',
+    apiKey: 'AIzaSyCqAlam_e0ZPgwAolzvFq2c2eJSMMpuhnE',
+    appId: '1:867599713553:android:e6b7dac9110343f0d0f8b0',
+    messagingSenderId: '867599713553',
+    projectId: 'rescupaws',
+    storageBucket: 'rescupaws.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA4uanjjAwD-t0WYJ5BpRMV_A_DRXhPQHk',
-    appId: '1:247383540944:ios:65ac0aa6f40bc50be54ad5',
-    messagingSenderId: '247383540944',
-    projectId: 'pati-app-d08c6',
-    databaseURL: 'https://pati-app-d08c6-default-rtdb.firebaseio.com',
-    storageBucket: 'pati-app-d08c6.appspot.com',
-    androidClientId: '247383540944-571urb90m8o7lneiudra2vmq43eo4io2.apps.googleusercontent.com',
-    iosClientId: '247383540944-54t2l4u1tllu0cgtkjak447ng7at35ef.apps.googleusercontent.com',
-    iosBundleId: 'app.patipati',
+    apiKey: 'AIzaSyDfUU6WriJHvu3Z27y9YeN-h6I2FGytUvM',
+    appId: '1:867599713553:ios:7e6804be1b34b7c9d0f8b0',
+    messagingSenderId: '867599713553',
+    projectId: 'rescupaws',
+    storageBucket: 'rescupaws.firebasestorage.app',
+    iosClientId: '867599713553-b9sjhdoqq23e1m3b75218cu1pannd9ap.apps.googleusercontent.com',
+    iosBundleId: 'io.devopen.rescupaws',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCB4fTlI_6NRWzTTgd5wxXTPc7Nn2B2m4A',
+    appId: '1:867599713553:web:a078d5c13753f294d0f8b0',
+    messagingSenderId: '867599713553',
+    projectId: 'rescupaws',
+    authDomain: 'rescupaws.firebaseapp.com',
+    storageBucket: 'rescupaws.firebasestorage.app',
   );
 }

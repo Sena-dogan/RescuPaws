@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../models/paw_entry_detail.dart';
+import '../../../../models/user_data.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../chat/logic/chat_logic.dart';
+import '../../chat/screens/message_screen.dart';
 import '../logic/detail_logic.dart';
 import 'advertiser_info.dart';
 import 'characteristics.dart';
@@ -38,7 +42,7 @@ class DetailBody extends ConsumerWidget {
               height: 50,
               width: 60,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withValues(alpha: 0.4),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -55,7 +59,7 @@ class DetailBody extends ConsumerWidget {
                 height: 50,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -72,7 +76,7 @@ class DetailBody extends ConsumerWidget {
             //TODO: Add favorite functionality to the detail page
             const FavButton(),
           ],
-          expandedHeight: MediaQuery.of(context).size.height * 0.5,
+          expandedHeight: MediaQuery.sizeOf(context).height * 0.5,
           flexibleSpace: PawImageandName(
             pawEntryDetailResponse: pawEntryDetailResponse,
           ),
@@ -80,6 +84,7 @@ class DetailBody extends ConsumerWidget {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
+              final Size size = MediaQuery.sizeOf(context);
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
@@ -108,7 +113,13 @@ class DetailBody extends ConsumerWidget {
                     ),
                     const Gap(30),
                     AdvertiserInfo(
-                      pawEntryDetailResponse: pawEntryDetailResponse,
+                      receiverName: 'receiverName',
+                      receiverProfilePic: 'receiverProfilePic',
+                      imageSize: size.width * 0.2,
+                      textStyle: context.textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30),
@@ -121,7 +132,39 @@ class DetailBody extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          const String receiverId = 'User Not Found';
+                          const String receiverEmail = 'receiverEmail';
+                          if (receiverId.isEmpty) {
+                            Logger().e('Receiver id is empty');
+                            throw Exception(
+                                'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
+                          }
+                          if (receiverEmail.isEmpty) {
+                            Logger().e('Receiver email is empty');
+                            throw Exception(
+                                'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
+                          }
+                          ref
+                              .read(chatLogicProvider.notifier)
+                              .addReceiverUserToFirestore(
+                                receiverUser: UserData(),
+                              );
+
+                          Navigator.push(
+                            context,
+                            // ignore: always_specify_types
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return MessageScreen(
+                                  receiverId: receiverId,
+                                  receiverName: 'Receiver Name',
+                                  receiverProfilePic: 'Receiver Profile Pic',
+                                );
+                              },
+                            ),
+                          );
+                        },
                         child: Text('Mesaj Gönder',
                             style: context.textTheme.labelSmall?.copyWith(
                               color: Colors.white,
@@ -150,7 +193,7 @@ class FavButton extends ConsumerWidget {
         height: 50,
         width: 40,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.4),
+          color: Colors.black.withValues(alpha: 0.4),
           shape: BoxShape.circle,
         ),
         child: ref.watch(detailLogicProvider).isFavorite

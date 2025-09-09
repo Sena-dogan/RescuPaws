@@ -5,5 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 String get currentUserUid => FirebaseAuth.instance.currentUser!.uid;
 FirebaseUser get currentUser => FirebaseAuth.instance.currentUser!;
+String get currentUserEmail => FirebaseAuth.instance.currentUser!.email!;
 
 typedef FirebaseUser = User;

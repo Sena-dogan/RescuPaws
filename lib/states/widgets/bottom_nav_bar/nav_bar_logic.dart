@@ -12,6 +12,6 @@ class BottomNavBarLogic extends _$BottomNavBarLogic {
   }
 
   void setNavIndex(int index) {
-    state = state.copyWith(navIndex: index);
+    if (ref.mounted) state = state.copyWith(navIndex: index);
   }
 }

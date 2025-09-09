@@ -22,9 +22,13 @@ class NewPawScreen extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-        image: const DecorationImage(
-          image: AssetImage(Assets.LoginBg),
-          fit: BoxFit.cover,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[
+            context.colorScheme.surface,
+            context.colorScheme.primaryContainer,
+          ],
         ),
       ),
       child: Scaffold(
@@ -32,6 +36,7 @@ class NewPawScreen extends ConsumerWidget {
         body: createPawEntry.when(data: (NewPawResponse data) {
           Future<void>.delayed(const Duration(seconds: 3), () {
             ref.invalidate(newPawLogicProvider);
+            if (!context.mounted) return;
             context.go(SGRoute.home.route);
           });
           return Column(
@@ -50,6 +55,7 @@ class NewPawScreen extends ConsumerWidget {
           );
         }, error: (Object error, StackTrace stackTrace) {
           Future<void>.delayed(const Duration(seconds: 3), () {
+            if (!context.mounted) return;
             ref.invalidate(newPawLogicProvider);
             context.go(SGRoute.home.route);
           });

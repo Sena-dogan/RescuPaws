@@ -19,8 +19,8 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     String? user_id,
     String? name,
     String? description,
-    int? category_id,
-    int? sub_category_id,
+    String? category_id,
+    String? sub_category_id,
     Country? country,
     City? city,
     District? district,
@@ -53,8 +53,9 @@ extension NewPawExtension on NewPawUiModel {
       address: address,
       age: age,
 
-      /// Its sub_category_id not category_id in the backend sorry for the confusion
-      category_id: sub_category_id,
+      /// Using both category_id (species) and sub_category_id (breed)
+      category_id: category_id, // This will be the species (dog/cat)
+      sub_category_id: sub_category_id, // This will be the breed
       city_id: city?.id,
       country_id: 1,
       description: description,

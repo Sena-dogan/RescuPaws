@@ -4,7 +4,7 @@ part 'images_upload.freezed.dart';
 part 'images_upload.g.dart';
 
 @freezed
-class ImagesUploads with _$ImagesUploads {
+abstract class ImagesUploads with _$ImagesUploads {
   factory ImagesUploads({
     int? id,
     String? user_id,

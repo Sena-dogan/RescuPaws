@@ -28,7 +28,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late CardSwiperController controller;
+  late final CardSwiperController controller;
   int messageCount = 0;
 
   Future<void> setupInteractedMessage() async {
@@ -54,6 +54,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final AsyncValue<GetPawEntryResponse> pawEntryLogic =
         ref.watch(fetchPawEntriesProvider);
@@ -62,28 +68,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-        image: const DecorationImage(
-          image: AssetImage(Assets.HomeBg),
-          fit: BoxFit.cover,
-        ),
       ),
       child: Scaffold(
         appBar: _buildAppBar(),
         floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: const BottomNavBar(),
+        bottomNavigationBar: const PawBottomNavBar(),
         body: RefreshIndicator(
+            triggerMode: RefreshIndicatorTriggerMode.anywhere,
             onRefresh: () async => ref.refresh(fetchPawEntriesProvider.future),
             child: switch (pawEntryLogic) {
               AsyncValue<GetPawEntryResponse>(
-                :final GetPawEntryResponse valueOrNull?
+                :final GetPawEntryResponse value?
               ) =>
                 SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: _buildBody(context, valueOrNull.data)),
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: ClampingScrollPhysics(),
+                    ),
+                    child: _buildBody(context, value.data)),
               // An error is available, so we render it.
-              AsyncValue(:final Object error?) => ErrorWidgett(
+              AsyncValue(:final Object error?) => PawErrorWidget(
                   error: error,
                   onRefresh: () async =>
                       ref.refresh(fetchPawEntriesProvider.future),
@@ -103,20 +108,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.sizeOf(context).height * 0.7,
+                  width: MediaQuery.sizeOf(context).width,
                   child: const Center(child: Text('Henüz ilan yok'))),
             ],
           )
         : Column(
             children: <Widget>[
               Divider(
-                color: context.colorScheme.tertiary.withOpacity(0.15),
+                color: context.colorScheme.tertiary.withValues(alpha:0.15),
               ),
               Center(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  height: MediaQuery.of(context).size.height * 0.55,
+                  width: MediaQuery.sizeOf(context).width * 0.85,
+                  height: MediaQuery.sizeOf(context).height * 0.55,
                   child: CardSwiper(
                       cardsCount: pawEntries.length,
                       numberOfCardsDisplayed: pawEntries.length > 1 ? 2 : 1,
@@ -136,14 +141,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         }
                         return true;
                       },
-                      allowedSwipeDirection:
-                          const AllowedSwipeDirection.only(right: true, left: true),
+                      allowedSwipeDirection: const AllowedSwipeDirection.only(
+                          right: true, left: true),
                       cardBuilder: (BuildContext context, int index,
                           int percentThresholdX, int percentThresholdY) {
                         return SwipeCard(
                             pawEntry: pawEntries[index],
-                            size: Size(MediaQuery.of(context).size.width * 0.85,
-                                MediaQuery.of(context).size.height * 0.55));
+                            size: Size(MediaQuery.sizeOf(context).width * 0.85,
+                                MediaQuery.sizeOf(context).height * 0.55));
                       }),
                 ),
               ),
@@ -183,7 +188,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       leading: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Image.asset(
-          Assets.PatiApp,
+          Assets.RescuPaws,
           height: 32,
           width: 128,
         ),
@@ -200,7 +205,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             icon: Icon(
               Icons.notifications_none_rounded,
               size: 30,
-              color: context.colorScheme.scrim.withOpacity(0.8),
+              color: context.colorScheme.scrim.withValues(alpha:0.8),
             ),
           ),
         ),

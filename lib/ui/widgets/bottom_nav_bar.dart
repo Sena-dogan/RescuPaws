@@ -9,8 +9,8 @@ import '../../constants/icons.dart';
 import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
 import '../../utils/context_extensions.dart';
 
-class BottomNavBar extends ConsumerWidget {
-  const BottomNavBar({super.key});
+class PawBottomNavBar extends ConsumerWidget {
+  const PawBottomNavBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,66 +18,94 @@ class BottomNavBar extends ConsumerWidget {
     var nav = ref.watch(bottomNavBarLogicProvider);
 
     return AnimatedBottomNavigationBar.builder(
-        itemCount: 2,
+        itemCount: 4,
         tabBuilder: (int index, bool isActive) {
-          return index == 0
-              ? Column(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      AppIcons.home,
-                      color: isActive
-                          ? context.colorScheme.primary
-                          : context.colorScheme.tertiary,
-                      height: 40,
-                    ),
-                    Text(
-                      'Ana Sayfa',
-                      style: TextStyle(
-                        color: isActive
-                            ? context.colorScheme.primary
-                            : context.colorScheme.tertiary,
-                      ),
-                    ),
-                  ],
-                )
-              : Column(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      AppIcons.profile,
-                      color: isActive
-                          ? context.colorScheme.primary
-                          : context.colorScheme.tertiary,
-                      height: 40,
-                    ),
-                    Text(
-                      'Profil',
-                      style: TextStyle(
-                        color: isActive
-                            ? context.colorScheme.primary
-                            : context.colorScheme.tertiary,
-                      ),
-                    ),
-                  ],
-                );
+          switch (index) {
+            case 0:
+              return NavBarIcon(
+                isActive: isActive,
+                text: 'Home',
+                icon: AppIcons.home,
+              );
+            case 1:
+              return NavBarIcon(
+                isActive: isActive,
+                text: 'Favoriler',
+                icon: AppIcons.like,
+              );
+            case 2:
+              return NavBarIcon(
+                isActive: isActive,
+                text: 'Mesajlar',
+                //TODO: Find a better icon for messages
+                icon: AppIcons.message,
+              );
+            case 3:
+              return NavBarIcon(
+                isActive: isActive,
+                text: 'Profil',
+                icon: AppIcons.profile,
+              );
+            default:
+              return const SizedBox();
+          }
         },
         activeIndex: nav.navIndex,
         onTap: (int index) {
-          ref.read(bottomNavBarLogicProvider.notifier).setNavIndex(index);
-          debugPrint('Current Index is $index');
-          debugPrint('Current Route is ${SGRoute.values[index].route}');
           context.go(SGRoute.values[index].route);
         },
-        gapLocation: GapLocation.none,
-        //borderColor: Colors.grey.withOpacity(0.5),
+        gapLocation: GapLocation.center,
+        //borderColor: Colors.grey.withValues(alpha:0.5),
         notchSmoothness: NotchSmoothness.softEdge,
+        hideAnimationCurve: Curves.easeInOut,
         leftCornerRadius: 20,
         rightCornerRadius: 20,
         splashColor: context.colorScheme.primary,
         height: 70,
-        backgroundColor: context.colorScheme.tertiaryContainer,
+        backgroundColor: context.colorScheme.surface,
         shadow: Shadow(
-          color: Colors.grey.withOpacity(0.2),
+          color: Colors.grey.withValues(alpha:0.2),
           blurRadius: 10,
         ));
+  }
+}
+
+class NavBarIcon extends StatelessWidget {
+  const NavBarIcon({
+    super.key,
+    required this.isActive,
+    required this.text,
+    required this.icon,
+  });
+
+  final bool isActive;
+  final String text;
+  final String icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SvgPicture.asset(
+          icon,
+          colorFilter: ColorFilter.mode(
+            isActive
+                ? context.colorScheme.primary
+                : context.colorScheme.onSurfaceVariant,
+            BlendMode.srcIn,
+          ),
+          height: 40,
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            color: isActive
+                ? context.colorScheme.primary
+                : context.colorScheme.onSurfaceVariant,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
   }
 }

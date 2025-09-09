@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../constants/assets.dart';
 import '../../../models/paw_entry_detail.dart';
 import '../../../utils/context_extensions.dart';
 import '../../../utils/error_widgett.dart';
@@ -32,9 +31,13 @@ class DetailScreen extends ConsumerWidget {
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-        image: const DecorationImage(
-          image: AssetImage(Assets.HomeBg),
-          fit: BoxFit.cover,
+         gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[
+            context.colorScheme.surface,
+            context.colorScheme.primaryContainer,
+          ],
         ),
       ),
       child: Scaffold(
@@ -47,7 +50,7 @@ class DetailScreen extends ConsumerWidget {
               pawEntryDetailResponse: value,
               size: size,
             ),
-          AsyncValue<Object?>(:final Object error?) => ErrorWidgett(
+          AsyncValue<Object?>(:final Object error?) => PawErrorWidget(
               error: error,
               onRefresh: () async => ref
                   .refresh(fetchPawEntryDetailProvider(id.toString()).future),
@@ -59,7 +62,7 @@ class DetailScreen extends ConsumerWidget {
         floatingActionButton: const AddNavButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: const BottomNavBar(),
+        bottomNavigationBar: const PawBottomNavBar(),
       ),
     );
   }

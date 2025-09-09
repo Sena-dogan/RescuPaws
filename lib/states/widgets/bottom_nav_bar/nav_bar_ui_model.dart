@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'nav_bar_ui_model.g.dart';
 part 'nav_bar_ui_model.freezed.dart';
+part 'nav_bar_ui_model.g.dart';
 
 @freezed
-class BottomNavBarUiModel with _$BottomNavBarUiModel {
+abstract class BottomNavBarUiModel with _$BottomNavBarUiModel {
   const factory BottomNavBarUiModel({
     @Default(0) int navIndex,
   }) = _BottomNavBarUiModel;

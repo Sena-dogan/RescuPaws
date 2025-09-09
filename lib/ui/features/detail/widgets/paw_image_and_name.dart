@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../utils/context_extensions.dart';
+import '../../../widgets/adaptive_image.dart';
 import '../logic/detail_logic.dart';
 
 class PawImageandName extends ConsumerStatefulWidget {
@@ -29,9 +30,9 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
       titlePadding: EdgeInsets.zero,
       title: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
-            color: context.colorScheme.surface.withOpacity(0.4),
+            color: context.colorScheme.surface.withValues(alpha:0.4),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
@@ -56,22 +57,21 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
                   .images_uploads?.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   margin: EdgeInsets.zero,
-                  child: Image.network(
-                    widget.pawEntryDetailResponse?.pawEntryDetail!
+                  child: AdaptiveImage(
+                    imageUrl: widget.pawEntryDetailResponse?.pawEntryDetail!
                             .images_uploads?[index].image_url ??
                         '',
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
+                    errorWidget: (BuildContext context, String url, Object error) {
                       debugPrint(
                           'Error occured while loading image: ${widget.pawEntryDetailResponse?.pawEntryDetail!.images_uploads?[index].image_url} \n');
                       debugPrint(
                           'Id of the paw entry: ${widget.pawEntryDetailResponse?.pawEntryDetail?.id}');
                       return Image.network(
-                          'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+                          'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg',
+                          fit: BoxFit.cover);
                     },
-                    fit: BoxFit.cover,
                   ),
                 );
               },

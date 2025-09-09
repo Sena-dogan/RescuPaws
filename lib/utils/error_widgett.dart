@@ -4,8 +4,8 @@ import 'package:gap/gap.dart';
 import '../constants/assets.dart';
 import 'context_extensions.dart';
 
-class ErrorWidgett extends StatelessWidget {
-  const ErrorWidgett({
+class PawErrorWidget extends StatelessWidget {
+  const PawErrorWidget({
     this.error,
     required this.onRefresh,
     super.key,
@@ -28,9 +28,8 @@ class ErrorWidgett extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: Image.asset(
-                    Assets.PawPaw,
-                    filterQuality: FilterQuality.none,
-                    fit: BoxFit.none,
+                    Assets.Hearts,
+                    width: MediaQuery.sizeOf(context).width * 0.5,
                   ),
                 ),
                 const Gap(10),

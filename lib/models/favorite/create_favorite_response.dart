@@ -4,7 +4,7 @@ part 'create_favorite_response.freezed.dart';
 part 'create_favorite_response.g.dart';
 
 @freezed
-class CreateFavoriteResponse with _$CreateFavoriteResponse {
+abstract class CreateFavoriteResponse with _$CreateFavoriteResponse {
   const factory CreateFavoriteResponse({
     required String? status,
     required String? message,

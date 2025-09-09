@@ -11,7 +11,7 @@ part 'favorite_logic.g.dart';
 
 @riverpod
 Future<GetFavoriteListResponse> fetchFavoriteList(
-    FetchFavoriteListRef ref) async {
+    Ref ref) async {
   final FavoriteRepository favoriteRepository =
       ref.watch(getFavoriteRepositoryProvider);
   final GetFavoriteListResponse favoriteList =
@@ -22,7 +22,7 @@ Future<GetFavoriteListResponse> fetchFavoriteList(
 
 @riverpod
 Future<DeleteFavoriteResponse> deleteFavorite(
-    DeleteFavoriteRef ref, Favorite favorite) async {
+    Ref ref, Favorite favorite) async {
   final FavoriteRepository favoriteRepository =
       ref.watch(getFavoriteRepositoryProvider);
   final DeleteFavoriteRequest deleteFavoritesRequest = DeleteFavoriteRequest(

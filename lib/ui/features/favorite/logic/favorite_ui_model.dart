@@ -5,7 +5,7 @@ import '../../../../models/favorite/favorite_model.dart';
 part 'favorite_ui_model.freezed.dart';
 
 @freezed
-class FavoriteUiModel with _$FavoriteUiModel {
+abstract class FavoriteUiModel with _$FavoriteUiModel {
   const factory FavoriteUiModel({
     @Default(true) bool showFavorite, 
     @Default(false) bool isLoading,

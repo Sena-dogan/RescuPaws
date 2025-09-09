@@ -4,7 +4,7 @@ part 'delete_favorites_request.freezed.dart';
 part 'delete_favorites_request.g.dart';
 
 @freezed
-class DeleteFavoriteRequest with _$DeleteFavoriteRequest {
+abstract class DeleteFavoriteRequest with _$DeleteFavoriteRequest {
   const factory DeleteFavoriteRequest({
     required String? uid,
     required int class_field_id,

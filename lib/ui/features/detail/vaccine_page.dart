@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../constants/assets.dart';
 import '../../../models/paw_entry_detail.dart';
 import '../../../utils/context_extensions.dart';
 import '../../../utils/error_widgett.dart';
@@ -23,10 +22,6 @@ class VaccineScreen extends ConsumerWidget {
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
-          image: const DecorationImage(
-            image: AssetImage(Assets.LoginBg),
-            fit: BoxFit.cover,
-          ),
         ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -36,7 +31,7 @@ class VaccineScreen extends ConsumerWidget {
                 height: 50,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha:0.4),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -63,7 +58,7 @@ class VaccineScreen extends ConsumerWidget {
               VaccineBody(
                 pawEntryDetailResponse: value,
               ),
-            AsyncValue<Object?>(:final Object error?) => ErrorWidgett(
+            AsyncValue<Object?>(:final Object error?) => PawErrorWidget(
                 error: error,
                 onRefresh: () async => ref
                     .refresh(fetchPawEntryDetailProvider(id.toString()).future),

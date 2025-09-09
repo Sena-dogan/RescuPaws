@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -12,9 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
-import 'constants/strings.dart';
 import 'data/hive/hive.dart';
-import 'di/components/service_locator.dart';
 import 'firebase_options.dart';
 import 'my_app.dart';
 
@@ -24,49 +21,47 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
 
-  print('Handling a background message: ${message.messageId}');
+  debugPrint('Handling a background message: ${message.messageId}');
 }
-
 
 /// Try using const constructors as much as possible!
 
 void main() async {
   /// Initialize packages
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
   await GetStorage.init();
   await initHive();
-  await configureDependencies();
   await setPreferredOrientations();
 
   await Firebase.initializeApp(
-    name: 'PatiPatiApp',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  final FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-final NotificationSettings settings = await messaging.requestPermission(
-  
-);
-
-print('User granted permission: ${settings.authorizationStatus}');
-
-
-FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  print('Got a message whilst in the foreground!');
-  print('Message data: ${message.data}');
-
-  if (message.notification != null) {
-    print('Message also contained a notification: ${message.notification}');
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
   }
-});
 
-await FirebaseMessaging.instance.subscribeToTopic('all');
+  // final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  //getIt<HiveHelper>().initHive();
+  // final NotificationSettings settings = await messaging.requestPermission();
+
+  // print('User granted permission: ${settings.authorizationStatus}');
+  // debugPrint('User granted permission: ${settings.authorizationStatus}');
+
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   debugPrint('Got a message whilst in the foreground!');
+  //   debugPrint('Message data: ${message.data}');
+
+  //   if (message.notification != null) {
+  //     debugPrint(
+  //         'Message also contained a notification: ${message.notification}');
+  //   }
+  // });
+
+  // await FirebaseMessaging.instance.subscribeToTopic('all');
+
   if (!kIsWeb) {
     if (Platform.isAndroid) {
       await FlutterDisplayMode.setHighRefreshRate();
@@ -74,17 +69,8 @@ await FirebaseMessaging.instance.subscribeToTopic('all');
   }
 
   runApp(
-    EasyLocalization(
-      supportedLocales: const <Locale>[
-        /// Add your supported locales here
-        Locale('en'),
-        Locale('tr'),
-      ],
-      path: Strings.localizationsPath,
-      fallbackLocale: const Locale('en', ''),
-      child: const ProviderScope(
-        child: MyApp(),
-      ),
+    const ProviderScope(
+      child: MyApp(),
     ),
   );
 

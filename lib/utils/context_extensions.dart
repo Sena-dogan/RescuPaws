@@ -64,6 +64,10 @@ extension ContextExtension on BuildContext {
       ..hideCurrentMaterialBanner()
       ..showMaterialBanner(materialBanner);
   }
+
+  bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
+  bool get isIOS => Theme.of(this).platform == TargetPlatform.iOS;
+  bool get isAndroid => Theme.of(this).platform == TargetPlatform.android;
 }
 
 extension ListGutter on List<Widget> {

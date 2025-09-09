@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../config/router/app_router.dart';
-import '../../../../constants/assets.dart';
 import '../../../../utils/context_extensions.dart';
 import '../logic/new_paw_logic.dart';
 import '../widgets/save_button.dart';
@@ -26,9 +25,13 @@ class _NewPawInformationScreenState
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-        image: const DecorationImage(
-          image: AssetImage(Assets.LoginBg),
-          fit: BoxFit.cover,
+         gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[
+            context.colorScheme.surface,
+            context.colorScheme.primaryContainer,
+          ],
         ),
       ),
       child: Scaffold(
@@ -209,7 +212,9 @@ class _NewPawInformationScreenState
                             SaveButton(
                               title: 'Kaydet',
                               onPressed: () {
-                                context.push(SGRoute.vaccineNewPaw.route);
+                                if (formKey.currentState!.validate()) {
+                                  context.push(SGRoute.vaccineNewPaw.route);
+                                }
                               },
                             ),
                           ].seperate(2),

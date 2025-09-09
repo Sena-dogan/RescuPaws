@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,121 +9,29 @@ part of 'nav_bar_ui_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-BottomNavBarUiModel _$BottomNavBarUiModelFromJson(Map<String, dynamic> json) {
-  return _BottomNavBarUiModel.fromJson(json);
-}
 
 /// @nodoc
 mixin _$BottomNavBarUiModel {
-  int get navIndex => throw _privateConstructorUsedError;
-
-  /// Serializes this BottomNavBarUiModel to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get navIndex;
 
   /// Create a copy of BottomNavBarUiModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $BottomNavBarUiModelCopyWith<BottomNavBarUiModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$BottomNavBarUiModelCopyWithImpl<BottomNavBarUiModel>(
+          this as BottomNavBarUiModel, _$identity);
 
-/// @nodoc
-abstract class $BottomNavBarUiModelCopyWith<$Res> {
-  factory $BottomNavBarUiModelCopyWith(
-          BottomNavBarUiModel value, $Res Function(BottomNavBarUiModel) then) =
-      _$BottomNavBarUiModelCopyWithImpl<$Res, BottomNavBarUiModel>;
-  @useResult
-  $Res call({int navIndex});
-}
-
-/// @nodoc
-class _$BottomNavBarUiModelCopyWithImpl<$Res, $Val extends BottomNavBarUiModel>
-    implements $BottomNavBarUiModelCopyWith<$Res> {
-  _$BottomNavBarUiModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of BottomNavBarUiModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? navIndex = null,
-  }) {
-    return _then(_value.copyWith(
-      navIndex: null == navIndex
-          ? _value.navIndex
-          : navIndex // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$BottomNavBarUiModelImplCopyWith<$Res>
-    implements $BottomNavBarUiModelCopyWith<$Res> {
-  factory _$$BottomNavBarUiModelImplCopyWith(_$BottomNavBarUiModelImpl value,
-          $Res Function(_$BottomNavBarUiModelImpl) then) =
-      __$$BottomNavBarUiModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int navIndex});
-}
-
-/// @nodoc
-class __$$BottomNavBarUiModelImplCopyWithImpl<$Res>
-    extends _$BottomNavBarUiModelCopyWithImpl<$Res, _$BottomNavBarUiModelImpl>
-    implements _$$BottomNavBarUiModelImplCopyWith<$Res> {
-  __$$BottomNavBarUiModelImplCopyWithImpl(_$BottomNavBarUiModelImpl _value,
-      $Res Function(_$BottomNavBarUiModelImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of BottomNavBarUiModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? navIndex = null,
-  }) {
-    return _then(_$BottomNavBarUiModelImpl(
-      navIndex: null == navIndex
-          ? _value.navIndex
-          : navIndex // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$BottomNavBarUiModelImpl implements _BottomNavBarUiModel {
-  const _$BottomNavBarUiModelImpl({this.navIndex = 0});
-
-  factory _$BottomNavBarUiModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$BottomNavBarUiModelImplFromJson(json);
-
-  @override
-  @JsonKey()
-  final int navIndex;
-
-  @override
-  String toString() {
-    return 'BottomNavBarUiModel(navIndex: $navIndex)';
-  }
+  /// Serializes this BottomNavBarUiModel to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BottomNavBarUiModelImpl &&
+            other is BottomNavBarUiModel &&
             (identical(other.navIndex, navIndex) ||
                 other.navIndex == navIndex));
   }
@@ -132,37 +40,282 @@ class _$BottomNavBarUiModelImpl implements _BottomNavBarUiModel {
   @override
   int get hashCode => Object.hash(runtimeType, navIndex);
 
+  @override
+  String toString() {
+    return 'BottomNavBarUiModel(navIndex: $navIndex)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $BottomNavBarUiModelCopyWith<$Res> {
+  factory $BottomNavBarUiModelCopyWith(
+          BottomNavBarUiModel value, $Res Function(BottomNavBarUiModel) _then) =
+      _$BottomNavBarUiModelCopyWithImpl;
+  @useResult
+  $Res call({int navIndex});
+}
+
+/// @nodoc
+class _$BottomNavBarUiModelCopyWithImpl<$Res>
+    implements $BottomNavBarUiModelCopyWith<$Res> {
+  _$BottomNavBarUiModelCopyWithImpl(this._self, this._then);
+
+  final BottomNavBarUiModel _self;
+  final $Res Function(BottomNavBarUiModel) _then;
+
   /// Create a copy of BottomNavBarUiModel
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$BottomNavBarUiModelImplCopyWith<_$BottomNavBarUiModelImpl> get copyWith =>
-      __$$BottomNavBarUiModelImplCopyWithImpl<_$BottomNavBarUiModelImpl>(
+  @override
+  $Res call({
+    Object? navIndex = null,
+  }) {
+    return _then(_self.copyWith(
+      navIndex: null == navIndex
+          ? _self.navIndex
+          : navIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [BottomNavBarUiModel].
+extension BottomNavBarUiModelPatterns on BottomNavBarUiModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_BottomNavBarUiModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _BottomNavBarUiModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_BottomNavBarUiModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _BottomNavBarUiModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_BottomNavBarUiModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _BottomNavBarUiModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int navIndex)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _BottomNavBarUiModel() when $default != null:
+        return $default(_that.navIndex);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(int navIndex) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _BottomNavBarUiModel():
+        return $default(_that.navIndex);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int navIndex)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _BottomNavBarUiModel() when $default != null:
+        return $default(_that.navIndex);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _BottomNavBarUiModel implements BottomNavBarUiModel {
+  const _BottomNavBarUiModel({this.navIndex = 0});
+  factory _BottomNavBarUiModel.fromJson(Map<String, dynamic> json) =>
+      _$BottomNavBarUiModelFromJson(json);
+
+  @override
+  @JsonKey()
+  final int navIndex;
+
+  /// Create a copy of BottomNavBarUiModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$BottomNavBarUiModelCopyWith<_BottomNavBarUiModel> get copyWith =>
+      __$BottomNavBarUiModelCopyWithImpl<_BottomNavBarUiModel>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BottomNavBarUiModelImplToJson(
+    return _$BottomNavBarUiModelToJson(
       this,
     );
   }
-}
-
-abstract class _BottomNavBarUiModel implements BottomNavBarUiModel {
-  const factory _BottomNavBarUiModel({final int navIndex}) =
-      _$BottomNavBarUiModelImpl;
-
-  factory _BottomNavBarUiModel.fromJson(Map<String, dynamic> json) =
-      _$BottomNavBarUiModelImpl.fromJson;
 
   @override
-  int get navIndex;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _BottomNavBarUiModel &&
+            (identical(other.navIndex, navIndex) ||
+                other.navIndex == navIndex));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, navIndex);
+
+  @override
+  String toString() {
+    return 'BottomNavBarUiModel(navIndex: $navIndex)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$BottomNavBarUiModelCopyWith<$Res>
+    implements $BottomNavBarUiModelCopyWith<$Res> {
+  factory _$BottomNavBarUiModelCopyWith(_BottomNavBarUiModel value,
+          $Res Function(_BottomNavBarUiModel) _then) =
+      __$BottomNavBarUiModelCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int navIndex});
+}
+
+/// @nodoc
+class __$BottomNavBarUiModelCopyWithImpl<$Res>
+    implements _$BottomNavBarUiModelCopyWith<$Res> {
+  __$BottomNavBarUiModelCopyWithImpl(this._self, this._then);
+
+  final _BottomNavBarUiModel _self;
+  final $Res Function(_BottomNavBarUiModel) _then;
 
   /// Create a copy of BottomNavBarUiModel
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$BottomNavBarUiModelImplCopyWith<_$BottomNavBarUiModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? navIndex = null,
+  }) {
+    return _then(_BottomNavBarUiModel(
+      navIndex: null == navIndex
+          ? _self.navIndex
+          : navIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
+
+// dart format on
