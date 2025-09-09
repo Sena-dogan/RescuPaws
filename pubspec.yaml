@@ -129,7 +129,6 @@ flutter:
     - assets/gifs/
     - assets/animations/
     - assets/icons/
-    - assets/il-ilce.json
   fonts:
     - family: Nunito
       fonts:

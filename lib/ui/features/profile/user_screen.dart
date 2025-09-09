@@ -201,7 +201,6 @@ class ProfileScreen extends ConsumerWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: ListTile(
                             tileColor: context.colorScheme.surface,
-                            tileColor: context.colorScheme.surface,
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 4),
                             leading: Icon(

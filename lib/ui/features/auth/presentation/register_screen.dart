@@ -40,7 +40,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-         gradient: LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: <Color>[
@@ -53,14 +53,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: context.colorScheme.surface,
-          backgroundColor: context.colorScheme.surface,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(16),
               bottomRight: Radius.circular(16),
             ),
             side: BorderSide(
-              color: context.colorScheme.scrim.withValues(alpha:0.2),
+              color: context.colorScheme.scrim.withValues(alpha: 0.2),
             ),
           ),
           automaticallyImplyLeading: false,
@@ -172,7 +171,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         child: Text(
           'Kayıt Ol',
           style: context.textTheme.bodyMedium!.copyWith(
-            color: context.colorScheme.surface,
             color: context.colorScheme.surface,
           ),
         ),
@@ -377,7 +375,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         color: context.colorScheme.error,
       ),
       fillColor: context.colorScheme.surface,
-      fillColor: context.colorScheme.surface,
       filled: true,
       contentPadding: const EdgeInsets.all(15),
       enabledBorder: OutlineInputBorder(
@@ -407,7 +404,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           loginModel.isObscure
               ? Icons.visibility_outlined
               : Icons.visibility_off_outlined,
-          color: context.colorScheme.scrim.withValues(alpha:0.5),
+          color: context.colorScheme.scrim.withValues(alpha: 0.5),
         ),
       ),
     );
@@ -430,7 +427,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       errorStyle: context.textTheme.bodyMedium?.copyWith(
         color: context.colorScheme.error,
       ),
-      fillColor: context.colorScheme.surface,
       fillColor: context.colorScheme.surface,
       filled: true,
       contentPadding: const EdgeInsets.all(15),
