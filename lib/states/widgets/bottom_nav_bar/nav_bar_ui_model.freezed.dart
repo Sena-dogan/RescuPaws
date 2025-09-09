@@ -273,6 +273,7 @@ class _BottomNavBarUiModel implements BottomNavBarUiModel {
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, navIndex);
 

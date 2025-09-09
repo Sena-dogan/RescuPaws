@@ -53,6 +53,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: context.colorScheme.surface,
+          backgroundColor: context.colorScheme.surface,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(16),
@@ -171,6 +172,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         child: Text(
           'Kayıt Ol',
           style: context.textTheme.bodyMedium!.copyWith(
+            color: context.colorScheme.surface,
             color: context.colorScheme.surface,
           ),
         ),
@@ -375,6 +377,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         color: context.colorScheme.error,
       ),
       fillColor: context.colorScheme.surface,
+      fillColor: context.colorScheme.surface,
       filled: true,
       contentPadding: const EdgeInsets.all(15),
       enabledBorder: OutlineInputBorder(
@@ -427,6 +430,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       errorStyle: context.textTheme.bodyMedium?.copyWith(
         color: context.colorScheme.error,
       ),
+      fillColor: context.colorScheme.surface,
       fillColor: context.colorScheme.surface,
       filled: true,
       contentPadding: const EdgeInsets.all(15),

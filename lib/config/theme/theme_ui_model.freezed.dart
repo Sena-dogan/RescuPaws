@@ -271,6 +271,7 @@ class _ThemeUiModel implements ThemeUiModel {
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, themeMode);
 

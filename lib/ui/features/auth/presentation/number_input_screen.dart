@@ -92,6 +92,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: context.colorScheme.surface,
+                    fillColor: context.colorScheme.surface,
                     hintText: '+90__   __.  __.  ___',
                     hintStyle: context.textTheme.bodyMedium,
                     labelStyle: context.textTheme.bodyMedium,

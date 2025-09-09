@@ -208,6 +208,8 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MetadataCopyWith<$Res>? get metadata {
@@ -580,6 +582,7 @@ class _User implements User {
             const DeepCollectionEquality().equals(other.tenantId, tenantId));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(

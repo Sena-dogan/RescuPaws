@@ -76,6 +76,7 @@ class OtpScreen extends ConsumerWidget {
                       ),
                         decoration: BoxDecoration(
                       color: context.colorScheme.surface,
+                      color: context.colorScheme.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: context.colorScheme.primary),
                     )),
