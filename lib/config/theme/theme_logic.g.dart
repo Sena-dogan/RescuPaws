@@ -12,15 +12,15 @@ const themeLogicProvider = ThemeLogicProvider._();
 final class ThemeLogicProvider
     extends $NotifierProvider<ThemeLogic, ThemeUiModel> {
   const ThemeLogicProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'themeLogicProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'themeLogicProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$themeLogicHash();
@@ -47,11 +47,14 @@ abstract class _$ThemeLogic extends $Notifier<ThemeUiModel> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<ThemeUiModel, ThemeUiModel>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<ThemeUiModel, ThemeUiModel>,
-        ThemeUiModel,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ThemeUiModel, ThemeUiModel>,
+              ThemeUiModel,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
