@@ -1,27 +1,21 @@
 PODS:
   - Flutter (1.0.0)
-  - insta_assets_crop (0.0.1):
-    - Flutter
   - photo_manager (3.7.1):
     - Flutter
     - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - insta_assets_crop (from `.symlinks/plugins/insta_assets_crop/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  insta_assets_crop:
-    :path: ".symlinks/plugins/insta_assets_crop/ios"
   photo_manager:
     :path: ".symlinks/plugins/photo_manager/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  insta_assets_crop: 960856014dc16c08c92b02caf56d197fdea56051
   photo_manager: 1d80ae07a89a67dfbcae95953a1e5a24af7c3e62
 
 PODFILE CHECKSUM: 3c63482e143d1b91d2d2560aee9fb04ecc74ac7e
