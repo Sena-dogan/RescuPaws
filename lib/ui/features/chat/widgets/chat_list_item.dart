@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../models/chat/chat_model.dart';
-import '../../../../utils/error_widgett.dart';
-import '../screens/message_screen.dart';
+import 'package:rescupaws/models/chat/chat_model.dart';
+import 'package:rescupaws/ui/features/chat/screens/message_screen.dart';
 
 class ChatListItem extends StatelessWidget {
   const ChatListItem({super.key, required this.chat});
@@ -11,27 +9,22 @@ class ChatListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
 
     return ListTile(
       onTap: () {
         Navigator.push(
           context,
-          // ignore: always_specify_types
-          MaterialPageRoute(
+          //TODO: Change to go route
+          MaterialPageRoute<void>(
             builder: (BuildContext context) {
-              if (chat.userId != null) {
-                debugPrint('Chat User ID: ${chat.userId} (ChatsScreen)');
-                return MessageScreen(
-                  receiverId: chat.userId,
-                  receiverName: chat.name,
-                  receiverProfilePic: chat.profilePic,
-                );
-              } else {
-                debugPrint('Chat User ID: ${chat.userId} (ChatsScreen)');
-                return PawErrorWidget(onRefresh: () async {});
-              }
-            },
+              debugPrint('Chat User ID: ${chat.userId} (ChatsScreen)');
+              return MessageScreen(
+                receiverId: chat.userId,
+                receiverName: chat.name,
+                receiverProfilePic: chat.profilePic,
+              );
+                        },
           ),
         );
       },
@@ -49,7 +42,7 @@ class ChatListItem extends StatelessWidget {
             ),
       ),
       leading: CircleAvatar(
-        radius: 30.0,
+        radius: 30,
         backgroundImage: NetworkImage(
           chat.profilePic,
         ),

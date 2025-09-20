@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rescupaws/constants/string_constants.dart';
+import 'package:rescupaws/data/enums/message_type.dart';
+import 'package:rescupaws/models/chat/chat_model.dart';
+import 'package:rescupaws/models/chat/chat_ui_model.dart';
+import 'package:rescupaws/models/chat/message.dart';
+import 'package:rescupaws/models/user_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../../constants/string_constants.dart';
-import '../../../../data/enums/message_type.dart';
-import '../../../../models/chat/chat_model.dart';
-import '../../../../models/chat/chat_ui_model.dart';
-import '../../../../models/chat/message.dart';
-import '../../../../models/user_data.dart';
 
 part 'chat_repository.g.dart';
 
@@ -23,7 +22,7 @@ class ChatRepository extends _$ChatRepository {
   Future<void> addReceiverUserToFirestore({
     required UserData receiverUser,
   }) async {
-    final DocumentSnapshot<Map<String, dynamic>> userDoc =
+    DocumentSnapshot<Map<String, dynamic>> userDoc =
         await FirebaseFirestore.instance
             .collection(StringsConsts.usersCollection)
             .doc(receiverUser.uid)
@@ -55,7 +54,7 @@ class ChatRepository extends _$ChatRepository {
 
   /// invoke to get user data by id
   Future<UserData?> getUserDataById(String userId) async {
-    final DocumentSnapshot<Map<String, dynamic>> userDoc =
+    DocumentSnapshot<Map<String, dynamic>> userDoc =
         await FirebaseFirestore.instance
             .collection(StringsConsts.usersCollection)
             .doc(userId)
@@ -83,8 +82,8 @@ class ChatRepository extends _$ChatRepository {
         .snapshots()
         .map(
       (QuerySnapshot<Map<String, dynamic>> messagesMap) {
-        final List<MessageModel> messagesList = <MessageModel>[];
-        for (final QueryDocumentSnapshot<Map<String, dynamic>> messageMap
+        List<MessageModel> messagesList = <MessageModel>[];
+        for (QueryDocumentSnapshot<Map<String, dynamic>> messageMap
             in messagesMap.docs) {
           messagesList.add(MessageModel.fromJson(messageMap.data()));
         }
@@ -104,8 +103,8 @@ class ChatRepository extends _$ChatRepository {
         .snapshots()
         .map(
       (QuerySnapshot<Map<String, dynamic>> chatsMap) {
-        final List<Chat> chatsList = <Chat>[];
-        for (final QueryDocumentSnapshot<Map<String, dynamic>> chatMap
+        List<Chat> chatsList = <Chat>[];
+        for (QueryDocumentSnapshot<Map<String, dynamic>> chatMap
             in chatsMap.docs) {
           chatsList.add(Chat.fromJson(chatMap.data()));
         }
@@ -125,8 +124,8 @@ class ChatRepository extends _$ChatRepository {
       throw Exception('Alıcı kullanıcı bulunamadı');
     }
 
-    final DateTime time = DateTime.now();
-    final String messageId = const Uuid().v1();
+    DateTime time = DateTime.now();
+    String messageId = const Uuid().v1();
 
     await _saveChatDataToUsersSubCollection(
       senderUser: senderUser,
@@ -159,7 +158,7 @@ class ChatRepository extends _$ChatRepository {
     required DateTime time,
   }) async {
     // sender chat
-    final Chat senderChat = Chat(
+    Chat senderChat = Chat(
       name: receiverUser.displayName ?? 'receiver name is null',
       profilePic: receiverUser.photoUrl ?? 'receiver photo url is null',
       userId: receiverUser.uid ?? 'receiver uid is null',
@@ -175,7 +174,7 @@ class ChatRepository extends _$ChatRepository {
         .set(senderChat.toJson());
 
     // receiver chat
-    final Chat receiverChat = Chat(
+    Chat receiverChat = Chat(
       name: senderUser.displayName ?? 'sender name is null',
       profilePic: senderUser.photoUrl ?? 'sender photo url is null',
       userId: senderUser.uid ?? 'sender uid is null',
@@ -202,7 +201,7 @@ class ChatRepository extends _$ChatRepository {
     required DateTime time,
     required MessageType messageType,
   }) async {
-    final MessageModel messageModel = MessageModel(
+    MessageModel messageModel = MessageModel(
       senderID: senderUserId,
       receiverID: receiverUserId,
       messageID: messageId,

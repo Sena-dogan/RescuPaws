@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/context_extensions.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class ImageLineIndicator extends StatelessWidget {
   const ImageLineIndicator({
@@ -18,7 +18,7 @@ class ImageLineIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List<Widget>.generate(

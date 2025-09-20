@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'time_models.dart';
+import 'package:rescupaws/models/time_models.dart';
 
 part 'meta_data.freezed.dart';
 part 'meta_data.g.dart';

@@ -18,7 +18,7 @@ class ImageConverter {
       // Remove data URI prefix if present
       String cleanBase64 = base64String;
       if (base64String.startsWith('data:')) {
-        final int commaIndex = base64String.indexOf(',');
+        int commaIndex = base64String.indexOf(',');
         if (commaIndex != -1) {
           cleanBase64 = base64String.substring(commaIndex + 1);
         }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../../../../config/theme/theme_logic.dart';
+import 'package:rescupaws/config/theme/theme_logic.dart';
 
 class ThemeWidget extends ConsumerWidget {
   const ThemeWidget({
@@ -15,7 +15,7 @@ class ThemeWidget extends ConsumerWidget {
     return Row(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15),
           child: Text(
             tr('toggle_theme'),
             style: Theme.of(context)

@@ -3,9 +3,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../data/enums/detail_enums.dart';
-import 'paw_entry.dart';
-import 'vaccine_info.dart';
+import 'package:rescupaws/data/enums/detail_enums.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/models/vaccine_info.dart';
 
 part 'paw_entry_detail.freezed.dart';
 part 'paw_entry_detail.g.dart';
@@ -55,8 +55,8 @@ extension PawEntryDetailX on PawEntry {
   }
 
   String get createdAtFormatted {
-    final DateTime createdAt = DateTime.parse(created_at!);
-    final String formattedDate =
+    DateTime createdAt = DateTime.parse(created_at!);
+    String formattedDate =
         '${createdAt.day}/${createdAt.month}/${createdAt.year}';
     return formattedDate;
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../constants/assets.dart';
-import 'context_extensions.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class PawErrorWidget extends StatelessWidget {
   const PawErrorWidget({

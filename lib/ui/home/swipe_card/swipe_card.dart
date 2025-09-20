@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../config/router/app_router.dart';
-import '../../../data/enums/detail_enums.dart';
-import '../../../models/paw_entry.dart';
-import '../../../utils/context_extensions.dart';
-import '../../widgets/adaptive_image.dart';
-import 'swipe_card_logic.dart';
-import 'widgets/image_line_indicator.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/data/enums/detail_enums.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/ui/home/swipe_card/swipe_card_logic.dart';
+import 'package:rescupaws/ui/home/swipe_card/widgets/image_line_indicator.dart';
+import 'package:rescupaws/ui/widgets/adaptive_image.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class SwipeCard extends ConsumerWidget {
   const SwipeCard({
@@ -23,7 +22,7 @@ class SwipeCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final int id = ref.watch(swipeCardLogicProvider).id;
+    int id = ref.watch(swipeCardLogicProvider).id;
     // image length is 3
     // selectedImageIndex is 2
     // when i tap right, i want to go to the next image
@@ -39,8 +38,8 @@ class SwipeCard extends ConsumerWidget {
     if (id != pawEntry.id) {
       selectedImageIndex = 0;
     }
-    final List<String> images = pawEntry.image!;
-    final String image = selectedImageIndex < images.length
+    List<String> images = pawEntry.image!;
+    String image = selectedImageIndex < images.length
         ? images[selectedImageIndex]
         : '';
     return GestureDetector(
@@ -104,7 +103,7 @@ class SwipeCard extends ConsumerWidget {
             ),
           ),
           Positioned.fill(
-            child: Container(
+            child: DecoratedBox(
               decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(27),
@@ -119,7 +118,7 @@ class SwipeCard extends ConsumerWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +187,7 @@ class SwipeCard extends ConsumerWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ImageLineIndicator(
                 numberOfImages: pawEntry.image?.length == 1
                     ? 0

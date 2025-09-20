@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../config/router/app_router.dart';
-import '../../constants/icons.dart';
-import '../../states/widgets/bottom_nav_bar/nav_bar_logic.dart';
-import '../../utils/context_extensions.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/icons.dart';
+import 'package:rescupaws/states/widgets/bottom_nav_bar/nav_bar_logic.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class PawBottomNavBar extends ConsumerWidget {
   const PawBottomNavBar({super.key});

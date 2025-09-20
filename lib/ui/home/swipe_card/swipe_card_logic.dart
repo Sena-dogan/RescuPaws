@@ -1,7 +1,6 @@
+import 'package:rescupaws/data/enums/detail_enums.dart';
+import 'package:rescupaws/ui/home/swipe_card/swipe_card_ui_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../data/enums/detail_enums.dart';
-import 'swipe_card_ui_model.dart';
 
 part 'swipe_card_logic.g.dart';
 

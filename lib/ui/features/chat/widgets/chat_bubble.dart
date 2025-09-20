@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../models/chat/message.dart';
-import '../../../../utils/context_extensions.dart';
+import 'package:rescupaws/models/chat/message.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({

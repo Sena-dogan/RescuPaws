@@ -4,13 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/ui/features/auth/domain/login_ui_model.dart';
+import 'package:rescupaws/ui/features/auth/presentation/login_logic.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../home/widgets/loading_paw_widget.dart';
-import '../domain/login_ui_model.dart';
-import 'login_logic.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -34,8 +33,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final LoginUiModel loginModel = ref.watch(loginLogicProvider);
-    final Size size = MediaQuery.sizeOf(context);
+    LoginUiModel loginModel = ref.watch(loginLogicProvider);
+    Size size = MediaQuery.sizeOf(context);
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -65,7 +64,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           automaticallyImplyLeading: false,
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: TextButton(
                 onPressed: () {
                   context.go(SGRoute.login.route);
@@ -199,9 +198,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             return 'Lütfen şifrenizi giriniz';
           } else if (value.length < 8) {
             return 'Şifreniz en az 8 karakter olmalıdır';
-          } else if (!value.contains(RegExp(r'[A-Z]'))) {
+          } else if (!value.contains(RegExp('[A-Z]'))) {
             return 'Şifreniz en az bir büyük harf içermelidir';
-          } else if (!value.contains(RegExp(r'[a-z]'))) {
+          } else if (!value.contains(RegExp('[a-z]'))) {
             return 'Şifreniz en az bir küçük harf içermelidir';
           } else if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
             return 'Şifreniz en az bir özel karakter içermelidir';
@@ -245,14 +244,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Padding _buildPrivacyPolicy() {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.all(3),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           GestureDetector(
             onTap: () {
               const String url = 'https://patipati.app/privacy-policy';
-              final Uri uri = Uri.parse(url);
+              Uri uri = Uri.parse(url);
               launchUrl(uri).catchError((Object? err) =>
                   // ignore: invalid_return_type_for_catch_error
                   debugPrint(err.toString()));
@@ -283,7 +282,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.9,
       child: Padding(
-        padding: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(3),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -298,7 +297,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             InkWell(
               onTap: () async {
                 const String url = 'https://patipati.app/user-terms';
-                final Uri uri = Uri.parse(url);
+                Uri uri = Uri.parse(url);
                 await launchUrl(uri).catchError((Object? err) =>
                     // ignore: invalid_return_type_for_catch_error
                     debugPrint(err.toString()));

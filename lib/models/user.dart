@@ -2,8 +2,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'meta_data.dart';
-import 'provider_data.dart';
+import 'package:rescupaws/models/meta_data.dart';
+import 'package:rescupaws/models/provider_data.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';

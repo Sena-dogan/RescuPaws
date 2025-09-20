@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:rescupaws/data/network/user/user_repository.dart';
+import 'package:rescupaws/models/chat/chat_model.dart';
+import 'package:rescupaws/models/chat/chat_ui_model.dart';
+import 'package:rescupaws/models/chat/message.dart';
+import 'package:rescupaws/models/user_data.dart';
+import 'package:rescupaws/ui/features/chat/service/chat_repository.dart';
+import 'package:rescupaws/ui/features/detail/logic/detail_logic.dart';
+import 'package:rescupaws/utils/riverpod_extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../../data/network/user/user_repository.dart';
-import '../../../../models/chat/chat_model.dart';
-import '../../../../models/chat/chat_ui_model.dart';
-import '../../../../models/chat/message.dart';
-import '../../../../models/user_data.dart';
-import '../../../../utils/riverpod_extensions.dart';
-import '../../detail/logic/detail_logic.dart';
-import '../service/chat_repository.dart';
 
 part 'chat_logic.g.dart';
 
 /// Fetch a user profile from Firestore 'users/{userId}'
 @riverpod
 Future<UserData?> getUserById(Ref ref, String userId) async {
-  final ChatRepository chatRepository = ref.read(
+  ChatRepository chatRepository = ref.read(
     chatRepositoryProvider.notifier,
   );
   return chatRepository.getUserDataById(userId);
@@ -25,11 +24,11 @@ Future<UserData?> getUserById(Ref ref, String userId) async {
 @riverpod
 Stream<List<MessageModel>> getMessagesList(Ref ref, String receiverUserId) {
   debugPrint('Receiver user id is $receiverUserId');
-  final ChatRepository chatRepository = ref.read(
+  ChatRepository chatRepository = ref.read(
     chatRepositoryProvider.notifier,
   );
   debugPrint('Chat repository is $chatRepository');
-  final UserData senderUser = ref.read(currentUserProvider);
+  UserData senderUser = ref.read(currentUserProvider);
   debugPrint('Sender user is $senderUser');
   return chatRepository.getMessagesList(
     senderUserId: senderUser.uid!,
@@ -42,7 +41,7 @@ class ChatLogic extends _$ChatLogic {
   @override
   ChatUiModel build() {
     ref.cacheFor(const Duration(hours: 1));
-    final UserData? user = ref.watch(detailLogicProvider).user;
+    UserData? user = ref.watch(detailLogicProvider).user;
     return ChatUiModel(user: user);
   }
 
@@ -50,7 +49,7 @@ class ChatLogic extends _$ChatLogic {
   Future<bool> addReceiverUserToFirestore({
     required UserData receiverUser,
   }) async {
-    final ChatRepository chatRepository = ref.read(
+    ChatRepository chatRepository = ref.read(
       chatRepositoryProvider.notifier,
     );
     try {
@@ -71,14 +70,14 @@ class ChatLogic extends _$ChatLogic {
     required String lastMessage,
     required String receiverUserId,
   }) async {
-    final ChatRepository chatRepository = ref.read(
+    ChatRepository chatRepository = ref.read(
       chatRepositoryProvider.notifier,
     );
-    final UserData senderUser = ref.read(currentUserProvider);
+    UserData senderUser = ref.read(currentUserProvider);
 
     // Alıcı kullanıcı bilgisini Firestore'dan alma
     debugPrint('Getting receiver user data for ID: $receiverUserId');
-    final UserData? receiverUser = await getUserDataById(receiverUserId);
+    UserData? receiverUser = await getUserDataById(receiverUserId);
 
     if (receiverUser == null) {
       debugPrint('Receiver user not found for ID: $receiverUserId');
@@ -105,7 +104,7 @@ class ChatLogic extends _$ChatLogic {
 
   // get user data by id function
   Future<UserData?> getUserDataById(String userId) async {
-    final ChatRepository chatRepository = ref.read(
+    ChatRepository chatRepository = ref.read(
       chatRepositoryProvider.notifier,
     );
     return chatRepository.getUserDataById(userId);
@@ -113,10 +112,10 @@ class ChatLogic extends _$ChatLogic {
 
   // get chats list function
   Stream<List<Chat>> getChatsList() {
-    final ChatRepository chatRepository = ref.watch(
+    ChatRepository chatRepository = ref.watch(
       chatRepositoryProvider.notifier,
     );
-    final UserData senderUser = ref.watch(currentUserProvider);
+    UserData senderUser = ref.watch(currentUserProvider);
     return chatRepository.getChatsList(senderUserId: senderUser.uid!);
   }
 
@@ -125,10 +124,10 @@ class ChatLogic extends _$ChatLogic {
     required String receiverUserId,
     required String messageId,
   }) async {
-    final ChatRepository chatRepository = ref.watch(
+    ChatRepository chatRepository = ref.watch(
       chatRepositoryProvider.notifier,
     );
-    final UserData user = ref.watch(currentUserProvider);
+    UserData user = ref.watch(currentUserProvider);
     await chatRepository.setChatMessageSeen(
       messageId: messageId,
       receiverUserId: receiverUserId,

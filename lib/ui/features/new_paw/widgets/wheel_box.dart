@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 import 'package:wheel_slider/wheel_slider.dart';
-
-import '../../../../utils/context_extensions.dart';
-import '../logic/new_paw_logic.dart';
 
 class WheelBox extends ConsumerWidget {
   const WheelBox({
@@ -18,7 +17,7 @@ class WheelBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Column(
       children: <Widget>[
         Padding(
@@ -32,15 +31,15 @@ class WheelBox extends ConsumerWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        const Gap(16.0),
+        const Gap(16),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
               color: Colors.transparent,
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
               children: <Widget>[
@@ -50,7 +49,7 @@ class WheelBox extends ConsumerWidget {
             ),
           ),
         ),
-        const Gap(10.0),
+        const Gap(10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -90,11 +89,11 @@ class MeasureWidget extends ConsumerWidget {
 
   final String text;
   final Color color;
-  final Function()? onPressed;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Container(
       height: 60,
       width: size.width * 0.3,
@@ -102,9 +101,9 @@ class MeasureWidget extends ConsumerWidget {
         color: Colors.transparent,
         border: Border.all(
           color: color,
-          width: 3.0,
+          width: 3,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
         onPressed: onPressed,

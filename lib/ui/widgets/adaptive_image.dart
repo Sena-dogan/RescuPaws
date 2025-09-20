@@ -22,8 +22,8 @@ class AdaptiveImage extends StatelessWidget {
     if (imageUrl.startsWith('data:image')) {
       try {
         // Extract base64 data from data URI
-        final String base64Data = imageUrl.split(',')[1];
-        final Uint8List bytes = base64Decode(base64Data);
+        String base64Data = imageUrl.split(',')[1];
+        Uint8List bytes = base64Decode(base64Data);
 
         return Image.memory(
           bytes,
@@ -53,7 +53,7 @@ class AdaptiveImage extends StatelessWidget {
     // Check if it's a base64 string (not a data URI)
     if (_isValidBase64(imageUrl)) {
       try {
-        final Uint8List bytes = base64Decode(imageUrl);
+        Uint8List bytes = base64Decode(imageUrl);
         return Image.memory(
           bytes,
           fit: fit,
@@ -79,7 +79,7 @@ class AdaptiveImage extends StatelessWidget {
 
     // Check if it's a file path (absolute path to local file)
     if (imageUrl.startsWith('/') || imageUrl.contains('/')) {
-      final File imageFile = File(imageUrl);
+      File imageFile = File(imageUrl);
       if (imageFile.existsSync()) {
         return Image.file(
           imageFile,
@@ -116,7 +116,7 @@ class AdaptiveImage extends StatelessWidget {
       // Remove data URI prefix if present
       String cleanBase64 = base64String;
       if (base64String.startsWith('data:')) {
-        final int commaIndex = base64String.indexOf(',');
+        int commaIndex = base64String.indexOf(',');
         if (commaIndex != -1) {
           cleanBase64 = base64String.substring(commaIndex + 1);
         }

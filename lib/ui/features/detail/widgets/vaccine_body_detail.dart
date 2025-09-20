@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../../../models/paw_entry_detail.dart';
-import 'have_vaccine_detail.dart';
+import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/ui/features/detail/widgets/have_vaccine_detail.dart';
 
 class VaccineBody extends StatelessWidget {
   const VaccineBody({
@@ -24,42 +23,42 @@ class VaccineBody extends StatelessWidget {
               HaveVaccineWidget(
                 title: 'Rabies Aşısı',
                 haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.rabies_vaccine),
+                    pawEntryDetailResponse!.data!.vaccine_info?.rabiesVaccine),
               ),
               HaveVaccineWidget(
                 title: 'Distemper Aşısı',
                 haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.distemper_vaccine),
+                    pawEntryDetailResponse!.data!.vaccine_info?.distemperVaccine),
               ),
               HaveVaccineWidget(
                 title: 'Hepatitis Aşısı',
                 haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.hepatitis_vaccine),
+                    pawEntryDetailResponse!.data!.vaccine_info?.hepatitisVaccine),
               ),
               HaveVaccineWidget(
                 title: 'Parvovirus Aşısı',
                 haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.parvovirus_vaccine),
+                    pawEntryDetailResponse!.data!.vaccine_info?.parvovirusVaccine),
               ),
               HaveVaccineWidget(
                 title: 'Bordotella Aşısı',
                 haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.bordotella_vaccine),
+                    pawEntryDetailResponse!.data!.vaccine_info?.bordotellaVaccine),
               ),
               HaveVaccineWidget(
                 title: 'Leptospirosis Aşısı',
                 haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.leptospirosis_vaccine),
+                    pawEntryDetailResponse!.data!.vaccine_info?.leptospirosisVaccine),
               ),
               HaveVaccineWidget(
                 title: 'Panleukopenia Aşısı',
                 haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.panleukopenia_vaccine),
+                    pawEntryDetailResponse!.data!.vaccine_info?.panleukopeniaVaccine),
               ),
               HaveVaccineWidget(
                 title: 'Herpesvirus and Calicivirus Aşısı',
                 haveVaccine: tri(pawEntryDetailResponse!
-                    .data!.vaccine_info?.herpesvirus_and_calicivirus_vaccine),
+                    .data!.vaccine_info?.herpesvirusAndCalicivirusVaccine),
               ),
             ],
           ),

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../models/paw_entry_detail.dart';
-import '../../../utils/context_extensions.dart';
-import '../../../utils/error_widgett.dart';
-import '../../home/widgets/loading_paw_widget.dart';
-import 'logic/detail_logic.dart';
-import 'widgets/vaccine_body_detail.dart';
+import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/ui/features/detail/logic/detail_logic.dart';
+import 'package:rescupaws/ui/features/detail/widgets/vaccine_body_detail.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
+import 'package:rescupaws/utils/error_widgett.dart';
 
 class VaccineScreen extends ConsumerWidget {
   const VaccineScreen({super.key, required this.id});
@@ -16,7 +15,7 @@ class VaccineScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<GetPawEntryDetailResponse?> pawEntryDetailResponse =
+    AsyncValue<GetPawEntryDetailResponse?> pawEntryDetailResponse =
         ref.watch(fetchPawEntryDetailProvider(id.toString()));
     return Container(
         constraints: const BoxConstraints.expand(),
@@ -53,12 +52,12 @@ class VaccineScreen extends ConsumerWidget {
           ),
           body: switch (pawEntryDetailResponse) {
             AsyncData<GetPawEntryDetailResponse?>(
-              :final GetPawEntryDetailResponse? value
+              :GetPawEntryDetailResponse? value
             ) =>
               VaccineBody(
                 pawEntryDetailResponse: value,
               ),
-            AsyncValue<Object?>(:final Object error?) => PawErrorWidget(
+            AsyncValue<Object?>(:Object error?) => PawErrorWidget(
                 error: error,
                 onRefresh: () async => ref
                     .refresh(fetchPawEntryDetailProvider(id.toString()).future),

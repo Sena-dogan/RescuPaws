@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../config/router/app_router.dart';
-import '../../../constants/assets.dart';
-import '../../../utils/context_extensions.dart';
-import '../../widgets/app_bar_gone.dart';
-import 'widgets/next_button.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/ui/features/intro/widgets/next_button.dart';
+import 'package:rescupaws/ui/widgets/app_bar_gone.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class IntroScreen extends ConsumerStatefulWidget {
   const IntroScreen({super.key});
@@ -19,10 +18,10 @@ class IntroScreen extends ConsumerStatefulWidget {
 class _IntroScreenState extends ConsumerState<IntroScreen> {
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     //final double screenHeight = MediaQuery.of(context).size.height;
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
       ),

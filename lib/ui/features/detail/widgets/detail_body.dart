@@ -3,16 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-
-import '../../../../models/paw_entry_detail.dart';
-import '../../../../models/user_data.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../chat/logic/chat_logic.dart';
-import '../../chat/screens/message_screen.dart';
-import '../logic/detail_logic.dart';
-import 'advertiser_info.dart';
-import 'characteristics.dart';
-import 'paw_image_and_name.dart';
+import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/models/user_data.dart';
+import 'package:rescupaws/ui/features/chat/logic/chat_logic.dart';
+import 'package:rescupaws/ui/features/chat/screens/message_screen.dart';
+import 'package:rescupaws/ui/features/detail/logic/detail_logic.dart';
+import 'package:rescupaws/ui/features/detail/widgets/advertiser_info.dart';
+import 'package:rescupaws/ui/features/detail/widgets/characteristics.dart';
+import 'package:rescupaws/ui/features/detail/widgets/paw_image_and_name.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class DetailBody extends ConsumerWidget {
   const DetailBody({
@@ -84,7 +83,7 @@ class DetailBody extends ConsumerWidget {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              final Size size = MediaQuery.sizeOf(context);
+              Size size = MediaQuery.sizeOf(context);
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
@@ -114,10 +113,10 @@ class DetailBody extends ConsumerWidget {
           const Gap(30),
           Consumer(builder:
             (BuildContext context, WidgetRef ref, Widget? child) {
-                      final String? advertiserId =
+                      String? advertiserId =
                           pawEntryDetailResponse!.pawEntryDetail?.user_id ??
                               pawEntryDetailResponse!.pawEntryDetail?.user?.uid;
-            final AsyncValue<UserData?> userAsync = ref.watch(
+            AsyncValue<UserData?> userAsync = ref.watch(
               getUserByIdProvider(advertiserId ?? ''));
             return userAsync.when(
                         data: (UserData? user) => AdvertiserInfo(
@@ -145,7 +144,7 @@ class DetailBody extends ConsumerWidget {
                           ),
                         ),
                         onPressed: () async {
-                          final String receiverId =
+                          String receiverId =
                 pawEntryDetailResponse!.pawEntryDetail?.user_id ??
                   pawEntryDetailResponse!
                                       .pawEntryDetail?.user?.uid ??
@@ -155,7 +154,7 @@ class DetailBody extends ConsumerWidget {
                             throw Exception(
                                 'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
                           }
-              final UserData? user = await ref
+              UserData? user = await ref
                 .read(chatLogicProvider.notifier)
                               .getUserDataById(receiverId);
               if (user != null) {
@@ -171,7 +170,7 @@ class DetailBody extends ConsumerWidget {
                           await Navigator.push(
                             context,
                             // ignore: always_specify_types
-                            MaterialPageRoute(
+                            MaterialPageRoute<void>(
                               builder: (BuildContext context) {
                                 return MessageScreen(
                                   receiverId: receiverId,

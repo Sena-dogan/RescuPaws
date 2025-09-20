@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/ui/features/detail/logic/detail_logic.dart';
+import 'package:rescupaws/ui/widgets/adaptive_image.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../../../../models/paw_entry_detail.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../widgets/adaptive_image.dart';
-import '../logic/detail_logic.dart';
 
 class PawImageandName extends ConsumerStatefulWidget {
   const PawImageandName({
@@ -25,7 +24,7 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return FlexibleSpaceBar(
       titlePadding: EdgeInsets.zero,
       title: Container(

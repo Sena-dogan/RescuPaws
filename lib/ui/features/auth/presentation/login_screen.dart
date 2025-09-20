@@ -6,13 +6,12 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/ui/features/auth/domain/login_ui_model.dart';
+import 'package:rescupaws/ui/features/auth/presentation/login_logic.dart';
+import 'package:rescupaws/ui/features/auth/presentation/social_button.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../utils/context_extensions.dart';
-import '../domain/login_ui_model.dart';
-import 'login_logic.dart';
-import 'social_button.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -34,7 +33,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -96,7 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Padding _buildRegisterButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: TextButton(
         onPressed: () {
           context.go(SGRoute.register.route);
@@ -147,7 +146,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     Size size,
     BuildContext context,
   ) {
-    final LoginUiModel loginModel = ref.watch(loginLogicProvider);
+    LoginUiModel loginModel = ref.watch(loginLogicProvider);
     return SizedBox(
       width: size.width * 0.9,
       child: AutofillGroup(
@@ -301,14 +300,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Padding _buildPrivacyPolicy() {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.all(3),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           GestureDetector(
             onTap: () {
               const String url = 'https://patipati.app/privacy-policy';
-              final Uri uri = Uri.parse(url);
+              Uri uri = Uri.parse(url);
               launchUrl(uri).catchError(
                 (Object? err) =>
                     // ignore: invalid_return_type_for_catch_error
@@ -340,7 +339,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.9,
       child: Padding(
-        padding: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(3),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -354,7 +353,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             InkWell(
               onTap: () async {
                 const String url = 'https://patipati.app/user-terms';
-                final Uri uri = Uri.parse(url);
+                Uri uri = Uri.parse(url);
                 await launchUrl(uri).catchError(
                   (Object? err) =>
                       // ignore: invalid_return_type_for_catch_error
@@ -409,7 +408,7 @@ class LoginButtons extends ConsumerWidget {
             color: Colors.transparent,
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SocialLoginButton(
-              elevation: const WidgetStatePropertyAll<double>(0.0),
+              elevation: const WidgetStatePropertyAll<double>(0),
               strokeColor: context.colorScheme.primary,
               buttonType: SocialLoginButtonType.google,
               textColor: context.colorScheme.onSurface,
@@ -438,7 +437,7 @@ class LoginButtons extends ConsumerWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: SocialLoginButton(
-                elevation: const WidgetStatePropertyAll<double>(0.0),
+                elevation: const WidgetStatePropertyAll<double>(0),
                 strokeColor: context.colorScheme.primary,
                 backgroundColor: Colors.transparent,
                 textColor: context.colorScheme.onSurface,
@@ -515,17 +514,14 @@ class SignInButton extends ConsumerWidget {
                       context.showErrorSnackBar(
                         message: 'Lütfen geçerli bir e-posta adresi giriniz.',
                       );
-                      break;
                     case 'user-not-found':
                       context.showErrorSnackBar(
                         message: 'Bu e-posta adresi ile bir hesap bulunamadı.',
                       );
-                      break;
                     case 'wrong-password':
                       context.showErrorSnackBar(
                         message: 'Şifreniz yanlış. Lütfen tekrar deneyiniz.',
                       );
-                      break;
                     default:
                       context.showErrorSnackBar(
                         message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.',

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../data/enums/router_enums.dart';
+import 'package:rescupaws/data/enums/router_enums.dart';
 
 class SlideTransitionPage extends CustomTransitionPage {
   SlideTransitionPage({
@@ -19,10 +19,8 @@ class SlideTransitionPage extends CustomTransitionPage {
             switch (direction) {
               case SlideDirection.leftToRight:
                 beginOffset = const Offset(-1, 0); // Start from the left
-                break;
               case SlideDirection.rightToLeft:
                 beginOffset = const Offset(1, 0); // Start from the right
-                break;
             }
 
             return SlideTransition(

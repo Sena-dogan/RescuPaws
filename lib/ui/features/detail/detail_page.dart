@@ -2,15 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../models/paw_entry_detail.dart';
-import '../../../utils/context_extensions.dart';
-import '../../../utils/error_widgett.dart';
-import '../../home/widgets/loading_paw_widget.dart';
-import '../../widgets/add_nav_button.dart';
-import '../../widgets/bottom_nav_bar.dart';
-import 'logic/detail_logic.dart';
-import 'widgets/detail_body.dart';
+import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/ui/features/detail/logic/detail_logic.dart';
+import 'package:rescupaws/ui/features/detail/widgets/detail_body.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/ui/widgets/add_nav_button.dart';
+import 'package:rescupaws/ui/widgets/bottom_nav_bar.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
+import 'package:rescupaws/utils/error_widgett.dart';
 
 class DetailScreen extends ConsumerWidget {
   const DetailScreen({
@@ -24,9 +23,9 @@ class DetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //AsyncValue<Activity> activity = ref.watch(activityProvider);
-    final AsyncValue<GetPawEntryDetailResponse?> pawEntryDetailResponse =
+    AsyncValue<GetPawEntryDetailResponse?> pawEntryDetailResponse =
         ref.watch(fetchPawEntryDetailProvider(id.toString()));
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -43,14 +42,14 @@ class DetailScreen extends ConsumerWidget {
       child: Scaffold(
         body: switch (pawEntryDetailResponse) {
           AsyncData<GetPawEntryDetailResponse?>(
-            :final GetPawEntryDetailResponse? value
+            :GetPawEntryDetailResponse? value
           ) =>
             DetailBody(
               pinned: _pinned,
               pawEntryDetailResponse: value,
               size: size,
             ),
-          AsyncValue<Object?>(:final Object error?) => PawErrorWidget(
+          AsyncValue<Object?>(:Object error?) => PawErrorWidget(
               error: error,
               onRefresh: () async => ref
                   .refresh(fetchPawEntryDetailProvider(id.toString()).future),

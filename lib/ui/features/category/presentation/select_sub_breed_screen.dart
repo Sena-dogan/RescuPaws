@@ -3,21 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/models/categories_response.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 import 'package:searchable_listview/searchable_listview.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../constants/assets.dart';
-import '../../../../models/categories_response.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../home/widgets/loading_paw_widget.dart';
-import '../../new_paw/logic/new_paw_logic.dart';
 
 class SelectSubBreedWidget extends ConsumerWidget {
   const SelectSubBreedWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<Category>> categories = ref.watch(
+    AsyncValue<List<Category>> categories = ref.watch(
         fetchSubCategoriesProvider(ref.read(newPawLogicProvider).category_id!));
     return Container(
         constraints: const BoxConstraints.expand(),
@@ -37,7 +36,7 @@ class SelectSubBreedWidget extends ConsumerWidget {
           body: categories.when(
             data: (List<Category> data) {
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -54,7 +53,7 @@ class SelectSubBreedWidget extends ConsumerWidget {
                         // 🔽 LİSTE ÖGESİ OLUŞTURMA
                         itemBuilder: (Category item) {
                           return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 3.0),
+                            padding: const EdgeInsets.symmetric(vertical: 3),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -76,10 +75,10 @@ class SelectSubBreedWidget extends ConsumerWidget {
                                 trailing: const Icon(Icons.arrow_forward_ios),
                                 leading: Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 4.0),
+                                      const EdgeInsets.symmetric(vertical: 4),
                                   child: CircleAvatar(
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.all(8),
                                       child: Image.asset(Assets.paw,
                                           fit: BoxFit.cover),
                                     ),
@@ -96,7 +95,7 @@ class SelectSubBreedWidget extends ConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8),
                                 child: Lottie.asset(Assets.NotFound,
                                     repeat: true, height: 200),
                               ),
