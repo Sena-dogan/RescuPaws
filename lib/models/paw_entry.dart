@@ -3,7 +3,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../data/enums/paw_entry_status.dart';
-import 'images_upload.dart';
 import 'user.dart';
 import 'vaccine_info.dart';
 

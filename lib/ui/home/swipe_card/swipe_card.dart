@@ -190,9 +190,9 @@ class SwipeCard extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: ImageLineIndicator(
-                numberOfImages: pawEntry.images_uploads?.length == 1
+                numberOfImages: pawEntry.image?.length == 1
                     ? 0
-                    : pawEntry.images_uploads?.length ?? 0,
+                    : pawEntry.image?.length ?? 0,
                 selectedIndex: selectedImageIndex,
               ),
             ),

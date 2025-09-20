@@ -76,13 +76,13 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
           ),
           Positioned(
             bottom: size.height * 0.09,
-            child: (widget.pawEntryDetailResponse?.pawEntryDetail?.images_uploads
+            child: (widget.pawEntryDetailResponse?.pawEntryDetail?.image
                         ?.length ?? 0) >
                     1
                 ? SmoothPageIndicator(
                     controller: controller,
                     count: widget.pawEntryDetailResponse?.pawEntryDetail!
-                            .images_uploads?.length ??
+                            .image?.length ??
                         0,
                     effect: JumpingDotEffect(
                       jumpScale: .7,
