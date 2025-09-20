@@ -30,7 +30,7 @@ class ImageConverter {
     try {
       final Directory appDir = await getApplicationDocumentsDirectory();
       final Directory imagesDir = Directory('${appDir.path}/images');
-      if (!await imagesDir.exists()) {
+      if (! imagesDir.existsSync()) {
         await imagesDir.create(recursive: true);
       }
       
