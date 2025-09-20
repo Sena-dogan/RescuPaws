@@ -11,9 +11,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../data/enums/new_paw_enums.dart';
 import '../../../../data/network/location/location_repository.dart';
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
+import '../../../../data/network/user/user_repository.dart';
 import '../../../../models/categories_response.dart';
 import '../../../../models/location_response.dart';
 import '../../../../models/new_paw_model.dart';
+import '../../../../models/paw_entry.dart';
 import '../../../../utils/riverpod_extensions.dart';
 import '../../category/data/category_repository.dart';
 import '../model/new_paw_ui_model.dart';
@@ -44,17 +46,19 @@ Future<List<Category>> fetchSubCategories(
 
 @riverpod
 Future<NewPawResponse> createPawEntry(
-    Ref ref, NewPawModel newPawModel) async {
-  if (newPawModel.name == null) {
-    Logger().e('new paw model name is null');
+    Ref ref, PawEntry pawEntry) async {
+  if (pawEntry.name == null) {
+    Logger().e('paw entry name is null');
     throw Exception('new paw model name is null');
   }
-  Logger().i('new paw model: $newPawModel');
+  Logger().i('paw entry: $pawEntry');
   final PawEntryRepository pawEntryRepository =
       ref.read(getPawEntryRepositoryProvider);
-  final NewPawResponse pawEntry =
-      await pawEntryRepository.createPawEntry(newPawModel);
-  return pawEntry;
+  // Ensure the current user exists in 'users' so advertiser_ref resolves
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
+  final NewPawResponse response =
+      await pawEntryRepository.createPawEntry(pawEntry);
+  return response;
 }
 
 @riverpod
