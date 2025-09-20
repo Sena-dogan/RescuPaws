@@ -191,6 +191,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Assets.RescuPaws,
           height: 32,
           width: 128,
+          color: context.colorScheme.onSurface,
         ),
       ),
       leadingWidth: 128 + 20 * 2,

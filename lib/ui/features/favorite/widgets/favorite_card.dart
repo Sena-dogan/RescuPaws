@@ -89,8 +89,8 @@ class FavoriteCard extends StatelessWidget {
   }
 
   Widget _buildImage(Favorite favorite) {
-    if (favorite.classfield?.images_uploads == null ||
-        favorite.classfield!.images_uploads!.isEmpty) {
+    if (favorite.classfield?.image == null ||
+        favorite.classfield!.image!.isEmpty) {
       return const Image(
         image: AssetImage(Assets.Hearts),
         fit: BoxFit.contain,
@@ -98,7 +98,7 @@ class FavoriteCard extends StatelessWidget {
     }
     return Expanded(
       child: AdaptiveImage(
-        imageUrl: favorite.classfield?.images_uploads?[0].image_url ?? '',
+        imageUrl: favorite.classfield!.image!.first,
         errorWidget: (BuildContext context, String url, Object error) {
           return const Image(
             image: AssetImage(Assets.Hearts),

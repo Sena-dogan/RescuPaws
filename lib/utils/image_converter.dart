@@ -12,7 +12,14 @@ class ImageConverter {
   ImageConverter._();
   static const Uuid _uuid = Uuid();
 
-  /// Converts base64 images to temporary files and returns updated PawEntry
+  static String base64ToDataUri(String base64String) {
+    if (!_isValidBase64(base64String)) {
+      return '';
+    }
+    return 'data:image/jpeg;base64,$base64String';
+  }
+
+  /// Converts base64 images to permanent files and returns updated PawEntry
   static Future<PawEntry> convertBase64ImagesToFiles(PawEntry pawEntry) async {
     if (pawEntry.image == null || pawEntry.image!.isEmpty) {
       return pawEntry;
@@ -21,7 +28,11 @@ class ImageConverter {
     final List<ImagesUploads> imageUploads = <ImagesUploads>[];
     
     try {
-      final Directory tempDir = await getTemporaryDirectory();
+      final Directory appDir = await getApplicationDocumentsDirectory();
+      final Directory imagesDir = Directory('${appDir.path}/images');
+      if (!await imagesDir.exists()) {
+        await imagesDir.create(recursive: true);
+      }
       
       for (int i = 0; i < pawEntry.image!.length; i++) {
         final String base64Image = pawEntry.image![i];
@@ -34,20 +45,20 @@ class ImageConverter {
         // Decode base64 to bytes
         final Uint8List imageBytes = base64Decode(base64Image);
         
-        // Create temporary file
+        // Create permanent file
         final String fileName = '${_uuid.v4()}.jpg';
-        final File tempFile = File('${tempDir.path}/$fileName');
+        final File imageFile = File('${imagesDir.path}/$fileName');
         
         // Write bytes to file
-        await tempFile.writeAsBytes(imageBytes);
+        await imageFile.writeAsBytes(imageBytes);
         
         // Create ImagesUploads object with file path
         final ImagesUploads imageUpload = ImagesUploads(
           id: i,
           user_id: pawEntry.user_id,
           class_field_id: pawEntry.id,
-          path: tempFile.path,
-          image_url: tempFile.path, // Use file path as URL for local files
+          path: imageFile.path,
+          image_url: imageFile.path, // Use file path as URL for local files
           created_at: pawEntry.created_at,
           updated_at: pawEntry.updated_at,
         );
