@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../data/network/paw_entry/paw_entry_repository.dart';
+import '../../../../models/paw_entry.dart';
 import '../../../../models/paw_entry_detail.dart';
 import '../../../../models/user_data.dart';
 import '../../../../utils/riverpod_extensions.dart';
@@ -26,6 +27,8 @@ Future<GetPawEntryDetailResponse?> fetchPawEntryDetail(
     Logger().e(error);
     ref.read(detailLogicProvider.notifier).setError(error.toString());
   });
+
+  // No conversion needed - using images field directly
   return pawEntryDetailResponse;
 }
 
@@ -50,7 +53,7 @@ class DetailLogic extends _$DetailLogic {
     );
   }
 
-  void setPawEntryDetails(List<PawEntryDetail> pawEntryDetails) =>
+  void setPawEntryDetails(List<PawEntry> pawEntryDetails) =>
       state = state.copyWith(
         pawEntryDetails: pawEntryDetails,
         isLoading: false,

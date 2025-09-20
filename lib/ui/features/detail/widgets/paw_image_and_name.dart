@@ -54,23 +54,20 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
             child: PageView.builder(
               controller: controller,
               itemCount: widget.pawEntryDetailResponse?.pawEntryDetail!
-                  .images_uploads?.length,
+                  .image?.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   width: MediaQuery.sizeOf(context).width,
                   margin: EdgeInsets.zero,
                   child: AdaptiveImage(
                     imageUrl: widget.pawEntryDetailResponse?.pawEntryDetail!
-                            .images_uploads?[index].image_url ??
-                        '',
+                            .image?[index] ?? '',
                     errorWidget: (BuildContext context, String url, Object error) {
                       debugPrint(
-                          'Error occured while loading image: ${widget.pawEntryDetailResponse?.pawEntryDetail!.images_uploads?[index].image_url} \n');
+                          'Error occured while loading image: ${widget.pawEntryDetailResponse?.pawEntryDetail!.image?[index]} \n');
                       debugPrint(
                           'Id of the paw entry: ${widget.pawEntryDetailResponse?.pawEntryDetail?.id}');
-                      return Image.network(
-                          'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg',
-                          fit: BoxFit.cover);
+                      return const Icon(Icons.broken_image);
                     },
                   ),
                 );
@@ -79,13 +76,13 @@ class _PawImageandNameState extends ConsumerState<PawImageandName> {
           ),
           Positioned(
             bottom: size.height * 0.09,
-            child: widget.pawEntryDetailResponse?.pawEntryDetail!.images_uploads
-                        ?.length !=
+            child: (widget.pawEntryDetailResponse?.pawEntryDetail?.image
+                        ?.length ?? 0) >
                     1
                 ? SmoothPageIndicator(
                     controller: controller,
                     count: widget.pawEntryDetailResponse?.pawEntryDetail!
-                            .images_uploads?.length ??
+                            .image?.length ??
                         0,
                     effect: JumpingDotEffect(
                       jumpScale: .7,

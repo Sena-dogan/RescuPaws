@@ -12,15 +12,15 @@ const bottomNavBarLogicProvider = BottomNavBarLogicProvider._();
 final class BottomNavBarLogicProvider
     extends $NotifierProvider<BottomNavBarLogic, BottomNavBarUiModel> {
   const BottomNavBarLogicProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'bottomNavBarLogicProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'bottomNavBarLogicProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$bottomNavBarLogicHash();
@@ -47,11 +47,14 @@ abstract class _$BottomNavBarLogic extends $Notifier<BottomNavBarUiModel> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<BottomNavBarUiModel, BottomNavBarUiModel>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<BottomNavBarUiModel, BottomNavBarUiModel>,
-        BottomNavBarUiModel,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<BottomNavBarUiModel, BottomNavBarUiModel>,
+              BottomNavBarUiModel,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

@@ -8,8 +8,8 @@ import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../data/network/user/user_repository.dart';
 import '../../../../firebase_options.dart';
-import '../../../../utils/firebase_utils.dart';
 import '../../../../utils/riverpod_extensions.dart';
 import '../domain/login_ui_model.dart';
 
@@ -92,7 +92,9 @@ class LoginLogic extends _$LoginLogic {
         smsCode: smsCode,
       );
       setLogin(isLoading: true);
-      await currentUser.linkWithCredential(credential);
+  await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
+  // Upsert the user profile into Firestore after successful link
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -144,7 +146,9 @@ class LoginLogic extends _$LoginLogic {
     try {
       final AuthCredential credential = await googleAuthCredential;
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.signInWithCredential(credential);
+  await FirebaseAuth.instance.signInWithCredential(credential);
+  // Upsert the user profile into Firestore
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       if (e is PlatformException && e.code == 'sign_in_canceled') {
@@ -171,7 +175,9 @@ class LoginLogic extends _$LoginLogic {
         ..addScope('email')
         ..addScope('full_name');
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.signInWithProvider(appleProvider);
+  await FirebaseAuth.instance.signInWithProvider(appleProvider);
+  // Upsert the user profile into Firestore
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -308,6 +314,8 @@ class LoginLogic extends _$LoginLogic {
           .then((UserCredential value) {
         Logger().i(value.user?.metadata);
       });
+  // Upsert the user profile into Firestore
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -330,6 +338,8 @@ class LoginLogic extends _$LoginLogic {
         Logger().i(value.user?.metadata);
         await value.user?.sendEmailVerification();
       });
+  // Upsert the user profile into Firestore
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       Logger().e(e.toString());

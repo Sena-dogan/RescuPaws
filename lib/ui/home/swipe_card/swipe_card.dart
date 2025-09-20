@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/router/app_router.dart';
 import '../../../data/enums/detail_enums.dart';
-import '../../../models/images_upload.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
 import '../../widgets/adaptive_image.dart';
@@ -34,15 +33,15 @@ class SwipeCard extends ConsumerWidget {
     // it will be 3 % 3 = 0
     int selectedImageIndex =
         ref.watch(swipeCardLogicProvider).selectedImageIndex < 0
-            ? pawEntry.images_uploads!.length - 1
+            ? pawEntry.image!.length - 1
             : ref.watch(swipeCardLogicProvider).selectedImageIndex %
-                pawEntry.images_uploads!.length;
+                pawEntry.image!.length;
     if (id != pawEntry.id) {
       selectedImageIndex = 0;
     }
-    final List<ImagesUploads>? images = pawEntry.images_uploads;
-    final String? image = images != null && selectedImageIndex < images.length
-        ? images[selectedImageIndex].image_url
+    final List<String> images = pawEntry.image!;
+    final String image = selectedImageIndex < images.length
+        ? images[selectedImageIndex]
         : '';
     return GestureDetector(
       onTapUp: (TapUpDetails details) {
@@ -87,10 +86,10 @@ class SwipeCard extends ConsumerWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(27),
               child: AdaptiveImage(
-                imageUrl: image ?? '',
+                imageUrl: image,
                 errorWidget: (BuildContext context, String error, Object obj) {
                   debugPrint(
-                      'Error occured while loading image: ${pawEntry.images_uploads?.firstOrNull?.image_url} \n');
+                      'Error occured while loading image: ${pawEntry.image?.firstOrNull} \n');
                   debugPrint('Id of the paw entry: ${pawEntry.id}');
                   // FirebaseCrashlytics.instance.recordError(
                   //   error,
@@ -99,8 +98,7 @@ class SwipeCard extends ConsumerWidget {
                   //       '[API] Error occured while loading image. Id of the paw entry: ${pawEntry.id}',
                   //   printDetails: true,
                   // );
-                  return Image.network(
-                      'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg');
+                  return const Icon(Icons.broken_image);
                 },
               ),
             ),
@@ -192,9 +190,9 @@ class SwipeCard extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: ImageLineIndicator(
-                numberOfImages: pawEntry.images_uploads?.length == 1
+                numberOfImages: pawEntry.image?.length == 1
                     ? 0
-                    : pawEntry.images_uploads?.length ?? 0,
+                    : pawEntry.image?.length ?? 0,
                 selectedIndex: selectedImageIndex,
               ),
             ),

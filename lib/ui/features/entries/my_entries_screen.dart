@@ -9,6 +9,7 @@ import '../../../data/enums/paw_entry_status.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/context_extensions.dart';
 import '../../home/logic/home_screen_logic.dart';
+import '../../widgets/adaptive_image.dart';
 
 class MyEntriesScreen extends ConsumerWidget {
   const MyEntriesScreen({super.key});
@@ -106,26 +107,13 @@ class MyEntriesScreen extends ConsumerWidget {
                                 SizedBox(
                                   height: 50,
                                   width: 50,
-                                  child: (pawEntry.images_uploads != null &&
-                                          pawEntry.images_uploads!.isNotEmpty)
-                                      ? Image.network(
-                                          pawEntry
-                                                  .images_uploads?[pawEntry
-                                                      .selectedImageIndex]
-                                                  .image_url ??
+                                  child: (pawEntry.image != null &&
+                                          pawEntry.image!.isNotEmpty)
+                                      ? AdaptiveImage(
+                                          imageUrl: pawEntry
+                                                  .image?[pawEntry
+                                                      .selectedImageIndex] ??
                                               '',
-                                          fit: BoxFit.cover,
-                                          // Round the corners of the image
-                                          frameBuilder: (BuildContext context,
-                                              Widget child,
-                                              int? frame,
-                                              bool wasSynchronouslyLoaded) {
-                                            return ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              child: child,
-                                            );
-                                          },
                                         )
                                       : Image.asset(
                                           Assets.Hearts,

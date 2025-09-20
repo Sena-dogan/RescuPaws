@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../models/new_paw_model.dart';
+// Import response DTO for creation API result
+import '../../../models/new_paw_model.dart' show NewPawResponse;
 import '../../../models/paw_entry.dart';
 import '../../../models/paw_entry_detail.dart';
 import '../../../utils/firebase_utils.dart';
@@ -48,12 +49,19 @@ class PawEntryRepository {
     }
   }
 
-  Future<NewPawResponse> createPawEntry(NewPawModel newPawModel) async {
+  Future<NewPawResponse> createPawEntry(PawEntry pawEntry) async {
     try {
-      // Create a numeric ID (milliseconds) to satisfy model requirements
-      final int id = DateTime.now().millisecondsSinceEpoch;
-
-      await _firestore.collection('classfields').doc(id.toString()).set(newPawModel.toJson());
+      // Use provided id to keep consistency across app and Firebase doc id
+      final Map<String, dynamic> data = pawEntry.toJson();
+      if (pawEntry.user_id != null && pawEntry.user_id!.isNotEmpty) {
+        data['advertiser_ref'] = _firestore
+            .collection('users')
+            .doc(pawEntry.user_id);
+      }
+      await _firestore
+          .collection('classfields')
+          .doc(pawEntry.id.toString())
+          .set(data);
       return NewPawResponse(status: 'success', message: 'Created', errors: null);
     } catch (e) {
       return NewPawResponse(status: 'error', message: e.toString(), errors: <String, dynamic>{});
@@ -80,9 +88,24 @@ class PawEntryRepository {
         }
       }
 
-      final Map<String, dynamic>? json = doc.data();
-      final PawEntryDetail? detail =
-          json == null ? null : PawEntryDetail.fromJson(json);
+      // Build mutable JSON and resolve advertiser reference if present
+      final Map<String, dynamic> json =
+          Map<String, dynamic>.from(doc.data() ?? <String, dynamic>{});
+
+      final Object? advRefObj = json['advertiser_ref'];
+      if (advRefObj is DocumentReference) {
+        final DocumentSnapshot<Map<String, dynamic>> advSnap =
+            await advRefObj.get() as DocumentSnapshot<Map<String, dynamic>>;
+        final Map<String, dynamic>? adv = advSnap.data();
+        if (adv != null) {
+          // Attach under 'user' so UI can access data.user?.displayName
+          json['user'] = adv;
+          json['user_id'] ??= adv['uid'];
+        }
+      }
+
+      final PawEntry? detail =
+          json.isEmpty ? null : PawEntry.fromJson(json);
       return GetPawEntryDetailResponse(
         data: detail,
       );

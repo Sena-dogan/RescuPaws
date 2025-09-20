@@ -9,7 +9,6 @@ import '../../../models/favorite/create_favorite_request.dart';
 import '../../../models/favorite/create_favorite_response.dart';
 import '../../../models/paw_entry.dart';
 import '../../../utils/firebase_utils.dart';
-import '../../../utils/image_converter.dart';
 import '../../../utils/riverpod_extensions.dart';
 import '../swipe_card/swipe_card_logic.dart';
 import 'home_screen_ui_model.dart';
@@ -30,19 +29,15 @@ Future<GetPawEntryResponse> fetchPawEntries(Ref ref) async {
     ref.read(homeScreenLogicProvider.notifier).setError(l.error);
     return GetPawEntryResponse(data: <PawEntry>[]);
   }, (GetPawEntryResponse pawEntries) async {
-    // Convert base64 images to data URIs for all entries
-    final List<PawEntry> convertedEntries = await ImageConverter.convertMultipleEntries(
-      pawEntries.data,
-    );
-    
-    final GetPawEntryResponse updatedResponse = GetPawEntryResponse(data: convertedEntries);
+    // No conversion needed - using images field directly
+    final GetPawEntryResponse updatedResponse = GetPawEntryResponse(data: pawEntries.data);
     final GetPawEntryResponse randomizedResponse = updatedResponse.randomize();
     
     ref
         .read(swipeCardLogicProvider.notifier)
         .setId(randomizedResponse.data.firstOrNull?.id ?? 0);
     ref.read(homeScreenLogicProvider.notifier).setPawEntries(randomizedResponse.data);
-    Logger().i('Paw entries fetched and images converted successfully.');
+    Logger().i('Paw entries fetched successfully.');
     return randomizedResponse;
   });
 }
@@ -59,13 +54,9 @@ Future<GetPawEntryResponse> fetchUserPawEntries(Ref ref) async {
   return await pawEntries.fold((PawEntryError l) async {
     return GetPawEntryResponse(data: <PawEntry>[]);
   }, (GetPawEntryResponse pawEntries) async {
-    // Convert base64 images to data URIs for user entries as well
-    final List<PawEntry> convertedEntries = await ImageConverter.convertMultipleEntries(
-      pawEntries.data,
-    );
-    
-    debugPrint('User paw entries fetched and images converted successfully.');
-    return GetPawEntryResponse(data: convertedEntries);
+    // No conversion needed - using images field directly
+    debugPrint('User paw entries fetched successfully.');
+    return GetPawEntryResponse(data: pawEntries.data);
   });
 }
 

@@ -17,8 +17,8 @@ class NewPawScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final NewPawUiModel newPawUiModel = ref.watch(newPawLogicProvider);
-    final AsyncValue<NewPawResponse> createPawEntry =
-        ref.watch(createPawEntryProvider(newPawUiModel.toNewPawModel()));
+  final AsyncValue<NewPawResponse> createPawEntry =
+    ref.watch(createPawEntryProvider(newPawUiModel.toPawEntry()));
     return Container(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,

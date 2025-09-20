@@ -7,12 +7,8 @@ part of 'nav_bar_ui_model.dart';
 // **************************************************************************
 
 _BottomNavBarUiModel _$BottomNavBarUiModelFromJson(Map<String, dynamic> json) =>
-    _BottomNavBarUiModel(
-      navIndex: (json['navIndex'] as num?)?.toInt() ?? 0,
-    );
+    _BottomNavBarUiModel(navIndex: (json['navIndex'] as num?)?.toInt() ?? 0);
 
 Map<String, dynamic> _$BottomNavBarUiModelToJson(
-        _BottomNavBarUiModel instance) =>
-    <String, dynamic>{
-      'navIndex': instance.navIndex,
-    };
+  _BottomNavBarUiModel instance,
+) => <String, dynamic>{'navIndex': instance.navIndex};
