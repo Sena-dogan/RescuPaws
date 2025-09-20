@@ -6,7 +6,6 @@ import '../../../../constants/string_constants.dart';
 import '../../../../data/enums/message_type.dart';
 import '../../../../models/chat/chat_model.dart';
 import '../../../../models/chat/chat_ui_model.dart';
-import '../../../../models/chat/firestore_user_data.dart';
 import '../../../../models/chat/message.dart';
 import '../../../../models/user_data.dart';
 
@@ -19,44 +18,46 @@ class ChatRepository extends _$ChatRepository {
     return ChatUiModel();
   }
 
-  /// add receiver user to firestore
+  /// add receiver user to firestore (users collection)
   /// control if user already exists in firestore dont add again
   Future<void> addReceiverUserToFirestore({
     required UserData receiverUser,
   }) async {
     final DocumentSnapshot<Map<String, dynamic>> userDoc =
         await FirebaseFirestore.instance
-            .collection(StringsConsts.appUsersCollection)
+            .collection(StringsConsts.usersCollection)
             .doc(receiverUser.uid)
             .get();
 
     if (!userDoc.exists) {
-      await _saveUserDataToAppUsersSubCollection(receiverUser: receiverUser);
+      await _upsertUserDataToUsersCollection(receiverUser: receiverUser);
     }
   }
 
-  Future<void> _saveUserDataToAppUsersSubCollection({
+  Future<void> _upsertUserDataToUsersCollection({
     required UserData receiverUser,
   }) async {
-    final FirestoreUserData userData = FirestoreUserData(
-      uid: receiverUser.uid,
-      email: receiverUser.email,
-      displayName: receiverUser.displayName,
-      phoneNumber: receiverUser.phoneNumber,
-      photoUrl: receiverUser.photoUrl,
-    );
-    // saving user to firestore
+    // saving user to firestore users collection (merge)
     await FirebaseFirestore.instance
-        .collection(StringsConsts.appUsersCollection)
+        .collection(StringsConsts.usersCollection)
         .doc(receiverUser.uid)
-        .set(userData.toJson());
+        .set(
+          <String, dynamic>{
+            'uid': receiverUser.uid,
+            'email': receiverUser.email,
+            'displayName': receiverUser.displayName,
+            'phoneNumber': receiverUser.phoneNumber,
+            'photoUrl': receiverUser.photoUrl,
+          }..removeWhere((String key, dynamic value) => value == null),
+          SetOptions(merge: true),
+        );
   }
 
   /// invoke to get user data by id
   Future<UserData?> getUserDataById(String userId) async {
     final DocumentSnapshot<Map<String, dynamic>> userDoc =
         await FirebaseFirestore.instance
-            .collection(StringsConsts.appUsersCollection)
+            .collection(StringsConsts.usersCollection)
             .doc(userId)
             .get();
 
