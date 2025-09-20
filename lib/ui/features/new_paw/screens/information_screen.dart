@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../utils/context_extensions.dart';
-import '../logic/new_paw_logic.dart';
-import '../widgets/save_button.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/save_button.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class NewPawInformationScreen extends ConsumerStatefulWidget {
   const NewPawInformationScreen({super.key});
@@ -20,7 +19,7 @@ class _NewPawInformationScreenState
     extends ConsumerState<NewPawInformationScreen> {
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -46,7 +45,7 @@ class _NewPawInformationScreenState
         body: SizedBox(
           height: context.height,
           child: Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(4),
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
@@ -56,7 +55,7 @@ class _NewPawInformationScreenState
                     child: Form(
                       key: formKey,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: Column(
                           children: <Widget>[
                             TextFormField(
@@ -90,7 +89,7 @@ class _NewPawInformationScreenState
                                     int.tryParse(value.trim())! > 50) {
                                   return 'Lütfen geçerli bir yaş giriniz.';
                                 }
-                                if (value == null && value.trim().isEmpty) {
+                                if (value.trim().isEmpty) {
                                   return 'Lütfen bir yaş giriniz.';
                                 }
                                 return null;
@@ -140,10 +139,11 @@ class _NewPawInformationScreenState
                                 );
                               }).toList(),
                               onChanged: (String? value) {
-                                if (value != null)
+                                if (value != null) {
                                   ref
                                       .read(newPawLogicProvider.notifier)
                                       .setPawGender(value == 'Erkek' ? 1 : 0);
+                                }
                               },
                             ),
                             const Gap(16),
@@ -174,11 +174,12 @@ class _NewPawInformationScreenState
                                 );
                               }).toList(),
                               onChanged: (String? value) {
-                                if (value != null)
+                                if (value != null) {
                                   ref
                                       .read(newPawLogicProvider.notifier)
                                       .setPawEducationLevel(
                                           value == 'Eğitimli' ? 1 : 0);
+                                }
                               },
                             ),
                             const Gap(16),

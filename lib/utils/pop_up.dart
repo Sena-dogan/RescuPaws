@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import 'context_extensions.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 Future<dynamic> popUp(BuildContext context,
     {required String title,
-    required Function()? onPressed,
+    required void Function()? onPressed,
     required String buttonTitle}) {
   return showAdaptiveDialog(
       context: context,

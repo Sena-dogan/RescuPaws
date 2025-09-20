@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../models/user_data.dart';
+import 'package:rescupaws/models/user_data.dart';
 
 part 'chat_ui_model.freezed.dart';
 

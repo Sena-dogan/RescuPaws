@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../utils/context_extensions.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class UserTile extends ConsumerWidget {
   const UserTile({
@@ -18,7 +18,7 @@ class UserTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: context.colorScheme.secondary,
           borderRadius: BorderRadius.circular(12),

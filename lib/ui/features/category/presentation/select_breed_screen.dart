@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../models/categories_response.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../../utils/error_widgett.dart';
-import '../../../home/widgets/loading_paw_widget.dart';
-import '../../new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/models/categories_response.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
+import 'package:rescupaws/utils/error_widgett.dart';
 
 class SelectBreedScreen extends ConsumerStatefulWidget {
 	const SelectBreedScreen({super.key});
@@ -20,7 +19,7 @@ class SelectBreedScreen extends ConsumerStatefulWidget {
 class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
 	@override
 	Widget build(BuildContext context) {
-		final AsyncValue<List<Category>> categories =
+		AsyncValue<List<Category>> categories =
 				ref.watch(fetchCategoriesProvider);
 		//TODO: implement search on breeds and subbreeds
 		return Container(
@@ -41,7 +40,7 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
 					body: categories.when(
 						data: (List<Category> data) {
 							return Padding(
-								padding: const EdgeInsets.all(8.0),
+								padding: const EdgeInsets.all(8),
 								child: Column(
 									crossAxisAlignment: CrossAxisAlignment.start,
 									children: <Widget>[
@@ -80,7 +79,7 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
 																			);
 																		}),
 																	),
-																	Container(
+																	ColoredBox(
 																		color: Colors.black.withValues(alpha:0.5),
 																		child: Center(
 																			child: Text(

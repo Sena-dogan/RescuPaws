@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-
-import '../../../../models/chat/chat_model.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../../utils/error_widgett.dart';
-import '../../../widgets/bottom_nav_bar.dart';
-import '../logic/chat_logic.dart';
-import '../widgets/chat_list_item.dart';
+import 'package:rescupaws/models/chat/chat_model.dart';
+import 'package:rescupaws/ui/features/chat/logic/chat_logic.dart';
+import 'package:rescupaws/ui/features/chat/widgets/chat_list_item.dart';
+import 'package:rescupaws/ui/widgets/bottom_nav_bar.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
+import 'package:rescupaws/utils/error_widgett.dart';
 
 class ChatsScreen extends ConsumerWidget {
   const ChatsScreen({super.key});
@@ -58,7 +57,7 @@ class ChatsScreen extends ConsumerWidget {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final Chat chat = snapshot.data![index];
+                  Chat chat = snapshot.data![index];
                   return ChatListItem(chat: chat);
                 },
               );

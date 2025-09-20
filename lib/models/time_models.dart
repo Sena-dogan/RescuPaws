@@ -7,7 +7,7 @@ part 'time_models.g.dart';
 abstract class CreatedAt with _$CreatedAt {
   factory CreatedAt({
     String? date,
-    int? timezone_type,
+    @JsonKey(name: 'timezone_type') int? timezoneType,
     String? timezone,
   }) = _CreatedAt;
 
@@ -20,7 +20,7 @@ abstract class CreatedAt with _$CreatedAt {
 abstract class LastLoginAt with _$LastLoginAt {
   factory LastLoginAt({
     String? date,
-    int? timezone_type,
+    @JsonKey(name: 'timezone_type') int? timezoneType,
     String? timezone,
   }) = _LastLoginAt;
 
@@ -32,7 +32,7 @@ abstract class LastLoginAt with _$LastLoginAt {
 abstract class LastRefreshAt with _$LastRefreshAt {
   factory LastRefreshAt({
     String? date,
-    int? timezone_type,
+    @JsonKey(name: 'timezone_type') int? timezoneType,
     String? timezone,
   }) = _LastRefreshAt;
 

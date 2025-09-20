@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../config/router/app_router.dart';
-import '../../constants/assets.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
 
 class AddNavButton extends StatelessWidget {
   const AddNavButton({

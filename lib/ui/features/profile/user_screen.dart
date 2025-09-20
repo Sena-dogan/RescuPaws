@@ -8,20 +8,19 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/config/theme/theme_logic.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/ui/features/auth/presentation/login_logic.dart';
+import 'package:rescupaws/ui/features/profile/user_logic.dart';
+import 'package:rescupaws/ui/features/profile/user_ui_model.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/ui/widgets/add_nav_button.dart';
+import 'package:rescupaws/ui/widgets/app_bar_gone.dart';
+import 'package:rescupaws/ui/widgets/bottom_nav_bar.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
+import 'package:rescupaws/utils/pop_up.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../config/router/app_router.dart';
-import '../../../config/theme/theme_logic.dart';
-import '../../../constants/assets.dart';
-import '../../../utils/context_extensions.dart';
-import '../../../utils/pop_up.dart';
-import '../../home/widgets/loading_paw_widget.dart';
-import '../../widgets/add_nav_button.dart';
-import '../../widgets/app_bar_gone.dart';
-import '../../widgets/bottom_nav_bar.dart';
-import '../auth/presentation/login_logic.dart';
-import 'user_logic.dart';
-import 'user_ui_model.dart';
 
 /*
   This is the profile screen that is shown when the user is logged in.
@@ -33,7 +32,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final UserUiModel userLogic = ref.watch(userLogicProvider);
+    UserUiModel userLogic = ref.watch(userLogicProvider);
     return Container(
       height: context.height,
       width: context.width,
@@ -60,7 +59,7 @@ class ProfileScreen extends ConsumerWidget {
                 child: LoadingPawWidget(),
               )
             : Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,10 +71,10 @@ class ProfileScreen extends ConsumerWidget {
                             // Edit icon
                             InkWell(
                               onTap: () {
-                                final bool resp = ref
+                                bool resp = ref
                                     .read(userLogicProvider.notifier)
                                     .updateUserImage();
-                                if (resp == false) {
+                                if (!resp) {
                                   context.showErrorSnackBar(
                                       message:
                                           'Resim yüklenirken bir hata oluştu.');
@@ -169,10 +168,10 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                       // Invite friends button outlined with a border transtiion and with a leading icon
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: OutlinedButton.icon(
                           onPressed: () async {
-                            final InAppReview inAppReview =
+                            InAppReview inAppReview =
                                 InAppReview.instance;
 
                             if (await inAppReview.isAvailable()) {
@@ -186,7 +185,7 @@ class ProfileScreen extends ConsumerWidget {
                           ),
                           style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
+                              borderRadius: BorderRadius.circular(30),
                             ),
                             side: const BorderSide(color: Colors.grey),
                           ),
@@ -198,7 +197,7 @@ class ProfileScreen extends ConsumerWidget {
                             FirebaseAuth.instance.currentUser?.phoneNumber ==
                                 null,
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8),
                           child: ListTile(
                             tileColor: context.colorScheme.surface,
                             contentPadding:
@@ -208,7 +207,7 @@ class ProfileScreen extends ConsumerWidget {
                               color: context.colorScheme.primary,
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(10),
                               side: BorderSide(
                                 color:
                                     context.colorScheme.shadow.withValues(alpha:0.1),
@@ -257,7 +256,7 @@ class ProfileScreen extends ConsumerWidget {
                             },
                           ),
                           const Padding(
-                            padding: EdgeInsets.only(left: 8.0),
+                            padding: EdgeInsets.only(left: 8),
                             child: Text(
                               'Cihaz',
                               style: TextStyle(
@@ -275,7 +274,7 @@ class ProfileScreen extends ConsumerWidget {
                             title: const Text('Tema'),
                             trailing: const Icon(Icons.arrow_forward_ios),
                             onTap: () async {
-                              await showAdaptiveDialog(
+                              await showAdaptiveDialog<void>(
                                   context: context,
                                   barrierDismissible: true,
                                   builder: (BuildContext context) {
@@ -343,7 +342,7 @@ class ProfileScreen extends ConsumerWidget {
                           ),
                           const Gap(10),
                           const Padding(
-                            padding: EdgeInsets.only(left: 8.0),
+                            padding: EdgeInsets.only(left: 8),
                             child: Text(
                               'Yardım ve Destek',
                               style: TextStyle(
@@ -382,7 +381,7 @@ class ProfileScreen extends ConsumerWidget {
                             trailing: const Icon(Icons.arrow_forward_ios),
                             onTap: () async {
                               const String url = 'mailto:help@patipati.app';
-                              final Uri uri = Uri.parse(url);
+                              Uri uri = Uri.parse(url);
                               await launchUrl(uri).catchError((Object? err) =>
                                   // ignore: invalid_return_type_for_catch_error
                                   debugPrint(err.toString()));
@@ -395,7 +394,7 @@ class ProfileScreen extends ConsumerWidget {
                             onTap: () async {
                               const String url =
                                   'https://patipati.app/privacy-policy';
-                              final Uri uri = Uri.parse(url);
+                              Uri uri = Uri.parse(url);
                               await launchUrl(uri).catchError((Object? err) =>
                                   // ignore: invalid_return_type_for_catch_error
                                   debugPrint(err.toString()));
@@ -408,7 +407,7 @@ class ProfileScreen extends ConsumerWidget {
                             onTap: () async {
                               const String url =
                                   'https://patipati.app/user-terms';
-                              final Uri uri = Uri.parse(url);
+                              Uri uri = Uri.parse(url);
                               await launchUrl(uri).catchError((Object? err) =>
                                   // ignore: invalid_return_type_for_catch_error
                                   debugPrint(err.toString()));

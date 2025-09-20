@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../config/router/app_router.dart';
-import '../../../constants/assets.dart';
-import '../../../data/enums/paw_entry_status.dart';
-import '../../../models/paw_entry.dart';
-import '../../../utils/context_extensions.dart';
-import '../../home/logic/home_screen_logic.dart';
-import '../../widgets/adaptive_image.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/data/enums/paw_entry_status.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/ui/home/logic/home_screen_logic.dart';
+import 'package:rescupaws/ui/widgets/adaptive_image.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class MyEntriesScreen extends ConsumerWidget {
   const MyEntriesScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<GetPawEntryResponse> pawEntryLogic =
+    AsyncValue<GetPawEntryResponse> pawEntryLogic =
         ref.watch(fetchUserPawEntriesProvider);
     return Container(
         constraints: const BoxConstraints.expand(),
@@ -40,7 +39,7 @@ class MyEntriesScreen extends ConsumerWidget {
           ),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: pawEntryLogic.when(
                 data: (GetPawEntryResponse pawEntries) {
                   return ListView.separated(
@@ -49,7 +48,7 @@ class MyEntriesScreen extends ConsumerWidget {
                     },
                     itemCount: pawEntries.data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final PawEntry pawEntry = pawEntries.data[index];
+                      PawEntry pawEntry = pawEntries.data[index];
                       return Card(
                         child: ListTile(
                           onTap: () {

@@ -2,9 +2,9 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../data/enums/paw_entry_status.dart';
-import 'user.dart';
-import 'vaccine_info.dart';
+import 'package:rescupaws/data/enums/paw_entry_status.dart';
+import 'package:rescupaws/models/user.dart';
+import 'package:rescupaws/models/vaccine_info.dart';
 
 part 'paw_entry.freezed.dart';
 part 'paw_entry.g.dart';
@@ -74,8 +74,8 @@ Paw entry json example
 
 extension PawEntryX on PawEntry {
   String get createdAtFormatted {
-    final DateTime createdAt = DateTime.parse(created_at!);
-    final String formattedDate =
+    DateTime createdAt = DateTime.parse(created_at!);
+    String formattedDate =
         '${createdAt.day}/${createdAt.month}/${createdAt.year}';
     return formattedDate;
   }

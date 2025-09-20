@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../models/chat/message.dart';
-import 'chat_bubble.dart';
+import 'package:rescupaws/models/chat/message.dart';
+import 'package:rescupaws/ui/features/chat/widgets/chat_bubble.dart';
 
 class MessageItem extends StatelessWidget {
   const MessageItem({
@@ -19,8 +19,8 @@ class MessageItem extends StatelessWidget {
     if (auth.currentUser == null) {
       return const Text('Current user is null');
     }
-    final bool isCurrentUser = message.senderID == auth.currentUser!.uid;
-    final Alignment alignment =
+    bool isCurrentUser = message.senderID == auth.currentUser!.uid;
+    Alignment alignment =
         isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
 
     return Container(

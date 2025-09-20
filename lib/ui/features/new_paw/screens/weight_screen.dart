@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/save_button.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/wheel_box.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 import 'package:wheel_slider/wheel_slider.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../constants/assets.dart';
-import '../../../../utils/context_extensions.dart';
-import '../logic/new_paw_logic.dart';
-import '../widgets/save_button.dart';
-import '../widgets/wheel_box.dart';
 
 class WeightScreen extends ConsumerStatefulWidget {
   const WeightScreen({super.key});
@@ -24,8 +23,8 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final num currentValue = ref.watch(newPawLogicProvider).weight ?? initValue;
-    final Size size = MediaQuery.sizeOf(context);
+    num currentValue = ref.watch(newPawLogicProvider).weight ?? initValue;
+    Size size = MediaQuery.sizeOf(context);
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -83,7 +82,7 @@ class _WeightScreenState extends ConsumerState<WeightScreen> {
                               width: 1.5,
                             ),
                             color: context.colorScheme.primary,
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),

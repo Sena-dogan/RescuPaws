@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
+import 'package:rescupaws/constants/string_constants.dart';
+import 'package:rescupaws/models/user_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../constants/string_constants.dart';
-import '../../../models/user_data.dart';
 
 part 'user_repository.g.dart';
 
@@ -19,7 +18,7 @@ class UserRepository {
 
   /// Upsert the currently authenticated Firebase user into Firestore 'users/{uid}'.
   Future<void> upsertCurrentUser() async {
-    final User? user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
     await upsertUser(user.toUserData());
   }
@@ -27,7 +26,7 @@ class UserRepository {
   /// Upsert any user data into 'users/{uid}'.
   Future<void> upsertUser(UserData user) async {
     if (user.uid == null) return;
-    final Map<String, dynamic> json = user.toJson()..removeWhere((String key, dynamic value) => value == null);
+    Map<String, dynamic> json = user.toJson()..removeWhere((String key, dynamic value) => value == null);
 
     await _firestore
         .collection(StringsConsts.usersCollection)

@@ -129,62 +129,53 @@ class SocialLoginButton extends StatelessWidget {
         imageName = '${_defaultImagePath}facebook-logo.png';
         backgroundColor = const Color(0xFF334D92);
         _isLocal = false;
-        break;
       case SocialLoginButtonType.google:
         color = Colors.black87;
         text = 'Sign In with Google';
         imageName = '${_defaultImagePath}google-logo.png';
         backgroundColor = Colors.white;
         _isLocal = true;
-        break;
       case SocialLoginButtonType.twitter:
         color = Colors.white;
         text = 'Sign In with Twitter';
         imageName = '${_defaultImagePath}twitter-logo.png';
         backgroundColor = const Color(0xFF1DA1F2);
         _isLocal = false;
-        break;
       case SocialLoginButtonType.apple:
         color = Colors.black;
         text = 'Sign In with Apple';
         imageName = '${_defaultImagePath}apple-logo.png';
         _isLocal = true;
         backgroundColor = Colors.white;
-        break;
       case SocialLoginButtonType.appleBlack:
         color = Colors.white;
         text = 'Sign In with Apple';
         imageName = '${_defaultImagePath}apple-black-logo.png';
         backgroundColor = Colors.black;
         _isLocal = false;
-        break;
       case SocialLoginButtonType.microsoft:
         color = const Color(0xFF5E5E5E);
         text = 'Sign In with Microsoft';
         imageName = '${_defaultImagePath}microsoft-logo.png';
         backgroundColor = Colors.white;
         _isLocal = false;
-        break;
       case SocialLoginButtonType.microsoftBlack:
         color = Colors.white;
         text = 'Sign In with Microsoft';
         imageName = '${_defaultImagePath}microsoft-logo.png';
         backgroundColor = const Color(0xFF2F2F2F);
         _isLocal = false;
-        break;
       case SocialLoginButtonType.github:
         color = const Color(0xFFFEFEFE);
         text = 'Sign In with Github';
         imageName = '${_defaultImagePath}github-logo.png';
         backgroundColor = const Color(0xFF444444);
         _isLocal = false;
-        break;
       case SocialLoginButtonType.generalLogin:
         color = Colors.white;
         text = 'Sign In';
         backgroundColor = Colors.teal[700];
         _isLocal = true;
-        break;
     }
     text =
         mode == null || mode == SocialLoginButtonMode.multi ? text : ' Sign In';
@@ -276,7 +267,7 @@ class _LoginButton extends StatelessWidget {
           ),
           onPressed: onPressed,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -288,7 +279,7 @@ class _LoginButton extends StatelessWidget {
                 ),
                 const Spacer(),
                 Opacity(
-                  opacity: 0.0,
+                  opacity: 0,
                   child: createImageChildren(mode: mode),
                 ),
               ],

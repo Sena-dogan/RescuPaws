@@ -9,11 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:rescupaws/data/hive/hive.dart';
+import 'package:rescupaws/firebase_options.dart';
+import 'package:rescupaws/my_app.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
-
-import 'data/hive/hive.dart';
-import 'firebase_options.dart';
-import 'my_app.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

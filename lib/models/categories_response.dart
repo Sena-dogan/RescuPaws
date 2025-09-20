@@ -20,7 +20,6 @@ sealed class Category with _$Category {
     required String name,
     required String species, // 'cat' or 'dog'
     required String slug,
-    String? parent_id, // Keep for compatibility, can represent species
     String? image,
     String? description,
     Map<String, dynamic>? attributes, // Breed attributes
@@ -36,7 +35,6 @@ sealed class Category with _$Category {
       name: data['name'] as String,
       species: data['species'] as String,
       slug: data['slug'] as String,
-      parent_id: data['species'] as String, // Use species as parent for compatibility
       image: data['imageUrl'] as String?, // Optional image URL
       description: data['description'] as String?,
       attributes: data['attributes'] as Map<String, dynamic>?,

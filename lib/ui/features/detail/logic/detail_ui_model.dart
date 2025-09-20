@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../models/paw_entry.dart';
-import '../../../../models/user_data.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/models/user_data.dart';
 
 part 'detail_ui_model.freezed.dart';
 

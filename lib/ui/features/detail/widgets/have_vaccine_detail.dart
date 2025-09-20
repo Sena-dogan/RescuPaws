@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/context_extensions.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class HaveVaccineWidget extends StatelessWidget {
   const HaveVaccineWidget({
@@ -14,7 +14,7 @@ class HaveVaccineWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(

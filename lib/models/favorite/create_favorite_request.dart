@@ -7,9 +7,9 @@ part 'create_favorite_request.g.dart';
 abstract class CreateFavoriteRequest with _$CreateFavoriteRequest {
   const factory CreateFavoriteRequest({
     required String? uid,
-    required int class_field_id,
+    @JsonKey(name: 'class_field_id') required int classFieldId,
     /// 1 for favorite, 0 for unfavorite
-    required int is_favorite,
+    @JsonKey(name: 'is_favorite') required int isFavorite,
   }) = _CreateFavoriteRequest;
 
   factory CreateFavoriteRequest.fromJson(Map<String, dynamic> json) =>

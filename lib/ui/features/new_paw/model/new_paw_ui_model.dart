@@ -2,10 +2,9 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:photo_manager/photo_manager.dart';
-
-import '../../../../models/location_response.dart';
-import '../../../../models/paw_entry.dart';
-import '../../../../models/vaccine_info.dart';
+import 'package:rescupaws/models/location_response.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/models/vaccine_info.dart';
 
 part 'new_paw_ui_model.freezed.dart';
 
@@ -50,7 +49,7 @@ extension NewPawExtension on NewPawUiModel {
     } else {
       weight = '${this.weight} lbs';
     }
-    final int id = DateTime.now().millisecondsSinceEpoch;
+    int id = DateTime.now().millisecondsSinceEpoch;
     return PawEntry(
       id: id,
       address: address,
@@ -69,14 +68,14 @@ extension NewPawExtension on NewPawUiModel {
       user_id: user_id,
       weight: weight,
       vaccine_info: VaccineInfo(
-        rabies_vaccine: rabies_vaccine,
-        distemper_vaccine: distemper_vaccine,
-        hepatitis_vaccine: hepatitis_vaccine,
-        parvovirus_vaccine: parvovirus_vaccine,
-        bordotella_vaccine: bordotella_vaccine,
-        leptospirosis_vaccine: leptospirosis_vaccine,
-        panleukopenia_vaccine: panleukopenia_vaccine,
-        herpesvirus_and_calicivirus_vaccine:
+        rabiesVaccine: rabies_vaccine,
+        distemperVaccine: distemper_vaccine,
+        hepatitisVaccine: hepatitis_vaccine,
+        parvovirusVaccine: parvovirus_vaccine,
+        bordotellaVaccine: bordotella_vaccine,
+        leptospirosisVaccine: leptospirosis_vaccine,
+        panleukopeniaVaccine: panleukopenia_vaccine,
+        herpesvirusAndCalicivirusVaccine:
             herpesvirus_and_calicivirus_vaccine,
       ),
     );

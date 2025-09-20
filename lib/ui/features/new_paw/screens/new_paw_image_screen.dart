@@ -5,11 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:photo_manager/photo_manager.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../constants/assets.dart';
-import '../../../../utils/context_extensions.dart';
-import '../logic/new_paw_logic.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class NewPawImageScreen extends ConsumerStatefulWidget {
   const NewPawImageScreen({super.key});
@@ -24,9 +23,9 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<PermissionState> ps =
+    AsyncValue<PermissionState> ps =
         ref.read(fetchPermissionStateProvider);
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         gradient: LinearGradient(
@@ -59,7 +58,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
 
   void _showImagePickerOptions(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await showModalBottomSheet(
+      await showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
           return SafeArea(
@@ -101,7 +100,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
     try {
       // For multiple image selection, we'll use single image picker multiple times
       // or show a different UI. For now, let's pick one at a time
-      final XFile? pickedFile = await _picker.pickImage(
+      XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.gallery,
         maxWidth: 1920,
         maxHeight: 1920,
@@ -109,21 +108,19 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
       );
 
       if (pickedFile != null) {
-        final AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
+        AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
           pickedFile.path,
           title: 'paw_${DateTime.now().millisecondsSinceEpoch}',
         );
 
-        if (asset != null) {
-          await ref
-              .read(newPawLogicProvider.notifier)
-              .addAssets(<AssetEntity>[asset]).then((_) async {
-            debugPrint('gallery asset added');
-            if (!context.mounted && !mounted) return false;
-            await context.push(SGRoute.newpaw.route);
-          });
-        }
-      }
+        await ref
+            .read(newPawLogicProvider.notifier)
+            .addAssets(<AssetEntity>[asset]).then((_) async {
+          debugPrint('gallery asset added');
+          if (!context.mounted && !mounted) return false;
+          await context.push(SGRoute.newpaw.route);
+        });
+            }
     } catch (e) {
       debugPrint('Error picking images: $e');
       if (context.mounted && mounted) {
@@ -136,7 +133,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
 
   Future<void> _takePicture() async {
     try {
-      final XFile? pickedFile = await _picker.pickImage(
+      XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.camera,
         maxWidth: 1920,
         maxHeight: 1920,
@@ -144,21 +141,19 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
       );
 
       if (pickedFile != null) {
-        final AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
+        AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
           pickedFile.path,
           title: 'paw_${DateTime.now().millisecondsSinceEpoch}',
         );
 
-        if (asset != null) {
-          await ref
-              .read(newPawLogicProvider.notifier)
-              .addAssets(<AssetEntity>[asset]).then((_) async {
-            debugPrint('camera asset added');
-            if (!context.mounted && !mounted) return false;
-            await context.push(SGRoute.newpaw.route);
-          });
-        }
-      }
+        await ref
+            .read(newPawLogicProvider.notifier)
+            .addAssets(<AssetEntity>[asset]).then((_) async {
+          debugPrint('camera asset added');
+          if (!context.mounted && !mounted) return false;
+          await context.push(SGRoute.newpaw.route);
+        });
+            }
     } catch (e) {
       debugPrint('Error taking picture: $e');
       if (context.mounted && mounted) {
@@ -169,8 +164,8 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
     }
   }
 
-  Container _handleError(BuildContext context) {
-    return Container(
+  Widget _handleError(BuildContext context) {
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         gradient: LinearGradient(
@@ -194,7 +189,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
                 height: 200,
               ),
               const Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8),
                 child: Text(
                     'Patili dostunuzun fotoğrafları için izninize ihtiyacımız var.'),
               ),
@@ -202,7 +197,7 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
               ElevatedButton(
                 onPressed: () async {
                   await PhotoManager.openSetting();
-                  final PermissionState ps =
+                  PermissionState ps =
                       await PhotoManager.requestPermissionExtend();
                   if (ps == PermissionState.authorized) {
                     // ignore: unused_result

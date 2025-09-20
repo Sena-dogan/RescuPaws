@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../models/paw_entry.dart';
+import 'package:rescupaws/models/paw_entry.dart';
 
 part 'home_screen_ui_model.freezed.dart';
 
