@@ -6,17 +6,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:rescupaws/data/enums/new_paw_enums.dart';
+import 'package:rescupaws/data/network/location/location_repository.dart';
+import 'package:rescupaws/data/network/paw_entry/paw_entry_repository.dart';
+import 'package:rescupaws/data/network/user/user_repository.dart';
+import 'package:rescupaws/models/categories_response.dart';
+import 'package:rescupaws/models/location_response.dart';
+import 'package:rescupaws/models/new_paw_model.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/ui/features/category/data/category_repository.dart';
+import 'package:rescupaws/ui/features/new_paw/model/new_paw_ui_model.dart';
+import 'package:rescupaws/utils/riverpod_extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../../data/enums/new_paw_enums.dart';
-import '../../../../data/network/location/location_repository.dart';
-import '../../../../data/network/paw_entry/paw_entry_repository.dart';
-import '../../../../models/categories_response.dart';
-import '../../../../models/location_response.dart';
-import '../../../../models/new_paw_model.dart';
-import '../../../../utils/riverpod_extensions.dart';
-import '../../category/data/category_repository.dart';
-import '../model/new_paw_ui_model.dart';
 
 part 'new_paw_logic.g.dart';
 
@@ -24,9 +25,9 @@ part 'new_paw_logic.g.dart';
 Future<List<Category>> fetchCategories(Ref ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
   ref.keepAlive();
-  final CategoryRepository categoryRepository =
+  CategoryRepository categoryRepository =
       ref.watch(getCategoryRepositoryProvider);
-  final GetCategoriesResponse categories =
+  GetCategoriesResponse categories =
       await categoryRepository.getCategories();
   return categories.data;
 }
@@ -35,33 +36,35 @@ Future<List<Category>> fetchCategories(Ref ref) async {
 Future<List<Category>> fetchSubCategories(
     Ref ref, String categoryId) async {
   ref.keepAlive();
-  final CategoryRepository categoryRepository =
+  CategoryRepository categoryRepository =
       ref.watch(getCategoryRepositoryProvider);
-  final GetCategoriesResponse categories =
+  GetCategoriesResponse categories =
       await categoryRepository.getSubCategories(categoryId);
   return categories.data;
 }
 
 @riverpod
 Future<NewPawResponse> createPawEntry(
-    Ref ref, NewPawModel newPawModel) async {
-  if (newPawModel.name == null) {
-    Logger().e('new paw model name is null');
+    Ref ref, PawEntry pawEntry) async {
+  if (pawEntry.name == null) {
+    Logger().e('paw entry name is null');
     throw Exception('new paw model name is null');
   }
-  Logger().i('new paw model: $newPawModel');
-  final PawEntryRepository pawEntryRepository =
+  Logger().i('paw entry: $pawEntry');
+  PawEntryRepository pawEntryRepository =
       ref.read(getPawEntryRepositoryProvider);
-  final NewPawResponse pawEntry =
-      await pawEntryRepository.createPawEntry(newPawModel);
-  return pawEntry;
+  // Ensure the current user exists in 'users' so advertiser_ref resolves
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
+  NewPawResponse response =
+      await pawEntryRepository.createPawEntry(pawEntry);
+  return response;
 }
 
 @riverpod
 Future<PermissionState> fetchPermissionState(
     Ref ref) async {
   ref.keepAlive();
-  final PermissionState ps = await PhotoManager.requestPermissionExtend();
+  PermissionState ps = await PhotoManager.requestPermissionExtend();
   debugPrint('permission state: $ps');
   return ps;
 }
@@ -69,7 +72,7 @@ Future<PermissionState> fetchPermissionState(
 @riverpod
 Future<List<AssetEntity>> fetchImages(Ref ref) async {
   ref.cacheFor(const Duration(minutes: 10));
-  final List<AssetEntity> assets = await PhotoManager.getAssetListRange(
+  List<AssetEntity> assets = await PhotoManager.getAssetListRange(
     start: 0,
     end: 20,
     type: RequestType.image,
@@ -108,32 +111,24 @@ class NewPawLogic extends _$NewPawLogic {
     switch (vaccines) {
       case Vaccines.RABIES:
         state = state.copyWith(rabies_vaccine: !state.rabies_vaccine);
-        break;
       case Vaccines.DISTEMPER:
         state = state.copyWith(distemper_vaccine: !state.distemper_vaccine);
-        break;
       case Vaccines.HEPATITIS:
         state = state.copyWith(hepatitis_vaccine: !state.hepatitis_vaccine);
-        break;
       case Vaccines.PARVOVIRUS:
         state = state.copyWith(parvovirus_vaccine: !state.parvovirus_vaccine);
-        break;
       case Vaccines.BORDETELLA:
         state = state.copyWith(bordotella_vaccine: !state.bordotella_vaccine);
-        break;
       case Vaccines.LEPTOSPIROSIS:
         state =
             state.copyWith(leptospirosis_vaccine: !state.leptospirosis_vaccine);
-        break;
       case Vaccines.PANLEUKOPENIA:
         state =
             state.copyWith(panleukopenia_vaccine: !state.panleukopenia_vaccine);
-        break;
       case Vaccines.HERPESVIRUSandCALICIVIRUS:
         state = state.copyWith(
             herpesvirus_and_calicivirus_vaccine:
                 !state.herpesvirus_and_calicivirus_vaccine);
-        break;
     }
   }
 
@@ -142,7 +137,7 @@ class NewPawLogic extends _$NewPawLogic {
   }
 
   void setWeightMeasure() {
-    final bool isKg = !state.isKg;
+    bool isKg = !state.isKg;
     num weight = state.weight ?? 0;
     if (isKg) {
       weight = weight / 2.20462;
@@ -185,13 +180,13 @@ class NewPawLogic extends _$NewPawLogic {
   /// Returns a [Future] that completes when the assets have been added.
   Future<void> addAssets(List<AssetEntity> assets) async {
     setLoading(isLoading: true);
-    final List<AssetEntity> images =
+    List<AssetEntity> images =
         List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
-    final List<String> imageBytes =
+    List<String> imageBytes =
         List<String>.from(state.imageBytes ?? <String>[]);
     images.addAll(assets);
-    for (final AssetEntity element in images) {
-      final Uint8List? bytes = await element.originBytes;
+    for (AssetEntity element in images) {
+      Uint8List? bytes = await element.originBytes;
       if (bytes != null) {
         imageBytes.add(base64Encode(bytes));
       }
@@ -211,7 +206,7 @@ class NewPawLogic extends _$NewPawLogic {
     if (file == null) {
       return null;
     }
-    final AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
+    AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
       file.path,
       title: 'paw',
     );
@@ -225,7 +220,7 @@ class NewPawLogic extends _$NewPawLogic {
   /// Otherwise, it is added to the list and the carousel controller moves to the next page.
   /// Finally, the state is updated with the new list of assets.
   void addImage(AssetEntity image) {
-    final List<AssetEntity> images =
+    List<AssetEntity> images =
         List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
     if (images.contains(image)) {
       images.remove(image);
@@ -249,7 +244,7 @@ class NewPawLogic extends _$NewPawLogic {
 
    Future<GetLocationsResponse> setCity(City city) {
     state = state.copyWith(city: city);
-    final LocationRepository locationRepository =
+    LocationRepository locationRepository =
         ref.read(getLocationRepositoryProvider);
     return locationRepository.getDistricts(cityId: city.id);
   }

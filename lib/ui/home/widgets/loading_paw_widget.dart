@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/assets.dart';
-import '../../../utils/context_extensions.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class LoadingPawWidget extends StatelessWidget {
   const LoadingPawWidget({
@@ -10,7 +10,7 @@ class LoadingPawWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return SizedBox(
       width: size.width * 0.25,
       height: size.height * 0.25,

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../config/router/app_router.dart';
-import '../../../../data/enums/new_paw_enums.dart';
-import '../logic/new_paw_logic.dart';
-import '../model/new_paw_ui_model.dart';
-import 'have_vaccine_new_paw.dart';
-import 'save_button.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/data/enums/new_paw_enums.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/ui/features/new_paw/model/new_paw_ui_model.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/have_vaccine_new_paw.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/save_button.dart';
 
 class VaccineCreateBody extends ConsumerStatefulWidget {
   const VaccineCreateBody({super.key});
@@ -20,8 +20,8 @@ class VaccineCreateBody extends ConsumerStatefulWidget {
 class _VaccineCreateBodyState extends ConsumerState<VaccineCreateBody> {
   @override
   Widget build(BuildContext context) {
-    final NewPawUiModel newPawUiModel = ref.watch(newPawLogicProvider);
-    final NewPawLogic newPawLogic = ref.read(newPawLogicProvider.notifier);
+    NewPawUiModel newPawUiModel = ref.watch(newPawLogicProvider);
+    NewPawLogic newPawLogic = ref.read(newPawLogicProvider.notifier);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

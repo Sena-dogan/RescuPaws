@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../paw_entry.dart';
+import 'package:rescupaws/models/paw_entry.dart';
 
 part 'favorite_model.freezed.dart';
 part 'favorite_model.g.dart';
@@ -21,10 +20,10 @@ abstract class Favorite with _$Favorite {
   const factory Favorite({
     required int? id,
     required String? uid,
-    required int? class_field_id,
-    required int? is_favorite,
-    String? created_at,
-    String? updated_at,
+    @JsonKey(name: 'class_field_id') required int? classFieldId,
+    @JsonKey(name: 'is_favorite') required int? isFavorite,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
     PawEntry? classfield,
   }) = _Favorite;
 

@@ -1,20 +1,19 @@
+import 'package:rescupaws/data/network/favorite/favorite_repository.dart';
+import 'package:rescupaws/models/favorite/delete_favorite_response.dart';
+import 'package:rescupaws/models/favorite/delete_favorites_request.dart';
+import 'package:rescupaws/models/favorite/favorite_model.dart';
+import 'package:rescupaws/ui/features/favorite/logic/favorite_ui_model.dart';
+import 'package:rescupaws/utils/firebase_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../../data/network/favorite/favorite_repository.dart';
-import '../../../../models/favorite/delete_favorite_response.dart';
-import '../../../../models/favorite/delete_favorites_request.dart';
-import '../../../../models/favorite/favorite_model.dart';
-import '../../../../utils/firebase_utils.dart';
-import 'favorite_ui_model.dart';
 
 part 'favorite_logic.g.dart';
 
 @riverpod
 Future<GetFavoriteListResponse> fetchFavoriteList(
     Ref ref) async {
-  final FavoriteRepository favoriteRepository =
+  FavoriteRepository favoriteRepository =
       ref.watch(getFavoriteRepositoryProvider);
-  final GetFavoriteListResponse favoriteList =
+  GetFavoriteListResponse favoriteList =
       await favoriteRepository.getFavoriteList();
   ref.read(favoriteLogicProvider.notifier).setFavoriteList(favoriteList.data);
   return favoriteList;
@@ -23,13 +22,13 @@ Future<GetFavoriteListResponse> fetchFavoriteList(
 @riverpod
 Future<DeleteFavoriteResponse> deleteFavorite(
     Ref ref, Favorite favorite) async {
-  final FavoriteRepository favoriteRepository =
+  FavoriteRepository favoriteRepository =
       ref.watch(getFavoriteRepositoryProvider);
-  final DeleteFavoriteRequest deleteFavoritesRequest = DeleteFavoriteRequest(
-    class_field_id: favorite.classfield!.id,
+  DeleteFavoriteRequest deleteFavoritesRequest = DeleteFavoriteRequest(
+    classFieldId: favorite.classFieldId!,
     uid: currentUserUid,
   );
-  final DeleteFavoriteResponse deleteFavoriteResponse =
+  DeleteFavoriteResponse deleteFavoriteResponse =
       await favoriteRepository.deleteFavorite(deleteFavoritesRequest);
   return deleteFavoriteResponse;
 }
@@ -61,12 +60,11 @@ class FavoriteLogic extends _$FavoriteLogic {
 
   Future<void> deleteFavorite(Favorite favorite) async {
     setLoading();
-    final AsyncValue<DeleteFavoriteResponse> deleteFavoriteResponse =
-        ref.read(deleteFavoriteProvider(favorite));
+    AsyncValue<DeleteFavoriteResponse> deleteFavoriteResponse = ref.read(deleteFavoriteProvider(favorite));
     deleteFavoriteResponse.whenData(
       (DeleteFavoriteResponse value) {
         if (value.status == 'success') {
-          final List<Favorite> updatedFavoriteList = state.favoriteList
+          List<Favorite> updatedFavoriteList = state.favoriteList
               .where((Favorite element) =>
                   element.classfield!.id != favorite.classfield!.id)
               .toList();

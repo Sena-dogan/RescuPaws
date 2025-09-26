@@ -6,19 +6,18 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:otp_timer_button/otp_timer_button.dart';
 import 'package:pinput/pinput.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../widgets/app_bar_gone.dart';
-import '../../new_paw/widgets/save_button.dart';
-import 'login_logic.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/ui/features/auth/presentation/login_logic.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/save_button.dart';
+import 'package:rescupaws/ui/widgets/app_bar_gone.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class OtpScreen extends ConsumerWidget {
   const OtpScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
+    return DecoratedBox(
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
         ),
@@ -26,7 +25,7 @@ class OtpScreen extends ConsumerWidget {
           appBar: const EmptyAppBar(),
           backgroundColor: Colors.transparent,
           body: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -52,16 +51,14 @@ class OtpScreen extends ConsumerWidget {
                     ],
                     controller: ref.watch(loginLogicProvider).otpController,
                     onCompleted: (String value) {
-                      ref
-                          .read(loginLogicProvider.notifier)
-                          .verifySmsCode(value)
-                          .then((bool value) {
+                      LoginLogic notifier = ref.read(loginLogicProvider.notifier);
+                      notifier.verifySmsCode(value).then((bool value) {
                         if (value && context.mounted) {
-                          context.showAwesomeMaterialBanner(
+                          context..showAwesomeMaterialBanner(
                             title: 'Başarılı',
                             message: 'Sms doğrulama başarılı',
-                          );
-                          context.go(SGRoute.home.route);
+                          )
+                          ..go(SGRoute.home.route);
                         }
                       });
                     },

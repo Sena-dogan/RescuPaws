@@ -1,8 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rescupaws/models/categories_response.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../../models/categories_response.dart';
 
 part 'category_repository.g.dart';
 
@@ -17,20 +16,20 @@ class CategoryRepository {
   Future<GetCategoriesResponse> getCategories() async {
     try {
       // Get unique species from the breeds collection
-      final QuerySnapshot<Map<String, dynamic>> snapshot = 
+      QuerySnapshot<Map<String, dynamic>> snapshot = 
           await _firestore.collection('breeds').get();
       
-      final Set<String> speciesSet = <String>{};
-      for (final QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
-        final Map<String, dynamic> data = doc.data();
-        final String? species = data['species'] as String?;
+      Set<String> speciesSet = <String>{};
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
+        Map<String, dynamic> data = doc.data();
+        String? species = data['species'] as String?;
         if (species != null) {
           speciesSet.add(species);
         }
       }
 
       // Create categories for each species
-      final List<Category> categories = speciesSet.map((String species) {
+      List<Category> categories = speciesSet.map((String species) {
         return Category(
           id: species, // Use species as ID (dog, cat)
           name: _getSpeciesDisplayName(species),
@@ -48,17 +47,17 @@ class CategoryRepository {
   /// Get subcategories (breeds) for a specific species
   Future<GetCategoriesResponse> getSubCategories(String speciesId) async {
     try {
-      final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection('breeds')
           .where('species', isEqualTo: speciesId)
           .get();
 
-      final List<Category> breeds = snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-        return Category.fromFirestore(doc.id, doc.data());
-      }).toList();
-
-      // Sort breeds alphabetically
-      breeds.sort((Category a, Category b) => a.name.compareTo(b.name));
+      List<Category> breeds = snapshot.docs
+          .map((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+            return Category.fromFirestore(doc.id, doc.data());
+          })
+          .toList()
+          ..sort((Category a, Category b) => a.name.compareTo(b.name));
 
       return GetCategoriesResponse(data: breeds);
     } catch (e) {

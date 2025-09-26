@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
-import '../../../utils/context_extensions.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class LeftButton extends StatelessWidget {
   const LeftButton({

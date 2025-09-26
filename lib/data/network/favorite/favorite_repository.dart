@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+import 'package:rescupaws/constants/string_constants.dart';
+import 'package:rescupaws/models/favorite/create_favorite_request.dart';
+import 'package:rescupaws/models/favorite/create_favorite_response.dart';
+import 'package:rescupaws/models/favorite/delete_favorite_response.dart';
+import 'package:rescupaws/models/favorite/delete_favorites_request.dart';
+import 'package:rescupaws/models/favorite/favorite_model.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/utils/firebase_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../constants/string_constants.dart';
-import '../../../models/favorite/create_favorite_request.dart';
-import '../../../models/favorite/create_favorite_response.dart';
-import '../../../models/favorite/delete_favorite_response.dart';
-import '../../../models/favorite/delete_favorites_request.dart';
-import '../../../models/favorite/favorite_model.dart';
-import '../../../models/paw_entry.dart';
-import '../../../utils/firebase_utils.dart';
 
 part 'favorite_repository.g.dart';
 
@@ -22,21 +21,21 @@ class FavoriteRepository {
   Future<GetFavoriteListResponse> getFavoriteList() async {
     try {
       // Query with only one where clause to avoid any index requirements
-      final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection(StringsConsts.favoritesCollection)
           .where('uid', isEqualTo: currentUserUid)
           .get();
 
-      final List<Favorite> favorites = <Favorite>[];
+      List<Favorite> favorites = <Favorite>[];
       
-      for (final QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
-        final Map<String, dynamic> data = doc.data();
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
+        Map<String, dynamic> data = doc.data();
         
         // Get the classfield data from the classfields collection
         PawEntry? classfield;
         if (data['class_field_id'] != null) {
           try {
-            final DocumentSnapshot<Map<String, dynamic>> classfieldDoc = await _firestore
+            DocumentSnapshot<Map<String, dynamic>> classfieldDoc = await _firestore
                 .collection('classfields')
                 .doc(data['class_field_id'].toString())
                 .get();
@@ -49,13 +48,13 @@ class FavoriteRepository {
           }
         }
         
-        final Favorite favorite = Favorite(
+        Favorite favorite = Favorite(
           id: data['id'] as int?,
           uid: data['uid'] as String?,
-          class_field_id: data['class_field_id'] as int?,
-          is_favorite: data['is_favorite'] as int?,
-          created_at: data['created_at'] as String?,
-          updated_at: data['updated_at'] as String?,
+          classFieldId: data['class_field_id'] as int?,
+          isFavorite: data['is_favorite'] as int?,
+          createdAt: data['created_at'] as String?,
+          updatedAt: data['updated_at'] as String?,
           classfield: classfield,
         );
         
@@ -64,8 +63,8 @@ class FavoriteRepository {
 
       // Sort by created_at in memory to avoid composite index requirement
       favorites.sort((Favorite a, Favorite b) {
-        final DateTime? aDate = a.created_at != null ? DateTime.tryParse(a.created_at!) : null;
-        final DateTime? bDate = b.created_at != null ? DateTime.tryParse(b.created_at!) : null;
+        DateTime? aDate = a.createdAt != null ? DateTime.tryParse(a.createdAt!) : null;
+        DateTime? bDate = b.createdAt != null ? DateTime.tryParse(b.createdAt!) : null;
         
         if (aDate == null && bDate == null) return 0;
         if (aDate == null) return 1;
@@ -85,25 +84,25 @@ class FavoriteRepository {
   Future<CreateFavoriteResponse> createFavorite(CreateFavoriteRequest request) async {
     try {
       // Check if favorite already exists
-      final QuerySnapshot<Map<String, dynamic>> existingFavorites = await _firestore
+      QuerySnapshot<Map<String, dynamic>> existingFavorites = await _firestore
           .collection(StringsConsts.favoritesCollection)
           .where('uid', isEqualTo: request.uid)
-          .where('class_field_id', isEqualTo: request.class_field_id)
+          .where('class_field_id', isEqualTo: request.classFieldId)
           .limit(1)
           .get();
 
-      final String now = DateTime.now().toIso8601String();
-      final Map<String, dynamic> favoriteData = <String, dynamic>{
+      String now = DateTime.now().toIso8601String();
+      Map<String, dynamic> favoriteData = <String, dynamic>{
         'uid': request.uid,
-        'class_field_id': request.class_field_id,
-        'is_favorite': request.is_favorite,
+        'class_field_id': request.classFieldId,
+        'is_favorite': request.isFavorite,
         'created_at': now,
         'updated_at': now,
       };
 
       if (existingFavorites.docs.isNotEmpty) {
         // Update existing favorite
-        final DocumentReference<Map<String, dynamic>> doc = existingFavorites.docs.first.reference;
+        DocumentReference<Map<String, dynamic>> doc = existingFavorites.docs.first.reference;
         favoriteData['id'] = existingFavorites.docs.first.data()['id'];
         favoriteData['created_at'] = existingFavorites.docs.first.data()['created_at'];
         
@@ -111,7 +110,7 @@ class FavoriteRepository {
         Logger().i('Favorite updated in Firebase');
       } else {
         // Create new favorite with auto-generated ID
-        final DocumentReference<Map<String, dynamic>> docRef = await _firestore
+        DocumentReference<Map<String, dynamic>> docRef = await _firestore
             .collection(StringsConsts.favoritesCollection)
             .add(favoriteData);
         
@@ -122,7 +121,7 @@ class FavoriteRepository {
 
       return CreateFavoriteResponse(
         status: 'success',
-        message: 'Favorite ${request.is_favorite == 1 ? 'added' : 'updated'} successfully',
+        message: 'Favorite ${request.isFavorite == 1 ? 'added' : 'updated'} successfully',
       );
     } catch (e) {
       Logger().e('Error creating favorite in Firebase: $e');
@@ -135,14 +134,14 @@ class FavoriteRepository {
 
   Future<DeleteFavoriteResponse> deleteFavorite(DeleteFavoriteRequest request) async {
     try {
-      final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection(StringsConsts.favoritesCollection)
           .where('uid', isEqualTo: request.uid)
-          .where('class_field_id', isEqualTo: request.class_field_id)
+          .where('class_field_id', isEqualTo: request.classFieldId)
           .get();
 
       if (snapshot.docs.isNotEmpty) {
-        for (final QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
+        for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
           await doc.reference.delete();
         }
         Logger().i('Favorite deleted from Firebase');

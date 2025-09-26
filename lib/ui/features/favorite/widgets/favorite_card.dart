@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../constants/assets.dart';
-import '../../../../models/favorite/favorite_model.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../widgets/adaptive_image.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/models/favorite/favorite_model.dart';
+import 'package:rescupaws/ui/widgets/adaptive_image.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class FavoriteCard extends StatelessWidget {
   const FavoriteCard({super.key, required this.favorite, this.items = const <PopupMenuEntry<String>>[]});
@@ -64,7 +63,7 @@ class FavoriteCard extends StatelessWidget {
         Expanded(
           flex: 4,
           child: Padding(
-            padding: const EdgeInsets.only(left: 4.0, right: 2.0, top: 15.0),
+            padding: const EdgeInsets.only(left: 4, right: 2, top: 15),
             child: Text(
               favorite.classfield?.name ?? '',
               style: context.textTheme.titleLarge,
@@ -89,8 +88,8 @@ class FavoriteCard extends StatelessWidget {
   }
 
   Widget _buildImage(Favorite favorite) {
-    if (favorite.classfield?.images_uploads == null ||
-        favorite.classfield!.images_uploads!.isEmpty) {
+    if (favorite.classfield?.image == null ||
+        favorite.classfield!.image!.isEmpty) {
       return const Image(
         image: AssetImage(Assets.Hearts),
         fit: BoxFit.contain,
@@ -98,7 +97,7 @@ class FavoriteCard extends StatelessWidget {
     }
     return Expanded(
       child: AdaptiveImage(
-        imageUrl: favorite.classfield?.images_uploads?[0].image_url ?? '',
+        imageUrl: favorite.classfield!.image!.first,
         errorWidget: (BuildContext context, String url, Object error) {
           return const Image(
             image: AssetImage(Assets.Hearts),

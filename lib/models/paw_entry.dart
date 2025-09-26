@@ -2,9 +2,9 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../data/enums/paw_entry_status.dart';
-import 'images_upload.dart';
-import 'user.dart';
+import 'package:rescupaws/data/enums/paw_entry_status.dart';
+import 'package:rescupaws/models/user.dart';
+import 'package:rescupaws/models/vaccine_info.dart';
 
 part 'paw_entry.freezed.dart';
 part 'paw_entry.g.dart';
@@ -28,7 +28,6 @@ abstract class PawEntryError with _$PawEntryError {
   factory PawEntryError.fromJson(Map<String, dynamic> json) =>
       _$PawEntryErrorFromJson(json);
 }
-//TODO: Merge with NewPawModel
 @freezed
 abstract class PawEntry with _$PawEntry {
   factory PawEntry({
@@ -47,26 +46,19 @@ abstract class PawEntry with _$PawEntry {
     String? age,
     String? weight,
     int? education,
-    int? rabies_vaccine,
-    int? distemper_vaccine,
-    int? hepatitis_vaccine,
-    int? parvovirus_vaccine,
-    int? bordotella_vaccine,
-    int? leptospirosis_vaccine,
-    int? panleukopenia_vaccine,
-    int? herpesvirus_and_calicivirus_vaccine,
+    VaccineInfo? vaccine_info,
     List<String>? image,
     dynamic deleted_at,
     String? created_at,
     String? updated_at,
     User? user,
-    List<ImagesUploads>? images_uploads,
-    @Default(0) int selectedImageIndex, // Add this line
+    @Default(0) int selectedImageIndex,
   }) = _PawEntry;
 
   factory PawEntry.fromJson(Map<String, dynamic> json) =>
       _$PawEntryFromJson(json);
 }
+
 /*
 Paw entry json example 
 {
@@ -82,8 +74,8 @@ Paw entry json example
 
 extension PawEntryX on PawEntry {
   String get createdAtFormatted {
-    final DateTime createdAt = DateTime.parse(created_at!);
-    final String formattedDate =
+    DateTime createdAt = DateTime.parse(created_at!);
+    String formattedDate =
         '${createdAt.day}/${createdAt.month}/${createdAt.year}';
     return formattedDate;
   }

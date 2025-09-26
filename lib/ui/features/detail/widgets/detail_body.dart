@@ -3,16 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-
-import '../../../../models/paw_entry_detail.dart';
-import '../../../../models/user_data.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../chat/logic/chat_logic.dart';
-import '../../chat/screens/message_screen.dart';
-import '../logic/detail_logic.dart';
-import 'advertiser_info.dart';
-import 'characteristics.dart';
-import 'paw_image_and_name.dart';
+import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/models/user_data.dart';
+import 'package:rescupaws/ui/features/chat/logic/chat_logic.dart';
+import 'package:rescupaws/ui/features/chat/screens/message_screen.dart';
+import 'package:rescupaws/ui/features/detail/logic/detail_logic.dart';
+import 'package:rescupaws/ui/features/detail/widgets/advertiser_info.dart';
+import 'package:rescupaws/ui/features/detail/widgets/characteristics.dart';
+import 'package:rescupaws/ui/features/detail/widgets/paw_image_and_name.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class DetailBody extends ConsumerWidget {
   const DetailBody({
@@ -84,7 +83,7 @@ class DetailBody extends ConsumerWidget {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              final Size size = MediaQuery.sizeOf(context);
+              Size size = MediaQuery.sizeOf(context);
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
@@ -111,16 +110,28 @@ class DetailBody extends ConsumerWidget {
                           '',
                       style: context.textTheme.bodyMedium,
                     ),
-                    const Gap(30),
-                    AdvertiserInfo(
-                      receiverName: 'receiverName',
-                      receiverProfilePic: 'receiverProfilePic',
-                      imageSize: size.width * 0.2,
-                      textStyle: context.textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+          const Gap(30),
+          Consumer(builder:
+            (BuildContext context, WidgetRef ref, Widget? child) {
+                      String? advertiserId =
+                          pawEntryDetailResponse!.pawEntryDetail?.user_id ??
+                              pawEntryDetailResponse!.pawEntryDetail?.user?.uid;
+            AsyncValue<UserData?> userAsync = ref.watch(
+              getUserByIdProvider(advertiserId ?? ''));
+            return userAsync.when(
+                        data: (UserData? user) => AdvertiserInfo(
+              receiverName: user?.displayName ?? 'Kullanıcı',
+              receiverProfilePic: user?.photoUrl ?? '',
+                          imageSize: size.width * 0.2,
+                          textStyle: context.textTheme.labelSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        loading: () => const SizedBox.shrink(),
+                        error: (_, __) => const SizedBox.shrink(),
+                      );
+                    }),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30),
                       child: ElevatedButton(
@@ -132,34 +143,40 @@ class DetailBody extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                        onPressed: () {
-                          const String receiverId = 'User Not Found';
-                          const String receiverEmail = 'receiverEmail';
+                        onPressed: () async {
+                          String receiverId =
+                pawEntryDetailResponse!.pawEntryDetail?.user_id ??
+                  pawEntryDetailResponse!
+                                      .pawEntryDetail?.user?.uid ??
+                                  '';
                           if (receiverId.isEmpty) {
                             Logger().e('Receiver id is empty');
                             throw Exception(
                                 'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
                           }
-                          if (receiverEmail.isEmpty) {
-                            Logger().e('Receiver email is empty');
-                            throw Exception(
-                                'Üye bilgileri alınamadı. Lütfen tekrar deneyin.');
-                          }
-                          ref
-                              .read(chatLogicProvider.notifier)
-                              .addReceiverUserToFirestore(
-                                receiverUser: UserData(),
-                              );
+              UserData? user = await ref
+                .read(chatLogicProvider.notifier)
+                              .getUserDataById(receiverId);
+              if (user != null) {
+              await ref
+                .read(chatLogicProvider.notifier)
+                .addReceiverUserToFirestore(
+                  receiverUser: user,
+                );
+              }
 
-                          Navigator.push(
+              if (!context.mounted) return;
+
+                          await Navigator.push(
                             context,
                             // ignore: always_specify_types
-                            MaterialPageRoute(
+                            MaterialPageRoute<void>(
                               builder: (BuildContext context) {
                                 return MessageScreen(
                                   receiverId: receiverId,
-                                  receiverName: 'Receiver Name',
-                                  receiverProfilePic: 'Receiver Profile Pic',
+                  receiverName:
+                    user?.displayName ?? 'Kullanıcı',
+                  receiverProfilePic: user?.photoUrl ?? '',
                                 );
                               },
                             ),

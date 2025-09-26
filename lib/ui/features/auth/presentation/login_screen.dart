@@ -6,14 +6,12 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/ui/features/auth/domain/login_ui_model.dart';
+import 'package:rescupaws/ui/features/auth/presentation/login_logic.dart';
+import 'package:rescupaws/ui/features/auth/presentation/social_button.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../home/widgets/loading_paw_widget.dart';
-import '../domain/login_ui_model.dart';
-import 'login_logic.dart';
-import 'social_button.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -35,16 +33,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final LoginUiModel loginModel = ref.watch(loginLogicProvider);
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-        // image: const DecorationImage(
-        //   image: AssetImage(Assets.LoginBg),
-        //   fit: BoxFit.cover,
-        // ),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -56,70 +49,63 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-      appBar: AppBar(
+        appBar: AppBar(
           backgroundColor: context.colorScheme.surface,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(16),
-            bottomRight: Radius.circular(16),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(16),
+            ),
+          ),
+          automaticallyImplyLeading: false,
+          actions: <Widget>[_buildRegisterButton(context)],
+        ),
+        body: SingleChildScrollView(
+          child: SizedBox(
+            width: size.width,
+            height: size.height * 0.9,
+            child: Column(
+                    children: <Widget>[
+                      Gap(size.height * 0.05),
+                      const LoginText(),
+                      const Gap(25),
+                      LoginButtons(size: Size(size.width, size.height * 0.12)),
+                      const Gap(25),
+                      OrDivider(size: size),
+                      const Gap(25),
+                      const EmailText(),
+                      const Gap(25),
+                      _buildEmail(size, context),
+                      const Gap(16),
+                      _buildPass(size, context),
+                      const Gap(16),
+                      _buildTermsOfService(),
+                      _buildPrivacyPolicy(),
+                      const Gap(16),
+                      const SignInButton(),
+                      _forgotPasswordButton(context),
+                      const Spacer(),
+                    ],
+                  ),
           ),
         ),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          _buildRegisterButton(context),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: size.width,
-          height: size.height * 0.9,
-          child: loginModel.isLoading
-              ? const Center(
-                  child: LoadingPawWidget(),
-                )
-              : Column(
-                  children: <Widget>[
-                    Gap(size.height * 0.05),
-                    LoginText(context: context),
-                    const Gap(25),
-                    LoginButtons(
-                        context: context,
-                        ref: ref,
-                        size: Size(size.width, size.height * 0.12)),
-                    const Gap(25),
-                    OrDivider(size: size, context: context),
-                    const Gap(25),
-                    EmailText(context: context),
-                    const Gap(25),
-                    _buildEmail(size, context),
-                    const Gap(16),
-                    _buildPass(size, loginModel, context),
-                    const Gap(16),
-                    _buildTermsOfService(),
-                    _buildPrivacyPolicy(),
-                    const Gap(16),
-                    SignInButton(ref: ref, context: context),
-                    _forgotPasswordButton(context),
-                    const Spacer(),
-                  ],
-                ),
-        ),
-      ),
       ),
     );
   }
 
   Padding _buildRegisterButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: TextButton(
         onPressed: () {
           context.go(SGRoute.register.route);
         },
         child: Text(
           'Kayıt Ol',
-          style: context.textTheme.labelSmall
-              ?.copyWith(color: context.colorScheme.primary, fontSize: 16),
+          style: context.textTheme.labelSmall?.copyWith(
+            color: context.colorScheme.primary,
+            fontSize: 16,
+          ),
         ),
       ),
     );
@@ -132,18 +118,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             .read(loginLogicProvider.notifier)
             .forgotPassword()
             .catchError((Object? err) {
-          debugPrint('Error caught: $err');
-          if (!context.mounted) return false;
-          context.showErrorSnackBar(message: err.toString());
-          return false;
-        }).then((bool value) {
-          if (value && context.mounted) {
-            context.showAwesomeMaterialBanner(
-                title: 'Başarılı',
-                message:
-                    'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi');
-          }
-        });
+              debugPrint('Error caught: $err');
+              if (!context.mounted) return false;
+              context.showErrorSnackBar(message: err.toString());
+              return false;
+            })
+            .then((bool value) {
+              if (value && context.mounted) {
+                context.showAwesomeMaterialBanner(
+                  title: 'Başarılı',
+                  message:
+                      'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi',
+                );
+              }
+            });
       },
       child: Text(
         'Şifremi unuttum',
@@ -155,7 +143,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   SizedBox _buildPass(
-      Size size, LoginUiModel loginModel, BuildContext context) {
+    Size size,
+    BuildContext context,
+  ) {
+    LoginUiModel loginModel = ref.watch(loginLogicProvider);
     return SizedBox(
       width: size.width * 0.9,
       child: AutofillGroup(
@@ -185,13 +176,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               .read(loginLogicProvider.notifier)
               .signInWithEmailAndPassword()
               .then((bool value) {
-            if (!context.mounted) return;
-            value
-                ? context.go(SGRoute.home.route)
-                : context.showErrorSnackBar(
-                    message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
-          }),
-          onTapOutside: (PointerDownEvent event) => FocusScope.of(context).unfocus(),
+                if (!context.mounted) return;
+                value
+                    ? context.go(SGRoute.home.route)
+                    : context.showErrorSnackBar(
+                        message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.',
+                      );
+              }),
+          onTapOutside: (PointerDownEvent event) =>
+              FocusScope.of(context).unfocus(),
           decoration: _passDecoration(context, loginModel),
         ),
       ),
@@ -199,7 +192,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   InputDecoration _passDecoration(
-      BuildContext context, LoginUiModel loginModel) {
+    BuildContext context,
+    LoginUiModel loginModel,
+  ) {
     return InputDecoration(
       hintText: 'Şifre',
       hintStyle: context.textTheme.bodyMedium,
@@ -215,9 +210,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         borderSide: BorderSide(color: context.colorScheme.primary),
         borderRadius: BorderRadius.circular(16),
       ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: context.colorScheme.error),
         borderRadius: BorderRadius.circular(16),
@@ -244,27 +237,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       width: size.width * 0.9,
       child: AutofillGroup(
         child: TextFormField(
-            controller: _emailController,
-            onChanged: (String value) {
-              ref.read(loginLogicProvider.notifier).emailChanged(value);
-            },
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (String? value) {
-              if (value == null || value.isEmpty) {
-                return 'Lütfen e-posta adresinizi giriniz';
-              } else if (!value.contains('@')) {
-                return 'Lütfen geçerli bir e-posta adresi giriniz';
-              }
-              return null;
-            },
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.emailAddress,
-            autofillHints: const <String>[AutofillHints.email],
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.deny(RegExp(r'\s')),
-            ],
-            onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            decoration: _emailDecoration(context)),
+          controller: _emailController,
+          onChanged: (String value) {
+            ref.read(loginLogicProvider.notifier).emailChanged(value);
+          },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'Lütfen e-posta adresinizi giriniz';
+            } else if (!value.contains('@')) {
+              return 'Lütfen geçerli bir e-posta adresi giriniz';
+            }
+            return null;
+          },
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.emailAddress,
+          autofillHints: const <String>[AutofillHints.email],
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+          ],
+          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+          decoration: _emailDecoration(context),
+        ),
       ),
     );
   }
@@ -306,17 +300,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Padding _buildPrivacyPolicy() {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.all(3),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           GestureDetector(
             onTap: () {
               const String url = 'https://patipati.app/privacy-policy';
-              final Uri uri = Uri.parse(url);
-              launchUrl(uri).catchError((Object? err) =>
-                  // ignore: invalid_return_type_for_catch_error
-                  debugPrint(err.toString()));
+              Uri uri = Uri.parse(url);
+              launchUrl(uri).catchError(
+                (Object? err) =>
+                    // ignore: invalid_return_type_for_catch_error
+                    debugPrint(err.toString()),
+              );
             },
             child: Text(
               'Gizlilik Politikamızı ',
@@ -343,7 +339,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.9,
       child: Padding(
-        padding: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(3),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -357,10 +353,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             InkWell(
               onTap: () async {
                 const String url = 'https://patipati.app/user-terms';
-                final Uri uri = Uri.parse(url);
-                await launchUrl(uri).catchError((Object? err) =>
-                    // ignore: invalid_return_type_for_catch_error
-                    debugPrint(err.toString()));
+                Uri uri = Uri.parse(url);
+                await launchUrl(uri).catchError(
+                  (Object? err) =>
+                      // ignore: invalid_return_type_for_catch_error
+                      debugPrint(err.toString()),
+                );
               },
               child: Text(
                 'Hizmet Koşullarımızı ',
@@ -371,9 +369,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ),
             ),
-            Text('kabul etmiş ve ',
-                style: GoogleFonts.outfit(
-                    fontSize: 14, fontWeight: FontWeight.w400)),
+            Text(
+              'kabul etmiş ve ',
+              style: GoogleFonts.outfit(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
           ],
         ),
       ),
@@ -388,21 +390,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 }
 
-class LoginButtons extends StatelessWidget {
-  const LoginButtons({
-    super.key,
-    required this.context,
-    required this.ref,
-    required this.size,
-  });
+class LoginButtons extends ConsumerWidget {
+  const LoginButtons({super.key, required this.size});
 
-  final BuildContext context;
-  //TODO: Remove ref pass here
-  final WidgetRef ref;
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       color: Colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -414,53 +408,56 @@ class LoginButtons extends StatelessWidget {
             color: Colors.transparent,
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SocialLoginButton(
-                elevation: const WidgetStatePropertyAll<double>(0.0),
-                strokeColor: context.colorScheme.primary,
-                buttonType: SocialLoginButtonType.google,
-                textColor: context.colorScheme.onSurface,
-                backgroundColor: Colors.transparent,
-                text: 'Google ile devam et',
-                onPressed: () async {
-                  await ref
-                      .watch(loginLogicProvider.notifier)
-                      .signInWithGoogle()
-                      .then((bool value) {
-                    if (!context.mounted) return false;
+              elevation: const WidgetStatePropertyAll<double>(0),
+              strokeColor: context.colorScheme.primary,
+              buttonType: SocialLoginButtonType.google,
+              textColor: context.colorScheme.onSurface,
+              backgroundColor: Colors.transparent,
+              text: 'Google ile devam et',
+              onPressed: () async {
+                await ref
+                    .read(loginLogicProvider.notifier)
+                    .signInWithGoogle()
+                    .then((bool value) {
+                      if (!context.mounted) return false;
 
-                    value
-                        ? context.go(SGRoute.home.route)
-                        : context.showErrorSnackBar(
-                            message:
-                                'Bir hata oluştu. Lütfen tekrar deneyiniz.');
-                  });
-                },
-                borderRadius: 30),
+                      value
+                          ? context.go(SGRoute.home.route)
+                          : context.showErrorSnackBar(
+                              message:
+                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.',
+                            );
+                    });
+              },
+              borderRadius: 30,
+            ),
           ),
           Visibility(
             visible: context.isIOS,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: SocialLoginButton(
-                  elevation: const WidgetStatePropertyAll<double>(0.0),
-                  strokeColor: context.colorScheme.primary,
-                  backgroundColor: Colors.transparent,
-                  textColor: context.colorScheme.onSurface,
-                  buttonType: SocialLoginButtonType.apple,
-                  text: 'Apple ile devam et',
-                  onPressed: () {
-                    ref
-                        .watch(loginLogicProvider.notifier)
-                        .signInWithApple()
-                        .then((bool value) {
-                      if (!context.mounted) return;
-                      value
-                          ? context.go(SGRoute.home.route)
-                          : context.showErrorSnackBar(
-                              message:
-                                  'Bir hata oluştu. Lütfen tekrar deneyiniz.');
-                    });
-                  },
-                  borderRadius: 30),
+                elevation: const WidgetStatePropertyAll<double>(0),
+                strokeColor: context.colorScheme.primary,
+                backgroundColor: Colors.transparent,
+                textColor: context.colorScheme.onSurface,
+                buttonType: SocialLoginButtonType.apple,
+                text: 'Apple ile devam et',
+                onPressed: () async {
+                  await ref.read(loginLogicProvider.notifier).signInWithApple().then((
+                    bool value,
+                  ) {
+                    if (!context.mounted) return;
+                    value
+                        ? context.go(SGRoute.home.route)
+                        : context.showErrorSnackBar(
+                            message:
+                                'Bir hata oluştu. Lütfen tekrar deneyiniz.',
+                          );
+                  });
+                },
+                borderRadius: 30,
+              ),
             ),
           ),
         ],
@@ -470,14 +467,9 @@ class LoginButtons extends StatelessWidget {
 }
 
 class OrDivider extends StatelessWidget {
-  const OrDivider({
-    super.key,
-    required this.size,
-    required this.context,
-  });
+  const OrDivider({super.key, required this.size});
 
   final Size size;
-  final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
@@ -485,43 +477,26 @@ class OrDivider extends StatelessWidget {
       width: size.width * 0.9,
       child: Row(
         children: <Widget>[
-          const Expanded(
-            child: Divider(
-              thickness: 1,
-            ),
-          ),
+          const Expanded(child: Divider(thickness: 1)),
           const Gap(10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              'veya',
-              style: context.textTheme.bodyMedium,
-            ),
+            child: Text('veya', style: context.textTheme.bodyMedium),
           ),
           const Gap(10),
-          const Expanded(
-            child: Divider(
-              thickness: 1,
-            ),
-          ),
+          const Expanded(child: Divider(thickness: 1)),
         ],
       ),
     );
   }
 }
 
-class SignInButton extends StatelessWidget {
-  const SignInButton({
-    super.key,
-    required this.ref,
-    required this.context,
-  });
+class SignInButton extends ConsumerWidget {
+  const SignInButton({super.key});
 
-  final WidgetRef ref;
-  final BuildContext context;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.9,
       height: 48,
@@ -531,40 +506,44 @@ class SignInButton extends StatelessWidget {
               .read(loginLogicProvider.notifier)
               .signInWithEmailAndPassword()
               .catchError((Object? err) {
-            if (!context.mounted) return false;
+                if (!context.mounted) return false;
 
-            if (err is FirebaseAuthException) {
-              switch (err.code) {
-                case 'invalid-email':
+                if (err is FirebaseAuthException) {
+                  switch (err.code) {
+                    case 'invalid-email':
+                      context.showErrorSnackBar(
+                        message: 'Lütfen geçerli bir e-posta adresi giriniz.',
+                      );
+                    case 'user-not-found':
+                      context.showErrorSnackBar(
+                        message: 'Bu e-posta adresi ile bir hesap bulunamadı.',
+                      );
+                    case 'wrong-password':
+                      context.showErrorSnackBar(
+                        message: 'Şifreniz yanlış. Lütfen tekrar deneyiniz.',
+                      );
+                    default:
+                      context.showErrorSnackBar(
+                        message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.',
+                      );
+                  }
+                } else if (err is FormatException) {
                   context.showErrorSnackBar(
-                      message: 'Lütfen geçerli bir e-posta adresi giriniz.');
-                  break;
-                case 'user-not-found':
+                    message: 'Lütfen e-posta adresi ve şifrenizi giriniz.',
+                  );
+                } else {
+                  Logger().e(err);
                   context.showErrorSnackBar(
-                      message: 'Bu e-posta adresi ile bir hesap bulunamadı.');
-                  break;
-                case 'wrong-password':
-                  context.showErrorSnackBar(
-                      message: 'Şifreniz yanlış. Lütfen tekrar deneyiniz.');
-                  break;
-                default:
-                  context.showErrorSnackBar(
-                      message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
-              }
-            } else if (err is FormatException) {
-              context.showErrorSnackBar(
-                  message: 'Lütfen e-posta adresi ve şifrenizi giriniz.');
-            } else {
-              Logger().e(err);
-              context.showErrorSnackBar(
-                  message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
-            }
-            return false;
-          }).then((bool value) {
-            if (value && context.mounted) {
-              context.go(SGRoute.home.route);
-            }
-          });
+                    message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.',
+                  );
+                }
+                return false;
+              })
+              .then((bool value) {
+                if (value && context.mounted) {
+                  context.go(SGRoute.home.route);
+                }
+              });
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: context.colorScheme.primary,
@@ -585,12 +564,8 @@ class SignInButton extends StatelessWidget {
 }
 
 class EmailText extends StatelessWidget {
-  const EmailText({
-    super.key,
-    required this.context,
-  });
+  const EmailText({super.key});
 
-  final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
@@ -599,18 +574,10 @@ class EmailText extends StatelessWidget {
 }
 
 class LoginText extends StatelessWidget {
-  const LoginText({
-    super.key,
-    required this.context,
-  });
-
-  final BuildContext context;
+  const LoginText({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Giriş Yap',
-      style: context.textTheme.labelSmall,
-    );
+    return Text('Giriş Yap', style: context.textTheme.labelSmall);
   }
 }

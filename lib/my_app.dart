@@ -5,17 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'config/router/app_router.dart';
-import 'config/theme/theme_logic.dart';
-import 'config/theme/theme_ui_model.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/config/theme/theme_logic.dart';
+import 'package:rescupaws/config/theme/theme_ui_model.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemeUiModel currentTheme = ref.watch(themeLogicProvider);
-    final GoRouter goRouter = ref.watch(goRouteProvider);
+    ThemeUiModel currentTheme = ref.watch(themeLogicProvider);
+    GoRouter goRouter = ref.watch(goRouteProvider);
     return MaterialApp.router(
       routerConfig: goRouter,
 

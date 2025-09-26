@@ -1,13 +1,12 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../models/favorite/favorite_model.dart';
-import '../../../utils/context_extensions.dart';
-import '../../home/widgets/loading_paw_widget.dart';
-import '../../widgets/bottom_nav_bar.dart';
-import 'logic/favorite_logic.dart';
-import 'widgets/favorite_card.dart';
+import 'package:rescupaws/models/favorite/favorite_model.dart';
+import 'package:rescupaws/ui/features/favorite/logic/favorite_logic.dart';
+import 'package:rescupaws/ui/features/favorite/widgets/favorite_card.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/ui/widgets/bottom_nav_bar.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class FavoritesScreen extends ConsumerStatefulWidget {
   const FavoritesScreen({super.key});
@@ -20,7 +19,7 @@ class FavoritesScreen extends ConsumerStatefulWidget {
 class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<GetFavoriteListResponse> favoriteList =
+    AsyncValue<GetFavoriteListResponse> favoriteList =
         ref.watch(fetchFavoriteListProvider);
     return Container(
       constraints: const BoxConstraints.expand(),
@@ -41,7 +40,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
           bottomNavigationBar: const PawBottomNavBar(),
           body: switch (favoriteList) {
             AsyncValue<GetFavoriteListResponse>(
-              :final GetFavoriteListResponse value
+              :GetFavoriteListResponse value
             ) =>
               (value.data.isEmpty)
                   ? const Center(child: Text('Henüz favori ilanınız yok'))
@@ -51,10 +50,10 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                         ref.refresh(fetchFavoriteListProvider);
                       },
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: _buildBody(value, context),
                       )),
-            AsyncValue<Object>(:final Object error?) => ErrorWidget(error),
+            AsyncValue<Object>(:Object error?) => ErrorWidget(error),
             _ => const Center(child: LoadingPawWidget()),
           }),
     );
@@ -71,18 +70,18 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
   }
 
   Widget _buildBody(GetFavoriteListResponse valueOrNull, BuildContext context) {
-    final bool showFav = ref.watch(favoriteLogicProvider).showFavorite;
-    final List<Favorite> favoriteList =
+    bool showFav = ref.watch(favoriteLogicProvider).showFavorite;
+    List<Favorite> favoriteList =
         valueOrNull.data.where((Favorite favorite) {
-      final int fav = showFav ? 1 : 0;
-      return favorite.is_favorite == fav;
+      int fav = showFav ? 1 : 0;
+      return favorite.isFavorite == fav;
     }).toList();
 
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: CustomSlidingSegmentedControl<int>(
               initialValue: showFav ? 1 : 0,
               decoration: BoxDecoration(
@@ -127,13 +126,13 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
               ),
               itemCount: favoriteList.length,
               itemBuilder: (BuildContext context, int index) {
-                final Favorite favorite = favoriteList[index];
+                Favorite favorite = favoriteList[index];
                 return FavoriteCard(favorite: favorite, items: <PopupMenuEntry<String>>[
                   PopupMenuItem<String>(
                   value: 'delete',
                   onTap: () {
-                    ref.read(deleteFavoriteProvider(favorite));
-                    ref.invalidate(fetchFavoriteListProvider);
+                    ref..invalidate(fetchFavoriteListProvider)
+                    ..read(deleteFavoriteProvider(favorite));
                   },
                   child: Text(
                     'Sil',

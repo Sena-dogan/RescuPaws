@@ -6,12 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
+import 'package:rescupaws/data/network/user/user_repository.dart';
+import 'package:rescupaws/firebase_options.dart';
+import 'package:rescupaws/ui/features/auth/domain/login_ui_model.dart';
+import 'package:rescupaws/utils/riverpod_extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../../firebase_options.dart';
-import '../../../../utils/firebase_utils.dart';
-import '../../../../utils/riverpod_extensions.dart';
-import '../domain/login_ui_model.dart';
 
 part 'login_logic.g.dart';
 
@@ -55,7 +54,7 @@ class LoginLogic extends _$LoginLogic {
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 60),
         verificationCompleted: (PhoneAuthCredential credential) async {
-          final TextEditingController? controller = state.otpController;
+          TextEditingController? controller = state.otpController;
           controller?.setText(credential.smsCode ?? '');
           state = state.copyWith(otpController: controller);
         },
@@ -68,9 +67,7 @@ class LoginLogic extends _$LoginLogic {
           setVertificationId(vertificationId);
           setResendToken(resendToken);
         },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          setVertificationId(verificationId);
-        },
+        codeAutoRetrievalTimeout: setVertificationId,
       );
       return true;
     } catch (e) {
@@ -87,12 +84,14 @@ class LoginLogic extends _$LoginLogic {
       throw const FormatException('Verification id is required');
     }
     try {
-      final AuthCredential credential = PhoneAuthProvider.credential(
+      AuthCredential credential = PhoneAuthProvider.credential(
         verificationId: state.vertificationId!,
         smsCode: smsCode,
       );
       setLogin(isLoading: true);
-      await currentUser.linkWithCredential(credential);
+  await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
+  // Upsert the user profile into Firestore after successful link
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -112,7 +111,7 @@ class LoginLogic extends _$LoginLogic {
         phoneNumber: state.numberController?.text,
         timeout: const Duration(seconds: 60),
         verificationCompleted: (PhoneAuthCredential credential) async {
-          final TextEditingController? controller = state.otpController;
+          TextEditingController? controller = state.otpController;
           controller?.setText(credential.smsCode ?? '');
           state = state.copyWith(otpController: controller);
         },
@@ -125,9 +124,7 @@ class LoginLogic extends _$LoginLogic {
           setVertificationId(verificationId);
           setResendToken(resendToken);
         },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          setVertificationId(verificationId);
-        },
+        codeAutoRetrievalTimeout: setVertificationId,
         forceResendingToken: state.resendToken,
       );
       return true;
@@ -142,9 +139,11 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> signInWithGoogle() async {
     try {
-      final AuthCredential credential = await googleAuthCredential;
+      AuthCredential credential = await googleAuthCredential();
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.signInWithCredential(credential);
+  await FirebaseAuth.instance.signInWithCredential(credential);
+  // Upsert the user profile into Firestore
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       if (e is PlatformException && e.code == 'sign_in_canceled') {
@@ -167,11 +166,13 @@ class LoginLogic extends _$LoginLogic {
       debugPrint(
           'AAAAAAAAAA my name is apple. i am 7 years old. i like to eat apples');
 
-      final AppleAuthProvider appleProvider = AppleAuthProvider()
+      AppleAuthProvider appleProvider = AppleAuthProvider()
         ..addScope('email')
         ..addScope('full_name');
       setLogin(isLoading: true);
-      await FirebaseAuth.instance.signInWithProvider(appleProvider);
+  await FirebaseAuth.instance.signInWithProvider(appleProvider);
+  // Upsert the user profile into Firestore
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -186,7 +187,7 @@ class LoginLogic extends _$LoginLogic {
     try {
       await FirebaseAuth.instance.signOut();
       // Check google sign in
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+      GoogleSignIn googleSignIn = GoogleSignIn();
       if (await googleSignIn.isSignedIn()) {
         await googleSignIn.disconnect();
         await googleSignIn.signOut();
@@ -201,13 +202,13 @@ class LoginLogic extends _$LoginLogic {
 
   Future<bool> removeUser() async {
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final bool isGoogleSignedIn = await googleSignIn.isSignedIn();
+      GoogleSignIn googleSignIn = GoogleSignIn();
+      bool isGoogleSignedIn = await googleSignIn.isSignedIn();
 
       if (isGoogleSignedIn) {
         // Reauthenticate with Google credential
         await FirebaseAuth.instance.currentUser
-            ?.reauthenticateWithCredential(await googleAuthCredential)
+            ?.reauthenticateWithCredential(await googleAuthCredential())
             .then((UserCredential value) async {
           await FirebaseAuth.instance.currentUser?.delete();
           await googleSignIn.disconnect();
@@ -215,7 +216,7 @@ class LoginLogic extends _$LoginLogic {
         });
       } else {
         // Reauthenticate with provider
-        final AppleAuthProvider appleProvider = AppleAuthProvider();
+        AppleAuthProvider appleProvider = AppleAuthProvider();
         await FirebaseAuth.instance.currentUser
             ?.reauthenticateWithProvider(appleProvider)
             .then((UserCredential value) async {
@@ -230,9 +231,9 @@ class LoginLogic extends _$LoginLogic {
     }
   }
 
-  Future<AuthCredential> get googleAuthCredential async {
+  Future<AuthCredential> googleAuthCredential() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+    GoogleSignInAccount? googleUser = await GoogleSignIn(
       /// Check the os
       clientId: Platform.isIOS
           ? DefaultFirebaseOptions.currentPlatform.iosClientId
@@ -243,10 +244,10 @@ class LoginLogic extends _$LoginLogic {
       ],
     ).signIn();
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
+    GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
     // Create a new credential
-    final AuthCredential credential = GoogleAuthProvider.credential(
+    AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
@@ -308,6 +309,8 @@ class LoginLogic extends _$LoginLogic {
           .then((UserCredential value) {
         Logger().i(value.user?.metadata);
       });
+  // Upsert the user profile into Firestore
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       Logger().e(e.toString());
@@ -330,6 +333,8 @@ class LoginLogic extends _$LoginLogic {
         Logger().i(value.user?.metadata);
         await value.user?.sendEmailVerification();
       });
+  // Upsert the user profile into Firestore
+  await ref.read(getUserRepositoryProvider).upsertCurrentUser();
       return true;
     } catch (e) {
       Logger().e(e.toString());

@@ -7,13 +7,13 @@ part 'images_upload.g.dart';
 abstract class ImagesUploads with _$ImagesUploads {
   factory ImagesUploads({
     int? id,
-    String? user_id,
-    int? class_field_id,
+    @JsonKey(name: 'user_id') String? userId,
+    @JsonKey(name: 'class_field_id') int? classFieldId,
     String? path,
-    String? created_at,
-    String? updated_at,
-    String? deleted_at,
-    String? image_url,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+    @JsonKey(name: 'deleted_at') String? deletedAt,
+    @JsonKey(name: 'image_url') String? imageUrl,
   }) = _ImagesUploads;
 
   factory ImagesUploads.fromJson(Map<String, dynamic> json) =>

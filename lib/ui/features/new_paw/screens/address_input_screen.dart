@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/data/network/location/location_repository.dart';
+import 'package:rescupaws/models/location_response.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/ui/features/new_paw/model/new_paw_ui_model.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/save_button.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 import 'package:searchable_listview/searchable_listview.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../data/network/location/location_repository.dart';
-import '../../../../models/location_response.dart';
-import '../../../../utils/context_extensions.dart';
-import '../logic/new_paw_logic.dart';
-import '../model/new_paw_ui_model.dart';
-import '../widgets/save_button.dart';
 
 class AddressInputScreen extends ConsumerStatefulWidget {
   const AddressInputScreen({super.key});
@@ -24,11 +23,11 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
   @override
   Widget build(BuildContext context) {
     // Load cities for Turkey (countryId = 1)
-    final AsyncValue<GetLocationsResponse> cities =
+    AsyncValue<GetLocationsResponse> cities =
         ref.watch(fetchCitiesProvider(1));
-    final NewPawUiModel newPawLogic = ref.watch(newPawLogicProvider);
-    final String city = newPawLogic.city?.name ?? 'Giresun';
-    final String district = newPawLogic.district?.name == null && city == null ? 'Bulancak' : '';
+    NewPawUiModel newPawLogic = ref.watch(newPawLogicProvider);
+    String? city = newPawLogic.city?.name;
+    String? district = newPawLogic.district?.name;
     return Scaffold(
       backgroundColor: context.colorScheme.surface,
       appBar: AppBar(
@@ -51,7 +50,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () async {
                           debugPrint('Konum');
-                          await showModalBottomSheet(
+                          await showModalBottomSheet<void>(
                               context: context,
                               useSafeArea: true,
                               isScrollControlled: true,
@@ -115,7 +114,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                                                 return ListTile(
                                                   title: Text(item.name),
                                                   onTap: () async {
-                                                    final GetLocationsResponse
+                                                    GetLocationsResponse
                                                         response = await ref
                                                             .read(
                                                                 newPawLogicProvider
@@ -139,7 +138,7 @@ class _AddressInputScreenState extends ConsumerState<AddressInputScreen> {
                       ),
                       const Gap(10),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: TextFormField(
                           validator: (String? value) {
                             if (value != null && value.trim().isEmpty) {

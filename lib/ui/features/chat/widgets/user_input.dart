@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../utils/context_extensions.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class UserInput extends ConsumerStatefulWidget {
   const UserInput({
@@ -9,7 +8,7 @@ class UserInput extends ConsumerStatefulWidget {
     required this.onSendMessage,
   });
 
-  final Function(String) onSendMessage;
+  final void Function(String) onSendMessage;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _UserInputState();
@@ -32,7 +31,7 @@ class _UserInputState extends ConsumerState<UserInput> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Padding(
       padding: EdgeInsets.only(
         bottom: size.height * 0.05,
@@ -72,7 +71,7 @@ class _UserInputState extends ConsumerState<UserInput> {
                 color: Colors.white,
               ),
               onPressed: () {
-                final String message = _messageController.text;
+                String message = _messageController.text;
                 _messageController.clear();
                 if (message.isNotEmpty) {
                   widget.onSendMessage(message);

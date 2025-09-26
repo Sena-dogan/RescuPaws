@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class AdaptiveImage extends StatelessWidget {
@@ -22,61 +22,111 @@ class AdaptiveImage extends StatelessWidget {
     if (imageUrl.startsWith('data:image')) {
       try {
         // Extract base64 data from data URI
-        final String base64Data = imageUrl.split(',')[1];
-        final Uint8List bytes = base64Decode(base64Data);
-        
+        String base64Data = imageUrl.split(',')[1];
+        Uint8List bytes = base64Decode(base64Data);
+
         return Image.memory(
           bytes,
           fit: fit,
-          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-            if (errorWidget != null) {
-              return errorWidget!(context, imageUrl, error);
-            }
-            return Image.network(
-              'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg',
-              fit: fit,
-            );
-          },
+          errorBuilder:
+              (BuildContext context, Object error, StackTrace? stackTrace) {
+                debugPrint(
+                  'Error occured while loading image from data URI: $error',
+                );
+                if (errorWidget != null) {
+                  return errorWidget!(context, imageUrl, error);
+                }
+
+                return const Icon(Icons.broken_image);
+              },
         );
       } catch (e) {
+        debugPrint('Failed to parse data URI: $e');
         // If parsing fails, show error widget
         if (errorWidget != null) {
           return errorWidget!(context, imageUrl, e);
         }
-        return Image.network(
-          'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg',
-          fit: fit,
-        );
+        return const Icon(Icons.broken_image);
       }
     }
-    
-    // Check if it's a local file path
-    if (imageUrl.startsWith('/')) {
-      return Image.asset(
-        imageUrl,
-        fit: fit,
-        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-          if (errorWidget != null) {
-            return errorWidget!(context, imageUrl, error);
-          }
-          return Image.network(
-            'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg',
-            fit: fit,
-          );
-        },
-      );
+
+    // Check if it's a base64 string (not a data URI)
+    if (_isValidBase64(imageUrl)) {
+      try {
+        Uint8List bytes = base64Decode(imageUrl);
+        return Image.memory(
+          bytes,
+          fit: fit,
+          errorBuilder:
+              (BuildContext context, Object error, StackTrace? stackTrace) {
+                debugPrint(
+                  'Error occured while loading image from base64: $error',
+                );
+                if (errorWidget != null) {
+                  return errorWidget!(context, imageUrl, error);
+                }
+                return const Icon(Icons.broken_image);
+              },
+        );
+      } catch (e) {
+        debugPrint('Failed to decode base64: $e');
+        if (errorWidget != null) {
+          return errorWidget!(context, imageUrl, e);
+        }
+        return const Icon(Icons.broken_image);
+      }
+    }
+
+    // Check if it's a file path (absolute path to local file)
+    if (imageUrl.startsWith('/') || imageUrl.contains('/')) {
+      File imageFile = File(imageUrl);
+      if (imageFile.existsSync()) {
+        return Image.file(
+          imageFile,
+          fit: fit,
+          errorBuilder:
+              (BuildContext context, Object error, StackTrace? stackTrace) {
+                debugPrint(
+                  'Error occured while loading image from file: $error',
+                );
+                if (errorWidget != null) {
+                  return errorWidget!(context, imageUrl, error);
+                }
+                return const Icon(Icons.broken_image);
+              },
+        );
+      } else {
+        debugPrint('Image file does not exist: $imageUrl');
+        if (errorWidget != null) {
+          return errorWidget!(context, imageUrl, 'File not found');
+        }
+        return const Icon(Icons.broken_image);
+      }
     }
 
     // Default to CachedNetworkImage for URLs
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      fit: fit,
-      errorWidget: errorWidget ?? (BuildContext context, String url, Object error) {
-        return Image.network(
-          'https://i.pinimg.com/736x/fc/05/5f/fc055f6e40faed757050d459b66e88b0.jpg',
-          fit: fit,
-        );
-      },
-    );
+    return const Icon(Icons.image);
+  }
+
+  /// Validates if a string is valid base64
+  bool _isValidBase64(String base64String) {
+    if (base64String.isEmpty) return false;
+
+    try {
+      // Remove data URI prefix if present
+      String cleanBase64 = base64String;
+      if (base64String.startsWith('data:')) {
+        int commaIndex = base64String.indexOf(',');
+        if (commaIndex != -1) {
+          cleanBase64 = base64String.substring(commaIndex + 1);
+        }
+      }
+
+      // Try to decode - if it fails, it's not valid base64
+      base64Decode(cleanBase64);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

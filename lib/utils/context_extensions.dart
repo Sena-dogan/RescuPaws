@@ -22,7 +22,7 @@ extension ContextExtension on BuildContext {
     String actionText = 'OK',
     void Function()? onActionPressed,
   }) {
-    final SnackBar snackBar = SnackBar(
+    SnackBar snackBar = SnackBar(
       elevation: 0,
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
@@ -47,7 +47,7 @@ extension ContextExtension on BuildContext {
     String actionText = 'OK',
     void Function()? onActionPressed,
   }) {
-    final MaterialBanner materialBanner = MaterialBanner(
+    MaterialBanner materialBanner = MaterialBanner(
       elevation: 0,
       backgroundColor: Colors.transparent,
       forceActionsBelow: true,
@@ -74,7 +74,7 @@ extension ListGutter on List<Widget> {
   /// This method adds a gutter between each widget in the list.
   /// The gutter is a SizedBox with a height of 16.
   List<Widget> seperate(double space) {
-    final List<Widget> list = <Widget>[];
+    List<Widget> list = <Widget>[];
     for (int i = 0; i < length; i++) {
       list.add(this[i]);
       if (i != length - 1) {

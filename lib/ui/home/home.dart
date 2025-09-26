@@ -5,20 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../utils/context_extensions.dart';
-import '../../config/router/app_router.dart';
-import '../../constants/assets.dart';
-import '../../models/paw_entry.dart';
-import '../../utils/error_widgett.dart';
-import '../widgets/add_nav_button.dart';
-import '../widgets/bottom_nav_bar.dart';
-import 'logic/home_screen_logic.dart';
-import 'swipe_card/swipe_card.dart';
-import 'swipe_card/swipe_card_logic.dart';
-import 'widgets/left_button.dart';
-import 'widgets/loading_paw_widget.dart';
-import 'widgets/right_button.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/ui/home/logic/home_screen_logic.dart';
+import 'package:rescupaws/ui/home/swipe_card/swipe_card.dart';
+import 'package:rescupaws/ui/home/swipe_card/swipe_card_logic.dart';
+import 'package:rescupaws/ui/home/widgets/left_button.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/ui/home/widgets/right_button.dart';
+import 'package:rescupaws/ui/widgets/add_nav_button.dart';
+import 'package:rescupaws/ui/widgets/bottom_nav_bar.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
+import 'package:rescupaws/utils/error_widgett.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -34,7 +33,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> setupInteractedMessage() async {
     // Get any messages which caused the application to open from
     // a terminated state.
-    final RemoteMessage? initialMessage =
+    RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
@@ -61,7 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<GetPawEntryResponse> pawEntryLogic =
+    AsyncValue<GetPawEntryResponse> pawEntryLogic =
         ref.watch(fetchPawEntriesProvider);
 
     return Container(
@@ -80,7 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             onRefresh: () async => ref.refresh(fetchPawEntriesProvider.future),
             child: switch (pawEntryLogic) {
               AsyncValue<GetPawEntryResponse>(
-                :final GetPawEntryResponse value?
+                :GetPawEntryResponse value?
               ) =>
                 SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(
@@ -88,7 +87,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     child: _buildBody(context, value.data)),
               // An error is available, so we render it.
-              AsyncValue(:final Object error?) => PawErrorWidget(
+              AsyncValue(:Object error?) => PawErrorWidget(
                   error: error,
                   onRefresh: () async =>
                       ref.refresh(fetchPawEntriesProvider.future),
@@ -186,18 +185,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return AppBar(
       automaticallyImplyLeading: false,
       leading: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Image.asset(
           Assets.RescuPaws,
           height: 32,
           width: 128,
+          color: context.colorScheme.onSurface,
         ),
       ),
       leadingWidth: 128 + 20 * 2,
       backgroundColor: Colors.transparent,
       actions: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: IconButton(
             onPressed: () {
               context.push(SGRoute.noNotif.route);

@@ -2,24 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../constants/assets.dart';
-import '../../../../models/new_paw_model.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../home/widgets/loading_paw_widget.dart';
-import '../logic/new_paw_logic.dart';
-import '../model/new_paw_ui_model.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/models/new_paw_model.dart';
+import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
+import 'package:rescupaws/ui/features/new_paw/model/new_paw_ui_model.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class NewPawScreen extends ConsumerWidget {
   const NewPawScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final NewPawUiModel newPawUiModel = ref.watch(newPawLogicProvider);
-    final AsyncValue<NewPawResponse> createPawEntry =
-        ref.watch(createPawEntryProvider(newPawUiModel.toNewPawModel()));
-    return Container(
+    NewPawUiModel newPawUiModel = ref.watch(newPawLogicProvider);
+  AsyncValue<NewPawResponse> createPawEntry =
+    ref.watch(createPawEntryProvider(newPawUiModel.toPawEntry()));
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         gradient: LinearGradient(

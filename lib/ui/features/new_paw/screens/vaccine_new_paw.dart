@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../utils/context_extensions.dart';
-import '../widgets/vaccine_create_body.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/vaccine_create_body.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class VaccinesNewPaw extends ConsumerWidget {
   const VaccinesNewPaw({super.key});

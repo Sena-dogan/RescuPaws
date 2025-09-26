@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../data/enums/message_type.dart';
+import 'package:rescupaws/data/enums/message_type.dart';
 
 part 'message.freezed.dart';
 part 'message.g.dart';

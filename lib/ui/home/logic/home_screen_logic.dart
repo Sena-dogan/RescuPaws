@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
+import 'package:rescupaws/data/network/favorite/favorite_repository.dart';
+import 'package:rescupaws/data/network/paw_entry/paw_entry_repository.dart';
+import 'package:rescupaws/models/favorite/create_favorite_request.dart';
+import 'package:rescupaws/models/favorite/create_favorite_response.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/ui/home/logic/home_screen_ui_model.dart';
+import 'package:rescupaws/ui/home/swipe_card/swipe_card_logic.dart';
+import 'package:rescupaws/utils/firebase_utils.dart';
+import 'package:rescupaws/utils/riverpod_extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../data/network/favorite/favorite_repository.dart';
-import '../../../data/network/paw_entry/paw_entry_repository.dart';
-import '../../../models/favorite/create_favorite_request.dart';
-import '../../../models/favorite/create_favorite_response.dart';
-import '../../../models/paw_entry.dart';
-import '../../../utils/firebase_utils.dart';
-import '../../../utils/image_converter.dart';
-import '../../../utils/riverpod_extensions.dart';
-import '../swipe_card/swipe_card_logic.dart';
-import 'home_screen_ui_model.dart';
 
 part 'home_screen_logic.g.dart';
 
@@ -21,28 +19,24 @@ Future<GetPawEntryResponse> fetchPawEntries(Ref ref) async {
   /// OLMMM BU COK GUZEL BIR SEY
   ref.cacheFor(const Duration(minutes: 5));
 
-  final PawEntryRepository pawEntryRepository =
+  PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
-  final Either<PawEntryError, GetPawEntryResponse> pawEntries =
+  Either<PawEntryError, GetPawEntryResponse> pawEntries =
       await pawEntryRepository.getPawEntry();
   
   return await pawEntries.fold((PawEntryError l) async {
     ref.read(homeScreenLogicProvider.notifier).setError(l.error);
     return GetPawEntryResponse(data: <PawEntry>[]);
   }, (GetPawEntryResponse pawEntries) async {
-    // Convert base64 images to data URIs for all entries
-    final List<PawEntry> convertedEntries = await ImageConverter.convertMultipleEntries(
-      pawEntries.data,
-    );
-    
-    final GetPawEntryResponse updatedResponse = GetPawEntryResponse(data: convertedEntries);
-    final GetPawEntryResponse randomizedResponse = updatedResponse.randomize();
+    // No conversion needed - using images field directly
+    GetPawEntryResponse updatedResponse = GetPawEntryResponse(data: pawEntries.data);
+    GetPawEntryResponse randomizedResponse = updatedResponse.randomize();
     
     ref
         .read(swipeCardLogicProvider.notifier)
         .setId(randomizedResponse.data.firstOrNull?.id ?? 0);
     ref.read(homeScreenLogicProvider.notifier).setPawEntries(randomizedResponse.data);
-    Logger().i('Paw entries fetched and images converted successfully.');
+    Logger().i('Paw entries fetched successfully.');
     return randomizedResponse;
   });
 }
@@ -51,30 +45,26 @@ Future<GetPawEntryResponse> fetchPawEntries(Ref ref) async {
 
 /// Fetches the paw entries of the current user.
 Future<GetPawEntryResponse> fetchUserPawEntries(Ref ref) async {
-  final PawEntryRepository pawEntryRepository =
+  PawEntryRepository pawEntryRepository =
       ref.watch(getPawEntryRepositoryProvider);
-  final Either<PawEntryError, GetPawEntryResponse> pawEntries =
+  Either<PawEntryError, GetPawEntryResponse> pawEntries =
       await pawEntryRepository.getPawEntryById();
   
   return await pawEntries.fold((PawEntryError l) async {
     return GetPawEntryResponse(data: <PawEntry>[]);
   }, (GetPawEntryResponse pawEntries) async {
-    // Convert base64 images to data URIs for user entries as well
-    final List<PawEntry> convertedEntries = await ImageConverter.convertMultipleEntries(
-      pawEntries.data,
-    );
-    
-    debugPrint('User paw entries fetched and images converted successfully.');
-    return GetPawEntryResponse(data: convertedEntries);
+    // No conversion needed - using images field directly
+    debugPrint('User paw entries fetched successfully.');
+    return GetPawEntryResponse(data: pawEntries.data);
   });
 }
 
 @riverpod
 Future<CreateFavoriteResponse> createFavorite(
     Ref ref, CreateFavoriteRequest request) async {
-  final FavoriteRepository favoriteRepository =
+  FavoriteRepository favoriteRepository =
       ref.watch(getFavoriteRepositoryProvider);
-  final CreateFavoriteResponse createFavoriteResponse =
+  CreateFavoriteResponse createFavoriteResponse =
       await favoriteRepository.createFavorite(request);
   return createFavoriteResponse;
 }
@@ -113,8 +103,8 @@ class HomeScreenLogic extends _$HomeScreenLogic {
   }
 
   void setSelectedImageIndex(int cardIndex, int imageIndex) {
-    final List<PawEntry> pawEntries = List<PawEntry>.from(state.pawEntries);
-    final PawEntry pawEntry = pawEntries[cardIndex];
+    List<PawEntry> pawEntries = List<PawEntry>.from(state.pawEntries);
+    PawEntry pawEntry = pawEntries[cardIndex];
     pawEntries[cardIndex] = pawEntry.copyWith(selectedImageIndex: imageIndex);
     state = state.copyWith(pawEntries: pawEntries);
   }
@@ -124,8 +114,8 @@ class HomeScreenLogic extends _$HomeScreenLogic {
       createFavoriteProvider(
         CreateFavoriteRequest(
             uid: currentUserUid,
-            class_field_id: id,
-            is_favorite: isFavorite ? 1 : 0),
+            classFieldId: id,
+            isFavorite: isFavorite ? 1 : 0),
       ),
     );
   }

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../config/router/app_router.dart';
-import '../../../../data/enums/detail_enums.dart';
-import '../../../../models/paw_entry_detail.dart';
-import '../../../../utils/context_extensions.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/data/enums/detail_enums.dart';
+import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class Characteristics extends StatelessWidget {
   const Characteristics({
@@ -17,7 +17,7 @@ class Characteristics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String weight = pawEntryDetailResponse!.pawEntryDetail!.weight ?? '';
+    String weight = pawEntryDetailResponse!.pawEntryDetail!.weight ?? '';
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -44,9 +44,9 @@ class Characteristics extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const CharacteristicItem(
+            CharacteristicItem(
               title: 'Breed',
-              value: 'category',
+              value: pawEntryDetailResponse!.pawEntryDetail?.sub_category_id ?? ''
             ),
             const Gap(30),
             CharacteristicItem(

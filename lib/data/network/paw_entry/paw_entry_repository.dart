@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
+// Import response DTO for creation API result
+import 'package:rescupaws/models/new_paw_model.dart' show NewPawResponse;
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/utils/firebase_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../models/new_paw_model.dart';
-import '../../../models/paw_entry.dart';
-import '../../../models/paw_entry_detail.dart';
-import '../../../utils/firebase_utils.dart';
 
 part 'paw_entry_repository.g.dart';
 
@@ -17,11 +17,11 @@ class PawEntryRepository {
 
   Future<Either<PawEntryError, GetPawEntryResponse>> getPawEntry() async {
     try {
-      final QuerySnapshot<Map<String, dynamic>> snap = await _firestore
+      QuerySnapshot<Map<String, dynamic>> snap = await _firestore
           .collection('classfields')
           .orderBy('created_at', descending: true)
           .get();
-      final List<PawEntry> entries = snap.docs
+      List<PawEntry> entries = snap.docs
           .map((QueryDocumentSnapshot<Map<String, dynamic>> d) =>
               PawEntry.fromJson(d.data()))
           .toList();
@@ -33,12 +33,12 @@ class PawEntryRepository {
 
   Future<Either<PawEntryError, GetPawEntryResponse>> getPawEntryById() async {
     try {
-      final QuerySnapshot<Map<String, dynamic>> snap = await _firestore
+      QuerySnapshot<Map<String, dynamic>> snap = await _firestore
           .collection('classfields')
           .where('user_id', isEqualTo: currentUserUid)
           .orderBy('created_at', descending: true)
           .get();
-      final List<PawEntry> entries = snap.docs
+      List<PawEntry> entries = snap.docs
           .map((QueryDocumentSnapshot<Map<String, dynamic>> d) =>
               PawEntry.fromJson(d.data()))
           .toList();
@@ -48,12 +48,19 @@ class PawEntryRepository {
     }
   }
 
-  Future<NewPawResponse> createPawEntry(NewPawModel newPawModel) async {
+  Future<NewPawResponse> createPawEntry(PawEntry pawEntry) async {
     try {
-      // Create a numeric ID (milliseconds) to satisfy model requirements
-      final int id = DateTime.now().millisecondsSinceEpoch;
-
-      await _firestore.collection('classfields').doc(id.toString()).set(newPawModel.toJson());
+      // Use provided id to keep consistency across app and Firebase doc id
+      Map<String, dynamic> data = pawEntry.toJson();
+      if (pawEntry.user_id != null && pawEntry.user_id!.isNotEmpty) {
+        data['advertiser_ref'] = _firestore
+            .collection('users')
+            .doc(pawEntry.user_id);
+      }
+      await _firestore
+          .collection('classfields')
+          .doc(pawEntry.id.toString())
+          .set(data);
       return NewPawResponse(status: 'success', message: 'Created', errors: null);
     } catch (e) {
       return NewPawResponse(status: 'error', message: e.toString(), errors: <String, dynamic>{});
@@ -69,8 +76,8 @@ class PawEntryRepository {
           .doc(classfieldsId)
           .get();
       if (!doc.exists) {
-        final int parsed = int.tryParse(classfieldsId) ?? -1;
-        final QuerySnapshot<Map<String, dynamic>> snap = await _firestore
+        int parsed = int.tryParse(classfieldsId) ?? -1;
+        QuerySnapshot<Map<String, dynamic>> snap = await _firestore
             .collection('classfields')
             .where('id', isEqualTo: parsed)
             .limit(1)
@@ -80,9 +87,24 @@ class PawEntryRepository {
         }
       }
 
-      final Map<String, dynamic>? json = doc.data();
-      final PawEntryDetail? detail =
-          json == null ? null : PawEntryDetail.fromJson(json);
+      // Build mutable JSON and resolve advertiser reference if present
+      Map<String, dynamic> json =
+          Map<String, dynamic>.from(doc.data() ?? <String, dynamic>{});
+
+      Object? advRefObj = json['advertiser_ref'];
+      if (advRefObj is DocumentReference) {
+        DocumentSnapshot<Map<String, dynamic>> advSnap =
+            await advRefObj.get() as DocumentSnapshot<Map<String, dynamic>>;
+        Map<String, dynamic>? adv = advSnap.data();
+        if (adv != null) {
+          // Attach under 'user' so UI can access data.user?.displayName
+          json['user'] = adv;
+          json['user_id'] ??= adv['uid'];
+        }
+      }
+
+      PawEntry? detail =
+          json.isEmpty ? null : PawEntry.fromJson(json);
       return GetPawEntryDetailResponse(
         data: detail,
       );

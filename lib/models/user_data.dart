@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'meta_data.dart';
-import 'provider_data.dart';
+import 'package:rescupaws/models/meta_data.dart';
+import 'package:rescupaws/models/provider_data.dart';
 
 part 'user_data.freezed.dart';
 part 'user_data.g.dart';
@@ -23,6 +23,7 @@ abstract class UserData with _$UserData {
 
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
+
 }
 
 extension UserDataExtension on User {

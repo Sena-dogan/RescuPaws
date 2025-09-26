@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../models/favorite/favorite_model.dart';
+import 'package:rescupaws/models/favorite/favorite_model.dart';
 
 part 'favorite_ui_model.freezed.dart';
 

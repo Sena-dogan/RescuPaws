@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../models/chat/message.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../home/widgets/loading_paw_widget.dart';
-import '../../detail/widgets/advertiser_info.dart';
-import '../logic/chat_logic.dart';
-import '../widgets/message_item.dart';
-import '../widgets/user_input.dart';
+import 'package:rescupaws/models/chat/message.dart';
+import 'package:rescupaws/ui/features/chat/logic/chat_logic.dart';
+import 'package:rescupaws/ui/features/chat/widgets/message_item.dart';
+import 'package:rescupaws/ui/features/chat/widgets/user_input.dart';
+import 'package:rescupaws/ui/features/detail/widgets/advertiser_info.dart';
+import 'package:rescupaws/ui/home/widgets/loading_paw_widget.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class MessageScreen extends ConsumerWidget {
   MessageScreen({
@@ -25,12 +24,12 @@ class MessageScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
 
-    final AsyncValue<List<MessageModel>> messagesStream =
+    AsyncValue<List<MessageModel>> messagesStream =
         ref.watch(getMessagesListProvider(receiverId));
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
          gradient: LinearGradient(
@@ -68,13 +67,12 @@ class MessageScreen extends ConsumerWidget {
             // display messages
             Expanded(
               child: switch (messagesStream) {
-                AsyncValue<Object>(:final Object error?) =>
+                AsyncValue<Object>(:Object error?) =>
                   Text('Error: $error'),
                 AsyncValue<List<MessageModel>>(
-                  :final List<MessageModel> value?
+                  :List<MessageModel> value?
                 ) =>
-                  value != null
-                      ? ListView.builder(
+                  ListView.builder(
                           itemCount: value.length,
                           itemBuilder: (BuildContext context, int index) {
                             return MessageItem(
@@ -82,8 +80,7 @@ class MessageScreen extends ConsumerWidget {
                               message: value[index],
                             );
                           },
-                        )
-                      : const Center(child: Text('No messages')),
+                        ),
                 _ => const Center(child: LoadingPawWidget()),
               },
             ),

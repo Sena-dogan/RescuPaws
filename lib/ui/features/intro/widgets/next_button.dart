@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/assets.dart';
-import '../../../../utils/context_extensions.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class NextButton extends StatelessWidget {
   const NextButton({super.key, required this.onPressed});
-  final Function() onPressed;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {

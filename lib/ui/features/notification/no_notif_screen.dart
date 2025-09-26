@@ -2,25 +2,22 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rescupaws/constants/assets.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
+import 'package:rescupaws/utils/error_widgett.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../constants/assets.dart';
-import '../../../utils/context_extensions.dart';
-import '../../../utils/error_widgett.dart';
 
 part 'no_notif_screen.g.dart';
 
 @riverpod
 Future<List<RemoteMessage>> getMessages(Ref ref) async {
-  final List<RemoteMessage> messages = <RemoteMessage>[];
-  final RemoteMessage? initialMessage =
+  List<RemoteMessage> messages = <RemoteMessage>[];
+  RemoteMessage? initialMessage =
       await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
     messages.add(initialMessage);
   }
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    messages.add(message);
-  });
+  FirebaseMessaging.onMessageOpenedApp.listen(messages.add);
   return messages;
 }
 
@@ -29,7 +26,7 @@ class NoNotifScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<RemoteMessage>> getMessagesAsyncValue =
+    AsyncValue<List<RemoteMessage>> getMessagesAsyncValue =
         ref.watch(getMessagesProvider);
     return Container(
         constraints: const BoxConstraints.expand(),
@@ -75,7 +72,7 @@ class NoNotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
+    Size size = MediaQuery.sizeOf(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[

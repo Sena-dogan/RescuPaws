@@ -4,12 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
-import '../../../../config/router/app_router.dart';
-import '../../../../utils/context_extensions.dart';
-import '../../../widgets/app_bar_gone.dart';
-import '../../new_paw/widgets/save_button.dart';
-import 'login_logic.dart';
+import 'package:rescupaws/config/router/app_router.dart';
+import 'package:rescupaws/ui/features/auth/presentation/login_logic.dart';
+import 'package:rescupaws/ui/features/new_paw/widgets/save_button.dart';
+import 'package:rescupaws/ui/widgets/app_bar_gone.dart';
+import 'package:rescupaws/utils/context_extensions.dart';
 
 class NumberInputScreen extends ConsumerStatefulWidget {
   const NumberInputScreen({super.key});
@@ -25,7 +24,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
   @override
   Widget build(BuildContext context) {
     //TODO: Initialize the controller in better way. Maybe in initState
-    final TextEditingController? numberController =
+    TextEditingController? numberController =
         ref.watch(loginLogicProvider).numberController;
 
     return Container(
@@ -45,7 +44,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
         appBar: const EmptyAppBar(),
         backgroundColor: Colors.transparent,
         body: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -67,7 +66,7 @@ class _NumberInputScreenState extends ConsumerState<NumberInputScreen> {
                     MaskTextInputFormatter(
                       initialText: '+90',
                       mask: '+__ ___ ___ ____',
-                      filter: <String, RegExp>{'_': RegExp(r'[0-9]')},
+                      filter: <String, RegExp>{'_': RegExp('[0-9]')},
                     ),
                   ],
                   validator: (String? value) {

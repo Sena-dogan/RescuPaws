@@ -2,9 +2,9 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:photo_manager/photo_manager.dart';
-
-import '../../../../models/location_response.dart';
-import '../../../../models/new_paw_model.dart';
+import 'package:rescupaws/models/location_response.dart';
+import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/models/vaccine_info.dart';
 
 part 'new_paw_ui_model.freezed.dart';
 
@@ -40,22 +40,23 @@ abstract class NewPawUiModel with _$NewPawUiModel {
   }) = _NewPawUiModel;
 }
 
-// Extension of NewPawUiModel so that we can convert it to NewPawModel easily
+// Extension of NewPawUiModel so that we can convert it to PawEntry easily
 extension NewPawExtension on NewPawUiModel {
-  NewPawModel toNewPawModel() {
+  PawEntry toPawEntry() {
     String weight = this.weight!.toStringAsFixed(1);
     if (isKg) {
       weight = '${this.weight} kg';
     } else {
       weight = '${this.weight} lbs';
     }
-    return NewPawModel(
+    int id = DateTime.now().millisecondsSinceEpoch;
+    return PawEntry(
+      id: id,
       address: address,
       age: age,
-
       /// Using both category_id (species) and sub_category_id (breed)
-      category_id: category_id, // This will be the species (dog/cat)
-      sub_category_id: sub_category_id, // This will be the breed
+      category_id: category_id, // species (dog/cat)
+      sub_category_id: sub_category_id, // breed
       city_id: city?.id,
       country_id: 1,
       description: description,
@@ -66,14 +67,17 @@ extension NewPawExtension on NewPawUiModel {
       image: imageBytes,
       user_id: user_id,
       weight: weight,
-      rabies_vaccine: rabies_vaccine ? 1 : 0,
-      distemper_vaccine: distemper_vaccine ? 1 : 0,
-      hepatitis_vaccine: hepatitis_vaccine ? 1 : 0,
-      parvovirus_vaccine: parvovirus_vaccine ? 1 : 0,
-      bordotella_vaccine: bordotella_vaccine ? 1 : 0,
-      leptospirosis_vaccine: leptospirosis_vaccine ? 1 : 0,
-      panleukopenia_vaccine: panleukopenia_vaccine ? 1 : 0,
-      herpesvirus_and_calicivirus_vaccine: herpesvirus_and_calicivirus_vaccine ? 1 : 0,
+      vaccine_info: VaccineInfo(
+        rabiesVaccine: rabies_vaccine,
+        distemperVaccine: distemper_vaccine,
+        hepatitisVaccine: hepatitis_vaccine,
+        parvovirusVaccine: parvovirus_vaccine,
+        bordotellaVaccine: bordotella_vaccine,
+        leptospirosisVaccine: leptospirosis_vaccine,
+        panleukopeniaVaccine: panleukopenia_vaccine,
+        herpesvirusAndCalicivirusVaccine:
+            herpesvirus_and_calicivirus_vaccine,
+      ),
     );
   }
 }

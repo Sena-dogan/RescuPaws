@@ -10,7 +10,7 @@ Future<void> initHive() async {
     await Hive.openBox<String>('prefs');
     return;
   }
-  final Directory tmpDir = await getTemporaryDirectory();
+  Directory tmpDir = await getTemporaryDirectory();
   await Hive.initFlutter(tmpDir.toString());
   await Hive.openBox<String>('prefs');
 }
