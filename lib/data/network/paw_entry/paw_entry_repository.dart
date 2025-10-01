@@ -36,16 +36,36 @@ class PawEntryRepository {
       QuerySnapshot<Map<String, dynamic>> snap = await _firestore
           .collection('classfields')
           .where('user_id', isEqualTo: currentUserUid)
-          .orderBy('created_at', descending: true)
           .get();
       List<PawEntry> entries = snap.docs
           .map((QueryDocumentSnapshot<Map<String, dynamic>> d) =>
               PawEntry.fromJson(d.data()))
           .toList();
+      entries.sort((PawEntry a, PawEntry b) {
+        DateTime? aDate = _parseCreatedAt(a.created_at);
+        DateTime? bDate = _parseCreatedAt(b.created_at);
+        if (aDate == null && bDate == null) {
+          return 0;
+        }
+        if (aDate == null) {
+          return 1;
+        }
+        if (bDate == null) {
+          return -1;
+        }
+        return bDate.compareTo(aDate);
+      });
       return right(GetPawEntryResponse(data: entries));
     } catch (e) {
       return left(PawEntryError(error: e.toString()));
     }
+  }
+
+  DateTime? _parseCreatedAt(String? timestamp) {
+    if (timestamp == null || timestamp.isEmpty) {
+      return null;
+    }
+    return DateTime.tryParse(timestamp);
   }
 
   Future<NewPawResponse> createPawEntry(PawEntry pawEntry) async {
