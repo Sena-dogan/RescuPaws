@@ -2,9 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rescupaws/config/router/slide_extension.dart';
+import 'package:rescupaws/config/router/fade_extension.dart';
 import 'package:rescupaws/constants/assets.dart';
-import 'package:rescupaws/data/enums/router_enums.dart';
 import 'package:rescupaws/ui/features/auth/presentation/login_screen.dart';
 import 'package:rescupaws/ui/features/auth/presentation/number_input_screen.dart';
 import 'package:rescupaws/ui/features/auth/presentation/otp_screen.dart';
@@ -87,7 +86,7 @@ GoRouter goRoute(Ref ref) {
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),
         // redirect: _authGuard,
-      ).slide(),
+      ).fade(),
       GoRoute(
         path: SGRoute.intro.route,
         builder: (BuildContext context, GoRouterState state) =>
@@ -108,9 +107,7 @@ GoRouter goRoute(Ref ref) {
         builder: (BuildContext context, GoRouterState state) =>
             const ProfileScreen(),
         redirect: _authGuard,
-      ).slide(
-        direction: SlideDirection.rightToLeft,
-      ),
+      ).fade(),
       GoRoute(
         path: SGRoute.detail.route,
         builder: (BuildContext context, GoRouterState state) => DetailScreen(
@@ -184,7 +181,7 @@ GoRouter goRoute(Ref ref) {
         builder: (BuildContext context, GoRouterState state) =>
             const FavoritesScreen(),
         redirect: _authGuard,
-      ),
+      ).fade(),
       GoRoute(
           path: SGRoute.phone.route,
           builder: (BuildContext context, GoRouterState state) =>
@@ -201,7 +198,7 @@ GoRouter goRoute(Ref ref) {
         builder: (BuildContext context, GoRouterState state) =>
             const ChatsScreen(),
         redirect: _authGuard,
-      ),
+      ).fade(),
       GoRoute(
         path: SGRoute.myEntries.route,
         builder: (BuildContext context, GoRouterState state) =>
