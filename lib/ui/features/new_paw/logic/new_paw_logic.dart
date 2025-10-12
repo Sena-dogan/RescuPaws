@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -10,10 +9,12 @@ import 'package:rescupaws/data/enums/new_paw_enums.dart';
 import 'package:rescupaws/data/network/location/location_repository.dart';
 import 'package:rescupaws/data/network/paw_entry/paw_entry_repository.dart';
 import 'package:rescupaws/data/network/user/user_repository.dart';
+import 'package:rescupaws/data/services/supabase_image_service.dart';
 import 'package:rescupaws/models/categories_response.dart';
 import 'package:rescupaws/models/location_response.dart';
 import 'package:rescupaws/models/new_paw_model.dart';
 import 'package:rescupaws/models/paw_entry.dart';
+import 'package:rescupaws/models/vaccine_info.dart';
 import 'package:rescupaws/ui/features/category/data/category_repository.dart';
 import 'package:rescupaws/ui/features/new_paw/model/new_paw_ui_model.dart';
 import 'package:rescupaws/utils/riverpod_extensions.dart';
@@ -45,19 +46,76 @@ Future<List<Category>> fetchSubCategories(
 
 @riverpod
 Future<NewPawResponse> createPawEntry(
-    Ref ref, PawEntry pawEntry) async {
+    Ref ref, PawEntry pawEntry, List<AssetEntity> imageAssets) async {
   if (pawEntry.name == null) {
     Logger().e('paw entry name is null');
-    throw Exception('new paw model name is null');
+    throw Exception('İlan adı boş olamaz');
   }
-  Logger().i('paw entry: $pawEntry');
+  
+  // Validate that at least one image is provided
+  if (imageAssets.isEmpty) {
+    Logger().e('paw entry has no images');
+    throw Exception('En az bir fotoğraf eklemelisiniz');
+  }
+  
+  // Validate maximum 5 images
+  if (imageAssets.length > 5) {
+    Logger().e('paw entry has too many images: ${imageAssets.length}');
+    throw Exception('En fazla 5 fotoğraf ekleyebilirsiniz');
+  }
+  
+  Logger().i('Uploading images to Supabase...');
+  
+  // Get Supabase image service
+  SupabaseImageService imageService = ref.read(supabaseImageServiceProvider);
+  
+  // Convert AssetEntities to bytes and upload to Supabase
+  List<Uint8List> imageBytesList = <Uint8List>[];
+  for (AssetEntity asset in imageAssets) {
+    // Use thumbnail with quality setting for better performance
+    Uint8List? bytes = await asset.thumbnailDataWithSize(
+      const ThumbnailSize(1920, 1920),
+      quality: 85,
+    );
+    
+    if (bytes != null) {
+      imageBytesList.add(bytes);
+    } else {
+      // Fallback to origin bytes if thumbnail fails
+      Uint8List? originBytes = await asset.originBytes;
+      if (originBytes != null) {
+        imageBytesList.add(originBytes);
+      }
+    }
+  }
+  
+  // Upload images to Supabase and get URLs
+  List<String> imageUrls = await imageService.uploadImages(
+    imageBytesList: imageBytesList,
+    userId: pawEntry.user_id ?? 'unknown',
+    baseFileName: 'paw_${pawEntry.id}',
+  );
+  
+  Logger().i('Images uploaded successfully. URLs: $imageUrls');
+  
+  // Update paw entry with image URLs
+  PawEntry updatedPawEntry = pawEntry.copyWith(image: imageUrls);
+  
+  Logger().i('Creating paw entry in Firestore...');
   PawEntryRepository pawEntryRepository =
       ref.read(getPawEntryRepositoryProvider);
   // Ensure the current user exists in 'users' so advertiser_ref resolves
   await ref.read(getUserRepositoryProvider).upsertCurrentUser();
   NewPawResponse response =
-      await pawEntryRepository.createPawEntry(pawEntry);
+      await pawEntryRepository.createPawEntry(updatedPawEntry);
+  Logger().i('Paw entry created successfully');
   return response;
+}
+
+// Provider for Supabase image service
+@riverpod
+SupabaseImageService supabaseImageService(Ref ref) {
+  return SupabaseImageService(Logger());
 }
 
 @riverpod
@@ -167,32 +225,21 @@ class NewPawLogic extends _$NewPawLogic {
     state = state.copyWith(assets: images);
   }
 
-  /// Adds the given list of [assets] to the existing assets in the state.
-  ///
-  /// This method takes a list of [AssetEntity] objects and adds them to the
-  /// existing assets in the state. It also retrieves the origin bytes of each
-  /// asset and adds them to the [imageBytes] list. The updated state is then
-  /// returned.
-  ///
-  /// The [assets] parameter is a list of [AssetEntity] objects representing the
-  /// assets to be added.
-  ///
-  /// Returns a [Future] that completes when the assets have been added.
-  Future<void> addAssets(List<AssetEntity> assets) async {
+  /// Adds an [AssetEntity] or a list of [AssetEntity]s to the [assets] list.
+  /// Images will be uploaded to Supabase when creating the paw entry.
+  Future<void> addAssets({required List<AssetEntity> assets}) async {
+    if (assets.isEmpty) return;
     setLoading(isLoading: true);
     List<AssetEntity> images =
         List<AssetEntity>.from(state.assets ?? <AssetEntity>[]);
-    List<String> imageBytes =
-        List<String>.from(state.imageBytes ?? <String>[]);
+    
+    // Add new assets to the list
     images.addAll(assets);
-    for (AssetEntity element in images) {
-      Uint8List? bytes = await element.originBytes;
-      if (bytes != null) {
-        imageBytes.add(base64Encode(bytes));
-      }
-    }
+    
+    // Update state with new assets
+    // No need to encode to base64 anymore - we upload directly to Supabase
     state = state.copyWith(
-        assets: images, imageBytes: imageBytes, isImageLoading: false);
+        assets: images, isImageLoading: false);
     return Future<void>.value();
   }
 
