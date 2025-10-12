@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rescupaws/models/paw_entry_detail.dart';
+import 'package:rescupaws/models/vaccine_info.dart';
 import 'package:rescupaws/ui/features/detail/widgets/have_vaccine_detail.dart';
 
 class VaccineBody extends StatelessWidget {
@@ -12,7 +13,12 @@ class VaccineBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  int tri(bool? v) => v == null ? 2 : (v ? 1 : 0);
+    // Helper to check if vaccine exists in array: 1 = has vaccine, 0 = doesn't have, 2 = unknown
+    int hasVaccine(String vaccineName) {
+      if (pawEntryDetailResponse?.data?.vaccines == null) return 2;
+      return pawEntryDetailResponse!.data!.vaccines.contains(vaccineName) ? 1 : 0;
+    }
+    
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -22,43 +28,35 @@ class VaccineBody extends StatelessWidget {
             children: <Widget>[
               HaveVaccineWidget(
                 title: 'Rabies Aşısı',
-                haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.rabiesVaccine),
+                haveVaccine: hasVaccine(VaccineNames.rabies),
               ),
               HaveVaccineWidget(
                 title: 'Distemper Aşısı',
-                haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.distemperVaccine),
+                haveVaccine: hasVaccine(VaccineNames.distemper),
               ),
               HaveVaccineWidget(
                 title: 'Hepatitis Aşısı',
-                haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.hepatitisVaccine),
+                haveVaccine: hasVaccine(VaccineNames.hepatitis),
               ),
               HaveVaccineWidget(
                 title: 'Parvovirus Aşısı',
-                haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.parvovirusVaccine),
+                haveVaccine: hasVaccine(VaccineNames.parvovirus),
               ),
               HaveVaccineWidget(
                 title: 'Bordotella Aşısı',
-                haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.bordotellaVaccine),
+                haveVaccine: hasVaccine(VaccineNames.bordetella),
               ),
               HaveVaccineWidget(
                 title: 'Leptospirosis Aşısı',
-                haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.leptospirosisVaccine),
+                haveVaccine: hasVaccine(VaccineNames.leptospirosis),
               ),
               HaveVaccineWidget(
                 title: 'Panleukopenia Aşısı',
-                haveVaccine: tri(
-                    pawEntryDetailResponse!.data!.vaccine_info?.panleukopeniaVaccine),
+                haveVaccine: hasVaccine(VaccineNames.panleukopenia),
               ),
               HaveVaccineWidget(
                 title: 'Herpesvirus and Calicivirus Aşısı',
-                haveVaccine: tri(pawEntryDetailResponse!
-                    .data!.vaccine_info?.herpesvirusAndCalicivirusVaccine),
+                haveVaccine: hasVaccine(VaccineNames.herpesvirusCalicivirus),
               ),
             ],
           ),

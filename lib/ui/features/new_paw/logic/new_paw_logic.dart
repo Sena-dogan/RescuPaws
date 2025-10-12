@@ -166,28 +166,27 @@ class NewPawLogic extends _$NewPawLogic {
   }
 
   void togglePawVaccine(Vaccines vaccines) {
-    switch (vaccines) {
-      case Vaccines.RABIES:
-        state = state.copyWith(rabies_vaccine: !state.rabies_vaccine);
-      case Vaccines.DISTEMPER:
-        state = state.copyWith(distemper_vaccine: !state.distemper_vaccine);
-      case Vaccines.HEPATITIS:
-        state = state.copyWith(hepatitis_vaccine: !state.hepatitis_vaccine);
-      case Vaccines.PARVOVIRUS:
-        state = state.copyWith(parvovirus_vaccine: !state.parvovirus_vaccine);
-      case Vaccines.BORDETELLA:
-        state = state.copyWith(bordotella_vaccine: !state.bordotella_vaccine);
-      case Vaccines.LEPTOSPIROSIS:
-        state =
-            state.copyWith(leptospirosis_vaccine: !state.leptospirosis_vaccine);
-      case Vaccines.PANLEUKOPENIA:
-        state =
-            state.copyWith(panleukopenia_vaccine: !state.panleukopenia_vaccine);
-      case Vaccines.HERPESVIRUSandCALICIVIRUS:
-        state = state.copyWith(
-            herpesvirus_and_calicivirus_vaccine:
-                !state.herpesvirus_and_calicivirus_vaccine);
+    // Map enum to vaccine name constants
+    String vaccineName = switch (vaccines) {
+      Vaccines.RABIES => VaccineNames.rabies,
+      Vaccines.DISTEMPER => VaccineNames.distemper,
+      Vaccines.HEPATITIS => VaccineNames.hepatitis,
+      Vaccines.PARVOVIRUS => VaccineNames.parvovirus,
+      Vaccines.BORDETELLA => VaccineNames.bordetella,
+      Vaccines.LEPTOSPIROSIS => VaccineNames.leptospirosis,
+      Vaccines.PANLEUKOPENIA => VaccineNames.panleukopenia,
+      Vaccines.HERPESVIRUSandCALICIVIRUS => VaccineNames.herpesvirusCalicivirus,
+    };
+    
+    // Toggle vaccine in array
+    List<String> currentVaccines = List.from(state.vaccines);
+    if (currentVaccines.contains(vaccineName)) {
+      currentVaccines.remove(vaccineName);
+    } else {
+      currentVaccines.add(vaccineName);
     }
+    
+    state = state.copyWith(vaccines: currentVaccines);
   }
 
   void setPawWeight(num weight) {
