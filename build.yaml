@@ -4,3 +4,8 @@ targets:
       freezed|freezed:
         generate_for:
           - lib/**/*.dart
+      json_serializable|json_serializable:
+        options:
+          explicit_to_json: true
+        generate_for:
+          - lib/**/*.dart
