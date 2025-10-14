@@ -2,10 +2,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 import 'package:rescupaws/data/enums/detail_enums.dart';
 import 'package:rescupaws/models/paw_entry.dart';
-import 'package:rescupaws/models/vaccine_info.dart';
 
 part 'paw_entry_detail.freezed.dart';
 part 'paw_entry_detail.g.dart';
@@ -44,21 +42,29 @@ extension PawEntryDetailX on PawEntry {
   }
 
   HaveorNot get vaccinatedEnum {
-    switch (vaccine_info?.hasAnyVaccine) {
+    bool hasVaccines = vaccines.isNotEmpty;
+    switch (hasVaccines) {
       case true:
         return HaveorNot.Have;
       case false:
         return HaveorNot.Not;
-      default:
-        throw Exception('Invalid vaccinated value');
     }
   }
 
   String get createdAtFormatted {
-    DateTime createdAt = DateTime.parse(created_at!);
-    String formattedDate =
-        '${createdAt.day}/${createdAt.month}/${createdAt.year}';
-    return formattedDate;
+    if (created_at == null) {
+      return 'Tarih bilinmiyor';
+    }
+    
+    try {
+      DateTime createdAt = DateTime.parse(created_at!);
+      String formattedDate =
+          '${createdAt.day}/${createdAt.month}/${createdAt.year}';
+      return formattedDate;
+    } catch (e) {
+      debugPrint('Error parsing created_at: $e');
+      return 'Geçersiz tarih';
+    }
   }
 }
 

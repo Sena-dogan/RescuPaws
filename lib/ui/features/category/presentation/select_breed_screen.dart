@@ -35,6 +35,22 @@ class _NewPawScreenState extends ConsumerState<SelectBreedScreen> {
 							'Cins Seç',
 							style: context.textTheme.labelSmall,
 						),
+						leading: IconButton(
+							icon: Container(
+								height: 40,
+								width: 40,
+								decoration: BoxDecoration(
+									color: Colors.black.withValues(alpha: 0.4),
+									shape: BoxShape.circle,
+								),
+								child: const Icon(
+									Icons.arrow_back,
+									size: 20,
+									color: Colors.white,
+								),
+							),
+							onPressed: () => context.pop(),
+						),
 					),
 					backgroundColor: Colors.transparent,
 					body: categories.when(

@@ -32,7 +32,8 @@ class MyEntriesScreen extends ConsumerWidget {
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  context.push(SGRoute.breed.route);
+                  // Start with image selection for a better flow
+                  context.push(SGRoute.pawimage.route);
                 },
               ),
             ],

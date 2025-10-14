@@ -17,8 +17,8 @@ import 'package:rescupaws/ui/features/entries/my_entries_screen.dart';
 import 'package:rescupaws/ui/features/favorite/favorite_screen.dart';
 import 'package:rescupaws/ui/features/intro/intro_screen.dart';
 import 'package:rescupaws/ui/features/new_paw/screens/address_input_screen.dart';
+import 'package:rescupaws/ui/features/new_paw/screens/image_management_screen.dart';
 import 'package:rescupaws/ui/features/new_paw/screens/information_screen.dart';
-import 'package:rescupaws/ui/features/new_paw/screens/new_paw_image_screen.dart';
 import 'package:rescupaws/ui/features/new_paw/screens/new_paw_screen.dart';
 import 'package:rescupaws/ui/features/new_paw/screens/vaccine_new_paw.dart';
 import 'package:rescupaws/ui/features/new_paw/screens/weight_screen.dart';
@@ -41,6 +41,7 @@ enum SGRoute {
   information,
   address,
   pawimage,
+  imageManagement,
   firstScreen,
   emailLogin,
   newpaw,
@@ -148,7 +149,13 @@ GoRouter goRoute(Ref ref) {
       GoRoute(
         path: SGRoute.pawimage.route,
         builder: (BuildContext context, GoRouterState state) =>
-            const NewPawImageScreen(),
+            const ImageManagementScreen(),
+        redirect: _authGuard,
+      ),
+      GoRoute(
+        path: SGRoute.imageManagement.route,
+        builder: (BuildContext context, GoRouterState state) =>
+            const ImageManagementScreen(),
         redirect: _authGuard,
       ),
       GoRoute(

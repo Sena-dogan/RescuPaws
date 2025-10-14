@@ -1,3 +1,9 @@
+// DEPRECATED: This screen has been merged into ImageManagementScreen
+// All image picking, permission handling, and image management functionality
+// is now handled in a single unified screen: image_management_screen.dart
+// This file is kept for reference but should not be used in new code.
+// Date: December 2024
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -10,6 +16,7 @@ import 'package:rescupaws/constants/assets.dart';
 import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
 import 'package:rescupaws/utils/context_extensions.dart';
 
+@Deprecated('Use ImageManagementScreen instead. This screen has been merged into image_management_screen.dart')
 class NewPawImageScreen extends ConsumerStatefulWidget {
   const NewPawImageScreen({super.key});
 
@@ -98,8 +105,26 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
 
   Future<void> _pickMultipleImages() async {
     try {
-      // For multiple image selection, we'll use single image picker multiple times
-      // or show a different UI. For now, let's pick one at a time
+      // Use multi_image_picker_view instead for better UX
+      // For now, let's allow picking images one by one with a better flow
+      // Navigate to image management screen where they can add/remove/reorder
+      if (!context.mounted || !mounted) return;
+      
+      // Check current image count
+      int currentCount = ref.read(newPawLogicProvider).assets?.length ?? 0;
+      
+      if (currentCount >= 5) {
+        if (context.mounted && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('En fazla 5 fotoğraf ekleyebilirsiniz'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        return;
+      }
+
       XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.gallery,
         maxWidth: 1920,
@@ -108,6 +133,26 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
       );
 
       if (pickedFile != null) {
+        // Show loading indicator
+        if (context.mounted && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                  ),
+                  SizedBox(width: 16),
+                  Text('Fotoğraf hazırlanıyor...'),
+                ],
+              ),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+
         AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
           pickedFile.path,
           title: 'paw_${DateTime.now().millisecondsSinceEpoch}',
@@ -115,17 +160,22 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
 
         await ref
             .read(newPawLogicProvider.notifier)
-            .addAssets(<AssetEntity>[asset]).then((_) async {
+            .addAssets(assets: <AssetEntity>[asset]).then((_) {
           debugPrint('gallery asset added');
-          if (!context.mounted && !mounted) return false;
-          await context.push(SGRoute.newpaw.route);
+          if (!context.mounted && !mounted) return;
+          
+          // Navigate to image management screen
+          context.pushReplacement(SGRoute.imageManagement.route);
         });
-            }
+      }
     } catch (e) {
       debugPrint('Error picking images: $e');
       if (context.mounted && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Fotoğraf seçilirken bir hata oluştu')),
+          const SnackBar(
+            content: Text('Fotoğraf seçilirken bir hata oluştu'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -148,10 +198,10 @@ class _NewPawImageScreenState extends ConsumerState<NewPawImageScreen> {
 
         await ref
             .read(newPawLogicProvider.notifier)
-            .addAssets(<AssetEntity>[asset]).then((_) async {
+            .addAssets(assets: <AssetEntity>[asset]).then((_) {
           debugPrint('camera asset added');
-          if (!context.mounted && !mounted) return false;
-          await context.push(SGRoute.newpaw.route);
+          if (!context.mounted && !mounted) return;
+          context.pushReplacement(SGRoute.imageManagement.route);
         });
             }
     } catch (e) {
