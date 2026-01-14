@@ -2,8 +2,8 @@
 
 <div align="center">
 
-  ![RescuPaws Banner](assets/images/banner_placeholder.png)
-  <!-- You can replace the above link with your actual banner image -->
+  ![RescuPaws Banner](assets/banners/banner_paws.jpg)
+
 
   **Find Your Furry Soulmate in Just 2 Taps.**
 
@@ -111,6 +111,21 @@ Contributions are what make the open source community such an amazing place to l
 3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4.  Push to the Branch (`git push origin feature/AmazingFeature`)
 5.  Open a Pull Request
+
+---
+
+## 🕰️ Project History & Evolution
+
+**From "Pati Pati" to "RescuPaws"**
+
+Every great project has a story. This application began its journey under the name **"Pati Pati"**. The original design reflected our initial vision for a friendly, warm pet adoption experience.
+
+While we transitioned to **RescuPaws** and refreshed the UI/UX to better serve a broader audience and align with new design standards, the original "Pati Pati" concept remains a core part of our DNA. We are proud of where we started and how far we've come.
+
+<div align="center">
+  <img src="assets/banners/banner_pati.jpg" alt="Original Pati Pati Design" width="100%" style="border-radius: 10px;" />
+  <p><em>The original "Pati Pati" design concept.</em></p>
+</div>
 
 ---
 
