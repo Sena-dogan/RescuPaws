@@ -4,7 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:rescupaws/models/location_response.dart';
 import 'package:rescupaws/models/paw_entry.dart';
-import 'package:rescupaws/models/vaccine_info.dart';
 
 part 'new_paw_ui_model.freezed.dart';
 
@@ -28,14 +27,7 @@ abstract class NewPawUiModel with _$NewPawUiModel {
     String? age,
     num? weight,
     int? education,
-    @Default(false) bool rabies_vaccine,
-    @Default(false) bool distemper_vaccine,
-    @Default(false) bool hepatitis_vaccine,
-    @Default(false) bool parvovirus_vaccine,
-    @Default(false) bool bordotella_vaccine,
-    @Default(false) bool leptospirosis_vaccine,
-    @Default(false) bool panleukopenia_vaccine,
-    @Default(false) bool herpesvirus_and_calicivirus_vaccine,
+    @Default(<String>[]) List<String> vaccines,
     String? address,
   }) = _NewPawUiModel;
 }
@@ -50,6 +42,7 @@ extension NewPawExtension on NewPawUiModel {
       weight = '${this.weight} lbs';
     }
     int id = DateTime.now().millisecondsSinceEpoch;
+    String createdAt = DateTime.now().toIso8601String();
     return PawEntry(
       id: id,
       address: address,
@@ -64,20 +57,12 @@ extension NewPawExtension on NewPawUiModel {
       education: education,
       gender: gender,
       name: name,
-      image: imageBytes,
+      // Images will be uploaded to Supabase and URLs added by createPawEntry
+      image: <String>[],
       user_id: user_id,
       weight: weight,
-      vaccine_info: VaccineInfo(
-        rabiesVaccine: rabies_vaccine,
-        distemperVaccine: distemper_vaccine,
-        hepatitisVaccine: hepatitis_vaccine,
-        parvovirusVaccine: parvovirus_vaccine,
-        bordotellaVaccine: bordotella_vaccine,
-        leptospirosisVaccine: leptospirosis_vaccine,
-        panleukopeniaVaccine: panleukopenia_vaccine,
-        herpesvirusAndCalicivirusVaccine:
-            herpesvirus_and_calicivirus_vaccine,
-      ),
+      vaccines: vaccines,
+      created_at: createdAt,
     );
   }
 }

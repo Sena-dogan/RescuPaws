@@ -53,7 +53,7 @@ class ChatsScreen extends ConsumerWidget {
               return const CircularProgressIndicator();
             }
 
-            if (snapshot.hasData) {
+            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -63,7 +63,7 @@ class ChatsScreen extends ConsumerWidget {
               );
             }
 
-            return const Text('No messaged users found');
+            return const Center(child: Text('Henüz mesaj yok'));
           },
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 // Import response DTO for creation API result
 import 'package:rescupaws/models/new_paw_model.dart' show NewPawResponse;
@@ -19,7 +20,6 @@ class PawEntryRepository {
     try {
       QuerySnapshot<Map<String, dynamic>> snap = await _firestore
           .collection('classfields')
-          .orderBy('created_at', descending: true)
           .get();
       List<PawEntry> entries = snap.docs
           .map((QueryDocumentSnapshot<Map<String, dynamic>> d) =>
@@ -36,33 +36,68 @@ class PawEntryRepository {
       QuerySnapshot<Map<String, dynamic>> snap = await _firestore
           .collection('classfields')
           .where('user_id', isEqualTo: currentUserUid)
-          .orderBy('created_at', descending: true)
           .get();
       List<PawEntry> entries = snap.docs
           .map((QueryDocumentSnapshot<Map<String, dynamic>> d) =>
               PawEntry.fromJson(d.data()))
           .toList();
+      entries.sort((PawEntry a, PawEntry b) {
+        DateTime? aDate = _parseCreatedAt(a.created_at);
+        DateTime? bDate = _parseCreatedAt(b.created_at);
+        if (aDate == null && bDate == null) {
+          return 0;
+        }
+        if (aDate == null) {
+          return 1;
+        }
+        if (bDate == null) {
+          return -1;
+        }
+        return bDate.compareTo(aDate);
+      });
       return right(GetPawEntryResponse(data: entries));
     } catch (e) {
       return left(PawEntryError(error: e.toString()));
     }
   }
 
+  DateTime? _parseCreatedAt(String? timestamp) {
+    if (timestamp == null || timestamp.isEmpty) {
+      return null;
+    }
+    return DateTime.tryParse(timestamp);
+  }
+
   Future<NewPawResponse> createPawEntry(PawEntry pawEntry) async {
     try {
       // Use provided id to keep consistency across app and Firebase doc id
       Map<String, dynamic> data = pawEntry.toJson();
+      
+      // Remove null values from top level - vaccine_info now uses arrays which don't need special handling
+      data.removeWhere((String key, dynamic value) => value == null);
+      
+      // Handle advertiser_ref as DocumentReference
       if (pawEntry.user_id != null && pawEntry.user_id!.isNotEmpty) {
         data['advertiser_ref'] = _firestore
             .collection('users')
             .doc(pawEntry.user_id);
+        // Remove user_id since we're using advertiser_ref
+        data.remove('user_id');
       }
+      
+      // Remove fields that shouldn't be in Firestore or are internal
+      data.remove('user'); // This is populated on read, not stored
+      data.remove('selectedImageIndex'); // This is UI state, not stored
+      
+      debugPrint('Data to be saved: $data');
+      
       await _firestore
           .collection('classfields')
           .doc(pawEntry.id.toString())
           .set(data);
       return NewPawResponse(status: 'success', message: 'Created', errors: null);
     } catch (e) {
+      debugPrint('Error creating paw entry: $e');
       return NewPawResponse(status: 'error', message: e.toString(), errors: <String, dynamic>{});
     }
   }

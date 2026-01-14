@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:rescupaws/config/router/app_router.dart';
 import 'package:rescupaws/data/enums/new_paw_enums.dart';
+import 'package:rescupaws/models/vaccine_info.dart';
 import 'package:rescupaws/ui/features/new_paw/logic/new_paw_logic.dart';
 import 'package:rescupaws/ui/features/new_paw/model/new_paw_ui_model.dart';
 import 'package:rescupaws/ui/features/new_paw/widgets/have_vaccine_new_paw.dart';
@@ -34,54 +34,54 @@ class _VaccineCreateBodyState extends ConsumerState<VaccineCreateBody> {
                 onTap: () {
                   newPawLogic.togglePawVaccine(Vaccines.RABIES);
                 },
-                isVaccineSelected: newPawUiModel.rabies_vaccine,
+                isVaccineSelected: newPawUiModel.vaccines.contains(VaccineNames.rabies),
               ),
               NewPawHaveVaccineWidget(
                 title: 'Distemper Aşısı',
                 onTap: () {
                   newPawLogic.togglePawVaccine(Vaccines.DISTEMPER);
                 },
-                isVaccineSelected: newPawUiModel.distemper_vaccine,
+                isVaccineSelected: newPawUiModel.vaccines.contains(VaccineNames.distemper),
               ),
               NewPawHaveVaccineWidget(
                 title: 'Hepatitis Aşısı',
                 onTap: () {
                   newPawLogic.togglePawVaccine(Vaccines.HEPATITIS);
                 },
-                isVaccineSelected: newPawUiModel.hepatitis_vaccine,
+                isVaccineSelected: newPawUiModel.vaccines.contains(VaccineNames.hepatitis),
               ),
               NewPawHaveVaccineWidget(
                 title: 'Parvovirus Aşısı',
                 onTap: () {
                   newPawLogic.togglePawVaccine(Vaccines.PARVOVIRUS);
                 },
-                isVaccineSelected: newPawUiModel.parvovirus_vaccine,
+                isVaccineSelected: newPawUiModel.vaccines.contains(VaccineNames.parvovirus),
               ),
               NewPawHaveVaccineWidget(
                 title: 'Bordotella Aşısı',
                 onTap: () {
                   newPawLogic.togglePawVaccine(Vaccines.BORDETELLA);
                 },
-                isVaccineSelected: newPawUiModel.bordotella_vaccine,
+                isVaccineSelected: newPawUiModel.vaccines.contains(VaccineNames.bordetella),
               ),
               NewPawHaveVaccineWidget(
                 title: 'Leptospirosis Aşısı',
                 onTap: () {
                   newPawLogic.togglePawVaccine(Vaccines.LEPTOSPIROSIS);
                 },
-                isVaccineSelected: newPawUiModel.leptospirosis_vaccine,
+                isVaccineSelected: newPawUiModel.vaccines.contains(VaccineNames.leptospirosis),
               ),
               NewPawHaveVaccineWidget(
                 title: 'Panleukopenia Aşısı',
                 onTap: () {
                   newPawLogic.togglePawVaccine(Vaccines.PANLEUKOPENIA);
                 },
-                isVaccineSelected: newPawUiModel.panleukopenia_vaccine,
+                isVaccineSelected: newPawUiModel.vaccines.contains(VaccineNames.panleukopenia),
               ),
               NewPawHaveVaccineWidget(
                 title: 'Herpesvirus and Calicivirus Aşısı',
                 isVaccineSelected:
-                    newPawUiModel.herpesvirus_and_calicivirus_vaccine,
+                    newPawUiModel.vaccines.contains(VaccineNames.herpesvirusCalicivirus),
                 onTap: () {
                   newPawLogic
                       .togglePawVaccine(Vaccines.HERPESVIRUSandCALICIVIRUS);

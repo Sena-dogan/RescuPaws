@@ -1,10 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 import 'package:rescupaws/data/enums/paw_entry_status.dart';
 import 'package:rescupaws/models/user.dart';
-import 'package:rescupaws/models/vaccine_info.dart';
 
 part 'paw_entry.freezed.dart';
 part 'paw_entry.g.dart';
@@ -46,7 +44,7 @@ abstract class PawEntry with _$PawEntry {
     String? age,
     String? weight,
     int? education,
-    VaccineInfo? vaccine_info,
+    @Default(<String>[]) List<String> vaccines,
     List<String>? image,
     dynamic deleted_at,
     String? created_at,
