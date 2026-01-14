@@ -144,8 +144,6 @@ While we transitioned to **RescuPaws** and refreshed the UI/UX to better serve a
   <img src="assets/screenshots/IMG_0279.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0268.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0280.jpg" width="120" style="margin: 5px;" />
-  <img src="assets/screenshots/IMG_0286.jpg" width="120" style="margin: 5px;" />
-  <img src="assets/screenshots/IMG_0289.jpg" width="120" style="margin: 5px;" />
 </div>
 
 ---
