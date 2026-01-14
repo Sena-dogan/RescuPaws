@@ -124,7 +124,7 @@ While we transitioned to **RescuPaws** and refreshed the UI/UX to better serve a
 <div align="center">
   <img src="assets/screenshots/IMG_0282.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0283.jpg" width="120" style="margin: 5px;" />
-  <img src="assets/screenshots/IMG_0270.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0284.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0281.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0251.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0254.jpg" width="120" style="margin: 5px;" />
@@ -137,7 +137,7 @@ While we transitioned to **RescuPaws** and refreshed the UI/UX to better serve a
 
 #### ☀️ Light Mode
 <div align="center">
-  <img src="assets/screenshots/IMG_0284.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0270.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0274.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0277.jpg" width="120" style="margin: 5px;" />
   <img src="assets/screenshots/IMG_0279.jpg" width="120" style="margin: 5px;" />
