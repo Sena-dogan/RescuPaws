@@ -90,17 +90,7 @@ To get a local copy up and running, follow these simple steps.
 
 ---
 
-## 📱 Screenshots
 
-<div align="center">
-  <!-- Replace these with your actual screenshots -->
-  <img src="assets/screenshots/home.png" width="200" alt="Home Screen" />
-  <img src="assets/screenshots/profile.png" width="200" alt="Pet Profile" />
-  <img src="assets/screenshots/swipe.png" width="200" alt="Swipe Interface" />
-  <img src="assets/screenshots/detail.png" width="200" alt="Detail View" />
-</div>
-
----
 
 ## 🤝 Contributing
 
@@ -125,6 +115,37 @@ While we transitioned to **RescuPaws** and refreshed the UI/UX to better serve a
 <div align="center">
   <img src="assets/banners/banner_pati.jpg" alt="Original Pati Pati Design" width="100%" style="border-radius: 10px;" />
   <p><em>The original "Pati Pati" design concept.</em></p>
+</div>
+
+### 🎞️ Legacy Version Gallery (TestFlight)
+*A look back at the development journey and the original "Pati Pati" interface.*
+
+#### 🌑 Dark Mode
+<div align="center">
+  <img src="assets/screenshots/IMG_0282.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0283.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0270.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0284.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0281.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0251.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0254.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0287 1.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0263.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0266.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0285.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0291.jpg" width="120" style="margin: 5px;" />
+</div>
+
+#### ☀️ Light Mode
+<div align="center">
+  <img src="assets/screenshots/IMG_0271.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0274.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0277.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0279.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0268.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0280.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0286.jpg" width="120" style="margin: 5px;" />
+  <img src="assets/screenshots/IMG_0289.jpg" width="120" style="margin: 5px;" />
 </div>
 
 ---
